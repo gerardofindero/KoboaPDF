@@ -3,7 +3,6 @@ from Consumo    import calc_consumo
 
 
 def refrigerador(Excel,Nocircuito):
-    print("Refrigeracion")
     Aparatos_C = pd.DataFrame(index=['Refrigerador','Congelador','Minibar','Cava','Hielos','Refrigerador2','Congelador2','Minibar2','Cava2','Hielos2','Regulador']
                               ,columns=['Marca','Nominal','Consumo','T_Compresor','T_Refrigerador','Problema'])
 
