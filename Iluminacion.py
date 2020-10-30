@@ -2,7 +2,7 @@ import pandas as pd
 from Consumo    import calc_consumo
 
 def iluminacion (Excel,Nocircuito):
-    print("iluminacion")
+
     Aparatos_C = pd.DataFrame(columns=['Aparatos'])
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
