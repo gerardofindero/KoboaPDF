@@ -1,0 +1,2 @@
+Este aparato representa una costo anual de {var_1} en tarifa DAC, lo cual es bastante alto. El consumo de tu centro de lavado se debe a que su nivel de potencia es mayor que el de otras en el mercado, pues en nuestras mediciones se registró una potencia media de {var_2}. El uso que se la da es de aproximadamente {var_3} horas a la semana. 
+

@@ -1,0 +1,2 @@
+Tiene una potencia de {var_1} W, además de que aproximadamente permanece encendido {var_2} horas a la semana.
+Sin embargo, su consumo es bajo.

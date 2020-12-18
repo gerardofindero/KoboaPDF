@@ -1,0 +1,2 @@
+Tu dispensador tiene un consumo alto principalmente debido al tiempo de uso, ya que tiene pulsos de {var_1} W con una alta frecuencia.
+Esto representa aproximadamente ${var_2} anualmente en tarifa DAC.

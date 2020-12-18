@@ -1,0 +1,1 @@
+Del modo que actualmente se utiliza este aparato, representa un costo anual de {var_1} en tarifa DAC. El consumo de tu centro de lavado se debe a su frecuencia de uso, mas que a alguna falla en el equipo. Durante nuestras mediciones encontramos que tiene una potencia de {var_2} W, y se utiliza aproximadamente {var_3} horas a la semana.

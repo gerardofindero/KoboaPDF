@@ -1,0 +1,2 @@
+Los siguientes resultados son proyecciones <b>bimestrales</b> que realizamos con base en el período de muestreo de nuestros sensores donde <b>analizamos {:,} datos.</b> <br/><br/>
+A lo largo del reporte verás estos símbolos para guiarte:

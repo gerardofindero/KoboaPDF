@@ -1,0 +1,1 @@
+Este refrigerador tiene un consumo {var_1}% mayor que el de uno eficiciente. Esto se debe a tiene un consumo base muy alto, de {var_2} watts.

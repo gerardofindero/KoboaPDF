@@ -1,0 +1,1 @@
+Tu televisión gasta mucho porque es de alta potencia y se utiliza muhco. Esta es una televisión de {var_1} watts y se usa {var_2} horas a la semana

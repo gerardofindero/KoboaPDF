@@ -1,0 +1,1 @@
+Este refrigerador tiene un consumo {var_1}% mayor que el de uno eficiciente. Esto se debe a que se mantiene encendido por largos periodos y se apaga por poco tiempo. Hemos visto que tu refrigerador está encendido el {var_2} del tiempo. 

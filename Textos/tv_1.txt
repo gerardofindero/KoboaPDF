@@ -1,0 +1,1 @@
+Tu televisión gasta mucho debido a su uso. Observamos que se utilizó {var_1} esta semana.

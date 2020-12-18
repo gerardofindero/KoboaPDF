@@ -1,0 +1,1 @@
+Tu televisión gasta mucho debido a que es de alta potencia. Esta e suna televisión de {var_1} watts.
