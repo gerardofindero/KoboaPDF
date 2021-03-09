@@ -1,323 +1,338 @@
+from SepararFugas import *
 import datetime
 import os
+from pandas import ExcelWriter
+from pathlib         import Path
 from datetime import datetime
 import pandas as pd
-import xlrd
-from unidecode import unidecode
-import logging
+import xlwings
+from Tarifa          import leer_tarifa_Dac
+from Leer_Lista      import leer_lista
 
-def Archivo(Cliente):
+
+    ###Excel
+def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
+    Atacable = Fugas['Atacable'].values
+    Fugas.drop(['Atacable'], axis=1, inplace=True)
+    Fugas.reset_index(inplace=True, drop=True)
+
+    Tipo = Luminarias['Tipo'].values
+    Luminarias.drop(['Tipo'], axis=1, inplace=True)
+    Luminarias.reset_index(inplace=True, drop=True)
+
+    workbook = xlwings.Book(archivo_resultados)
+    gris = (200, 200, 200)
+    Consumo_bimestral = '=Resumen!E4'
+    Tarifa = leer_tarifa_Dac()
+    try:
+        workbook.sheets.add('Desciframiento')
+    except:
+        print('Hoja ya creada')
+
+    celdaFinal = len(Equipos) + len(Luminarias) + len(Fugas) + 12
+    Sheet1 = workbook.sheets['Desciframiento']
+    #Deciframiento = pd.concat([Equipos, Luminarias, Fugas])
+    Sheet1.range('A6').value = Equipos
+    Sheet1.range(len(Equipos)+9,1).value = Luminarias
+    Sheet1.range(len(Equipos)+len(Luminarias)+12,1).value= Fugas
+    Sheet1.range('C2').value = Consumo_bimestral
+    Sheet1.range('C3').value = '=SUM(K7:K'+str(celdaFinal)+')'
+    Sheet1.range('C1').value = 'Consumo'
+    Sheet1.range('C1').color = gris
+    Sheet1.range('D1').value = 'Costo'
+    Sheet1.range('D1').color = gris
+    Sheet1.range('D2').value = '=C2*G1'
+    Sheet1.range('D3').value = '=(C3*G1)+263.32'
+    Sheet1.range('B2').value = 'Bimestral'
+    Sheet1.range('B2').color = gris
+    Sheet1.range('B3').value = 'Ajustado con costo fijo'
+    Sheet1.range('B3').color = gris
+    Sheet1.range('G1').value =  Tarifa
+    Sheet1.range('F1').value = 'Tarifa'
+    Sheet1.range('F1').color = gris
+    Sheet1.range('F2').value = 'Medidor'
+    Sheet1.range('F2').color = gris
+    Sheet1.range('F3').value = 'Voltaje'
+    Sheet1.range('F3').color = gris
+    Sheet1.range('G2').value = '1'
+    Sheet1.range('G3').value = '1'
+
+
+    Sheet1.range(6, 16).value = 'Descripcion de Señal'
+    Sheet1.range(6, 14).value = 'Texto a PDF'
+    Sheet1.range(6, 17).value = 'Claves'
+    for i in range(len(Equipos)):
+        Sheet1.range(7+i, 9).value = '=F'+str(7+i)+'*C$2'
+        Sheet1.range(7+i, 11).value = '=IF(J'+str(7+i)+'="NM",I'+str(7+i)+',(J'+str(7+i)+' / G'+str(7+i)+') * I'+str(7+i)+')'
+        Sheet1.range(7+i, 12).value = '=K'+str(7+i)+' / C$3'
+        Sheet1.range(7+i, 13).value = '=K'+str(7+i)+'*G$1'
+
+    Sheet1.range(len(Equipos)+9, 4).value= 'Luminaria'
+    Sheet1.range(len(Equipos) + 9, 14).value = 'Texto a PDF'
+    Sheet1.range(len(Equipos) + 9, 16).value = 'Descripcion de Señal'
+    for i in range(len(Luminarias)):
+        inicioL=len(Equipos)+10
+        Sheet1.range(inicioL+i, 9).value = '=F'+str(i+inicioL)+'*C$2'
+        Sheet1.range(inicioL+i, 11).value = '=IF(J'+str(i+inicioL)+'="NM",G'+str(i+inicioL)+',(J'+str(i+inicioL)+' / G'+str(i+inicioL)+') * I'+str(i+inicioL)+')'
+        Sheet1.range(inicioL+i, 12).value = '=K'+str(i+inicioL)+' / C$3'
+        Sheet1.range(inicioL+i, 13).value = '=K'+str(i+inicioL)+'*G$1'
+
+    Sheet1.range(len(Equipos) + len(Luminarias)+12, 4).value = 'Perdidas'
+    Sheet1.range(len(Equipos) + len(Luminarias) + 12, 16).value = 'Descripcion'
+
+    for i in range(len(Fugas)):
+        inicioF=len(Equipos)+len(Luminarias)+13
+        #Sheet1.range(inicioL+i, 8).value = '=E'+str(inicioL+i)+'*C$2'
+        Sheet1.range(inicioF+i, 11).value = '=J'+str(inicioF+i)+'*24*60/1000'
+        Sheet1.range(inicioF+i, 12).value = '=K'+str(inicioF+i)+' / C$3'
+        Sheet1.range(inicioF+i, 13).value = '=K'+str(inicioF+i)+'*G$1'
+
+####### Color y Bordes
+    CelF="$A$6:$Q$"+str(celdaFinal)
+    for i in range(17):
+        Sheet1.range(6,i+1).color = gris
+        Sheet1.range(len(Equipos) + 9, 1+i).color = gris
+        Sheet1.range(len(Equipos) + len(Luminarias) + 12, 1+i).color = gris
+
+    Sheet1.range(CelF).api.Borders.Weight = 2
+    Sheet1.range("$B$1:$D$3").api.Borders.Weight = 2
+    Sheet1.range("$F$1:$G$3").api.Borders.Weight = 2
+    Sheet1.range(CelF).columns.autofit()
+    Sheet1['1:1'].api.ColumnWidth = 10
+    Sheet1.range('N1').column_width = 100
+    Sheet1.range('O1').column_width = 100
+    Sheet1.range('P1').column_width = 100
+    Sheet1.range('D1').column_width = 30
+    Sheet1.range('E1').column_width = 20
+
+    i = 0
+    inicioL = len(Equipos) + 10
+    Sheet1.range(inicioL - 1, 1).value = 'Tipo'
+    for tipo in Tipo:
+        Sheet1.range(inicioL + i, 1).value = tipo
+        i = i + 1
+
+    i=0
+    inicioL = len(Equipos) + len(Luminarias) + 13
+    Sheet1.range(inicioL -1, 1).value = 'Atacable'
+    for atac in Atacable:
+        Sheet1.range(inicioL + i, 1).value = atac
+        i=i+1
+
+
+
+    infoL= leer_lista(Cliente)
+    cony=0
+    #print(Equipos)
+    for i in Equipos['Codigo']:
+        i = i.upper()
+        identificados= infoL[infoL['B'].str.contains(i)].index
+        if not identificados.empty:
+            Sheet1.range(7 + cony, 6).value =infoL.loc[identificados[0],'D']
+            Sheet1.range(7 + cony, 7).value = infoL.loc[identificados[0], 'F']
+            Sheet1.range(7+ cony, 16).value = infoL.loc[identificados[0], 'H']
+        cony=cony+1
+    cony = 0
+    inicioL = len(Equipos) + 10
+
+    for i in Luminarias['Codigo']:
+        i=i.upper()
+        identificados= infoL[infoL['B'].str.contains(i)].index
+        if not identificados.empty:
+            Sheet1.range(inicioL + cony, 6).value = infoL.loc[identificados[0], 'D']
+            Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
+            Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
+        cony = cony + 1
+
+
+    cony = 0
+    inicioF = len(Equipos) + len(Luminarias) + 13
+    for i in Fugas['Codigo']:
+
+        i = i.upper()
+        identificados = infoL[infoL['B'].str.contains(i)].index
+        if not identificados.empty:
+            Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
+        cony=cony+1
+
+
+    workbook.save()
+    workbook.close()
+
+    return Equipos, Luminarias, Fugas
+
+def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
+
+    Luminaria=Luz.copy()
+    Luminarias = pd.DataFrame(
+        columns=['Codigo','Ubicacion', 'Equipo', 'Lugar', '% Equipo', 'Potencia', 'Horas de la semana', 'kWh', 'Potencia Kobo',
+                 'kWh Ajustado','% Ajustado','$ Bimestre', 'Texto','Notas',' ', 'Claves'])
+    Equipos = pd.DataFrame(
+        columns=['Codigo','Ubicacion', 'Equipo', 'Lugar', '% Equipo', 'Potencia', 'Horas de la semana', 'kWh', 'Potencia Kobo',
+                 'kWh Ajustado','% Ajustado','$ Bimestre', 'Texto','Notas',' ', 'Claves'])
+    Fugas = pd.DataFrame(
+        columns=['Atacable','Codigo','Ubicacion', 'Equipo', 'Lugar', '% Equipo', 'Potencia', 'Horas de la semana', 'kWh', 'Potencia Kobo',
+                 'kWh Ajustado','% Ajustado','$ Bimestre', 'Texto','Notas',' ', 'Claves'])
+
     Dic=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q']
 
     print(f"Comenzó el reporte de {Cliente}")
     fecha = datetime.now()
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
-    carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/{mes}/"
-    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/noviembre/"
+
+    #carpeta_resultados = f"../../Datos de clientes/Clientes 2021/01-Enero/"
+    carpeta_resultados = f"../../Datos de clientes/Clientes 2021/03-Marzo/"
+
 
     clientes = os.listdir(carpeta_resultados)
+
     booleanos = [Cliente.lower() in c.lower() for c in clientes]
-    capeta_cliente=Cliente
+    carpeta_cliente = Cliente
+
     for idx, valor in enumerate(booleanos):
         if valor:
             carpeta_cliente = clientes[idx]
+
     carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
 
     cliente_ = Cliente.replace(' ', '_')
-    archivo_resultados = f"{carpeta_resultados}/Resultados_{cliente_}.xlsx"
+    archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
     Exx = pd.read_excel(archivo_resultados,sheet_name='Resumen')
     Exx.columns=Dic
-    excel_resultados = xlrd.open_workbook(archivo_resultados)
-    ##print(Exx)
-    #print(Exx.loc[13,'A'])
-    Exx.drop(Exx.index[:13],inplace=True)
-    Exx.reset_index(inplace=True)
-    Fin1=Exx
-    print(Exx)
-
-def buscar_columna(palabra, hoja):
-    """ Busca en cada columna la ocurrencia de una palabra y devuelve el valor de la celda siguiente """
-    count = 0
-    while True:
-        columna = [palabra in str(a) for a in hoja.col_values(count)]
-        if any(columna):
-            index = [i for i, x in enumerate(columna) if x][0] + 1
-            return hoja.col_values(count)[index]
-            break
-        else:
-            count += 1
-        if count > 200:
-            return 0
-            break
-
-
-def buscar_fila(palabra, hoja):
-    """ Busca en cada fila la ocurrencia de una palabra y devuelve el valor de la celda siguiente """
-
-    count = 0
-    while True:
-        fila = [palabra in str(a) for a in hoja.row_values(count)]
-        if any(fila):
-            index = [i for i, x in enumerate(fila) if x][0] + 1
-            return hoja.row_values(count)[index]
-            break
-        else:
-            count += 1
-        if count > 200:
-            return 0
-            break
-
-def buscar_palabra(palabra, hoja):
-    """ Busca en cada fila la ocurrencia de una palabra y devuelve el valor de esa misma celda """
-
-    count = 0
-    while True:
-        fila = [palabra in str(a) for a in hoja.row_values(count)]
-        if any(fila):
-            index = [i for i, x in enumerate(fila) if x][0]
-            return hoja.row_values(count)[index]
-            break
-        else:
-            count += 1
-        if count > 200:
-            return 0
-            break
-
-
-def varios(hoja):
-    """ Se obtiene el numero de datos, tarifa, porcentaje de fugas, consumo y costo bimestral"""
-
-    numero_datos = [a for a in hoja.row_values(0) if 'datos' in a][0].replace(',', '')
-    numero_datos = [int(s) for s in numero_datos.split() if s.isdigit()][0]
-
-    try:
-        tarifa = round(buscar_fila('Tarifa', hoja), 2)
-        tipo_tarifa = buscar_palabra('Tarifa', hoja)
-        tipo_tarifa = tipo_tarifa.split("Tarifa ")[-1][:-1]
-
-    except:
-        tarifa = 5.2
-        tipo_tarifa = "DAC"
-
-    try:
-        porcentaje_fugas = round(buscar_fila('Total de Fugas', hoja), 4)
-    except:
-        porcentaje_fugas = 0
-
-    consumo_bimestral = int(buscar_columna('Consumo', hoja))
-    costo_bimestral = int(buscar_columna('Costo', hoja))
-
-    return numero_datos, tarifa, porcentaje_fugas, consumo_bimestral, costo_bimestral, tipo_tarifa
-
-
-def aparatos(hoja):
-    """ Se obtienen los aparatos y sus detalles. Luego se ordenan en un diccionario """
-    count = 0
-    while True:
-        columna = ['Equipo' in str(a) for a in hoja.col_values(count)]
-        if any(columna):
-            col = count
-            break
-        else:
-            count += 1
-        if count > 80:
-            col = 3
-            break
-
-    aparatos = [a for a in hoja.col_values(col)]
-    inicio = aparatos.index('Equipo') + 1
-    corte = aparatos.index('Sin Identificar')
-
-    aparatos = list(filter(None, aparatos[inicio:corte]))
-    carita = [int(e) for e in list(filter(None, [a for a in hoja.col_values(col - 2)][inicio:corte]))]
-    porcentaje = [round(e, 3) for e in list(filter(None, [a for a in hoja.col_values(col + 1)][inicio:corte]))]
-    consumo = [round(e, 3) for e in list(filter(None, [a for a in hoja.col_values(col + 2)][inicio:corte]))]
-    costo = [int(round(e)) for e in list(filter(None, [a for a in hoja.col_values(col + 3)][inicio:corte]))]
-    anual = [int(round(e)) for e in list(filter(None, [a for a in hoja.col_values(col + 4)][inicio:corte]))]
-    notas = list(filter(None, [a for a in hoja.col_values(col + 8)][inicio:corte]))
-
-    idx_fugas = [i for i, a in enumerate(aparatos) if 'fuga' not in a.lower()]
-
-    aparatos = [aparatos[i] for i in idx_fugas]
-    carita = [carita[i] for i in idx_fugas]
-    porcentaje = [porcentaje[i] for i in idx_fugas]
-    consumo = [consumo[i] for i in idx_fugas]
-    costo = [costo[i] for i in idx_fugas]
-    anual = [anual[i] for i in idx_fugas]
-    notas = [notas[i] for i in idx_fugas]
-
-    desciframiento = {}
-    for i, a in enumerate(aparatos):
-        desciframiento[a] = [a, carita[i], porcentaje[i], consumo[i], costo[i], anual[i], notas[i]]
-
-    return desciframiento
-
-
-def luces(hoja):
-    """ Se obtiene el desgloce de luces """
-
-    palabra_clave = 'Circuito:'
-    count = 0
-    while True:
-        columna = [palabra_clave in str(a) for a in hoja.col_values(count)]
-        if any(columna):
-            col = count
-            break
-        else:
-            count += 1
-        if count > 80:
-            col = 3
-            break
-
-    count = 0
-    while True:
-        fila = [palabra_clave in str(a) for a in hoja.row_values(count)]
-        if any(fila):
-            row = count
-            break
-        else:
-            count += 1
-        if count > 80:
-            raise LookupError
-
-    circuitos = [a for a in hoja.col_values(col)]
-    inicio = circuitos.index(palabra_clave) + 1
-    circuitos = list(filter(None, circuitos[inicio:]))
-    descripcion = list(filter(None, [a for a in hoja.col_values(col + 1)][inicio:]))
-    porcentaje = [round(e, 4) for e in list(filter(None, [a for a in hoja.col_values(col + 2)][inicio:]))]
-    costo = [int(e) for e in list(filter(None, [a for a in hoja.col_values(col + 3)][inicio:]))]
-    notas = list(filter(None, [a for a in hoja.col_values(col + 4)][inicio:]))
-
-    if not circuitos:
-        raise NameError
-    else:
-        detalles_luces = {}
-        for i, c in enumerate(circuitos):
-            detalles_luces[c] = [descripcion[i], porcentaje[i], costo[i], notas[i]]
-        return detalles_luces
-
-
-def fugas(hoja):
-    """ Se obtienen las fugas y sus detalles. Luego se ordenan en un diccionario """
-
-    count = 0
-    while True:
-        columna = ['donde' in unidecode(str(a)).lower() for a in hoja.col_values(count)]
-        if any(columna):
-            col = count
-            break
-        else:
-            count += 1
-        if count > 80:
-            col = 3
-            break
-
-    lugar = [a for a in hoja.col_values(col)]
-    try:
-        inicio = lugar.index('Donde') + 1
-    except:
-        inicio = lugar.index('Dónde') + 1
-
-    lugar = list(filter(None, lugar[inicio:]))
-    aparato = list(filter(None, [a for a in hoja.col_values(col + 1)][inicio:]))
-    potencia = [round(e, 1) for e in [a for a in hoja.col_values(col + 3)][inicio:] if e != '']
-    consumo = [round(e, 1) for e in [a for a in hoja.col_values(col + 4)][inicio:] if e != '']
-    atacable = list(filter(None, [a for a in hoja.col_values(col + 5)][inicio:]))
-    notas = list(filter(None, [a for a in hoja.col_values(col + 6)][inicio:]))
-
-    fugas = {}
-    for i, a in enumerate(lugar):
-        fugas[i] = [a, aparato[i], potencia[i], consumo[i], atacable[i], notas[i]]
-
-    return fugas
-
-
-def impacto(hoja):
-    ahorro_paneles = int(buscar_columna('Ahorro por implementar:', hoja))
-    co2 = int(buscar_columna('Impacto ambiental', hoja))
-    arboles = round(co2*.015)
-    nuevo_consumo = int(buscar_columna('Nuevo consumo', hoja))
-
-    return ahorro_paneles, co2, arboles, nuevo_consumo
-
-
-def consumo(hoja):
-    """ Se obtiene el consumo del periodo de medición"""
-
-    try:
-        consumo_periodo = round(buscar_fila('Periodos al bimestre:', hoja),2)
-
-    except:
-        consumo_periodo = 0
-
-    return consumo_periodo
-
-
-def extractor(excel):
-    """ Funcion que incorpora las demás y que será llamada por otros programas """
-
-    hoja_desciframiento = excel.sheet_by_name('Desciframiento')
-    hoja_detalles = excel.sheet_by_name('Detalles')
-    hoja_ahorro = excel.sheet_by_name('Ahorro')
-
-    numero_datos, tarifa, porcentaje_fugas, consumo_bimestral, costo_bimestral, tipo_tarifa = varios(hoja_desciframiento)
-    desciframiento = aparatos(hoja_desciframiento)
-
-    print(consumo(hoja_detalles))
-    consumo_periodo = consumo_bimestral/635
-    #(consumo(hoja_detalles))
-    try:
-        detalles_luces = luces(hoja_desciframiento)
-    except LookupError as e:
-        print(f'Error. No se pudo encontrar el desgloce de luces.')
-        logging.warning(f'Error. No se pudo encontrar el desgloce de luces: {e}')
-        detalles_luces = {}
-    except NameError as e:
-        print('No hay desgloce de luces.')
-        logging.warning(f'No hay desgloce de luces: {e}')
-        detalles_luces = {}
-    except Exception as e:
-        print('Error: ocurrió un error desconocido al buscar el desgloce de luces')
-        logging.warning(f'Error: ocurrió un error desconocido al buscar el desgloce de luces: {e}')
-        detalles_luces = {}
-
-    ahorro_paneles, co2, arboles, nuevo_consumo = impacto(hoja_ahorro)
-
-    return numero_datos, tarifa, porcentaje_fugas, consumo_bimestral, costo_bimestral, desciframiento, detalles_luces, \
-           ahorro_paneles, co2, arboles, nuevo_consumo, tipo_tarifa, consumo_periodo
-
-
-def extractor_fugas(excel):
-    """ Extrae la infromación de la hoja de fugas """
-
-    hoja_fugas = excel.sheet_by_name('Hoja de Fugas')
-
-    atacables = buscar_fila('Porcentaje', hoja_fugas)
-
-    try:
-        fugas_dict = fugas(hoja_fugas)
-    except Exception as e:
-        logging.exception(e)
-
-    return atacables, fugas_dict
-
-
-def extractor_medidor(excel):
-    """ Extrae la infromación para el veredicto de medidor, voltaje y robo """
-
-    hoja = excel.sheet_by_name('Detalles')
-
-    robo = buscar_fila("Robo?", hoja)
-    revisar = buscar_fila("Revisar?", hoja)
-    nivel = buscar_fila("Nivel:", hoja)
-
-    return  robo, revisar, nivel
-
-
-if __name__ == "__main__":
-    archivo = 'Resultados_Leon_Wladislawosky.xlsx'
-    hoja = xlrd.open_workbook(archivo).sheet_by_name('Desciframiento')
-
-    numero_datos, tarifa, porcentaje_fugas, consumo_bimestral, costo_bimestral, desciframiento, detalles_luces, \
-        ahorro_paneles, co2, arboles, nuevo_consumo = extractor(hoja)
+
+    Exx.drop(Exx.index[:12],inplace=True)
+    donde=Exx.loc[Exx['A'] == 'Periodo:']
+    Exx = Exx.drop(Exx[Exx['C'] == 'Total'].index)
+    if not Refri.empty:
+        print("Refri")
+        Equipo,Fuga = separar_fugasR(Refri)
+        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
+        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+
+    if not Clust.empty:
+        print("Cluster")
+        Equipo, Fuga = separar_fugasTV(Clust)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Lava.empty:
+        print("Lava")
+        Equipo,Fuga = separar_fugas(Lava)
+        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
+        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+
+    if not Coci.empty:
+        print("Cocina")
+        Equipo,Fuga = separar_fugasC(Coci)
+        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
+        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+
+
+    if not PCs.empty:
+        print("Computo")
+        Equipo, Fuga = separar_fugas(PCs)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Comu.empty:
+        print("Comunicaciones")
+        Equipo, Fuga = separar_fugas(Comu)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Cal.empty:
+        print("Calefaccion")
+        print(Cal)
+        Equipo, Fuga = separar_fugasCal(Cal)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Bomba.empty:
+        print("Bomba")
+        Equipo, Fuga = separar_fugasBB(Bomba)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Segu.empty:
+        print("Seguridad")
+        Equipo, Fuga = separar_fugas(Segu)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Aire.empty:
+        print("Aires Acondicionados")
+        Equipo, Fuga = separar_fugasA(Aire)
+        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
+        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+
+    if not Esp.empty:
+        print("Especial")
+        Equipo,Fuga = separar_fugasE(Esp)
+        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
+        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+
+
+
+    Luminaria.fillna(' ',inplace=True)
+    Luminarias['Codigo'] = Luminaria['CodigoN']
+    Luminarias['Equipo'] = 'Luces '+ Luminaria['Lugar']
+    Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['Lugar Especifico']
+    Luminarias['Ubicacion'] = 'C'+ Luminaria['Circuito'].apply(str)+' '+Luminaria['Tablero'].apply(str)
+    Luminarias['Potencia Kobo'] = Luminaria['Consumo']
+    Luminarias['Numero']=Luminaria['Numero'].apply(int)
+    Luminarias['Texto']=Luminaria['Notas']
+    Luminarias['Notas'] = Luminaria['Notas']
+    Luminarias['Tipo'] = Luminaria['Tecnologia']
+
+    Tdos=pd.DataFrame()
+    eq=Equipos[['Ubicacion','Equipo','Lugar','Texto']]
+    Tdos= Tdos.append(eq)
+    eq = Luminarias[['Ubicacion', 'Equipo', 'Lugar', 'Texto']]
+    Tdos = Tdos.append(eq)
+    eq = Fugas[['Ubicacion', 'Equipo', 'Lugar', 'Texto']]
+    Tdos = Tdos.append(eq)
+    Tdos =Tdos[['Ubicacion', 'Equipo', 'Lugar', 'Texto']]
+    Tdos.columns=['Ubicacion', 'Equipo', 'Lugar', 'Notas']
+
+    Nombre = 'Notas_' + Cliente + '.xlsx'
+    writer2 = ExcelWriter(Path.home() / 'Desktop' / Nombre, engine='xlsxwriter')
+    Tdos.to_excel(writer2, index=True,startrow=2)
+    writer2.save()
+
+    Luminaria['Lugar Especifico'].fillna('_',inplace=True)
+
+
+
+    Luminarias['Texto'] = 'Luminaria tipo ' + Luminaria['Tecnologia'] + ' en ' + Luminaria['Lugar'].str.lower() + ' (' + Luminaria[
+        'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' focos. Notas: ' + Luminaria['Notas']
+
+    cont=0
+    Luminarias=Luminarias.reset_index(drop=True)
+
+    for i in Luminaria['Numero']:
+        if i==1:
+            #print(Luminarias.loc[cont,'Texto'])
+            Luminarias.loc[cont,'Texto'] = Luminarias.loc[cont,'Texto'].replace("focos", 'foco')
+
+        cont = cont + 1
+
+    Luminarias['Texto']=  Luminarias['Texto'].str.replace(r"\( \)",'')
+    Luminarias['Texto'] = Luminarias['Texto'].str.replace(".0", '')
+    Luminarias['Texto'] = Luminarias['Texto'].str.replace("led", 'LED')
+
+    Equipos.reset_index(inplace=True, drop=True)
+    Fugas.reset_index(inplace=True, drop=True)
+    Luminarias.reset_index(inplace=True, drop=True)
+    Equipos.drop(Equipos[Equipos.Codigo == 'X'].index, inplace=True)
+    Equipos.reset_index(inplace=True, drop=True)
+
+
+    Fugas.sort_values(by='Atacable', ascending=True, inplace=True)
+    Fugas.sort_values(by='Lugar', ascending=True,inplace=True)
+
+    Equipos.replace(0.01,'NM',inplace=True)
+
+    #ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
+
+    return Equipos, Luminarias, Fugas

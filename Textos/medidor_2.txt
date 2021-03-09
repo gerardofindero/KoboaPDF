@@ -1,1 +1,4 @@
-¡Hay un problema con tu medidor!
+¡Hay un problema con tu medidor! Encontramos que uno de tus medidores mide más de lo que consumes.
+
+Nosotros medimos: 5kWh
+El medidor registró: 66kwh
