@@ -1438,7 +1438,7 @@ def medidor(canvas, width, height, robo, revisar, nivel, color_voltaje):
         hh = 0
         ty=0
         tt=0
-    rayo=3
+    rayo=1
     for i in range(3):
         im = f"Imagenes/Figuras/cuadro.png"
         w, h = Image.open(im).size
