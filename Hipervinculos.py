@@ -34,29 +34,33 @@ def hipervinculos(Cliente):
     Des.dropna(subset=['C'],inplace=True)
     Res.drop(Res.index[:9], inplace=True)
     # Des = Des.replace('C', '')
+    Des=Des[~Des['C'].str.contains("Ubicacion")]
     circuitoD = Des['C'].str.split(' ', 1)
     Res.dropna(subset=['D'], inplace=True)
     Res['D'] = Res['D'].astype(str)
-    circuitoR = Res[['B', 'D']]
-    circuitoR['D'] = circuitoR['D'].str.split().str.get(0)
+    tableroR = Res['B']
+    circuitoR = Res['D'].str.split().str.get(0)
     workbook = xlwings.Book(archivo_resultados)
     Sheet1 = workbook.sheets['Desciframiento']
-    circuitoR.groupby(by="B")
-    print(circuitoD)
-    print(circuitoR)
+
+
     for i in circuitoD.index:
         try:
             circ=int(circuitoD[i][0][1:])
             tab = circuitoD[i][1][0:]
-            donde = circuitoR[int(circuitoR) == circ].index 
-            
+            dondeC = circuitoR[int(circuitoR) == circ].index
+            dondeT = tableroR[tableroR == tab].index
         except:
             circ = circuitoD[i][0][1:]
-            donde = circuitoR[circuitoR== circ].index
+            tab = circuitoD[i][1][0:]
+            dondeC = circuitoR[circuitoR == circ].index
+            dondeT = tableroR[tableroR == tab].index
 
-        if not donde.empty:
-            Puerto =Res.loc[donde.values,'C'].values[0]
-            Findero=Res.loc[donde.values, 'A'].values[0]
+        if not dondeC.empty and dondeT.empty:
+            print(dondeC)
+            print(dondeT)
+            Puerto =Res.loc[dondeC.values,'C'].values[0]
+            Findero=Res.loc[dondeC.values, 'A'].values[0]
             Hvin= '../Graficas/Consumo/'+ str(Findero) +'/'  + str(Findero) +'Puerto ' + str(Puerto) +'.html'
             Sheet1.range(i+2,3).add_hyperlink(Hvin,str(Des.loc[i,'C']))
 

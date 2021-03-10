@@ -50,7 +50,6 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 print(PotCompresor)
                 Aparatos_C.loc['Refrigerador', 'Pot Compresor'] =Watt
                 if not InfoDeco.filter(regex='compresor_temp')[0]:
-
                     Aparatos_C.loc['Refrigerador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
                 else:
                     Aparatos_C.loc['Refrigerador', 'Temp Compresor'] =0
@@ -71,7 +70,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                         Aparatos_C.loc['Regulador Refrigerador', 'Marca'] =   InfoDeco.filter(regex='regulador_marca')[0]
                     else:
                         Aparatos_C.loc['Regulador Refrigerador', 'Marca'] =   InfoDeco.filter(regex='regulador_otra')[0]
-                        Aparatos_C.loc['Regulador Refrigerador', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_consumo')[0])
+                    Aparatos_C.loc['Regulador Refrigerador', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_consumo')[0])
                     Aparatos_C.loc['Regulador Refrigerador', 'CodigoS'] = InfoDeco.filter(regex='regulador_consumo_codigofindero')[0]
                     Aparatos_C.loc['Regulador Refrigerador', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Refrigerador', 'Notas'] = notass

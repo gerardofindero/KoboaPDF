@@ -147,6 +147,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     cony = 0
     inicioF = len(Equipos) + len(Luminarias) + 13
+    print(Fugas)
+
     for i in Fugas['Codigo']:
 
         i = i.upper()
@@ -333,6 +335,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
 
     Equipos.replace(0.01,'NM',inplace=True)
 
-    #ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
+    ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
 
     return Equipos, Luminarias, Fugas
