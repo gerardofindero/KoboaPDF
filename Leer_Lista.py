@@ -8,7 +8,8 @@ def leer_lista(Cliente):
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
     #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/01-enero/"
-    carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/03-Marzo/"
+    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/03-Marzo/"
+    carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2021/03-Marzo/"
     clientes = os.listdir(carpeta_resultados)
     booleanos = [Cliente.lower() in c.lower() for c in clientes]
     carpeta_cliente = Cliente
