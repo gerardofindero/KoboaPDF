@@ -47,7 +47,7 @@ def computo(Excel,Nocircuito, NomCircuito):
             if indx == 5:
                 InfoDeco = Circuito.filter(regex='modem')
                 Aparatos_C.loc['Modem', 'Marca'] = InfoDeco.filter(regex='marca')[0]
-                Aparatos_C.loc['Modem', 'Standby'] = InfoDeco.filter(regex='standby_estimado')[0]
+                Aparatos_C.loc['Modem', 'Standby'] = InfoDeco.filter(regex='standby')[0]
                 Aparatos_C.loc['Modem', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Modem', 'Existencia'] = 1
                 Aparatos_C.loc['Modem', 'Atacable'] = 'Si'

@@ -302,9 +302,11 @@ def Crear_Kobo(NCliente):
 ###################### MAIN  #####################################
 if __name__ == '__main__':
 
-    NCliente = 'Jose Escalante Cuernavaca'
+    NCliente = 'Gerardo Fernandez'
+    #NCliente = 'Jose Escalante Cuernavaca'
     #NCliente = 'Patty Lopez de la Cerda'
     #NCliente = 'Monica Larrosa'
+
 
 
     print("Que quieres hacer? ")
