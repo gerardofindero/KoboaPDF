@@ -11,9 +11,7 @@ def hipervinculos(Cliente):
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
     #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/01-enero/"
-    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/03-Marzo/"
-    carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2021/03-Marzo/"
-
+    carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/03-Marzo/"
     clientes = os.listdir(carpeta_resultados)
     booleanos = [Cliente.lower() in c.lower() for c in clientes]
     carpeta_cliente = Cliente
@@ -55,8 +53,8 @@ def hipervinculos(Cliente):
         try:
             circ=int(circuitoD[i][0][1:])
             tab = circuitoD[i][1][0:]
-            dondeC = circuitoR[int(circuitoR) == circ].index
-            dondeT = tableroR[tableroR == tab].index
+            donde = circuitoR[int(circuitoR) == circ].index 
+            
         except:
             circ = circuitoD[i][0][1:]
             tab = circuitoD[i][1][0:]
