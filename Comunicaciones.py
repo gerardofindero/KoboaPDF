@@ -35,11 +35,11 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Telefono', 'Notas'] = 'No'
 
 
-                if 'telefono' in Nomedidos:
-                    print("telefono no desconectado")
-                else:
-                    Aparatos_C.loc['Telefono', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                    Aparatos_C.loc['Telefono', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
+                # if 'telefono' in Nomedidos:
+                #     print("telefono no desconectado")
+                # else:
+                #     Aparatos_C.loc['Telefono', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
+                #     Aparatos_C.loc['Telefono', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
 
 
 

@@ -654,5 +654,687 @@
 
 2021-03-09 16:54:32 INFO:  NumExpr defaulting to 8 threads. 
 
-2021-03-09 18:31:44 INFO:  NumExpr defaulting to 8 threads. 
+2021-03-10 17:02:43 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-11 10:15:26 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-11 11:33:24 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-11 13:21:34 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-11 15:05:30 INFO:  Dash is running on http://127.0.0.1:8050/
+ 
+
+2021-03-11 15:05:30 INFO:   * Running on http://127.0.0.1:8050/ (Press CTRL+C to quit) 
+
+2021-03-11 15:05:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:32] "[37mGET / HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:05:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:32] "[36mGET /assets/custom.css?m=1572041004.0 HTTP/1.1[0m" 304 - 
+
+2021-03-11 15:05:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:33] "[37mGET /_dash-layout HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:05:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:33] "[37mGET /_dash-dependencies HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:05:33 WARNING:  'NoneType' object has no attribute 'keys' 
+
+2021-03-11 15:05:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:05:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:05:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:05:34 INFO:  127.0.0.1 - - [11/Mar/2021 15:05:34] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:01 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:01] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:16 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:16] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:19 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:19] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:19 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:19] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:19 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:19] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:19 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:19] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:28 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:28] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:06:29 INFO:  127.0.0.1 - - [11/Mar/2021 15:06:29] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:29 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:29] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:30 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:30] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:36 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:36] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:41 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:41] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:46 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:52 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:52] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:08:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:08:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:01 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:01] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:19 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:19] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:24 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:24] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:25 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:25] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:25 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:25] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:25 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:25] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:27 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:27] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:28 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:28] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:28 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:28] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:28 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:28] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:28 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:28] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:30 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:30] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:32] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:32] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:32] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:32] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:34 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:34] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:35 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:35] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:35 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:35] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:35 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:35] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:35 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:35] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:39 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:39] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:43 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:43] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:43 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:43] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:09:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:09:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:01 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:01] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:10:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:10:32] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:10 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:10] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:54 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:54] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:54 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:54] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:54 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:54] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:54 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:54] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:11:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:11:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:02 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:02] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:06 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:06] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:10 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:10] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:24 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:24] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:27 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:27] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:27 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:27] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:27 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:27] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:27 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:27] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:29 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:29] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:12:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:12:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:14 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:14] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:38 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:38] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:41 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:41] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:47 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:47] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:50 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:50 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:50 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:50 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:54 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:54] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:56 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:56] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:13:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:13:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:19 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:19] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:21 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:21] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:32 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:32] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:33 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:36 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:36] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:40 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:40] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:41 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:41] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:41 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:41] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:41 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:41] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:41 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:41] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:43 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:43] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:46 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:50 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:14:56 INFO:  127.0.0.1 - - [11/Mar/2021 15:14:56] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:15:50 INFO:  127.0.0.1 - - [11/Mar/2021 15:15:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:05 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:05] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:23 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:23] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:23 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:23] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:23 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:23] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:16:23 INFO:  127.0.0.1 - - [11/Mar/2021 15:16:23] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:22 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:22] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:27 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:27] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:47 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:47] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:17:53 INFO:  127.0.0.1 - - [11/Mar/2021 15:17:53] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:15 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:15] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:25 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:25] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:18:59 INFO:  127.0.0.1 - - [11/Mar/2021 15:18:59] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:00 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:00] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:06 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:06] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:29 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:29] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:30 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:30] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:30 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:30] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:19:30 INFO:  127.0.0.1 - - [11/Mar/2021 15:19:30] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:20:14 INFO:  127.0.0.1 - - [11/Mar/2021 15:20:14] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:20:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:20:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:20:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:20:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:20:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:20:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:20:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:20:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:13 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:13] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:16 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:16] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:16 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:16] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:16 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:16] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:16 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:16] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:26 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:26] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:30 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:30] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:31 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:31] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:31 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:31] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:31 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:31] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:31 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:31] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:45 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:45] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:48 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:21:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:21:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:08 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:08] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:09 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:09] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:14 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:14] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:56 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:56] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:56 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:56] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:56 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:56] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:22:56 INFO:  127.0.0.1 - - [11/Mar/2021 15:22:56] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:23:03 INFO:  127.0.0.1 - - [11/Mar/2021 15:23:03] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:23:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:23:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:23:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:23:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:23:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:23:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:23:49 INFO:  127.0.0.1 - - [11/Mar/2021 15:23:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:35 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:35] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:37 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:37] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:40 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:40] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:40 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:40] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:44 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:44] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:46 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:46 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:46 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:46 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:57 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:57] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:58 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:58] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:58 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:58] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:58 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:58] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:24:58 INFO:  127.0.0.1 - - [11/Mar/2021 15:24:58] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:04 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:04] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:07 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:07] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:18 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:18] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:22 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:22] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:22 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:22] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:22 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:22] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:22 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:22] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:30:25 INFO:  127.0.0.1 - - [11/Mar/2021 15:30:25] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:11 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:13 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:13] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:13 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:13] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:14 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:14] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:14 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:14] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-11 15:31:17 INFO:  127.0.0.1 - - [11/Mar/2021 15:31:17] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-12 10:05:34 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-16 10:36:46 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-16 12:20:41 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-17 09:52:48 INFO:  NumExpr defaulting to 8 threads. 
+
+2021-03-23 10:03:09 INFO:  Dash is running on http://127.0.0.1:8050/
+ 
+
+2021-03-23 10:03:09 INFO:   * Running on http://127.0.0.1:8050/ (Press CTRL+C to quit) 
+
+2021-03-23 10:03:10 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:10] "[37mGET / HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:10 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:10] "[36mGET /assets/custom.css?m=1572041004.0 HTTP/1.1[0m" 304 - 
+
+2021-03-23 10:03:11 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:11] "[37mGET /_dash-layout HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:11 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:11] "[37mGET /_dash-dependencies HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:11 WARNING:  'NoneType' object has no attribute 'keys' 
+
+2021-03-23 10:03:11 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:11 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:11] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:13 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:13] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:20 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:20] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:22 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:22] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:24 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:24] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:26 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:26] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:33 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:33] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:35 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:35] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:46 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:46] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:48 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:48] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:49 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:49] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:50 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
+
+2021-03-23 10:03:50 INFO:  127.0.0.1 - - [23/Mar/2021 10:03:50] "[37mPOST /_dash-update-component HTTP/1.1[0m" 200 - 
 

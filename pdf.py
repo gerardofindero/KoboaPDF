@@ -307,7 +307,7 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     canvas.showPage()
 
 
-def intro(canvas, width, height, datos=7987827):
+def intro(canvas, width, height, datos=5287899):
     """ Pagina de color azul antes de presentar los resultados."""
 
     canvas.setFillColorRGB(96 / 255, 192 / 255, 215 / 255)
@@ -691,6 +691,16 @@ def iluminacion(canvas, width, height, luces):
     canvas.showPage()
     return carita
 
+def Dicc_Aparatos(nombre):
+    nombre_ = unidecode(nombre.lower())
+    abreviados = ['aspiradora','tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora', 'secadora de cabello',
+                  'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno',
+                  'cocina', 'pelo', 'laptop', 'monitor', 'congelador', 'minibar', 'campana', 'microondas', 'triturador', 'cava',
+                  'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor']
+    for a in abreviados:
+        if a in nombre_:
+            nombre_ = a
+    return nombre_
 
 def aparatos_grandes(canvas, width, height,aparatosG):
     """ Se crean las páginas en donde se muestran los consumos que ocupan una página completa """
@@ -710,15 +720,10 @@ def aparatos_grandes(canvas, width, height,aparatosG):
         anual = dinero*6
         notas = aparato[13]
         codigos = aparato[16]
-        nombre_ = unidecode(nombre.lower())
-        abreviados = ['tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora','secadora de cabello',
-                  'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno', 'cocina', 'pelo'
-                  , 'laptop','monitor','congelador','minibar','campana', 'microondas', 'triturador','cava',
-                      'hielos','sonido','dispensador','boiler']
-        for a in abreviados:
-            if a in nombre_:
-                nombre_ = a
-                break
+
+
+        nombre_=Dicc_Aparatos(nombre)
+
         parrafos = []
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
@@ -825,16 +830,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
         #cuatro_lineas(canvas)
         costado(canvas)
 
-        nombre_ = unidecode(nombre.lower())
-        abreviados = ['tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora','secadora de cabello',
-                  'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno', 'cocina', 'pelo'
-                  , 'laptop','monitor','congelador','minibar','campana', 'microondas', 'triturador','cava',
-                      'hielos','sonido','dispensador','boiler']
-        for a in abreviados:
-            if a in nombre_:
-                nombre_ = a
-                break
-
+        nombre_ = Dicc_Aparatos(nombre)
 
 
         ##Imagen y nombre
@@ -952,15 +948,8 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
         # cuatro_lineas(canvas)
         costado(canvas)
 
-        nombre_ = unidecode(nombre.lower())
-        abreviados = ['tv', 'bomba', 'calentador', 'refrigerador','hielos', 'estufa', 'luces', 'computadora','cabello',
-                  'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno', 'cocina', 'pelo'
-                  , 'laptop','monitor','congelador','minibar','campana', 'microondas', 'triturador','cava',
-                      'sonido','dispensador','boiler']
-        for a in abreviados:
-            if a in nombre_:
-                nombre_ = a
-                break
+        nombre_ = Dicc_Aparatos(nombre)
+
 
         ##Imagen y nombre
         if len(nombre)<35:
