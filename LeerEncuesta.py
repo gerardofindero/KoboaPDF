@@ -109,7 +109,7 @@ if __name__ == '__main__':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
         #leer_lista(NCliente)
-        hipervinculos(NCliente)
+        #hipervinculos(NCliente)
 
     if Opcion == '3':
         print("Poner Condiciones")
