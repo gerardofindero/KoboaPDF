@@ -70,6 +70,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range(len(Equipos)+9, 4).value= 'Luminaria'
     Sheet1.range(len(Equipos) + 9, 14).value = 'Texto a PDF'
     Sheet1.range(len(Equipos) + 9, 16).value = 'Descripcion de Señal'
+
     for i in range(len(Luminarias)):
         inicioL=len(Equipos)+10
         Sheet1.range(inicioL+i, 9).value = '=F'+str(i+inicioL)+'*C$2'
@@ -163,6 +164,14 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     return Equipos, Luminarias, Fugas
 
+
+
+
+
+
+
+
+############################################################################################################3
 def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
 
     Luminaria=Luz.copy()
@@ -302,11 +311,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
     writer2 = ExcelWriter(Path.home() / 'Desktop' / Nombre, engine='xlsxwriter')
     Tdos.to_excel(writer2, index=True,startrow=2)
     writer2.save()
-
     Luminaria['Lugar Especifico'].fillna('_',inplace=True)
-
-
-
     Luminarias['Texto'] = 'Luminaria tipo ' + Luminaria['Tecnologia'] + ' en ' + Luminaria['Lugar'].str.lower() + ' (' + Luminaria[
         'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' focos. Notas: ' + Luminaria['Notas']
 
