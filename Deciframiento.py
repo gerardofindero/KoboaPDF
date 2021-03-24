@@ -8,10 +8,20 @@ import pandas as pd
 import xlwings
 from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
+import numpy as np
 
 
-    ###Excel
+def tipoluces(tipo):
+    tipoGen='focos'
+    tipoGen='tubos'
+    tipoGen='tiras'
+
+
+#### Excel
 def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
+
+
+
     Atacable = Fugas['Atacable'].values
     Fugas.drop(['Atacable'], axis=1, inplace=True)
     Fugas.reset_index(inplace=True, drop=True)
@@ -70,7 +80,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range(len(Equipos)+9, 4).value= 'Luminaria'
     Sheet1.range(len(Equipos) + 9, 14).value = 'Texto a PDF'
     Sheet1.range(len(Equipos) + 9, 16).value = 'Descripcion de Señal'
-
+    Sheet1.range(len(Equipos) + 9, 17).value = 'Número'
     for i in range(len(Luminarias)):
         inicioL=len(Equipos)+10
         Sheet1.range(inicioL+i, 9).value = '=F'+str(i+inicioL)+'*C$2'
@@ -123,9 +133,12 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
 
     infoL= leer_lista(Cliente)
+    infoL['B']=infoL['B'].str.upper()
+    print(infoL['B'])
     cony=0
     #print(Equipos)
     for i in Equipos['Codigo']:
+        print(i)
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
@@ -157,21 +170,11 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         if not identificados.empty:
             Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
         cony=cony+1
-
-
     workbook.save()
     workbook.close()
 
     return Equipos, Luminarias, Fugas
 
-
-
-
-
-
-
-
-############################################################################################################3
 def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
 
     Luminaria=Luz.copy()
@@ -284,15 +287,21 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
+    Luminaria.fillna(' ', inplace=True)
+
+    Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
+    Luminaria.loc[Luminaria['Tamano'].str.contains('tubo'), 'Tipytam'] = 'tubos'
+    Luminaria.loc[Luminaria['Tamano'].isin(Ldicc), 'Tipytam'] = 'focos'
+    Luminaria['Tipytam'].fillna('focos', inplace=True)
+    print(Luminaria)
 
 
-    Luminaria.fillna(' ',inplace=True)
     Luminarias['Codigo'] = Luminaria['CodigoN']
     Luminarias['Equipo'] = 'Luces '+ Luminaria['Lugar']
     Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['Lugar Especifico']
     Luminarias['Ubicacion'] = 'C'+ Luminaria['Circuito'].apply(str)+' '+Luminaria['Tablero'].apply(str)
     Luminarias['Potencia Kobo'] = Luminaria['Consumo']
-    Luminarias['Numero']=Luminaria['Numero'].apply(int)
+    Luminarias['Claves']=Luminaria['Numero'].apply(int)
     Luminarias['Texto']=Luminaria['Notas']
     Luminarias['Notas'] = Luminaria['Notas']
     Luminarias['Tipo'] = Luminaria['Tecnologia']
@@ -311,9 +320,10 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
     writer2 = ExcelWriter(Path.home() / 'Desktop' / Nombre, engine='xlsxwriter')
     Tdos.to_excel(writer2, index=True,startrow=2)
     writer2.save()
+
     Luminaria['Lugar Especifico'].fillna('_',inplace=True)
     Luminarias['Texto'] = 'Luminaria tipo ' + Luminaria['Tecnologia'] + ' en ' + Luminaria['Lugar'].str.lower() + ' (' + Luminaria[
-        'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' focos. Notas: ' + Luminaria['Notas']
+        'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' '+Luminaria['Tipytam']+'. Notas: ' + Luminaria['Notas']
 
     cont=0
     Luminarias=Luminarias.reset_index(drop=True)
@@ -335,7 +345,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire):
     Equipos.drop(Equipos[Equipos.Codigo == 'X'].index, inplace=True)
     Equipos.reset_index(inplace=True, drop=True)
 
-
+    Luminarias.sort_values(by='Lugar', ascending=True, inplace=True)
     Fugas.sort_values(by='Atacable', ascending=True, inplace=True)
     Fugas.sort_values(by='Lugar', ascending=True,inplace=True)
 

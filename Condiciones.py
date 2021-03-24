@@ -10,7 +10,18 @@ def libreria():
         breakpoint()
     #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
 
+    return Libreria
 
+
+def libreriaL():
+    try:
+        Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria Luminaria.xlsx')
+    except:
+        print("No se encuentra el archivo ")
+        breakpoint()
+    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
+    Dicc=['A','B','C','D','E']
+    Libreria.columns=Dicc
 
     return Libreria
 
@@ -19,13 +30,18 @@ def libreria():
 def condicionesCluster(EquiposCluster,Nominal,ConsumoTotal,NumdeAparatos, Tolerancia, Multis,Voltaje):
     Lib = pd.DataFrame(index=['Television'],
                        columns=['Marca', 'Codigo', 'Texto'])
+
+    ConsumoTV = EquiposCluster.loc['TV', 'Standby']
+    Pulgadas  = EquiposCluster.loc['TV', 'Pulgadas']
+    Nominal = EquiposCluster.loc['TV', 'Nominal']
+
     DAC = 5.2
     Y = round(ConsumoTotal * 60 * 24/1000 * DAC)
     Z = round(Y*6)
     #ConsumoTV = EquiposCluster.loc['TV','Consumo']
     ##### Condiciones #########
     Texto=" "
-    Codigo=" "
+    Codigo=str(Nominal) +'/'+str(ConsumoTV)+'/'+str(Pulgadas)
 
     Libreria=libreria()
 
@@ -34,7 +50,7 @@ def condicionesCluster(EquiposCluster,Nominal,ConsumoTotal,NumdeAparatos, Tolera
         Texto1 = Libreria.loc[0, 'Texto']
         Texto2 = Texto1.replace("Y","$"+str(Y))
         Texto += "\n"+Texto2.replace("Z","$"+ str(Z))
-        Codigo += "" + Libreria.loc[0, 'Codigo']
+        Codigo += ", " + Libreria.loc[0, 'Codigo']
 
     # Si no tiene multicontactos
     if Multis < 1:
@@ -135,33 +151,34 @@ def condicionesRefrigeracion(EquiposRefri):
     EquiposR = EquiposRefri
     EquiposR=EquiposR.dropna(subset=['Pot Compresor'])
     EquiposR = EquiposR.fillna(0)
-
+    Libreria=libreria()
 
     Lib = pd.DataFrame(index=['Refrigerador'],
                             columns=['Marca', 'Codigo', 'Texto'])
 
 
-    Libreria=libreria()
 
     for i in EquiposR.index:
-        Consumo=int(EquiposR.loc[i,'Pot Compresor'])
+        NominalComp = int(EquiposR['Pot Compresor'][0])
+        TempComp = float(EquiposR['Temp Compresor'][0])
+        TempR = (EquiposR['Temp Refri'][0])
+        TempC = (EquiposR['Temp Conge'][0])
         Texto  = " "
-        Codigo = " "
+        Codigo = str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp)
         ## Compresor
-        if Consumo > 130:
+        if NominalComp > 30:
             Texto1 = Libreria.loc[19, 'Texto']
-            Texto2 = Texto1.replace("Z", str(round((Consumo / 130 - 1) * 100)))
-            Texto += '\n' + Texto2.replace("Y", str(Consumo))
+            Texto2 = Texto1.replace("Z", str(round((NominalComp/ 130 - 1) * 100)))
+            Texto += '\n' + Texto2.replace("Y", str(NominalComp))
             Codigo += ", " + Libreria.loc[19, 'Codigo']
 
         #Calor
-            if float(EquiposRefri['Temp Compresor'][0])>50:
+            if TempComp > 50:
                 Texto1 =  Libreria.loc[14, 'Texto']
                 Texto = Texto1.replace("X", str(EquiposRefri.loc[i,'Temp Compresor']))
-
                 Texto += '\n'+Texto
-
                 Codigo +=',  '+ Libreria.loc[14, 'Codigo']
+
         #Ruido
             if 'ruido' in str(EquiposR['Prob Comp']):
                 Texto += '\n'+Libreria.loc[15, 'Texto']
@@ -196,7 +213,7 @@ def condicionesRefrigeracion(EquiposRefri):
             Codigo += ",  "+Libreria.loc[23, 'Codigo']
 
         #Ventilado Refri
-        if EquiposR['Ventilacion'][0] != 0:
+        if 'encerrado' in EquiposR['Ventilacion'][0]:
             Texto += '\n'+Libreria.loc[25, 'Texto']
             Codigo += ",  "+ Libreria.loc[25, 'Codigo']
             Texto += '\n'+ Libreria.loc[26, 'Texto']
@@ -213,14 +230,14 @@ def condicionesRefrigeracion(EquiposRefri):
         # Temperatura interior
 
 
-        if 3 >= (EquiposR['Temp Refri'][0]) >= -7:
+        if 3 >= TempR >= -7:
             Texto += '\n' + Libreria.loc[29, 'Texto']
             Codigo += ',  ' + Libreria.loc[29, 'Codigo']
         if EquiposR['Temp Refri'][0] < -8:
             Texto += '\n' + Libreria.loc[30, 'Texto']
             Codigo += ', ' + Libreria.loc[30, 'Codigo']
 
-
+        #codigo= Codigo+'/'+str(TempR)+'/'+str(TempC)+'/'+ NominalComp + '/'+TempComp
         marca=EquiposR['Marca'][0]
         Lib.loc[i,'Marca']=marca
         Lib.loc[i, 'Lugar'] = 'Cocina'
@@ -333,3 +350,79 @@ def condicionesRefrigeracionsolo(EquiposRefri):
 
 def condicionesSecadora(Secadora):
     print("")
+
+
+def condicionesLuces(Luminaria):
+
+    Lib = libreriaL()
+    Luminaria['Adicional'].fillna('NA',inplace=True)
+    Luminaria.reset_index(inplace=True)
+
+    Tipo = Luminaria['Tecnologia']
+    Lugar = Luminaria['Lugar']
+
+
+    for i in Luminaria.index:
+
+        ##Variables
+        VV=20
+        ConLED = 15
+        Precio=40
+        DAC=5.5
+        Watts=Luminaria.loc[i, 'Consumo']
+        Numero = Luminaria.loc[i, 'Numero']
+
+
+        #Formulas
+        ZZ=VV/Watts/Numero
+        RR=ZZ*ConLED
+        TT=RR/VV*100
+        ROI=(Numero+Precio)/((VV-RR)*DAC)
+
+
+        Tipo = Luminaria.loc[i, 'Tecnologia']
+        Lugar = Luminaria.loc[i, 'Lugar']
+        TextoCompleto = Lib.loc[8, 'E']
+        if Tipo != 'led':
+            Adicional = Luminaria.loc[i, 'Adicional']
+            if Adicional != 'NA':
+                Car = ''
+                if 'calida' in Adicional:
+                    Car=Car+'calida,'
+                if 'fria' in Adicional:
+                    Car = Car + 'fria,'
+                if 'dimeable' in Adicional:
+                    Car = Car + 'dimeable,'
+                if 'inteligente' in Adicional:
+                    Car = Car + 'inteligente,'
+
+                TextoCompleto =  TextoCompleto + Lib.loc[9, 'E']
+
+        else:
+            TextoCompleto = TextoCompleto + Lib.loc[16, 'E']
+
+
+
+        if RR<VV:
+            if ROI<18:
+                TextoCompleto = TextoCompleto + Lib.loc[10, 'E']
+                TextoCompleto = TextoCompleto + Lib.loc[11, 'E']
+                TextoCompleto = TextoCompleto + Lib.loc[12, 'E']
+            else:
+                TextoCompleto = TextoCompleto + Lib.loc[13, 'E']
+        else:
+            TextoCompleto = TextoCompleto + Lib.loc[13, 'E']
+
+
+        TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tipo)
+        TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
+        TextoCompleto = TextoCompleto.replace('[V]', str(VV))
+        TextoCompleto = TextoCompleto.replace('[CAR]', Car)
+        TextoCompleto = TextoCompleto.replace('[T]', str(round(TT,1)))
+        TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
+        TextoCompleto = TextoCompleto.replace('[ROI]', str(round(ROI,1)))
+        TextoCompleto = TextoCompleto.replace('.0', "")
+        TextoCompleto=TextoCompleto.replace('[...]', "")
+
+        print(TextoCompleto)
+
