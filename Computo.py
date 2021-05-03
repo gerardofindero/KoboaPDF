@@ -129,7 +129,7 @@ def computo(Excel,Nocircuito, NomCircuito):
             if indx == 9:
                 InfoDeco = Circuito.filter(regex='impresora')
                 Aparatos_C.loc['Impresora', 'Zona'] = Zona
-
+                Aparatos_C.loc['Impresora', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
                 Aparatos_C.loc['Impresora', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Impresora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Impresora', 'Existencia'] = 1
@@ -139,7 +139,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                     print("Impresora no desconectado")
                 else:
                     Aparatos_C.loc['Impresora', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-                    Aparatos_C.loc['Impresora', 'CodigoS'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                    Aparatos_C.loc['Impresora', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
 
 
             if indx == 10:

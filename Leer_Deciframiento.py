@@ -8,7 +8,7 @@ def leer_deciframiento(Cliente):
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
     #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/02-{mes}/"
-    carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/03-marzo/"
+    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/03-marzo/"
     clientes = os.listdir(carpeta_resultados)
     booleanos = [Cliente.lower() in c.lower() for c in clientes]
     carpeta_cliente = Cliente
@@ -43,6 +43,36 @@ def leer_deciframiento(Cliente):
     ConsumoFugas=Fugas['K'].sum()
 
     return Aparatos,Luces,Fugas,Consumo,Costo,Tarifa, ConsumoFugas, Solar
+
+def leer_potencial(Cliente):
+    fecha = datetime.now()
+    mes = fecha.strftime("%B").capitalize()
+    anho = fecha.strftime("%Y")
+    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/02-{mes}/"
+    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/03-marzo/"
+    clientes = os.listdir(carpeta_resultados)
+    booleanos = [Cliente.lower() in c.lower() for c in clientes]
+    carpeta_cliente = Cliente
+    for idx, valor in enumerate(booleanos):
+        if valor:
+            carpeta_cliente = clientes[idx]
+    carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
+
+    cliente_ = Cliente.replace(' ', '_')
+    archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+    Exx = pd.read_excel(archivo_resultados, sheet_name='Potencial de ahorro')
+    Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N']
+    Exx.columns = Dic
+    Exx.dropna(subset=['C'],inplace=True)
+    #Exx.fillna(0,inplace=True)
+    Luces = Exx[Exx['C'].str.contains('Luminaria', regex=False,na=False)]
+    Fugas = Exx[Exx['C'].str.contains('Fuga', regex=False, na=False)]
+    EXX   = Exx[~Exx['C'].str.contains('Luces', regex=False,na=False)]
+    Aparatos = EXX[~EXX['C'].str.contains('Fuga', regex=False,na=False)]
+    print(Luces)
+    return Aparatos,Luces,Fugas
+
+
 
 def leer_solar(Cliente):
 

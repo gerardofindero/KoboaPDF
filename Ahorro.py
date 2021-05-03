@@ -187,8 +187,8 @@ def ahorro_(coci):
 
 
 
-def potencial_ahorro(Cliente,Equipos, Luminaria, Fuga, tarifa):
-
+def potencial_ahorro(Cliente,Equipos, Luminaria, Fuga):
+     tarifa=5.8
      Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J','K','L','M']
      Luminarias = pd.DataFrame(columns=['Tipo','Luces', 'Ubicacion Exacta',
                                          'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
@@ -202,23 +202,23 @@ def potencial_ahorro(Cliente,Equipos, Luminaria, Fuga, tarifa):
                                    'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
                                    'Retorno de la inversión', 'Rentable'])
 
-     Nombre = 'Potencial_ahorro_' + Cliente + '.xlsx'
-
-
-     # carpeta_resultados = f"../../Datos de clientes/Clientes 2021/01-Enero/"
-     carpeta_resultados = f"../../Datos de clientes/Clientes 2021/02-Febrero/"
-
-     clientes = os.listdir(carpeta_resultados)
-     booleanos = [Cliente.lower() in c.lower() for c in clientes]
-     capeta_cliente = Cliente
-     for idx, valor in enumerate(booleanos):
-          if valor:
-               carpeta_cliente = clientes[idx]
-     carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
-
-     cliente_ = Cliente.replace(' ', '_')
-     archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
-     workbook = xlwings.Book(archivo_resultados)
+     # Nombre = 'Potencial_ahorro_' + Cliente + '.xlsx'
+     #
+     #
+     # # carpeta_resultados = f"../../Datos de clientes/Clientes 2021/01-Enero/"
+     # carpeta_resultados = f"../../Datos de clientes/Clientes 2021/02-Febrero/"
+     #
+     # clientes = os.listdir(carpeta_resultados)
+     # booleanos = [Cliente.lower() in c.lower() for c in clientes]
+     # capeta_cliente = Cliente
+     # for idx, valor in enumerate(booleanos):
+     #      if valor:
+     #           carpeta_cliente = clientes[idx]
+     # carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
+     #
+     # cliente_ = Cliente.replace(' ', '_')
+     # archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+     # workbook = xlwings.Book(archivo_resultados)
      try:
           workbook.sheets.add('Potencial de Ahorro')
      except:
@@ -326,7 +326,20 @@ def potencial_ahorro(Cliente,Equipos, Luminaria, Fuga, tarifa):
           Sheet1.range(len(Fugas)+len(Luminarias) + 14, i + 2).color = gris
 
 
-def potencial_ahorro2(Cliente,fugas, luces,lucesK):
+def potencial_ahorro2(Cliente,fugas, luces,fugasK,lucesK):
+     carpeta_resultados = f"../../../Datos de clientes/Clientes 2021/03-Marzo/"
 
-     print(" ")
+     clientes = os.listdir(carpeta_resultados)
+     booleanos = [Cliente.lower() in c.lower() for c in clientes]
+     capeta_cliente = Cliente
+     for idx, valor in enumerate(booleanos):
+          if valor:
+               carpeta_cliente = clientes[idx]
+     carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
 
+     cliente_ = Cliente.replace(' ', '_')
+     archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+     workbook = xlwings.Book(archivo_resultados)
+     print(lucesK)
+
+     #iguales=np.where(luces['Q'] ==

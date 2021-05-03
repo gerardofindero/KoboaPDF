@@ -2,6 +2,10 @@ import pandas as pd
 from Consumo import consumoEq
 from pathlib         import Path
 
+DAC = 5.2
+
+# 1. Leer librerías
+# 1.a. Lee libreía general (primer esbozo con refrigeradores, lavadoras, secadoras, y clusters de TV)
 def libreria():
     try:
         Libreria = pd.read_excel(Path.home() / 'Desktop' /'libreria.xlsx')
@@ -12,7 +16,18 @@ def libreria():
 
     return Libreria
 
+# 1.b. Lee otra librería (ver cuál es la Protolibreria)
+def libreria2():
+    try:
+        Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria.xlsx')
+    except:
+        print("No se encuentra el archivo ")
+        breakpoint()
+    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
 
+    return Libreria
+
+# Lee librería de luminarias.
 def libreriaL():
     try:
         Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria Luminaria.xlsx')
@@ -35,7 +50,7 @@ def condicionesCluster(EquiposCluster,Nominal,ConsumoTotal,NumdeAparatos, Tolera
     Pulgadas  = EquiposCluster.loc['TV', 'Pulgadas']
     Nominal = EquiposCluster.loc['TV', 'Nominal']
 
-    DAC = 5.2
+
     Y = round(ConsumoTotal * 60 * 24/1000 * DAC)
     Z = round(Y*6)
     #ConsumoTV = EquiposCluster.loc['TV','Consumo']
@@ -43,107 +58,112 @@ def condicionesCluster(EquiposCluster,Nominal,ConsumoTotal,NumdeAparatos, Tolera
     Texto=" "
     Codigo=str(Nominal) +'/'+str(ConsumoTV)+'/'+str(Pulgadas)
 
-    Libreria=libreria()
-
-    # Para saber si tiene un cluster de TV
-    if ConsumoTotal > 3:
-        Texto1 = Libreria.loc[0, 'Texto']
-        Texto2 = Texto1.replace("Y","$"+str(Y))
-        Texto += "\n"+Texto2.replace("Z","$"+ str(Z))
-        Codigo += ", " + Libreria.loc[0, 'Codigo']
-
-    # Si no tiene multicontactos
-    if Multis < 1:
-        if NumdeAparatos >= 2:
-            Texto = "\n"+ Libreria.loc[1, 'Texto']
-            Codigo += ", " + Libreria.loc[1, 'Codigo']
-
-    # Si necesita un regulador
-    if EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-        if Tolerancia:
-            if Voltaje:
-                ConsumoR = EquiposCluster.loc['Regulador1', 'Standby']
-                #ConsumoR = consumoEq(ConsumoR)
-                Consumo= round(ConsumoR * 60 * 24/1000 * DAC)
-                Texto1 = Libreria.loc[2, 'Texto']
-                Texto = "\n"+Texto1.replace("X", "$" + str(Consumo*6))
-                Codigo += ", " + Libreria.loc[2, 'Codigo']
+    Libreria=libreria2()
 
 
-    # Si necesita un No Break
-    if EquiposCluster.loc['NoBreak', 'Existencia'] == 1:
-        if Voltaje:
-            ConsumoR = EquiposCluster.loc['NoBreak', 'Standby']
-            #ConsumoR = consumoEq(ConsumoR)
-            Consumo = round(ConsumoR * 60 * 24 / 1000 * DAC)
-            Texto1 = Libreria.loc[3, 'Texto']
-            Texto = "\n"+Texto1.replace("X", "$" + str(Consumo * 6))
-            Codigo += ", " + Libreria.loc[3, 'Codigo']
-
-    # Aparatos de Sonido
-    if EquiposCluster.loc['Sonido', 'Existencia'] == 1:
-        if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-            Texto ="\n"+ Libreria.loc[4, 'Texto']
-            Codigo += ", " + Libreria.loc[4, 'Codigo']
 
 
-    #Decodificador
-    if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-        Texto = "\n"+Libreria.loc[5, 'Texto']
-        Codigo += ", " + Libreria.loc[5, 'Codigo']
-    #TV
-    if EquiposCluster.loc['TV', 'Existencia'] == 1:
-
-        ConsumoTV = EquiposCluster.loc['TV', 'Standby']
-        #ConsumoTV = consumoEq(ConsumoTV)
-        if ConsumoTV!=0:
-            TamanoConsumo= int(EquiposCluster.loc['TV', 'Pulgadas']) / ConsumoTV
-        else:
-            TamanoConsumo=1
-
-        if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-            if Tolerancia:
-                ConsumoR = EquiposCluster.loc['Regulador1', 'Standby']
-                #ConsumoR = consumoEq(ConsumoR)
-                Consumo = round(ConsumoR * 60 * 24 / 1000 * DAC)
-                Texto1 = Libreria.loc[6, 'Texto']
-                Texto = "\n"+Texto1.replace("X", "$" + str(Consumo * 6))
-                Codigo += ", " + Libreria.loc[6, 'Codigo']
-        #ConsumoTV
-        if 5 >= ConsumoTV > 2:
-            Texto = "\n"+Libreria.loc[7, 'Texto']
-            Codigo += ", " + Libreria.loc[7, 'Codigo']
-        if 8 > ConsumoTV > 5:
-            Texto ="\n"+ Libreria.loc[8, 'Texto']
-            Codigo += ", " + Libreria.loc[8, 'Codigo']
-        if ConsumoTV >= 8:
-            Texto ="\n"+ Libreria.loc[9, 'Texto']
-            Codigo += ", " + Libreria.loc[9, 'Codigo']
-######
-        #TamañoTV
-        if TamanoConsumo > 5:
-            Texto ="\n"+ Libreria.loc[10, 'Texto']
-            Codigo += ", " + Libreria.loc[10, 'Codigo']
-
-        if TamanoConsumo <=5 :
-            Texto = "\n"+Libreria.loc[11, 'Texto']
-            Codigo += ", " + Libreria.loc[11, 'Codigo']
-        if TamanoConsumo <=5 :
-            Texto ="\n"+ Libreria.loc[12, 'Texto']
-            Codigo += ", " + Libreria.loc[12, 'Codigo']
 
 
-        #Modem
-    if EquiposCluster.loc['Modem', 'Existencia'] == 1:
-        Texto = "\n"+Libreria.loc[13, 'Texto']
-        Codigo += ", " + Libreria.loc[13, 'Codigo']
-
-    marca = EquiposCluster['Marca'][0]
-    lugar = EquiposCluster['Lugar'][0]
-    Lib.loc['Television', 'Marca'] = marca
-    Lib.loc['Television', 'Lugar'] = lugar
-    Lib.loc['Television', 'Codigo'] = Codigo
-    Lib.loc['Television', 'Texto'] = Texto
+#     # Para saber si tiene un cluster de TV
+#     if ConsumoTotal > 3:
+#         Texto1 = Libreria.loc[0, 'Texto']
+#         Texto2 = Texto1.replace("Y","$"+str(Y))
+#         Texto += "\n"+Texto2.replace("Z","$"+ str(Z))
+#         Codigo += ", " + Libreria.loc[0, 'Codigo']
+#
+#     # Si no tiene multicontactos
+#     if Multis < 1:
+#         if NumdeAparatos >= 2:
+#             Texto = "\n"+ Libreria.loc[1, 'Texto']
+#             Codigo += ", " + Libreria.loc[1, 'Codigo']
+#
+#     # Si necesita un regulador
+#     if EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
+#         if Tolerancia:
+#             if Voltaje:
+#                 ConsumoR = EquiposCluster.loc['Regulador1', 'Standby']
+#                 #ConsumoR = consumoEq(ConsumoR)
+#                 Consumo= round(ConsumoR * 60 * 24/1000 * DAC)
+#                 Texto1 = Libreria.loc[2, 'Texto']
+#                 Texto = "\n"+Texto1.replace("X", "$" + str(Consumo*6))
+#                 Codigo += ", " + Libreria.loc[2, 'Codigo']
+#
+#
+#     # Si necesita un No Break
+#     if EquiposCluster.loc['NoBreak', 'Existencia'] == 1:
+#         if Voltaje:
+#             ConsumoR = EquiposCluster.loc['NoBreak', 'Standby']
+#             #ConsumoR = consumoEq(ConsumoR)
+#             Consumo = round(ConsumoR * 60 * 24 / 1000 * DAC)
+#             Texto1 = Libreria.loc[3, 'Texto']
+#             Texto = "\n"+Texto1.replace("X", "$" + str(Consumo * 6))
+#             Codigo += ", " + Libreria.loc[3, 'Codigo']
+#
+#     # Aparatos de Sonido
+#     if EquiposCluster.loc['Sonido', 'Existencia'] == 1:
+#         if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
+#             Texto ="\n"+ Libreria.loc[4, 'Texto']
+#             Codigo += ", " + Libreria.loc[4, 'Codigo']
+#
+#
+#     #Decodificador
+#     if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
+#         Texto = "\n"+Libreria.loc[5, 'Texto']
+#         Codigo += ", " + Libreria.loc[5, 'Codigo']
+#     #TV
+#     if EquiposCluster.loc['TV', 'Existencia'] == 1:
+#
+#         ConsumoTV = EquiposCluster.loc['TV', 'Standby']
+#         #ConsumoTV = consumoEq(ConsumoTV)
+#         if ConsumoTV!=0:
+#             TamanoConsumo= int(EquiposCluster.loc['TV', 'Pulgadas']) / ConsumoTV
+#         else:
+#             TamanoConsumo=1
+#
+#         if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
+#             if Tolerancia:
+#                 ConsumoR = EquiposCluster.loc['Regulador1', 'Standby']
+#                 #ConsumoR = consumoEq(ConsumoR)
+#                 Consumo = round(ConsumoR * 60 * 24 / 1000 * DAC)
+#                 Texto1 = Libreria.loc[6, 'Texto']
+#                 Texto = "\n"+Texto1.replace("X", "$" + str(Consumo * 6))
+#                 Codigo += ", " + Libreria.loc[6, 'Codigo']
+#         #ConsumoTV
+#         if 5 >= ConsumoTV > 2:
+#             Texto = "\n"+Libreria.loc[7, 'Texto']
+#             Codigo += ", " + Libreria.loc[7, 'Codigo']
+#         if 8 > ConsumoTV > 5:
+#             Texto ="\n"+ Libreria.loc[8, 'Texto']
+#             Codigo += ", " + Libreria.loc[8, 'Codigo']
+#         if ConsumoTV >= 8:
+#             Texto ="\n"+ Libreria.loc[9, 'Texto']
+#             Codigo += ", " + Libreria.loc[9, 'Codigo']
+# ######
+#         #TamañoTV
+#         if TamanoConsumo > 5:
+#             Texto ="\n"+ Libreria.loc[10, 'Texto']
+#             Codigo += ", " + Libreria.loc[10, 'Codigo']
+#
+#         if TamanoConsumo <=5 :
+#             Texto = "\n"+Libreria.loc[11, 'Texto']
+#             Codigo += ", " + Libreria.loc[11, 'Codigo']
+#         if TamanoConsumo <=5 :
+#             Texto ="\n"+ Libreria.loc[12, 'Texto']
+#             Codigo += ", " + Libreria.loc[12, 'Codigo']
+#
+#
+#         #Modem
+#     if EquiposCluster.loc['Modem', 'Existencia'] == 1:
+#         Texto = "\n"+Libreria.loc[13, 'Texto']
+#         Codigo += ", " + Libreria.loc[13, 'Codigo']
+#
+#     marca = EquiposCluster['Marca'][0]
+#     lugar = EquiposCluster['Lugar'][0]
+#     Lib.loc['Television', 'Marca'] = marca
+#     Lib.loc['Television', 'Lugar'] = lugar
+#     Lib.loc['Television', 'Codigo'] = Codigo
+#     Lib.loc['Television', 'Texto'] = Texto
     return Lib
 
 
@@ -212,12 +232,12 @@ def condicionesRefrigeracion(EquiposRefri):
             Texto += '\n'+Libreria.loc[23, 'Texto']
             Codigo += ",  "+Libreria.loc[23, 'Codigo']
 
-        #Ventilado Refri
-        if 'encerrado' in EquiposR['Ventilacion'][0]:
-            Texto += '\n'+Libreria.loc[25, 'Texto']
-            Codigo += ",  "+ Libreria.loc[25, 'Codigo']
-            Texto += '\n'+ Libreria.loc[26, 'Texto']
-            Codigo += ", "+ Libreria.loc[26, 'Codigo']
+        # #Ventilado Refri
+        # if 'encerrado' in EquiposR['Ventilacion'][0]:
+        #     Texto += '\n'+Libreria.loc[25, 'Texto']
+        #     Codigo += ",  "+ Libreria.loc[25, 'Codigo']
+        #     Texto += '\n'+ Libreria.loc[26, 'Texto']
+        #     Codigo += ", "+ Libreria.loc[26, 'Codigo']
 
 
         #Temperatura interior
@@ -352,77 +372,106 @@ def condicionesSecadora(Secadora):
     print("")
 
 
-def condicionesLuces(Luminaria):
 
+
+def condicionesLuces(Luminaria):
+    Lumi=Luminaria.copy()
     Lib = libreriaL()
     Luminaria['Adicional'].fillna('NA',inplace=True)
-    Luminaria.reset_index(inplace=True)
+    Luminaria.reset_index(drop=True,inplace=True)
 
     Tipo = Luminaria['Tecnologia']
     Lugar = Luminaria['Lugar']
 
 
     for i in Luminaria.index:
-
         ##Variables
-        VV=20
+        VV=10
         ConLED = 15
         Precio=40
         DAC=5.5
-        Watts=Luminaria.loc[i, 'Consumo']
+        Watts = Luminaria.loc[i, 'Consumo']
         Numero = Luminaria.loc[i, 'Numero']
+
+
+
+
 
 
         #Formulas
         ZZ=VV/Watts/Numero
         RR=ZZ*ConLED
         TT=RR/VV*100
-        ROI=(Numero+Precio)/((VV-RR)*DAC)
+        ROI=(Numero*Precio)/((VV-RR)*DAC)
 
 
         Tipo = Luminaria.loc[i, 'Tecnologia']
         Lugar = Luminaria.loc[i, 'Lugar']
-        TextoCompleto = Lib.loc[8, 'E']
+
+        TextoCompleto = ''
+        Car=''
+        cuantos=0
         if Tipo != 'led':
+            TextoCompleto = Lib.loc[34, 'E']
             Adicional = Luminaria.loc[i, 'Adicional']
             if Adicional != 'NA':
                 Car = ''
                 if 'calida' in Adicional:
-                    Car=Car+'calida,'
+                    Car=Car+'luz cálida '
+                    if cuantos>0:
+                        Car = Car + ','
+                    cuantos=cuantos+1
                 if 'fria' in Adicional:
-                    Car = Car + 'fria,'
+                    Car = Car + 'luz fría '
+                    if cuantos>0:
+                        Car = Car + ','
+                    cuantos=cuantos+1
                 if 'dimeable' in Adicional:
-                    Car = Car + 'dimeable,'
+                    Car = Car + 'foco dimeable '
+                    if cuantos>0:
+
+                        Car = Car + ','
+                    cuantos=cuantos+1
                 if 'inteligente' in Adicional:
-                    Car = Car + 'inteligente,'
+                    Car = Car + 'foco inteligente '
+                    if cuantos>0:
+                        Car = Car + ','
+                    cuantos=cuantos+1
 
-                TextoCompleto =  TextoCompleto + Lib.loc[9, 'E']
-
-        else:
-            TextoCompleto = TextoCompleto + Lib.loc[16, 'E']
+                TextoCompleto =  TextoCompleto + Lib.loc[40, 'E']
 
 
-
-        if RR<VV:
-            if ROI<18:
-                TextoCompleto = TextoCompleto + Lib.loc[10, 'E']
-                TextoCompleto = TextoCompleto + Lib.loc[11, 'E']
-                TextoCompleto = TextoCompleto + Lib.loc[12, 'E']
+            if ROI < 18:
+                TextoCompleto = TextoCompleto + Lib.loc[36, 'E']
+                # TextoCompleto = TextoCompleto + Lib.loc[11, 'E']
+                # TextoCompleto = TextoCompleto + Lib.loc[12, 'E']
             else:
-                TextoCompleto = TextoCompleto + Lib.loc[13, 'E']
+                TextoCompleto = TextoCompleto + Lib.loc[37, 'E']
+
+
+
+
         else:
-            TextoCompleto = TextoCompleto + Lib.loc[13, 'E']
+            TextoCompleto = TextoCompleto + Lib.loc[47, 'E']
+
+
+
+
 
 
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tipo)
         TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
-        TextoCompleto = TextoCompleto.replace('[V]', str(VV))
         TextoCompleto = TextoCompleto.replace('[CAR]', Car)
         TextoCompleto = TextoCompleto.replace('[T]', str(round(TT,1)))
         TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
         TextoCompleto = TextoCompleto.replace('[ROI]', str(round(ROI,1)))
         TextoCompleto = TextoCompleto.replace('.0', "")
-        TextoCompleto=TextoCompleto.replace('[...]', "")
+        TextoCompleto = TextoCompleto.replace('[...]', "")
+        TextoCompleto = TextoCompleto.replace('Cocina', "la cocina")
+        TextoCompleto = TextoCompleto.replace('Recámara', "la recámara")
 
-        print(TextoCompleto)
+        TT = TextoCompleto
+        nuevo = TT.replace('[VV]', "10")
+        Luminaria.loc[i,'Texto'] = nuevo
+    return Luminaria['Texto']
 

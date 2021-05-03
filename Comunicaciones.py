@@ -12,10 +12,11 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
     Columnas=Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("comunicaciones_equipos", case=False)]
     Equipos = Circuito[InfoEquipos]
-    try:
+
+    if isinstance(Circuito.filter(regex='comunicaciones_equipos_desconectar_c_i')[0], str):
         Nomedidos = Circuito.filter(regex='comunicaciones_equipos_desconectar_c_i')[0]
-    except:
-        Nomedidos =0
+    else:
+        Nomedidos = " no_hay"
 
     indx = 0
 
@@ -26,7 +27,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
             if indx == 1:
                 InfoDeco = Circuito.filter(regex='telefono')
                 if InfoDeco.filter(regex='zona')[0] == 'otro':
-                    Aparatos_C.loc['Telefono', 'Zona'] = InfoDeco.filter(regex='zona_otra')[0]
+                    Aparatos_C.loc['Telefono', 'Zona'] = InfoDeco.filter(regex='zona_otro')[0]
                 else:
                     Aparatos_C.loc['Telefono', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Telefono', 'Marca']    = InfoDeco.filter(regex='marca')[0]
@@ -47,7 +48,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
             if indx == 2:
                 InfoDeco = Circuito.filter(regex='conmutador')
                 if InfoDeco.filter(regex='zona')[0] == 'otro':
-                    Aparatos_C.loc['Conmutador', 'Zona'] = InfoDeco.filter(regex='zona_otra')[0]
+                    Aparatos_C.loc['Conmutador', 'Zona'] = InfoDeco.filter(regex='zona_otro')[0]
                 else:
                     Aparatos_C.loc['Conmutador', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Conmutador', 'Marca'] = InfoDeco.filter(regex='marca')[0]
@@ -66,7 +67,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
             if indx == 3:
                 InfoDeco = Circuito.filter(regex='modem1')
                 if InfoDeco.filter(regex='zona')[0] == 'otro':
-                    Aparatos_C.loc['Modem', 'Zona'] = InfoDeco.filter(regex='zona_otra')[0]
+                    Aparatos_C.loc['Modem', 'Zona'] = InfoDeco.filter(regex='zona_otro')[0]
                 else:
                     Aparatos_C.loc['Modem', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Modem', 'Marca'] = InfoDeco.filter(regex='marca')[0]
@@ -91,7 +92,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
             if indx == 4:
                 InfoDeco = Circuito.filter(regex='repetidor')
                 if InfoDeco.filter(regex='zona')[0]=='otro':
-                    Aparatos_C.loc['Repetidor', 'Zona'] = InfoDeco.filter(regex='zona_otra')[0]
+                    Aparatos_C.loc['Repetidor', 'Zona'] = InfoDeco.filter(regex='zona_otro')[0]
                 else:
                     Aparatos_C.loc['Repetidor', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Repetidor', 'Marca'] = InfoDeco.filter(regex='marca')[0]
@@ -109,7 +110,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
             if indx == 5:
                 InfoDeco = Circuito.filter(regex='switch')
                 if InfoDeco.filter(regex='zona')[0]=='otro':
-                    Aparatos_C.loc['Switch', 'Zona'] = InfoDeco.filter(regex='zona_otra_c_i')[0]
+                    Aparatos_C.loc['Switch', 'Zona'] = InfoDeco.filter(regex='zona_otro_c_i')[0]
                 else:
                     Aparatos_C.loc['Switch', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Switch', 'Marca'] = InfoDeco.filter(regex='marca')[0]
@@ -157,7 +158,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 InfoDeco = Circuito.filter(regex='comunicaciones_otro')
                 Aparatos_C.loc['Otro', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 if InfoDeco.filter(regex='zona')[0] == 'otro':
-                    Aparatos_C.loc['Otro', 'Zona'] = InfoDeco.filter(regex='zona_otra')[0]
+                    Aparatos_C.loc['Otro', 'Zona'] = InfoDeco.filter(regex='zona_otro')[0]
                 else:
                     Aparatos_C.loc['Otro', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Otro', 'Marca'] = InfoDeco.filter(regex='comunicaciones_otro_c_i')[0]
