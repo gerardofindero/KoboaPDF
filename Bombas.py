@@ -33,7 +33,7 @@ def bombas (Excel,Nocircuito):
     Aparatos_C.loc['Tuberia', 'CodigoS'] = 'X'
     Aparatos_C.loc['Tuberia', 'CodigoN'] = 'X'
 
-    if Bomba=='presurizadora_hidroneum_tico':
+    if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= InfoDeco.filter(regex='bombap')
         Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoBomba.filter(regex='nominal')[0])
         Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(InfoBomba.filter(regex='standby')[0])
@@ -114,7 +114,7 @@ def bombas (Excel,Nocircuito):
     # Aparatos_C.loc[2, 'Hay jarros de aire'] = InfoDeco.filter(regex='jarrosaire')[0]
     # Aparatos_C.loc[2, 'Diametro tuberia'] = InfoDeco.filter(regex='diametro')[0]
     #Aparatos_C.loc[2, 'Presion planta baja'] = InfoDeco.filter(regex='presionpb')[0]
-
+    print(Aparatos_C)
     Aparatos=Aparatos_C.dropna(1,thresh=1)
-    #print(Aparatos)
+
     return Aparatos

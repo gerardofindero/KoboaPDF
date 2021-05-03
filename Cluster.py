@@ -32,8 +32,8 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Notas=InfoDeco[0]
 
     InfoDeco = Circuito.filter(regex='zona_c_i')[0]
-
-    if InfoDeco == 'otrotv_c_i':
+    print(InfoDeco)
+    if InfoDeco == 'otro' :
         Zona=Lugar(Circuito.filter(regex='zona_otro_c_i')[0])
     else:
         Zona=Lugar(InfoDeco)

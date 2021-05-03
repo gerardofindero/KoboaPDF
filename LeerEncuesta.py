@@ -5,8 +5,8 @@ from pathlib         import Path
 from pdf             import CrearPDF
 from Deciframiento   import Archivo
 from Hipervinculos   import hipervinculos
-from Ahorro          import potencial_ahorro
-from Leer_Deciframiento import leer_deciframiento, leer_solar
+from Ahorro          import potencial_ahorro2
+from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 
@@ -79,15 +79,15 @@ def Crear_Kobo(NCliente):
         Datosa.loc[i+largoD, ['Circuito']] = Circuito.values
         FugasT = FugasT.append(Fugas, ignore_index=True)
     writer.save()
-    #condicionesLuces(Ilum)
-    Equipos, Luminarias, Fugas = Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire)
+    Tluz=condicionesLuces(Ilum)
+    Equipos, Luminarias, Fugas = Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
 
     #potencial_ahorro(Cliente,Equipos, Luminarias, Fugas)
 
 ###################### MAIN  #####################################
 if __name__ == '__main__':
 
-    #NCliente = 'Gerardo Fernandez'
+    #NCliente = 'Daniel Perez'
     #NCliente = 'Jose Martin Carballo'
     #NCliente = 'Sergio Maya'
     NCliente = 'Pruebas'
@@ -111,16 +111,17 @@ if __name__ == '__main__':
         #leer_lista(NCliente)
         #hipervinculos(NCliente)
 
+
     if Opcion == '3':
         print("Poner Condiciones")
         print("Poner caritas")
         print("Pasar a formato para PDF")
         print("Generar Potencial de ahorro")
-        #hipervinculos(NCliente)
         #Excel, Cliente = abrirexcel(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar= leer_deciframiento(NCliente)
+        aparatosP, lucesP, fugasP = leer_potencial(NCliente)
         #caritas=definircarita(aparatos)
-        potencial_ahorro(NCliente, aparatos, luces, fugas, tarifa)
+        potencial_ahorro2(NCliente, fugas, luces, fugasP, lucesP)
 
 
     if Opcion == '4':

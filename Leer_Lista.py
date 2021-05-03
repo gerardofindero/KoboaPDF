@@ -21,7 +21,6 @@ def leer_lista(Cliente):
     cliente_ = Cliente.replace(' ', '_')
     archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
     Exx = pd.read_excel(archivo_resultados, sheet_name='Lista')
-    print(Exx)
     Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
     Exx.columns = Dic
     Exx.fillna('0',inplace=True)

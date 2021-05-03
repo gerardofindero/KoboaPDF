@@ -23,7 +23,7 @@ def hipervinculos(Cliente):
     mes = fecha.strftime("%B").capitalize()
     # mes=meses[mes]
     anho = fecha.strftime("%Y")
-    carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/03-Marzo/"
+    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/03-Marzo/"
     clientes = os.listdir(carpeta_resultados)
     booleanos = [Cliente.lower() in c.lower() for c in clientes]
     carpeta_cliente = Cliente
