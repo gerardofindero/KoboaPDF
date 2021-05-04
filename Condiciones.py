@@ -27,18 +27,9 @@ def libreria2():
 
     return Libreria
 
-# Lee librería de luminarias.
-def libreriaL():
-    try:
-        Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria Luminaria.xlsx')
-    except:
-        print("No se encuentra el archivo ")
-        breakpoint()
-    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
-    Dicc=['A','B','C','D','E']
-    Libreria.columns=Dicc
 
-    return Libreria
+
+
 
 
 
@@ -374,18 +365,59 @@ def condicionesSecadora(Secadora):
 
 
 
+# Lee librería de luminarias.
+def libreriaL():
+    try:
+        #Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria Luminaria.xlsx')
+        Libreria = f"../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias"
+    except:
+        print("No se encuentra el archivo ")
+        breakpoint()
+    
+    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
+    Dicc=['A','B','C','D','E']
+    Libreria.columns=Dicc
+
+    return Libreria
+
+
+
+
+############################# Libreria Luminarias ###################################
+## Parte del programa dedicado a sacar la info de la libreria
+## de luminarias compararla y elegir el texto correspondiente
+## al excel de deciframiento
+
 def condicionesLuces(Luminaria):
+
+
+    ## Se hace una copia de los datos de luminarias sacados de kobo en la cual se va a trabajar
+    ## Se hace una copia para no alterar los datos originales
     Lumi=Luminaria.copy()
+
+    ## Se lee la libreria de luminarias
     Lib = libreriaL()
+
+    ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO)
     Luminaria['Adicional'].fillna('NA',inplace=True)
+
+    ## Se resetea el indice para tener la referencia bien establecida (Luminaria KOBO)
     Luminaria.reset_index(drop=True,inplace=True)
 
+
+    ## Se asignan las variables de tipo y lugar de las luminarias encontradas en KOBO
     Tipo = Luminaria['Tecnologia']
     Lugar = Luminaria['Lugar']
 
 
+    ## En este FOR se analiza cada una de las luces en el KOBO y se le asiga su correspondiente texto
+    ## 
+
     for i in Luminaria.index:
-        ##Variables
+
+        ##Variables 
+        ## Se sacan del KOBO y de la librería
+
         VV=10
         ConLED = 15
         Precio=40
@@ -394,23 +426,24 @@ def condicionesLuces(Luminaria):
         Numero = Luminaria.loc[i, 'Numero']
 
 
-
-
-
-
         #Formulas
+        ## Se sacaron de la libreria
         ZZ=VV/Watts/Numero
         RR=ZZ*ConLED
         TT=RR/VV*100
         ROI=(Numero*Precio)/((VV-RR)*DAC)
 
-
+        ## Se asignan las variables de tipo y lugar de las luminarias encontradas en KOBO           
         Tipo = Luminaria.loc[i, 'Tecnologia']
         Lugar = Luminaria.loc[i, 'Lugar']
 
         TextoCompleto = ''
         Car=''
         cuantos=0
+
+
+        ## Se comparan las condiciones de las luminarias del KOBO para asignarles
+        ## un texto de la libreria
         if Tipo != 'led':
             TextoCompleto = Lib.loc[34, 'E']
             Adicional = Luminaria.loc[i, 'Adicional']
@@ -439,26 +472,17 @@ def condicionesLuces(Luminaria):
                     cuantos=cuantos+1
 
                 TextoCompleto =  TextoCompleto + Lib.loc[40, 'E']
-
-
             if ROI < 18:
                 TextoCompleto = TextoCompleto + Lib.loc[36, 'E']
-                # TextoCompleto = TextoCompleto + Lib.loc[11, 'E']
-                # TextoCompleto = TextoCompleto + Lib.loc[12, 'E']
             else:
                 TextoCompleto = TextoCompleto + Lib.loc[37, 'E']
-
-
-
-
         else:
             TextoCompleto = TextoCompleto + Lib.loc[47, 'E']
 
 
-
-
-
-
+        ## Del texto se remplazan las variables dentro del texto de la libreria
+        ## por las variables que se obtienen del KOBO
+     
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tipo)
         TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
         TextoCompleto = TextoCompleto.replace('[CAR]', Car)
@@ -470,8 +494,11 @@ def condicionesLuces(Luminaria):
         TextoCompleto = TextoCompleto.replace('Cocina', "la cocina")
         TextoCompleto = TextoCompleto.replace('Recámara', "la recámara")
 
+
         TT = TextoCompleto
         nuevo = TT.replace('[VV]', "10")
+        
+        ##Se coloca el texto dentro de las variables del KOBO para que se escriban en Excel
         Luminaria.loc[i,'Texto'] = nuevo
     return Luminaria['Texto']
 
