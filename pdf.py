@@ -508,6 +508,23 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
     costado(canvas)
     canvas.showPage()
 
+def variablesLuces(NumyTip, Watts,VV,tex):
+    ConLED = 15
+    Precio = 40
+    DAC = 5.5
+    Numero = float(NumyTip.split()[0])
+    # Formulas
+    ## Se sacaron de la libreria
+    ZZ = VV / Watts / Numero
+    RR = ZZ * ConLED
+
+
+    TT = RR / VV * 100
+    ROI = abs((Numero * Precio) / ((VV - RR) * DAC))
+    TextoCompleto = tex.replace('[T]', str(round(TT, 1)))
+    TextoCompleto = TextoCompleto.replace('[ROI]', str(round(ROI,1)))
+    #TextoCompleto=TextoCompleto.rsplit(' ', 1)[0]
+    return TextoCompleto
 
 def iluminacion(canvas, width, height, luces):
     """ Se crean las páginas en donde se muestra el consumo de luz a detalle """
@@ -602,6 +619,9 @@ def iluminacion(canvas, width, height, luces):
         tex= str(luz[13])
         largoTx=(len(tex))
 
+        tex = variablesLuces(luz[0], luz[8], luz[10],tex)
+
+
         if len(luzz) < 15:
             parrafos.append(Paragraph(luzz, Estilos.Lumi))
             frame = Frame(72, altura - 18, 80, 60)
@@ -671,7 +691,6 @@ def iluminacion(canvas, width, height, luces):
             canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
             canvas.setLineWidth(.3)
             texto('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
-            print(i)
             if largo > 4:
                 canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, largo*50)
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)

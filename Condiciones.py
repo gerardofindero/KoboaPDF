@@ -369,7 +369,7 @@ def condicionesSecadora(Secadora):
 def libreriaL():
     try:
         #Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria Luminaria.xlsx')
-        Libreria = f"../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias"
+        Libreria = pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx")
     except:
         print("No se encuentra el archivo ")
         breakpoint()
@@ -445,7 +445,7 @@ def condicionesLuces(Luminaria):
         ## Se comparan las condiciones de las luminarias del KOBO para asignarles
         ## un texto de la libreria
         if Tipo != 'led':
-            TextoCompleto = Lib.loc[34, 'E']
+            TextoCompleto = Lib.loc[32, 'E']
             Adicional = Luminaria.loc[i, 'Adicional']
             if Adicional != 'NA':
                 Car = ''
@@ -471,13 +471,13 @@ def condicionesLuces(Luminaria):
                         Car = Car + ','
                     cuantos=cuantos+1
 
-                TextoCompleto =  TextoCompleto + Lib.loc[40, 'E']
+                TextoCompleto =  TextoCompleto + Lib.loc[38, 'E']
             if ROI < 18:
-                TextoCompleto = TextoCompleto + Lib.loc[36, 'E']
+                TextoCompleto = TextoCompleto + Lib.loc[34, 'E']
             else:
-                TextoCompleto = TextoCompleto + Lib.loc[37, 'E']
+                TextoCompleto = TextoCompleto + Lib.loc[35, 'E']
         else:
-            TextoCompleto = TextoCompleto + Lib.loc[47, 'E']
+            TextoCompleto = TextoCompleto + Lib.loc[45, 'E']
 
 
         ## Del texto se remplazan las variables dentro del texto de la libreria
@@ -486,9 +486,9 @@ def condicionesLuces(Luminaria):
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tipo)
         TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
         TextoCompleto = TextoCompleto.replace('[CAR]', Car)
-        TextoCompleto = TextoCompleto.replace('[T]', str(round(TT,1)))
+        ## TextoCompleto = TextoCompleto.replace('[T]', str(round(TT,1)))
         TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
-        TextoCompleto = TextoCompleto.replace('[ROI]', str(round(ROI,1)))
+        ## TextoCompleto = TextoCompleto.replace('[ROI]', str(round(ROI,1)))
         TextoCompleto = TextoCompleto.replace('.0', "")
         TextoCompleto = TextoCompleto.replace('[...]', "")
         TextoCompleto = TextoCompleto.replace('Cocina', "la cocina")
@@ -497,6 +497,11 @@ def condicionesLuces(Luminaria):
 
         TT = TextoCompleto
         nuevo = TT.replace('[VV]', "10")
+        nuevo = nuevo.replace('(s)', "")
+        nuevo = nuevo.replace('(un)', "un")
+        nuevo = nuevo.replace('(n)', "")
+        nuevo = nuevo.replace('/n', "")
+        nuevo = nuevo.replace('(es)', "")
         
         ##Se coloca el texto dentro de las variables del KOBO para que se escriban en Excel
         Luminaria.loc[i,'Texto'] = nuevo

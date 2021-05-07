@@ -2,23 +2,10 @@ import datetime
 import os
 from datetime import datetime
 import pandas as pd
+from Carpeta_Clientes import carpeta_clientes
 
 def leer_deciframiento(Cliente):
-    fecha = datetime.now()
-    mes = fecha.strftime("%B").capitalize()
-    anho = fecha.strftime("%Y")
-    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/02-{mes}/"
-    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/03-marzo/"
-    clientes = os.listdir(carpeta_resultados)
-    booleanos = [Cliente.lower() in c.lower() for c in clientes]
-    carpeta_cliente = Cliente
-    for idx, valor in enumerate(booleanos):
-        if valor:
-            carpeta_cliente = clientes[idx]
-    carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
-
-    cliente_ = Cliente.replace(' ', '_')
-    archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+    archivo_resultados =  carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados, sheet_name='Desciframiento')
     ExL = pd.read_excel(archivo_resultados, sheet_name='Lista')
 
@@ -38,6 +25,7 @@ def leer_deciframiento(Cliente):
     Aparatos = EXX[~EXX['D'].str.contains('Fuga', regex=False,na=False)]
     Aparatos = Aparatos[~Aparatos['B'].str.contains('Codigo', regex=False, na=False)]
 
+    print(Aparatos)
     Aparatos.drop([0,1],inplace=True)
 
     ConsumoFugas=Fugas['K'].sum()
@@ -45,21 +33,7 @@ def leer_deciframiento(Cliente):
     return Aparatos,Luces,Fugas,Consumo,Costo,Tarifa, ConsumoFugas, Solar
 
 def leer_potencial(Cliente):
-    fecha = datetime.now()
-    mes = fecha.strftime("%B").capitalize()
-    anho = fecha.strftime("%Y")
-    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/02-{mes}/"
-    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/03-marzo/"
-    clientes = os.listdir(carpeta_resultados)
-    booleanos = [Cliente.lower() in c.lower() for c in clientes]
-    carpeta_cliente = Cliente
-    for idx, valor in enumerate(booleanos):
-        if valor:
-            carpeta_cliente = clientes[idx]
-    carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
-
-    cliente_ = Cliente.replace(' ', '_')
-    archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+    archivo_resultados = carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados, sheet_name='Potencial de ahorro')
     Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N']
     Exx.columns = Dic
@@ -75,22 +49,7 @@ def leer_potencial(Cliente):
 
 
 def leer_solar(Cliente):
-
-    fecha = datetime.now()
-    mes = fecha.strftime("%B").capitalize()
-    anho = fecha.strftime("%Y")
-    carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/02-{mes}/"
-    #carpeta_resultados = f"../../Datos de clientes/Clientes {anho}/01-enero/"
-    clientes = os.listdir(carpeta_resultados)
-    booleanos = [Cliente.lower() in c.lower() for c in clientes]
-    capeta_cliente = Cliente
-    for idx, valor in enumerate(booleanos):
-        if valor:
-            carpeta_cliente = clientes[idx]
-    carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
-
-    cliente_ = Cliente.replace(' ', '_')
-    archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+    archivo_resultados = carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados, sheet_name='Resumen')
     Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q']
     Exx.columns = Dic
