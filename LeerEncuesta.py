@@ -81,16 +81,24 @@ def Crear_Kobo(NCliente):
     writer.save()
     Tluz=condicionesLuces(Ilum)
     Equipos, Luminarias, Fugas = Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
-
     #potencial_ahorro(Cliente,Equipos, Luminarias, Fugas)
+
+
+
+
+
+##################################################################
+def Nombre_Cliente():
+
+
+    NCliente = 'Marcela Gessaghi'
+
+    return NCliente
 
 ###################### MAIN  #####################################
 if __name__ == '__main__':
 
-    #NCliente = 'Daniel Perez'
-    #NCliente = 'Jose Martin Carballo'
-    #NCliente = 'Sergio Maya'
-    NCliente = 'Pruebas'
+    NCliente=Nombre_Cliente()
 
     print("Que quieres hacer? ")
     print("1.- Crear lista ")
@@ -109,7 +117,7 @@ if __name__ == '__main__':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
         #leer_lista(NCliente)
-        #hipervinculos(NCliente)
+        hipervinculos(NCliente)
 
 
     if Opcion == '3':

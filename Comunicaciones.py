@@ -12,7 +12,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
     Columnas=Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("comunicaciones_equipos", case=False)]
     Equipos = Circuito[InfoEquipos]
-
+    
     if isinstance(Circuito.filter(regex='comunicaciones_equipos_desconectar_c_i')[0], str):
         Nomedidos = Circuito.filter(regex='comunicaciones_equipos_desconectar_c_i')[0]
     else:

@@ -9,7 +9,7 @@ import xlwings
 from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
 import numpy as np
-
+from Carpeta_Clientes import carpeta_clientes
 
 def tipoluces(tipo):
     tipoGen='focos'
@@ -20,16 +20,14 @@ def tipoluces(tipo):
 #### Excel
 def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
-
-
     FugasC=Fugas.copy()
     LuminariasC=Luminarias.copy()
 
     Atacable = Fugas['Atacable'].values
     Fugas.drop(['Atacable'], axis=1, inplace=True)
     Fugas.reset_index(inplace=True, drop=True)
-
     Tipo = Luminarias['Tipo'].values
+    Numero = Luminarias['Numero'].values.astype(int)
     Luminarias.drop(['Tipo'], axis=1, inplace=True)
     Luminarias.reset_index(inplace=True, drop=True)
 
@@ -109,7 +107,9 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 ############## Rellena con Atacables y tipo de luminaria ##############3
     i = 0
     inicioL = len(Equipos) + 10
-    Sheet1.range(inicioL - 1, 1).value = 'Tipo'
+    Sheet1.range(inicioL - 1, 1).value = 'Numero y Tipo'
+    Tipo= ' '+Tipo
+    Tipo= Numero.astype(str) + Tipo
     for tipo in Tipo:
         Sheet1.range(inicioL + i, 1).value = tipo
         i = i + 1
@@ -187,7 +187,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         cony=cony+1
 
     workbook.save()
-
+    workbook.close()
 
 
 ################### Hoja de Potencial de ahorro ####################################
@@ -207,8 +207,15 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
                                     'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
                                     'Retorno de la inversión', 'Rentable'])
 
-    Sheet1 = workbook.sheets['Potencial de Ahorro']
 
+
+    workbook = xlwings.Book(archivo_resultados)
+    try:
+        workbook.sheets.add('Potencial de ahorro')
+    except:
+        print('Hoja ya creada')
+
+    Sheet1 = workbook.sheets['Potencial de ahorro']
     Sheet1.range('B1').value = 'Reporte Potencial de ahorro de '
     Sheet1.range('C3').value = 'Ahorro en kWh'
     Sheet1.range('D3').value = 'Ahorro en Pesos'
@@ -302,8 +309,6 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     return Equipos, Luminarias, Fugas
 
 def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz):
-    print(Luz)
-
 
     Luminaria=Luz.copy()
     Luminarias = pd.DataFrame(
@@ -319,28 +324,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Dic=['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q']
 
     print(f"Comenzó el reporte de {Cliente}")
-    fecha = datetime.now()
-    mes = fecha.strftime("%B").capitalize()
-    anho = fecha.strftime("%Y")
 
-    #carpeta_resultados = f"../../Datos de clientes/Clientes 2021/01-Enero/"
-    #carpeta_resultados = f"../../Datos de clientes/Clientes 2021/03-Marzo/"
-    carpeta_resultados = f"D:\Findero Dropbox/Datos de clientes/Clientes 2021/03-Marzo/"
-
-
-    clientes = os.listdir(carpeta_resultados)
-
-    booleanos = [Cliente.lower() in c.lower() for c in clientes]
-    carpeta_cliente = Cliente
-
-    for idx, valor in enumerate(booleanos):
-        if valor:
-            carpeta_cliente = clientes[idx]
-
-    carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
-
-    cliente_ = Cliente.replace(' ', '_')
-    archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
+    archivo_resultados = carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados,sheet_name='Resumen')
     Exx.columns=Dic
 
@@ -421,7 +406,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Luminaria.loc[Luminaria['Tamano'].str.contains('tubo'), 'Tipytam'] = 'tubos'
     Luminaria.loc[Luminaria['Tamano'].isin(Ldicc), 'Tipytam'] = 'focos'
     Luminaria['Tipytam'].fillna('focos', inplace=True)
-
+    Luminarias['Numero'] = Luminaria['Numero']
     Luminarias['Codigo'] = Luminaria['CodigoN']
     Luminarias['Equipo'] = 'Luces '+ Luminaria['Lugar']
     Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['Lugar Especifico']

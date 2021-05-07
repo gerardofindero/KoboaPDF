@@ -11,10 +11,11 @@ def computo(Excel,Nocircuito, NomCircuito):
     Columnas=Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("computo", case=False)]
     Equipos = Circuito[InfoEquipos]
-    try:
+    
+    if isinstance(Circuito.filter(regex='computo_equipos_desconectar_c_i')[0], str):
         Nomedidos = Circuito.filter(regex='computo_equipos_desconectar_c_i')[0]
-    except:
-        Nomedidos =0
+    else:
+        Nomedidos = " no_hay"
 
     indx = 0
     for i in Equipos:
