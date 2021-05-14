@@ -28,6 +28,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Fugas.reset_index(inplace=True, drop=True)
     Tipo = Luminarias['Tipo'].values
     Numero = Luminarias['Numero'].values.astype(int)
+    Luminarias.drop(['Numero'], axis=1, inplace=True)
     Luminarias.drop(['Tipo'], axis=1, inplace=True)
     Luminarias.reset_index(inplace=True, drop=True)
 
@@ -86,9 +87,10 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range(len(Equipos)+9, 4).value= 'Luminaria'
     Sheet1.range(len(Equipos) + 9, 14).value = 'Texto a PDF'
     Sheet1.range(len(Equipos) + 9, 16).value = 'Descripcion de Señal'
-    Sheet1.range(len(Equipos) + 9, 17).value = 'Número'
+    Sheet1.range(len(Equipos) + 9, 17).value = 'Entrada y Tipo'
+
     for i in range(len(Luminarias)):
-        inicioL=len(Equipos)+10
+        inicioL=len(Equipos)+1
         Sheet1.range(inicioL+i, 9).value = '=F'+str(i+inicioL)+'*C$2'
         Sheet1.range(inicioL+i, 11).value = '=IF(J'+str(i+inicioL)+'="NM",G'+str(i+inicioL)+',(J'+str(i+inicioL)+' / G'+str(i+inicioL)+') * I'+str(i+inicioL)+')'
         Sheet1.range(inicioL+i, 12).value = '=K'+str(i+inicioL)+' / C$3'
@@ -104,12 +106,15 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         Sheet1.range(inicioF+i, 12).value = '=K'+str(inicioF+i)+' / C$3'
         Sheet1.range(inicioF+i, 13).value = '=K'+str(inicioF+i)+'*G$1'
 
+
+
 ############## Rellena con Atacables y tipo de luminaria ##############3
     i = 0
     inicioL = len(Equipos) + 10
     Sheet1.range(inicioL - 1, 1).value = 'Numero y Tipo'
     Tipo= ' '+Tipo
     Tipo= Numero.astype(str) + Tipo
+
     for tipo in Tipo:
         Sheet1.range(inicioL + i, 1).value = tipo
         i = i + 1
@@ -147,7 +152,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
 
 
-###################### Parte de los códigos ###############################
+###################### Parte de matchear códigos PP y QQ ###############################
     infoL= leer_lista(Cliente)
     infoL['B']=infoL['B'].str.upper()
     cony=0
@@ -208,7 +213,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
                                     'Retorno de la inversión', 'Rentable'])
 
 
-
+############################### POTENCIAL DE AHORRO ##########################################3
     workbook = xlwings.Book(archivo_resultados)
     try:
         workbook.sheets.add('Potencial de ahorro')
@@ -437,8 +442,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     #    'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' '+Luminaria['Tipytam']+'. Notas: ' + Luminaria['Notas']
 
     Luminarias['Texto']=Tluz+' '+ Luminaria['Tamano']+'  '+ Luminaria['Entrada']
-
-
+    Luminarias['Claves'] = Luminaria['Tamano'] + ' ' + Luminaria['Entrada']
 
     cont=0
     Luminarias=Luminarias.reset_index(drop=True)
@@ -466,11 +470,11 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
     Equipos.replace(0.01,'NM',inplace=True)
 
-    j = 0
-    for i in Luminarias.index:
-        j = j + 1
-        num = 'L' + str(j)
-        Luminarias.loc[i, 'Claves'] = num
+    # j = 0
+    # for i in Luminarias.index:
+    #     j = j + 1
+    #     num = 'L' + str(j)
+    #     Luminarias.loc[i, 'Claves'] = num
     j=0
     for i in Fugas.index:
         j = j + 1

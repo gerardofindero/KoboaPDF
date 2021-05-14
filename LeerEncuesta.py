@@ -2,14 +2,14 @@ import pandas as pd
 
 from pandas import ExcelWriter
 from pathlib         import Path
-from pdf             import CrearPDF
+from PDF             import CrearPDF
 from Deciframiento   import Archivo
 from Hipervinculos   import hipervinculos
 from Ahorro          import potencial_ahorro2
 from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
-
+from LibreriaLED import BuscarLED
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
@@ -107,7 +107,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='2'
+    Opcion='4'
 
 
     if Opcion == '1':
@@ -117,7 +117,8 @@ if __name__ == '__main__':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
         #leer_lista(NCliente)
-        hipervinculos(NCliente)
+        #hipervinculos(NCliente)
+        #ConLED, Precio, Link  =BuscarLED()
 
 
     if Opcion == '3':

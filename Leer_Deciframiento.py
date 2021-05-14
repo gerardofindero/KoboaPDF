@@ -25,7 +25,7 @@ def leer_deciframiento(Cliente):
     Aparatos = EXX[~EXX['D'].str.contains('Fuga', regex=False,na=False)]
     Aparatos = Aparatos[~Aparatos['B'].str.contains('Codigo', regex=False, na=False)]
 
-    print(Aparatos)
+
     Aparatos.drop([0,1],inplace=True)
 
     ConsumoFugas=Fugas['K'].sum()
