@@ -35,5 +35,7 @@ def Lugar(lugar):
         lugar='Jardín'
     if lugar == 'bibliotecatv_c_i':
         lugar='Biblioteca'
+    if lugar == 'recamara_servicio':
+        lugar = 'Cuarto de servicio'
 
     return lugar

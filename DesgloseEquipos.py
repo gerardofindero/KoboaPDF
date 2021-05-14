@@ -15,7 +15,7 @@ from Computo         import computo
 from Seguridad       import seguridad
 from Solar           import solar
 from AiresA          import airesA
-from pdf             import CrearPDF
+from PDF             import CrearPDF
 from Deciframiento   import Archivo
 from Hipervinculos   import hipervinculos
 from Ahorro          import potencial_ahorro
