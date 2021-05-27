@@ -5,7 +5,8 @@ from pathlib         import Path
 from Refrigeradores  import refrigerador
 from Cluster         import clustertv
 from Especiales      import especiales
-from Iluminacion     import iluminacion
+#from Iluminacion     import iluminacion
+from Luminaria2     import iluminacion
 from Bombas          import bombas
 from Lavanderia      import lavanderia
 from Cocina          import cocina
@@ -35,19 +36,19 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
     Notas_Equipos=pd.DataFrame(columns=['Tablero','Circuito', 'Equipo','Lugar','Notas'])
     Notas_ = pd.DataFrame(columns=['Tablero', 'Circuito', 'Equipo', 'Lugar','Notas'])
     DatosFun=pd.DataFrame()
-    DatosCL = pd.DataFrame(columns=['Tablero','Circuito','Zona','Marca','Standby','Nominal','Tolerancia', 'Pulgadas','Atacable','Existencia'])
-    DatosIlu = pd.DataFrame(columns=['Tablero','Circuito'])
-    DatosRF = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosCoc = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosCom = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosPC = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosSegu = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosAire = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosES = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosLava = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosBb = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    DatosCal = pd.DataFrame(columns=['Tablero', 'Circuito'])
-    Fugas = pd.DataFrame(columns=['Tablero','Circuito','Marca','Consumo'])
+    DatosCL     = pd.DataFrame(columns=['Tablero','Circuito','Zona','Marca','Standby','Nominal','Tolerancia', 'Pulgadas','Atacable','Existencia'])
+    DatosIlu    = pd.DataFrame(columns=['Tablero','Circuito'])
+    DatosRF     = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosCoc    = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosCom    = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosPC     = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosSegu   = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosAire   = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosES     = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosLava   = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosBb     = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosCal    = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    Fugas       = pd.DataFrame(columns=['Tablero','Circuito','Marca','Consumo'])
     nombre='C.'+ str(NomCircuito[0])
     pdcir=pd.DataFrame(columns= [str(tablero[0]), nombre ])
     pdcir.to_excel(writer ,index=False,startrow=primafila-1)
@@ -60,7 +61,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 DatosCL = DatosCL.append(Datos_CL)
                 Datos_CL.to_excel(writer,  index=True,startrow=primafila)
                 primafila = primafila+ len(Datos_CL) + 4
-                Codigo.to_excel(writer, sheet_name='Libreria', index=True, startrow=FilaLib)
+                #Codigo.to_excel(writer, sheet_name='Libreria', index=True, startrow=FilaLib)
                 DatosCL['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCL['Circuito'].fillna(NomCircuito[0], inplace=True)
                 DatosCL['Zona'].fillna(Zona, inplace=True)
@@ -79,13 +80,13 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 DatosRF['Circuito'].fillna(NomCircuito[0], inplace=True)
                 Datos_RF.to_excel(writer, index=True,startrow=primafila)
                 primafila = primafila+len(Datos_RF) + 4
-                Codigo.to_excel(writer, sheet_name='Libreria', index=True,startrow=FilaLib)
+                #Codigo.to_excel(writer, sheet_name='Libreria', index=True,startrow=FilaLib)
                 FilaLib += 2
 
             if indx == 3:
                 print("Iluminacion ")
                 Datos_IL= iluminacion(Excel,Nocircuito)
-                DatosIlu= DatosIlu.append(Datos_IL)
+                DatosIlu = DatosIlu.append(Datos_IL)
                 DatosIlu['Tablero'].fillna(tablero[0], inplace=True)
                 DatosIlu['Circuito'].fillna(NomCircuito[0], inplace=True)
                 Datos_IL.to_excel(writer,  index=True,startrow=primafila)

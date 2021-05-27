@@ -8,7 +8,7 @@ def leer_lista(Cliente):
     archivo_resultados =carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados, sheet_name='Lista')
     #Dic = ['A', 'B', 'C', 'D', 'I','E', 'F', 'G', 'H']
-    Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+    Dic = ['A', 'B', 'C', 'D', 'I','E', 'F', 'G', 'H']
     Exx.columns = Dic
     Exx.fillna('0',inplace=True)
     #print(Exx[Exx['A'].str.contains('Circuito')])

@@ -12,7 +12,7 @@ def bombas (Excel,Nocircuito):
     InfoEquipos = Columnas[Columnas.str.contains("plomeria", case=False)]
     Equipos= Circuito[InfoEquipos]
     indx=0
-
+    CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')
     InfoDeco = Equipos.filter(regex='bomba1')
     Bomba = InfoDeco.filter(regex='tipo')[0]
     zona=InfoDeco.filter(regex='zona')[0]
@@ -76,7 +76,9 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Recirculación', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Bomba de Recirculación', 'Timer'] = InfoDeco.filter(regex='timer')[0]
         Aparatos_C.loc['Bomba de Recirculación', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
-        Aparatos_C.loc['Bomba de Recirculación', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+
+        if Aparatos_C.loc['Bomba de Recirculación', 'Standby'] > 0:
+            Aparatos_C.loc['Bomba de Recirculación', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Recirculación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
         Aparatos_C.loc['Bomba de Recirculación', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Recirculación', 'Atacable'] = 'Si'
@@ -92,7 +94,10 @@ def bombas (Excel,Nocircuito):
             Aparatos_C.loc['Alberca', 'Nominal'] = InfoDeco.filter(regex='real')[0]
         Aparatos_C.loc['Alberca', 'Solar'] = InfoDeco.filter(regex='solar')[0]
         Aparatos_C.loc['Alberca', 'CodigoN'] = InfoDeco.filter(regex='real_codigofindero')[0]
-        Aparatos_C.loc['Alberca', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+
+        if Aparatos_C.loc['Alberca', 'Standby'] !='Nm':
+            Aparatos_C.loc['Alberca', 'CodigoS'] = CodigoStandby
+
         Aparatos_C.loc['Alberca', 'Marca'] = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Alberca', 'Volumen'] = InfoDeco.filter(regex='volumen')[0]
         Aparatos_C.loc['Alberca', 'Notas'] = InfoDeco.filter(regex='notas')[0]

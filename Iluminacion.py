@@ -83,7 +83,13 @@ def iluminacion (Excel,Nocircuito):
     if not InfoLum.filter(regex='adicional_c_i').empty:
         Aparatos_C.loc['E1 Lum1', 'Adicional'] = InfoLum.filter(regex='adicional_c_i')[0]
 
-########Lum 2
+
+
+
+
+
+
+########Lum 2 #############################################################################################################
     if InfoEsce.filter(regex='otros1')[0] == 'si':
         Aparatos_C.loc['E1 Lum2', 'Existencia'] = 1
 
@@ -282,6 +288,8 @@ def iluminacion (Excel,Nocircuito):
             Aparatos_C.loc['E3 Lum3', 'CodigoN'] = InfoLum.filter(regex='codigofindero')[0]
             if not InfoLum.filter(regex='adicional_c_i').empty:
                 Aparatos_C.loc['E3 Lum3', 'Adicional'] = InfoLum.filter(regex='adicional_c_i')[0]
+
+
     Aparatos_C.replace('hal_geno', 'halogena',inplace=True)
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()

@@ -15,7 +15,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
     Equipos = Circuito[InfoEquipos]
     Tipo = Circuito.filter(regex='calentador_tipo_c_i')
     #print(Tipo)
-
+    CodStnby = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     indx=0
     for i in Tipo:
         if i == 1:
@@ -69,7 +69,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Boiler de Gas', 'Existencia'] = 1
                 Aparatos_C.loc['Boiler de Gas', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Boiler de Gas', 'Atacable'] = 'Si'
-                Aparatos_C.loc['Boiler de Gas', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+                Aparatos_C.loc['Boiler de Gas', 'CodigoS'] = CodStnby
 
             if indx == 5:
                 InfoDeco = Circuito.filter(regex='toallas')

@@ -1,133 +1,100 @@
 import pandas as pd
-
+import math
+from scipy import stats
+import numpy as np
 
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx")
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx",sheet_name='Libreria')
+        Precios = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx",sheet_name='Precio')
     except:
         print("No se encuentra el archivo ")
         breakpoint()
-    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
-
-    return Libreria
-
+    Dicc = ['A', 'B', 'C', 'D', 'E','F'] # Define los nombres de las columnas en Excel.
+    Libreria.columns = Dicc
 
 
-def condicionesCluster(EquiposCluster,Nominal,ConsumoTotal,NumdeAparatos, Tolerancia, Multis,Voltaje):
-    Lib = pd.DataFrame(index=['Television'],
-                       columns=['Marca', 'Codigo', 'Texto'])
 
-    ConsumoTV = EquiposCluster.loc['TV', 'Standby']
-    Pulgadas  = EquiposCluster.loc['TV', 'Pulgadas']
-    Nominal = EquiposCluster.loc['TV', 'Nominal']
+    return Libreria, Precios
 
 
-    Y = round(ConsumoTotal * 60 * 24/1000 * DAC)
-    Z = round(Y*6)
-    #ConsumoTV = EquiposCluster.loc['TV','Consumo']
-    ##### Condiciones #########
-    Texto=" "
-    Codigo=str(Nominal) +'/'+str(ConsumoTV)+'/'+str(Pulgadas)
-    Libreria=libreria2()
 
-#     # Para saber si tiene un cluster de TV
-#     if ConsumoTotal > 3:
-#         Texto1 = Libreria.loc[0, 'Texto']
-#         Texto2 = Texto1.replace("Y","$"+str(Y))
-#         Texto += "\n"+Texto2.replace("Z","$"+ str(Z))
-#         Codigo += ", " + Libreria.loc[0, 'Codigo']
-#
-#     # Si no tiene multicontactos
-#     if Multis < 1:
-#         if NumdeAparatos >= 2:
-#             Texto = "\n"+ Libreria.loc[1, 'Texto']
-#             Codigo += ", " + Libreria.loc[1, 'Codigo']
-#
-#     # Si necesita un regulador
-#     if EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-#         if Tolerancia:
-#             if Voltaje:
-#                 ConsumoR = EquiposCluster.loc['Regulador1', 'Standby']
-#                 #ConsumoR = consumoEq(ConsumoR)
-#                 Consumo= round(ConsumoR * 60 * 24/1000 * DAC)
-#                 Texto1 = Libreria.loc[2, 'Texto']
-#                 Texto = "\n"+Texto1.replace("X", "$" + str(Consumo*6))
-#                 Codigo += ", " + Libreria.loc[2, 'Codigo']
-#
-#
-#     # Si necesita un No Break
-#     if EquiposCluster.loc['NoBreak', 'Existencia'] == 1:
-#         if Voltaje:
-#             ConsumoR = EquiposCluster.loc['NoBreak', 'Standby']
-#             #ConsumoR = consumoEq(ConsumoR)
-#             Consumo = round(ConsumoR * 60 * 24 / 1000 * DAC)
-#             Texto1 = Libreria.loc[3, 'Texto']
-#             Texto = "\n"+Texto1.replace("X", "$" + str(Consumo * 6))
-#             Codigo += ", " + Libreria.loc[3, 'Codigo']
-#
-#     # Aparatos de Sonido
-#     if EquiposCluster.loc['Sonido', 'Existencia'] == 1:
-#         if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-#             Texto ="\n"+ Libreria.loc[4, 'Texto']
-#             Codigo += ", " + Libreria.loc[4, 'Codigo']
-#
-#
-#     #Decodificador
-#     if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-#         Texto = "\n"+Libreria.loc[5, 'Texto']
-#         Codigo += ", " + Libreria.loc[5, 'Codigo']
-#     #TV
-#     if EquiposCluster.loc['TV', 'Existencia'] == 1:
-#
-#         ConsumoTV = EquiposCluster.loc['TV', 'Standby']
-#         #ConsumoTV = consumoEq(ConsumoTV)
-#         if ConsumoTV!=0:
-#             TamanoConsumo= int(EquiposCluster.loc['TV', 'Pulgadas']) / ConsumoTV
-#         else:
-#             TamanoConsumo=1
-#
-#         if EquiposCluster.loc['Regulador1', 'Existencia'] == 1 or EquiposCluster.loc['Regulador1', 'Existencia'] == 1:
-#             if Tolerancia:
-#                 ConsumoR = EquiposCluster.loc['Regulador1', 'Standby']
-#                 #ConsumoR = consumoEq(ConsumoR)
-#                 Consumo = round(ConsumoR * 60 * 24 / 1000 * DAC)
-#                 Texto1 = Libreria.loc[6, 'Texto']
-#                 Texto = "\n"+Texto1.replace("X", "$" + str(Consumo * 6))
-#                 Codigo += ", " + Libreria.loc[6, 'Codigo']
-#         #ConsumoTV
-#         if 5 >= ConsumoTV > 2:
-#             Texto = "\n"+Libreria.loc[7, 'Texto']
-#             Codigo += ", " + Libreria.loc[7, 'Codigo']
-#         if 8 > ConsumoTV > 5:
-#             Texto ="\n"+ Libreria.loc[8, 'Texto']
-#             Codigo += ", " + Libreria.loc[8, 'Codigo']
-#         if ConsumoTV >= 8:
-#             Texto ="\n"+ Libreria.loc[9, 'Texto']
-#             Codigo += ", " + Libreria.loc[9, 'Codigo']
-# ######
-#         #TamañoTV
-#         if TamanoConsumo > 5:
-#             Texto ="\n"+ Libreria.loc[10, 'Texto']
-#             Codigo += ", " + Libreria.loc[10, 'Codigo']
-#
-#         if TamanoConsumo <=5 :
-#             Texto = "\n"+Libreria.loc[11, 'Texto']
-#             Codigo += ", " + Libreria.loc[11, 'Codigo']
-#         if TamanoConsumo <=5 :
-#             Texto ="\n"+ Libreria.loc[12, 'Texto']
-#             Codigo += ", " + Libreria.loc[12, 'Codigo']
-#
-#
-#         #Modem
-#     if EquiposCluster.loc['Modem', 'Existencia'] == 1:
-#         Texto = "\n"+Libreria.loc[13, 'Texto']
-#         Codigo += ", " + Libreria.loc[13, 'Codigo']
-#
-#     marca = EquiposCluster['Marca'][0]
-#     lugar = EquiposCluster['Lugar'][0]
-#     Lib.loc['Television', 'Marca'] = marca
-#     Lib.loc['Television', 'Lugar'] = lugar
-#     Lib.loc['Television', 'Codigo'] = Codigo
-#     Lib.loc['Television', 'Texto'] = Texto
-    return Lib
+def ClavesClusterTV(EquiposClusterTV):
+    EquiposCTV = EquiposClusterTV
+    EquiposR = EquiposCTV.fillna(0)
+    Lib=libreria2()
+    for i in EquiposCTV.index:
+        Standby = EquiposClusterTV.loc['TV', 'Standby']
+        Pulgadas  = EquiposClusterTV.loc['TV', 'Pulgadas']
+        ConsumoTV   = EquiposClusterTV.loc['TV', 'Nominal']
+
+        Codigo = 'C,'+ str(ConsumoTV) +'/'+str(Standby)+'/'+str(Pulgadas)
+
+
+
+
+    return  Codigo
+
+
+def Clasifica(Claves):
+    ClavesSep='N'
+    if pd.notna(Claves):
+        ClavesSep=Claves.split(", ")
+    return ClavesSep[0]
+
+
+def LeeClavesTV(Claves,Uso,Consumo,DAC):
+    Texto=''
+    lib, precios=libreria2()
+    if pd.notna(Claves):
+        ClavesSep=Claves.split(", ")
+        Datos= ClavesSep[1].split("/")
+        Potencia=Datos[0]
+        Standby = Datos[1]
+        Pulgadas=Datos[2]
+        percentil=70
+
+
+        Pulgadas=20
+        Watts=80
+        kWh=50
+        #CC = kWh - (2.989644 + 0.034468 * 40) / 0.2606
+        XX = np.log(Watts)
+        Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
+        print(Percentil)
+
+        y = 25.567 *(math.exp(0.035* Pulgadas))
+        MaxP=(y+(y*.25))
+        MinP=(y - (y * .25))
+
+        Ahorro = y*Consumo/Potencia
+        Ahorro = 1-(Ahorro/Consumo)
+
+
+
+        if Consumo>80:
+            Texto = Texto + ' ' + lib.loc[3, 'E']
+
+        if Uso>=30:
+            Texto = Texto + ' ' + lib.loc[10, 'E']
+
+        ## Uso
+        if Uso<20:
+            Texto = Texto + ' ' + lib.loc[0, 'E']
+
+        if Uso>=20:
+            Texto = Texto + ' ' + lib.loc[15, 'E']
+
+
+        if Potencia > MaxP:
+            Texto= Texto+' '+lib.loc[1,'E']
+        if Potencia <= MaxP:
+            Texto= Texto+' Tu TV tiene un consumo promedio'
+
+        if Standby > 0:
+            Texto= Texto + lib.loc[9,'E']
+
+
+    return Texto

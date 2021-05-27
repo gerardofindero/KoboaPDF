@@ -27,7 +27,7 @@ def hipervinculos(Cliente):
     Res = pd.read_excel(archivo_resultados, sheet_name='Resumen')
     #Se crean las columnas para el archivo de desciframiento y se asignan 
     Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H','I','J','K','L','M','N','O','P','Q']
-    Dicc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q','R']
+    Dicc = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q']
     Res.columns = Dic
     #Formato general y eliminación de renglones que no se utilizan
     Res[['A', 'B']] = Res[['A', 'B']].fillna(method = 'pad')

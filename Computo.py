@@ -17,6 +17,7 @@ def computo(Excel,Nocircuito, NomCircuito):
     else:
         Nomedidos = " no_hay"
 
+    CodigoStdby=Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     indx = 0
     for i in Equipos:
         if i == 1:
@@ -272,7 +273,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                     print("Otro no desconectado")
                 else:
                     Aparatos_C.loc['Otro', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-                    Aparatos_C.loc['Otro', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+                    Aparatos_C.loc['Otro', 'CodigoS'] = CodigoStdby
 
         indx = indx + 1
 

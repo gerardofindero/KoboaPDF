@@ -32,9 +32,9 @@ def especiales(Excel,Nocircuito, NomCircuito):
     Aparatos_C.loc['Especial1', 'Existencia'] = 1
     Aparatos_C.loc['Especial1', 'Notas'] = InfoDeco.filter(regex='notas')[0]
     Aparatos_C.loc['Especial1','CodigoN']   = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
-    Aparatos_C.loc['Especial1','CodigoS']   = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+    Aparatos_C.loc['Especial1','CodigoS']   = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
 
-    if Circuito.filter(regex='equipos_especial1_otro_c_i')[0]=='si__hay_otro':
+    if Circuito.filter(regex='equipos_especial1_otro_c_i')[0]=='si':
 
         if Circuito.filter(regex='equipos_especiales2_c_i')[0] == 'otro':
 
@@ -59,9 +59,9 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial2', 'Existencia'] = 1
         Aparatos_C.loc['Especial2', 'Notas'] = InfoDeco.filter(regex='notas')[0]
         Aparatos_C.loc['Especial2', 'CodigoN'] = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
-        Aparatos_C.loc['Especial2', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+        Aparatos_C.loc['Especial2', 'CodigoS'] = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
 
-    if Circuito.filter(regex='equipos_especial2_otro_c_i')[0] == 'si__hay_otro':
+    if Circuito.filter(regex='equipos_especial2_otro_c_i')[0] == 'si':
 
         if Circuito.filter(regex='equipos_especiales3_c_i')[0] == 'otro':
 
@@ -85,7 +85,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial3', 'Existencia'] = 1
         Aparatos_C.loc['Especial3', 'Notas'] = InfoDeco.filter(regex='notas')[0]
         Aparatos_C.loc['Especial3', 'CodigoN'] = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
-        Aparatos_C.loc['Especial3', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+        Aparatos_C.loc['Especial3', 'CodigoS'] = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
 
 
     TotalConsumo = 5 #calc_consumo(Aparatos_C)

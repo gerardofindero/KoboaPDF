@@ -1,5 +1,7 @@
 import pandas as pd
-
+import math
+import numpy as np
+from scipy import stats
 from pandas import ExcelWriter
 from pathlib         import Path
 from PDF             import CrearPDF
@@ -74,14 +76,12 @@ def Crear_Kobo(NCliente):
         Aire = Aire.append(aires)
         Nota=Nota.append(notass)
         Datosa =Datosa.append(Datos, ignore_index=True)
-
         Circuito = Excel.loc[i, ['circuito_c_i']]
         Datosa.loc[i+largoD, ['Circuito']] = Circuito.values
         FugasT = FugasT.append(Fugas, ignore_index=True)
     writer.save()
     Tluz=condicionesLuces(Ilum)
-    Equipos, Luminarias, Fugas = Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
-    #potencial_ahorro(Cliente,Equipos, Luminarias, Fugas)
+    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
 
 
 
@@ -91,7 +91,9 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
 
-    NCliente = 'Marcela Gessaghi'
+    #NCliente = 'Casa Manantiales'
+    #NCliente = 'Marcela Gessaghi'
+    NCliente = 'Prueba luces'
 
     return NCliente
 
@@ -107,7 +109,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='2'
 
 
     if Opcion == '1':
@@ -117,20 +119,19 @@ if __name__ == '__main__':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
         #leer_lista(NCliente)
-        #hipervinculos(NCliente)
+        hipervinculos(NCliente)
         #ConLED, Precio, Link  =BuscarLED()
 
 
+
     if Opcion == '3':
-        print("Poner Condiciones")
-        print("Poner caritas")
-        print("Pasar a formato para PDF")
-        print("Generar Potencial de ahorro")
-        #Excel, Cliente = abrirexcel(NCliente)
-        aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar= leer_deciframiento(NCliente)
-        aparatosP, lucesP, fugasP = leer_potencial(NCliente)
-        #caritas=definircarita(aparatos)
-        potencial_ahorro2(NCliente, fugas, luces, fugasP, lucesP)
+        Pulgadas = 20
+        Watts = 80
+        kWh = 50
+        # CC = kWh - (2.989644 + 0.034468 * 40) / 0.2606
+        XX = np.log(Watts)
+        Percentil = stats.norm.sf((XX - (3.189644 + 0.034468 * Pulgadas)) / 0.2606)
+        print(Percentil)
 
 
     if Opcion == '4':
