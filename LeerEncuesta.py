@@ -98,7 +98,7 @@ def Nombre_Cliente():
     return NCliente
 
 ###################### MAIN  #####################################
-if __name__ == '__main__':
+if __name__ == '__main__9':
 
     NCliente=Nombre_Cliente()
 
