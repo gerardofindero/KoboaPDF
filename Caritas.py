@@ -9,7 +9,6 @@ def caritaLava(kwh):
 
 
     if Percentil>0.7:
-
         Ca = 3
     if 0.33<Percentil<0.7:
 

@@ -15,9 +15,10 @@ import pandas as pd
 import numpy as np
 from pathlib import Path
 from LibreriaLED import variablesLuces
+from LibreriaRefris import LeeClavesR,Clasifica
+from LibreriaTV import LeeClavesTV,Clasifica
 
-
-locale.setlocale(locale.LC_ALL, 'es-MX')
+locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
                     datefmt='%Y-%m-%d %H:%M:%S')
 
@@ -214,7 +215,7 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
 
 
 
-    DAC = float(costo)/float(consumo)
+    DAC = 5.92
 
     cobrada    =  float(consumo)
 
@@ -709,14 +710,13 @@ def Dicc_Aparatos(nombre):
             nombre_ = a
     return nombre_
 
-def aparatos_grandes(canvas, width, height,aparatosG):
+def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     """ Se crean las páginas en donde se muestran los consumos que ocupan una página completa """
 
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     azul_2 = [2 / 255, 142 / 255, 200 / 255]
     gris = [65 / 255, 65 / 255, 65 / 255]
     blanco = [1, 1, 1]
-    deciframiento=['Refrigerador','1','0.3','20','175','1750',' ']
     for index,aparato in aparatosG.iterrows():
     #for aparato in desciframiento.values():
         nombre = aparato[3]
@@ -727,7 +727,8 @@ def aparatos_grandes(canvas, width, height,aparatosG):
         anual = dinero*6
         notas = aparato[13]
         codigos = aparato[16]
-
+        Eq=Clasifica(codigos)
+        uso = aparato[7]
 
         nombre_=Dicc_Aparatos(nombre)
 
@@ -794,15 +795,16 @@ def aparatos_grandes(canvas, width, height,aparatosG):
         texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
 ##### Escribir en cuadro recomendaciones
-        if codigos == codigos:
-            listaCodigos = (codigos.split(","))
-            for k in listaCodigos:
+        Consejos='=)'
+        if Eq=='R':
+            Consejos = LeeClavesR(codigos)
+        if Eq=='C':
+            Consejos = LeeClavesTV(codigos,uso,consumo,tarifa)
 
-                Consejos = libreria(k)
-
-            parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-            frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
-            frame.addFromList(parrafos, canvas)
+        #Consejos='hola =)'
+        parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+        frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
+        frame.addFromList(parrafos, canvas)
 
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
@@ -1558,21 +1560,6 @@ def Clasificador(aparatos):
 
     return AparatosG, AparatosM,AparatosC
 
-def libreria(codigo):
-    try:
-        Libreria = pd.read_excel(Path.home() / 'Desktop' /'libreria.xlsx')
-    except:
-        print("No se encuentra el archivo ")
-        breakpoint()
-    codigo=codigo.replace(" ","")
-    #codigo='CTV03'
-    inde = Libreria[Libreria['Codigo']==str(codigo)].index
-    Texto1 = str(Libreria.loc[inde, 'Texto'].values)
-    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
-
-    return Texto1
-
-
 def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS):
 
     if SolarS.empty:
@@ -1598,7 +1585,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
         Solar(canvas,tarifa,costo,consumo,SolarS)
     porF=por_A_fugas(fugas)
     aparatosG,aparatosM, aparatosC= Clasificador(aparatos)
-    aparatos_grandes(canvas, width, height,aparatosG)
+    aparatos_grandes(canvas, width, height,aparatosG,Tarifa)
     aparatos_bajos(canvas, width, height,aparatosM,aparatosC)
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)

@@ -7,7 +7,7 @@ def carpeta_clientes(Cliente):
     fecha = datetime.now()
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
-    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/04-abril/"
+    carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/05-mayo/"
     clientes = os.listdir(carpeta_resultados)
     booleanos = [Cliente.lower() in c.lower() for c in clientes]
     carpeta_cliente = Cliente

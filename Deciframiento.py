@@ -77,7 +77,6 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range(6, 14).value = 'Texto a PDF'
     Sheet1.range(6, 17).value = 'Claves'
 
-
     for i in range(len(Equipos)):
         Sheet1.range(7+i, 9).value = '=F'+str(7+i)+'*C$2'
         Sheet1.range(7+i, 11).value = '=IF(J'+str(7+i)+'="NM",I'+str(7+i)+',(J'+str(7+i)+' / G'+str(7+i)+') * I'+str(7+i)+')'
@@ -90,7 +89,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range(len(Equipos) + 9, 17).value = 'Entrada y Tipo'
 
     for i in range(len(Luminarias)):
-        inicioL=len(Equipos)+1
+        inicioL=len(Equipos)+10
         Sheet1.range(inicioL+i, 9).value = '=F'+str(i+inicioL)+'*C$2'
         Sheet1.range(inicioL+i, 11).value = '=IF(J'+str(i+inicioL)+'="NM",G'+str(i+inicioL)+',(J'+str(i+inicioL)+' / G'+str(i+inicioL)+') * I'+str(i+inicioL)+')'
         Sheet1.range(inicioL+i, 12).value = '=K'+str(i+inicioL)+' / C$3'
@@ -157,7 +156,6 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     infoL['B']=infoL['B'].str.upper()
     cony=0
     for i in Equipos['Codigo']:
-
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
@@ -181,10 +179,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     cony = 0
     inicioF = len(Equipos) + len(Luminarias) + 13
-
-
+    Fugas['Codigo'].fillna('FF',inplace=True)
     for i in Fugas['Codigo']:
-
         i = i.upper()
         identificados = infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
@@ -406,15 +402,14 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
     Luminaria.fillna(' ', inplace=True)
-
     Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
-    Luminaria.loc[Luminaria['Tamano'].str.contains('tubo'), 'Tipytam'] = 'tubos'
-    Luminaria.loc[Luminaria['Tamano'].isin(Ldicc), 'Tipytam'] = 'focos'
+    Luminaria.loc[Luminaria['TipoyTam'].str.contains('tubo'), 'Tipytam'] = 'tubos'
+    Luminaria.loc[Luminaria['TipoyTam'].isin(Ldicc), 'Tipytam'] = 'focos'
     Luminaria['Tipytam'].fillna('focos', inplace=True)
     Luminarias['Numero'] = Luminaria['Numero']
     Luminarias['Codigo'] = Luminaria['CodigoN']
     Luminarias['Equipo'] = 'Luces '+ Luminaria['Lugar']
-    Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['Lugar Especifico']
+    Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['LugarEs']
     Luminarias['Ubicacion'] = 'C'+ Luminaria['Circuito'].apply(str)+' '+Luminaria['Tablero'].apply(str)
     Luminarias['Potencia Kobo'] = Luminaria['Consumo']
 
@@ -437,12 +432,12 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Tdos.to_excel(writer2, index=True,startrow=2)
     writer2.save()
 
-    Luminaria['Lugar Especifico'].fillna('_',inplace=True)
+    Luminaria['LugarEs'].fillna('_',inplace=True)
     #Luminarias['Texto'] = 'Luminaria tipo ' + Luminaria['Tecnologia'] + ' en ' + Luminaria['Lugar'].str.lower() + ' (' + Luminaria[
     #    'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' '+Luminaria['Tipytam']+'. Notas: ' + Luminaria['Notas']
 
-    Luminarias['Texto']=Tluz+' '+ Luminaria['Tamano']+'  '+ Luminaria['Entrada']
-    Luminarias['Claves'] = Luminaria['Tamano'] + ' ' + Luminaria['Entrada']
+    Luminarias['Texto']=Tluz+' '+ Luminaria['TipoyTam']+'  '+ Luminaria['Entrada']
+    Luminarias['Claves'] = Luminaria['TipoyTam'] + ' ' + Luminaria['Entrada']
 
     cont=0
     Luminarias=Luminarias.reset_index(drop=True)
@@ -484,4 +479,4 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
     ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
 
-    return Equipos, Luminarias, Fugas
+

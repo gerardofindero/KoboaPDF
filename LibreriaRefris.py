@@ -8,12 +8,12 @@ def libreria2():
     except:
         print("No se encuentra el archivo ")
         breakpoint()
-    #Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
-
+    Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
+    Libreria.columns = Dicc
     return Libreria
 
 
-def condicionesRefrigeracion(EquiposRefri):
+def ClavesRefri(EquiposRefri):
     EquiposR = EquiposRefri
     EquiposR=EquiposR.dropna(subset=['Pot Compresor'])
     EquiposR = EquiposR.fillna(0)
@@ -21,94 +21,112 @@ def condicionesRefrigeracion(EquiposRefri):
 
     Lib = pd.DataFrame(index=['Refrigerador'],
                             columns=['Marca', 'Codigo', 'Texto'])
-
-
-
     for i in EquiposR.index:
-        NominalComp = int(EquiposR['Pot Compresor'][0])
-        TempComp = float(EquiposR['Temp Compresor'][0])
         TempR = (EquiposR['Temp Refri'][0])
         TempC = (EquiposR['Temp Conge'][0])
-        Texto  = " "
-        Codigo = str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp)
+        NominalComp = int(EquiposR['Pot Compresor'][0])
+        TempComp = float(EquiposR['Temp Compresor'][0])
+        Codigo = 'R,'+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp)
+
         ## Compresor
-        if NominalComp > 30:
-            Texto1 = Libreria.loc[19, 'Texto']
-            Texto2 = Texto1.replace("Z", str(round((NominalComp/ 130 - 1) * 100)))
-            Texto += '\n' + Texto2.replace("Y", str(NominalComp))
-            Codigo += ", " + Libreria.loc[19, 'Codigo']
+        if NominalComp > 50:
+            Codigo += ", CN"
 
         #Calor
             if TempComp > 50:
-                Texto1 =  Libreria.loc[14, 'Texto']
-                Texto = Texto1.replace("X", str(EquiposRefri.loc[i,'Temp Compresor']))
-                Texto += '\n'+Texto
-                Codigo +=',  '+ Libreria.loc[14, 'Codigo']
+                Codigo +=', TM'
 
         #Ruido
             if 'ruido' in str(EquiposR['Prob Comp']):
-                Texto += '\n'+Libreria.loc[15, 'Texto']
-                Codigo +=',  '+ Libreria.loc[15, 'Codigo']
+                Codigo +=', RU'
 
         #Ventilador
             if 'ventilador' in str(EquiposR['Prob Comp']):
-                Texto += '\n'+Libreria.loc[16, 'Texto']
-                Codigo +=",  "+ Libreria.loc[16, 'Codigo']
+                Codigo +=", VE"
 
-        # Ventilador
+            if 'encerrado' in str(EquiposR['Ventilacion']):
+                Codigo +=", VN"
+
+        # Suciedad
             if 'suciedad' in str(EquiposR['Prob Comp']):
-                Texto += '\n'+Libreria.loc[17, 'Texto']
-                Codigo += ",  "+Libreria.loc[17, 'Codigo']
+                Codigo += ", SU"
         # Viejo
             if 'viejo' in str(EquiposR['Prob Comp']):
-                Texto = '\n'+Texto + Libreria.loc[18, 'Texto']
-                Codigo += ",  "+Libreria.loc[18, 'Codigo']
-
-
-        #**Encendido constante
-        # if 'abierta' in str(EquiposR['Prob Comp']):
-        #     Texto = Libreria.loc[21, 'Texto']
+                Codigo += ", VI"
+        #Cierre
         if EquiposR['Cierre'][0]!= 0:
-            Texto += '\n'+Libreria.loc[20, 'Texto']
-            Codigo += ",  "+Libreria.loc[20, 'Codigo']
-        if EquiposR['Empaques'][0] != 0:
-            Texto += '\n'+Libreria.loc[24, 'Texto']
-            Codigo += ",  "+Libreria.loc[24, 'Codigo']
+
+            Codigo += ", CI"
+
+        if EquiposR['Empaques'][0] != 'si':
+            Codigo += ", EB"
         else:
-            Texto += '\n'+Libreria.loc[23, 'Texto']
-            Codigo += ",  "+Libreria.loc[23, 'Codigo']
-
-        # #Ventilado Refri
-        # if 'encerrado' in EquiposR['Ventilacion'][0]:
-        #     Texto += '\n'+Libreria.loc[25, 'Texto']
-        #     Codigo += ",  "+ Libreria.loc[25, 'Codigo']
-        #     Texto += '\n'+ Libreria.loc[26, 'Texto']
-        #     Codigo += ", "+ Libreria.loc[26, 'Codigo']
-
+            Codigo += ", EM"
 
         #Temperatura interior
         if -10 > EquiposR['Temp Conge'][0] >-14:
-            Texto +=  '\n'+Libreria.loc[27, 'Texto']
-            Codigo += ', ' + Libreria.loc[27, 'Codigo']
+            Codigo += ', TCB'
         if EquiposR['Temp Conge'][0] <-14:
-            Texto += '\n'+ Libreria.loc[28, 'Texto']
-            Codigo += ', ' + Libreria.loc[28, 'Codigo']
+            Codigo += ', TCM'
         # Temperatura interior
 
-
         if 3 >= TempR >= -7:
-            Texto += '\n' + Libreria.loc[29, 'Texto']
-            Codigo += ',  ' + Libreria.loc[29, 'Codigo']
+            Codigo += ', TRB'
         if EquiposR['Temp Refri'][0] < -8:
-            Texto += '\n' + Libreria.loc[30, 'Texto']
-            Codigo += ', ' + Libreria.loc[30, 'Codigo']
+            Codigo += ', TRM'
 
-        #codigo= Codigo+'/'+str(TempR)+'/'+str(TempC)+'/'+ NominalComp + '/'+TempComp
-        marca=EquiposR['Marca'][0]
-        Lib.loc[i,'Marca']=marca
-        Lib.loc[i, 'Lugar'] = 'Cocina'
-        Lib.loc[i, 'Codigo'] = Codigo
-        Lib.loc[i, 'Texto'] = Texto
+    return  Codigo
 
-    return  Lib
 
+def Clasifica(Claves):
+    ClavesSep='N'
+    if pd.notna(Claves):
+        ClavesSep=Claves.split(", ")
+    return ClavesSep[0]
+
+
+def LeeClavesR(Claves):
+    Texto=''
+    lib=libreria2()
+    print(lib)
+    if pd.notna(Claves):
+        ClavesSep=Claves.split(", ")
+        Datos= ClavesSep[1].split("/")
+        TRef=Datos[0]
+        TCong = Datos[1]
+        NomCom=Datos[2]
+        TempCom=Datos[3]
+
+
+        if 'EB' in Claves:
+            Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[12,'E']
+        if 'EM' in Claves:
+            Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[11,'E']
+        if 'TCM' in Claves:
+            Texto= Texto+' '+lib.loc[13,'E']+' '+lib.loc[14,'E']
+            Texto = Texto.replace('[EQQ]', 'congelador')
+        if 'TCB' in Claves:
+            Texto = Texto + ' ' + lib.loc[17, 'E']
+        if 'TRM' in Claves:
+            Texto= Texto+' '+lib.loc[13,'E']+' '+lib.loc[15,'E']
+            Texto = Texto.replace('[EQQ]', 'refrigerador')
+        if 'TRB' in Claves:
+            Texto = Texto + ' ' + lib.loc[18, 'E']
+        if 'CN' in Claves:
+            Texto= Texto+' '+lib.loc[6,'E']
+            Texto= Texto.replace(' [Y]',str(NomCom))
+        if 'TM' in Claves:
+            Texto = Texto + ' ' + lib.loc[1, 'E']
+            Texto = Texto.replace('[TC]', str(TempCom))
+        if 'RU' in Claves:
+            Texto = Texto + ' ' + lib.loc[2, 'E']
+        if 'VE' in Claves:
+            Texto = Texto + ' ' + lib.loc[3, 'E']
+        if 'SU' in Claves:
+            Texto = Texto + ' ' + lib.loc[4, 'E']
+        if 'VI' in Claves:
+            Texto = Texto + ' ' + lib.loc[5, 'E']
+        if 'VN' in Claves:
+            Texto = Texto + ' ' + lib.loc[9, 'E']
+
+    return Texto

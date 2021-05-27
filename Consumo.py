@@ -2,6 +2,7 @@ def calc_consumo(Aparatos):
     consumo = Aparatos['Standby'].copy()
     consumo.dropna(inplace=True)
     consumo.reset_index()
+    print(consumo)
     Total = sum(consumo)
     return Total
 

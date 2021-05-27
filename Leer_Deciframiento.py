@@ -43,7 +43,6 @@ def leer_potencial(Cliente):
     Fugas = Exx[Exx['C'].str.contains('Fuga', regex=False, na=False)]
     EXX   = Exx[~Exx['C'].str.contains('Luces', regex=False,na=False)]
     Aparatos = EXX[~EXX['C'].str.contains('Fuga', regex=False,na=False)]
-    print(Luces)
     return Aparatos,Luces,Fugas
 
 
