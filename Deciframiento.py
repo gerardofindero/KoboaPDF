@@ -309,6 +309,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     return Equipos, Luminarias, Fugas
 
+# FUNCION QUE CREA PESTANA DE EXCEL 'DESCIFRAMIENTO'
+
 def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz):
 
     Luminaria=Luz.copy()
@@ -436,7 +438,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     #Luminarias['Texto'] = 'Luminaria tipo ' + Luminaria['Tecnologia'] + ' en ' + Luminaria['Lugar'].str.lower() + ' (' + Luminaria[
     #    'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' '+Luminaria['Tipytam']+'. Notas: ' + Luminaria['Notas']
 
-    Luminarias['Texto']=Tluz+' '+ Luminaria['TipoyTam']+'  '+ Luminaria['Entrada']
+    Luminarias['Texto']=Tluz #+' '+ Luminaria['TipoyTam']+'  '+ Luminaria['Entrada']
     Luminarias['Claves'] = Luminaria['TipoyTam'] + ' ' + Luminaria['Entrada']
 
     cont=0

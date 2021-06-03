@@ -47,8 +47,8 @@ def Crear_Kobo(NCliente):
     print(Nombre)
     writer = ExcelWriter(Path.home() / 'Desktop' / Nombre , engine='xlsxwriter')
 
-    fila=3
-    filaLib=0
+    fila=3 #ENTENDER SU FUNCION
+    filaLib=0 #ENTENDER SU FUNCION
     for i in range(TotRenglones):
     #i=0
         Nocircuito=i
@@ -98,7 +98,7 @@ def Nombre_Cliente():
     return NCliente
 
 ###################### MAIN  #####################################
-if __name__ == '__main__':
+if __name__ == '__main__': # ENTENDER ESTO
 
     NCliente=Nombre_Cliente()
 
@@ -109,22 +109,22 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='2'
+    Opcion='4'
 
 
-    if Opcion == '1':
+    if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
         print("Creando Lista")
 
     if Opcion == '2':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
         #leer_lista(NCliente)
-        hipervinculos(NCliente)
+        #hipervinculos(NCliente)
         #ConLED, Precio, Link  =BuscarLED()
 
 
 
-    if Opcion == '3':
+    if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
         Pulgadas = 20
         Watts = 80
         kWh = 50
