@@ -518,9 +518,14 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     Luces = luces.copy()
     Luces = Luces.loc[Luces['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Luces.sort_values(by=['L'], inplace=True, ascending=False)
-    TotalC=Luces['K'].sum()
-    TotalP=Luces['L'].sum()
-    TotalD = Luces['M'].sum()
+    TotalC=Luces['K'].sum() # Suma de consumos de lueces en el consumo total de casa (KWh)
+    TotalP=Luces['L'].sum() # Suma de porcentaje total de luces en el consumo total de casa (%)
+    TotalD = Luces['M'].sum() # Suma de costo de luces en el costo total de casa ($)
+    
+    # Se inicializan los conteos de si ya existen focos LED, focos ineficientes y cálculos de ROI
+    conteoled = 1
+    conteoNOled = 1
+    conteoROI = 1
 
 
     if TotalD<=200:
@@ -608,7 +613,8 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         tex= str(luz[13])
         largoTx=(len(tex))
 
-        tex = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16])
+        tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI) # Está usando columnas, no renglones para los índices
+        print(tex)
         #FormulasLuces(luz[0], luz[8], luz[10], ConLED, Precio, DAC):
 
         if len(luzz) < 15:
@@ -1033,10 +1039,19 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
 
 
 def por_A_fugas(Fugas):
-    totalf=len(Fugas)
-    Atacc=Fugas[Fugas['A'].str.contains('Si')]
-    totalA=len(Atacc)
-    porA=totalA/totalf
+    totalF = 1
+    totalA = 1
+    if len(Fugas) ==0 or len(Fugas)==NaN:
+        totalf=0
+    else:
+        totalf=len(Fugas) 
+        Atacc=Fugas[Fugas['A'].str.contains('Si')]
+        totalA=len(Atacc)
+    if totalF == 0:
+        porA = 0
+    else:
+        totalf =1
+        porA=totalA/totalf
     return porA
 
 def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
