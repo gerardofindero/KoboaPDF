@@ -13,7 +13,6 @@ import Estilos
 import logging
 import pandas as pd
 import numpy as np
-from pathlib import Path
 from LibreriaLED import variablesLuces
 from LibreriaRefris import LeeClavesR,Clasifica
 from LibreriaTV import LeeClavesTV,Clasifica
@@ -21,14 +20,9 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from Caritas import definircarita
 
-
-
-
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
                     datefmt='%Y-%m-%d %H:%M:%S')
-
-
 def fonts():
     pdfmetrics.registerFont(TTFont('Montserrat', 'Fonts\Montserrat-Light.ttf'))
     pdfmetrics.registerFont(TTFont('Montserrat-N', 'Fonts\Montserrat-Regular.ttf'))
@@ -46,7 +40,6 @@ def set_fonts(canvas, text, color, type, size, lead=None):
             canvas.setFillColorRGB(color[0], color[1], color[2], color[3])
         except:
             canvas.setFillColorRGB(color[0], color[1], color[2])
-
     text.setFont(f'Montserrat-{type.upper()}', size)
     if lead:
         text.setLeading(lead)
@@ -116,7 +109,6 @@ def atacable_o_no(canvas, idx, pos_x, pos_y):
     negro = [0, 0, 0]
     mensaje = {0: "ATACABLE", 1: "NO ATACABLE",2:"ATACABLE CON RESERVA"}
     espacio = 16
-
     for indx, letra in enumerate(mensaje[idx]):
         texto(letra, 14, blanco, 'Montserrat-B', width * (pos_x + .346), height * (pos_y + 0.28) - espacio * indx,
               canvas)
@@ -124,16 +116,13 @@ def atacable_o_no(canvas, idx, pos_x, pos_y):
 
 def detalles_fugas(canvas, width, height, zona, idx, costo, consumo,porciento):
     """ Crea una pagina nueva para las fugas """
-
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     azul_2 = [2 / 255, 142 / 255, 200 / 255]
     gris = [65 / 255, 65 / 255, 65 / 255]
     blanco = [1, 1, 1]
-
     largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE COSNUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
     canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
     texto('DESCIFRAMIENTO DE PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
-
     largo_titulo = pdfmetrics.stringWidth(zona.upper(), 'Montserrat-B', 12)
     if len(zona)< 35:
         parrafo_frame(f"<b>{zona.upper()}</b>", Estilos.titulos, 60, 500, .8, .25,canvas)
@@ -141,7 +130,6 @@ def detalles_fugas(canvas, width, height, zona, idx, costo, consumo,porciento):
         parrafo_frame(f"<b>{zona.upper()}</b>", Estilos.titulos3, 60, 500, .9, .25, canvas)
     if len(zona) > 55:
         parrafo_frame(f"<b>{zona.upper()}</b>", Estilos.titulos4, 60, 500, .9, .25, canvas)
-
     if largo_titulo > 150:
         extra = 40
     elif largo_titulo > 300:
@@ -149,33 +137,26 @@ def detalles_fugas(canvas, width, height, zona, idx, costo, consumo,porciento):
     else:
         extra = 0
     canvas.drawImage(f"Imagenes/icono_fuga.png", 60, height - 310 - extra, width=115, height=115)
-
     margen = 50
     if len(str(costo)) < 4:
         tamano_dinero = 125
     else:
         tamano_dinero = 100
-
     largo_precio = pdfmetrics.stringWidth('{:,}'.format(costo), 'Montserrat-B', tamano_dinero)
     largo_signo = pdfmetrics.stringWidth('$', 'Montserrat-B', 70)
     texto('{:,}'.format(costo), tamano_dinero, azul_2, 'Montserrat-B', width - margen - largo_precio, height * 0.5 + 60,
           canvas)
-
     texto('$', 70, azul_2, 'Montserrat-B', width - margen - largo_precio - largo_signo, height * 0.5 + 60, canvas)
-
     largo_cons = pdfmetrics.stringWidth('{:,}'.format(porciento), 'Montserrat-B', 30)
     largo_kwh = pdfmetrics.stringWidth('kWh', 'Montserrat-B', 30)
     texto('{:,}'.format(porciento), 15, azul_2, 'Montserrat-B', width - margen - largo_cons - largo_kwh - 35,
           height * 0.5 + 30, canvas)
     texto('% de tu consumo', 15, azul_2, 'Montserrat-B', width - margen - largo_kwh-55, height * 0.5 + 30, canvas)
-
-
     largo_cons = pdfmetrics.stringWidth('{:,}'.format(consumo), 'Montserrat', 30)
     largo_kwh = pdfmetrics.stringWidth('kWh', 'Montserrat', 30)
     texto('{:,}'.format(consumo), 20, azul_2, 'Montserrat', width - margen - largo_cons - largo_kwh + 35,
           height * 0.5 + 0, canvas)
     texto('kWh', 20, azul_2, 'Montserrat', width - margen - largo_kwh+28, height * 0.5 + 0, canvas)
-
     factor = .25
     w, h = Image.open(f"Imagenes/Figuras/Figuras1-0{idx + 1}.png").size
     pos_x = .55
@@ -190,18 +171,14 @@ def Enxyy(canvas):
         canvas.setFont("Helvetica", 5)
         canvas.drawString(i, 1, str(i))
         canvas.line(i, 0, i, 1000)
-
-
     for i in range(0,1000,10):
         canvas.setFont("Helvetica", 5)
         canvas.drawString(1, i, str(i))
         canvas.line(0, i, 600, i)
-
     canvas.showPage()
 
 def portada(canvas, width, height):
     """ Portada del documento """
-
     canvas.drawImage('Imagenes\Figuras\Portada.png', 0, 0, width=width, height=height)
     locale.setlocale(locale.LC_TIME, '')
     today = date.today()
@@ -218,20 +195,12 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     AMA_1 = [235 / 255, 200 / 255, 0 / 255]
     Azul = (0 / 255, 76 / 255, 101 / 255)
     width, height = A4
-
-
-
-    DAC = 5.92
-
     cobrada    =  float(consumo)
-
     consumo    = SolarS.loc['Medidor','Total']
     costoCob = consumo * DAC
     costo   = float(costo)
     totalSemana= SolarS.loc['ProduccionSem','Total']
     totalBimestre= SolarS.loc['ProduccionBim','Total']
-
-
     factor=0.5
     x=0
     y=80
@@ -239,34 +208,24 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     canvas.drawImage(f"Imagenes/Figuras/Psolar.png", x + 55, y + 5, w * factor, h * factor)
     w, h = Image.open(f"Imagenes/Figuras/PsolarA.png").size
     canvas.drawImage(f"Imagenes/Figuras/PsolarA.png", x + 10, y + 450, w * factor, h * factor)
-    #parrafo_frame({}, Estilos.negro, 49, 50, .4, .5)
-
-
-
-
     parrafo_frame("<b>${:,}</b>".format(round(costoCob)), Estilos.azul_1_grande, x + 430, y + 380, .15, .15, canvas)
     parrafo_frame("<b>${:,}</b>".format(round(costo)), Estilos.azul_1_grande, x + 290, y + 380, .15, .15, canvas)
     parrafo_frame("<b>{:,}kWh</b>".format(round(cobrada-totalBimestre)), Estilos.azul_1_grande, x + 430, y + 415, .15, .15, canvas)
     parrafo_frame("<b>{:,}kWh</b>".format(round(cobrada)), Estilos.azul_1_grande, x + 290, y + 415, .15, .15, canvas)
-
     parrafo_frame("<b>{:,}kWh</b>".format(round(totalSemana)), Estilos.azul_1_grande1, 410, 335, .2, .15, canvas)
     parrafo_frame("<b>{:,}kWh</b>".format(round(totalBimestre)), Estilos.azul_1_grande1, 410, 285, .2, .15, canvas)
-
     parrafos = []
     notasA = 'Tus paneles Solares están produciendo lo suficiente pero creemos que podrían tener una mayor producción, ' \
              'algún factor no deja sacarles el máximo provecho'
     notasB = 'Tus paneles Solares tienen un buen desempeño, producen la energía esperada tomando en cuenta la temporada del año'
     notasC = 'Tus paneles solares se encuentran muy por debajo de lo esperado, algún factor no deja que funcionen correctamente'
 
-
     parrafos.append(Paragraph(notasA, Estilos.azul_1_grande2))
     frame = Frame(60, 450, 190, 200)
     frame.addFromList(parrafos, canvas)
-
     notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F1'])+'W'
     notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F1']) +'kWh'
     notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F1']) +'kWh'
-
     notasBA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F2'])+'W'
     notasBB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F2']) +'kWh'
     notasBC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F2']) +'kWh'
@@ -276,27 +235,21 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
         notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F3']) +'kWh'
         notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F3']) +'kWh'
 
-
     parrafos.append(Paragraph(notasAA, Estilos.azul_2_chico2))
     frame = Frame(300, 150, 190, 200)
     frame.addFromList(parrafos, canvas)
-
     parrafos.append(Paragraph(notasAB, Estilos.azul_2_chico2))
     frame = Frame(300, 120, 190, 200)
     frame.addFromList(parrafos, canvas)
-
     parrafos.append(Paragraph(notasAC, Estilos.azul_2_chico2))
     frame = Frame(300, 90, 190, 200)
     frame.addFromList(parrafos, canvas)
-
     parrafos.append(Paragraph(notasBA, Estilos.azul_2_chico2))
     frame = Frame(300, 20, 190, 200)
     frame.addFromList(parrafos, canvas)
-
     parrafos.append(Paragraph(notasBB, Estilos.azul_2_chico2))
     frame = Frame(300, -10, 190, 200)
     frame.addFromList(parrafos, canvas)
-
     parrafos.append(Paragraph(notasBC, Estilos.azul_2_chico2))
     frame = Frame(300, -40, 190, 200)
     frame.addFromList(parrafos, canvas)
@@ -321,25 +274,20 @@ def intro(canvas, width, height, datos=5287899):
     canvas.rect(0, 0, width, height, fill=1, stroke=False)
     canvas.drawImage("Imagenes\Spark1_blueBG.png", width - 70, height - 65, width=40, height=40)
     costado(canvas, 'white')
-
     text = canvas.beginText(60, height * 0.5 + 150)
     set_fonts(canvas, text, (1, 1, 1), 'B', 36)
     text.textLines('DESCIFRAMIENTO \n'
                    + 'DE CONSUMO Y \n'
                    + 'PÉRDIDAS DE ENERGÍA')
     canvas.drawText(text)
-
     with open('Textos\introduccion_1.txt', 'r', encoding='utf-8') as file:
         parrafo_1 = file.read()
     with open('Textos\introduccion_2.txt', 'r', encoding='utf-8') as file:
         parrafo_2 = file.read()
-
     factor_w = .3
     factor_h = .1
-
     parrafo(parrafo_1.format(datos), Estilos.base, factor_w, factor_h, .1, .48, canvas)
     parrafo(parrafo_2, Estilos.base, factor_w, factor_h, .1, .14, canvas)
-
     mensajes = {1: 'Consumo óptimo', 2: 'Consumo promedio', 3: 'Consumo innecesario'}
     for i in range(3):
         text = canvas.beginText(60 + 36, height * 0.5 - (12 * (17 + i * 3)))
@@ -359,21 +307,14 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
     ahorro_paneles=round(NoPaneles*13500)
     co2=round(ahorro_bimestral*0.52*6)
     arboles=round(co2*0.015)
-
     nuevo_consumo= consumo_bimestral-ahorro_bimestral
     costo_bimestral=float(costo)
-
     actual = consumo_bimestral * tarifa
-
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
-
     canvas.line(60, height - 50, 400, height - 50)
-
     texto('POTENCIAL DE AHORRO', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
-
     parrafo('Al momento de implementar las recomendaciones de este reporte, tu consumo energético sería de:',
             Estilos.base, .7, .2, .1, .7, canvas)
-
     asterisco = "*"
     if nuevo_consumo < 500:
         asterisco = "**"
@@ -385,49 +326,34 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
             nuevo = (150*0.94+130 + (nuevo_consumo - 150) * 1.14)
         elif nuevo_consumo > 280:
             nuevo = (150*0.94+130*1.14 + (nuevo_consumo - 280) * 3.35)
-
         nuevo = int(nuevo)
     else:
-
         nuevo = int(nuevo_consumo * tarifa)
-
     factor = .25
     if consumo_bimestral > 1000:
         w, h = Image.open(f"Imagenes/Figuras/barra_consumo1.png").size
     else:
         w, h = Image.open(f"Imagenes/Figuras/barra_consumo.png").size
-
     w = w * factor
     h = h * factor
     x = (width - w) / 2
     y = height * 0.6
-
     if consumo_bimestral > 1000:
         Mx = int(round(consumo_bimestral +100,-2))
-        ##inicio:70 final:480
-
         x2 =  70+(consumo_bimestral*410/Mx)
         x1=   70+(nuevo_consumo*410/Mx)
-
         canvas.drawImage(f"Imagenes/Figuras/barra_consumo1.png", x, y - 20, w, h)
         texto('500 kWh', 8, (0, 0, 0), 'Montserrat-B', 220, height - 325, canvas)
     else:
         Mx = 1000
         x2 = 70 + (consumo_bimestral * 410 / Mx)
         x1 = 70 + (nuevo_consumo * 410 / Mx)
-
         canvas.drawImage(f"Imagenes/Figuras/barra_consumo.png", x, y - 20, w, h)
         texto('500 kWh', 8, (0, 0, 0), 'Montserrat-B', 270, height - 325, canvas)
-
     diff=consumo_bimestral- nuevo_consumo
-
-
     texto('0 kWh', 8, (0,0,0), 'Montserrat-B', 85, height-325 , canvas)
-
     texto('Tarifa DAC', 8, (20, 0, 0), 'Montserrat-B', 265, height - 305, canvas)
     texto(str(round(Mx,-1)) +'kWh', 8, (0, 0, 0), 'Montserrat-B', 480, height - 325, canvas)
-
-
     factor = .5
     w_, h_ = Image.open(f"Imagenes/Figuras/rayo.png").size
     w_ = w_ * factor
@@ -446,12 +372,9 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
                       canvas)
         parrafo_frame("<b>${:,}</b>".format(round(nuevo_consumo * tarifa), asterisco=asterisco), Estilos.azul_1_grande,
                       x1-50, y - 191, .15, .15, canvas)
-
     parrafo_frame("<b>Tu consumo energético actual:</b>", Estilos.azul_1_chico, x2,  y - 130, .15, .1, canvas)
     parrafo_frame("<b>{:,} kWh</b>".format(round(consumo_bimestral)), Estilos.azul_1_grande,x2, y - 205, .15, .15, canvas)
     parrafo_frame("<b>${:,}</b>".format(round(costo_bimestral), asterisco=asterisco), Estilos.azul_1_grande, x2, y - 191, .15, .15, canvas)
-
-
     factor = .22
     w, h = Image.open(f"Imagenes/Figuras/Figuras-06.png").size
     x = (width - w * factor) / 2
@@ -459,20 +382,15 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
     #canvas.drawImage(f"Imagenes/Figuras/Figuras-06.png", x, y, w * factor, h * factor)
     w, h = Image.open(f"Imagenes/Figuras/1_cuadro.png").size
     canvas.drawImage(f"Imagenes/Figuras/1_cuadro.png", x+5, y+5, w * factor, h * factor)
-
     factor = .25
     w, h = Image.open(f"Imagenes/Figuras/1_potencial.png").size
     canvas.drawImage(f"Imagenes/Figuras/1_potencial.png", x-110, y+130, w * factor, h * factor)
-
     w, h = Image.open(f"Imagenes/Figuras/1_recibo2.png").size
     canvas.drawImage(f"Imagenes/Figuras/1_recibo2.png", x+150, y+110, w * factor, h * factor)
-
     factor = .3
     w, h = Image.open(f"Imagenes/Figuras/1_barra_02.png").size
     canvas.drawImage(f"Imagenes/Figuras/1_barra_02.png", x + 210, y + 60, w * factor, h * factor)
-
     x=x-80
-
     parrafo_frame("Potencial de ahorro a corto plazo:", Estilos.centrado, x , y - 7, .22, .3,canvas)
     parrafo_frame(f"Tu nuevo recibo en tarifa {tipo_tarifa}:", Estilos.centrado, x + 220, y - 10, .3, .3,canvas)
 
@@ -490,9 +408,6 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
     parrafo_frame(
         "Lo que equivale a <b>{:,} árboles</b> plantados que absorben esta cantidad de CO<sub>2</sub>E a lo largo de 30 años.".format(
             round(arboles)), Estilos.chica, x + 300, y - 105, .20, .2,canvas)
-
-
-
 
     if nuevo_consumo < 500:
         parrafo_frame('&nbsp; Tu nuevo recibo en &nbsp; &nbsp; tarifa subsidiada sería de:', Estilos.centrado_chico,
@@ -512,12 +427,8 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
             "A pesar de implementar nuestras recomendaciones, tu consumo sigue estando por encima del límite de tarifa Doméstica de Alto Consumo."
             " Sin embargo, <b>te estarías ahorrando ${:,} en paneles solares</b>".format(ahorro_paneles), Estilos.chica,
             x + 100, y - 75, .33, .2,canvas)
-
-
     costado(canvas)
     canvas.showPage()
-
-
 
 def iluminacion(canvas, width, height, luces,Tarifa):
     """ Se crean las páginas en donde se muestra el consumo de luz a detalle """
@@ -527,12 +438,10 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     TotalC=Luces['K'].sum() # Suma de consumos de lueces en el consumo total de casa (KWh)
     TotalP=Luces['L'].sum() # Suma de porcentaje total de luces en el consumo total de casa (%)
     TotalD = Luces['M'].sum() # Suma de costo de luces en el costo total de casa ($)
-    
     # Se inicializan los conteos de si ya existen focos LED, focos ineficientes y cálculos de ROI
     conteoled = 1
     conteoNOled = 1
     conteoROI = 1
-
 
     if TotalD<=200:
         notasA = 'Tu gasto en iluminación es óptimo  '
@@ -546,16 +455,13 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         notasA = 'Tu gasto en iluminación es muy alto  '
         hh=110
         carita=3
-
     #luces.sort_values
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     azul_2 = [2 / 255, 142 / 255, 200 / 255]
     gris = [65 / 255, 65 / 255, 65 / 255]
     blanco = [1, 1, 1]
-
     gristabla = colors.Color(red=(65 / 255), green=(65 / 255), blue=(65 / 255))
     azul2tabla = colors.Color(red=(2 / 255), green=(142 / 255), blue=(200 / 255))
-
     largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 'Montserrat-B', 12)
     canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
     texto('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
@@ -609,7 +515,6 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     canvas.line(205, 100, 205, 315)
     altura=266
     i=0
-    largo=(len(Luces))
     Luces['D']=Luces['D'].str.replace('Luces ','')
     for index, luz in Luces.iterrows():
         i=i+1
@@ -618,9 +523,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         cost='$ '+str(round(luz[12]))
         tex= str(luz[13])
         largoTx=(len(tex))
-
         tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI) # Está usando columnas, no renglones para los índices
-        #FormulasLuces(luz[0], luz[8], luz[10], ConLED, Precio, DAC):
 
         if len(luzz) < 15:
             parrafos.append(Paragraph(luzz, Estilos.Lumi))
@@ -646,16 +549,12 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             parrafos.append(Paragraph(luzz, Estilos.Lumi5))
             frame = Frame(72, altura - 5, 80, 60)
             frame.addFromList(parrafos, canvas)
-
-
         parrafos.append(Paragraph(porc, Estilos.cuadros_bajo))
         frame = Frame(160, altura, 90, 50)
         frame.addFromList(parrafos, canvas)
-
         parrafos.append(Paragraph(cost, Estilos.cuadros_bajo))
         frame = Frame(210, altura, 90, 50)
         frame.addFromList(parrafos, canvas)
-
         parrafoss=[]
         if largoTx<45:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
@@ -672,12 +571,10 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         elif largoTx > 350:
             parrafoss.append(Paragraph(tex, Estilos.Lumi4))
             frame = Frame(258, altura + 5, 295, 65)
-
         frame.addFromList(parrafoss, canvas)
         canvas.line(70, altura + 51, 548, altura + 51)
         altura=altura-50
         cont=0
-
         if i==4 or i==16 or i==25:
 
             largo= len(luces)-4
@@ -694,18 +591,15 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             if largo > 4:
                 canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, largo*50)
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
-
             else:
 
                 canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, (altura - ((largo) * 50) + 57), 480, (largo) * 55)
                 canvas.line(254, altura-((largo-4)*33)-15, 254, altura-((largo-4)*33)-17 + (largo-4)*50+10)
                 canvas.line(154,altura-((largo-4)*33)-15, 154, altura-((largo-4)*33)-17 + (largo-4)*50+10)
                 canvas.line(205, altura-((largo-4)*33)-15, 205, altura-((largo-4)*33)-17 + (largo-4)*+50+10)
-
             texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
             texto('Continuación...', 12, gris, 'Montserrat-B', 60, height - 240, canvas)
             canvas.setLineWidth(.3)
-
     costado(canvas)
     canvas.showPage()
     return carita
@@ -721,6 +615,26 @@ def Dicc_Aparatos(nombre):
             nombre_ = a
     return nombre_
 
+
+
+def Recomendaciones(Claves,consumo,DAC,Uso):
+    Consejos=''
+    ClavesS = Claves.split(',')
+    if ClavesS[0] == 'R':
+        Consejos = LeeClavesR(Claves)
+    if ClavesS[0] == 'C':
+        Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
+    if ClavesS[0] == 'L' or ClavesS[0] == 'S':
+        Consejos = LeeClavesLavaSeca(Claves, consumo)
+    if Claves[0] == 'P':
+        Consejos = leerConsumoPlanchas(consumo)
+
+    return Consejos
+
+
+
+
+
 def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     """ Se crean las páginas en donde se muestran los consumos que ocupan una página completa """
 
@@ -729,20 +643,15 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     gris = [65 / 255, 65 / 255, 65 / 255]
     blanco = [1, 1, 1]
     for index,aparato in aparatosG.iterrows():
-    #for aparato in desciframiento.values():
         nombre = aparato[3]
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
         dinero =  round(aparato[12])
-        anual = dinero*6
+        Uso = aparato[7]
         notas = aparato[13]
-        codigos = aparato[16]
-        Eq=Clasifica(codigos)
-        uso = aparato[7]
         Claves=aparato[16]
         nombre_=Dicc_Aparatos(nombre)
-
         parrafos = []
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
@@ -750,24 +659,19 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         if len(nombre)<20:
             texto(nombre.upper(), 36, azul_1, 'Montserrat-B', 60, height - 130, canvas)
         elif len(nombre)>=20 and len(nombre)<28:
-            #texto(nombre.upper(), 33, azul_1, 'Montserrat-B', 60, height - 140, canvas)
             parrafos.append(Paragraph(nombre.upper(), Estilos.titulos2))
             frame = Frame(60, 620, 550, 150)
             frame.addFromList(parrafos, canvas)
         elif len(nombre)>=28:
-            #texto(nombre.upper(), 33, azul_1, 'Montserrat-B', 60, height - 140, canvas)
             parrafos.append(Paragraph(nombre.upper(), Estilos.titulos3))
             frame = Frame(60, 620, 550, 150)
             frame.addFromList(parrafos, canvas)
-
         try:
             canvas.drawImage(f"Imagenes/icono_{nombre_}.png", 70, height - 285, width=115, height=115)
         except:
             canvas.drawImage(f"Imagenes/icono_pendiente.png", 70, height - 285, width=115, height=115)
-
         ##Carita
         canvas.drawImage(f"Imagenes/cara_{carita}_c.png", 100, 470, width=55, height=55)
-
         margen = 50
         if len(str(round(dinero))) < 4:
             tamano_dinero = 125
@@ -778,41 +682,31 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         texto('{:,}'.format(dinero), tamano_dinero, azul_2, 'Montserrat-B', width - margen - largo_precio,
               height * 0.6 + 60, canvas)
         texto('$', 70, azul_2, 'Montserrat-B', width - margen - largo_precio - largo_signo, height * 0.6 + 60, canvas)
-
         largo_cons = round(pdfmetrics.stringWidth('{:,}'.format(consumo), 'Montserrat-B', 30))
         largo_kwh  = pdfmetrics.stringWidth('kWh', 'Montserrat-B', 30)
         texto('{:,}'.format(consumo), 30, azul_2, 'Montserrat-B', width - margen - largo_cons - largo_kwh - 5,
               height * 0.6 + 20, canvas)
         texto('kWh', 30, azul_2, 'Montserrat-B', width - margen - largo_kwh, height * 0.6 + 20, canvas)
-
         porcentaje = str(round(porcentaje * 100, 1))
         largo_pct = pdfmetrics.stringWidth(porcentaje, 'Montserrat-N', 25)
         largo_sign = pdfmetrics.stringWidth('% de tu consumo', 'Montserrat-N', 25)
         texto(porcentaje, 25, gris, 'Montserrat-N', width - margen - largo_pct - largo_sign, height * 0.6- 10, canvas)
         texto('% de tu consumo', 25, gris, 'Montserrat-N', width - margen - largo_sign, height * 0.6 - 10, canvas)
-
         parrafos = []
         if notas == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
-
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
-
-        #drawing = svg2rlg('Imagenes/Figuras/Figuras-03.svg')
-        #renderPM.drawToFile(drawing, , 'PNG')
         canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
         texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
-##### Escribir en cuadro recomendaciones
-        # Consejos='=)'
-        # if Eq=='R':
-        #     Consejos = LeeClavesR(codigos)
-        # if Eq=='C':
-        #     Consejos = LeeClavesTV(codigos,uso,consumo,tarifa)
 
-        Consejos=LeeClavesR(Claves)
+# Automatizacion ######################
+        Consejos=Recomendaciones(Claves,consumo,tarifa,Uso)
+# Automatizacion  ######################
+
 
         #Consejos='hola =)'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
@@ -822,12 +716,11 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)
-
         costado(canvas)
         canvas.showPage()
 
 
-def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
+def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     """ Se crean las hojas con aparatos de consumo bajo """
     Medio=False
     azul_2 = [2 / 255, 142 / 255, 200 / 255]
@@ -836,28 +729,18 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
     i=0
     altura = 650
     for index,aparato in aparatosM.iterrows():
-
         nombre = aparato[3]
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
         dinero = round(aparato[12])
-        anual = dinero*6
-        nota = aparato[13]
         Claves= aparato[16]
         Uso=0
-        DAC=6.1
-
-        largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',
-                                                  12)
+        largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
-        #cuatro_lineas(canvas)
         costado(canvas)
-
         nombre_ = Dicc_Aparatos(nombre)
-
-
         ##Imagen y nombre
         if len(nombre)< 35:
             texto(nombre.upper(), 25, azul_1, 'Montserrat-B', 60, altura+25, canvas)
@@ -876,73 +759,48 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
             parrafos.append(Paragraph(nombre.upper(), Estilos.titulos6))
             frame = Frame(60, altura-35 , 500, 100)
             frame.addFromList(parrafos, canvas)
-
-
-
-
-
         try:
             canvas.drawImage(f"Imagenes/icono_{nombre_}.png", 60, altura-80, width=65,
                              height=65, mask='auto')
         except:
             canvas.drawImage(f"Imagenes/icono_pendiente.png", 60, altura-80, width=65,
-                             height=65, mask='auto')
-
-
+                           height=65, mask='auto')
         ##Cuadros
         canvas.drawImage(f"Imagenes/Figuras/bannerG_{carita}.png", 60, altura-255,
                          width=width - 120, height=160)
-
         #Cara
         canvas.drawImage(f"Imagenes/caraB_{carita}.png", 75, altura-150,
                          width=35, height=35,mask='auto')
-
-
         largo_cifra = pdfmetrics.stringWidth('{:,}'.format(dinero), 'Montserrat-B', 80)
         largo_signo = pdfmetrics.stringWidth('$', 'Montserrat-B', 40)
-
-        ajust=0.49
         ## Dinero
         texto('$', 40, azul_2, 'Montserrat-B', width - 60 - largo_cifra - largo_signo,
               altura-45, canvas)
 
         texto('{:,}'.format(dinero), 80, azul_2, 'Montserrat-B', width - 60 - largo_cifra,
               altura-45, canvas)
-
         ##Prociento
         largo_cifra = pdfmetrics.stringWidth('{:.1%}'.format(porcentaje) + ' de tu consumo', 'Montserrat-B', 15)
-
         texto('{:.1%}'.format(porcentaje) + ' de tu consumo', 15, azul_2, 'Montserrat-B', width - 55 - largo_cifra,
               altura-70, canvas)
-
         ##KWH
         largo_cifra = pdfmetrics.stringWidth('{:,}'.format(consumo) + ' kWh', 'Montserrat-L', 15)
-
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura-90, canvas)
-
         parrafos = []
-
-        ClavesS = Claves.split(',')
-        if ClavesS[0]=='C':
-            nota = LeeClavesTV(Claves, Uso, consumo, DAC)
-        if ClavesS[0] == 'L' or ClavesS[0] == 'S':
-            nota = LeeClavesLavaSeca(Claves, consumo)
-        if Claves[0]=='P':
-            nota = leerConsumoPlanchas(consumo)
-
+        # Automatizacion ######################
+        if not pd.isna(Claves):
+            nota = Recomendaciones(Claves, consumo, tarifa, Uso)
+        # Automatizacion  ######################
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
             parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-
         frame = Frame(120, altura-270, width * 0.7, height * 0.2)
         frame.addFromList(parrafos, canvas)
-
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)
-
         altura=altura-320
         i = i + 1
         Medio=True
@@ -951,41 +809,30 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
             i=0
             altura=660
             Medio=False
-
-
-
     if i%2 != 0:
         altura=490-400
         i=2
     else:
         altura = 490
         i=0
-
     if Medio:
         largo=len(aparatosC)+1
     else:
         largo = len(aparatosC)-3
-
     for index, aparato in aparatosC.iterrows():
         nombre = aparato[3]
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
         dinero = round(aparato[12])
-        anual = dinero * 6
         nota = aparato[13]
         Claves =aparato[16]
-
-        largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',
-                                                  12)
+        largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
         # cuatro_lineas(canvas)
         costado(canvas)
-
         nombre_ = Dicc_Aparatos(nombre)
-
-
         ##Imagen y nombre
         if len(nombre)<35:
             texto(nombre.upper(), 23, azul_1, 'Montserrat-B', 60,altura+190, canvas)
@@ -995,56 +842,37 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
             texto(nombre.upper(), 15, azul_1, 'Montserrat-B', 60, altura + 190, canvas)
         elif len(nombre)>=60:
             texto(nombre.upper(), 13, azul_1, 'Montserrat-B', 60, altura + 190, canvas)
-
         try:
             canvas.drawImage(f"Imagenes/icono_{nombre_}.png", 60, altura+90, width=65,
                              height=65, mask='auto')
         except:
             canvas.drawImage(f"Imagenes/icono_pendiente.png", 60, altura+90, width=65,
                              height=65, mask='auto')
-
         ##Cuadros
         canvas.drawImage(f"Imagenes/Figuras/bannerC_{carita}.png", 60, altura,
                          width=width - 120, height=70)
-
         # Cara
         canvas.drawImage(f"Imagenes/caraB_{carita}.png", 75,altura+30,
                          width=35, height=35, mask='auto')
-
         largo_cifra = pdfmetrics.stringWidth('{:,}'.format(dinero), 'Montserrat-B', 80)
         largo_signo = pdfmetrics.stringWidth('$', 'Montserrat-B', 40)
-
-        ajust = 0.49
         ## Dinero
         texto('$', 40, azul_2, 'Montserrat-B', width - 60 - largo_cifra - largo_signo,
               altura+125, canvas)
-
         texto('{:,}'.format(dinero), 80, azul_2, 'Montserrat-B', width - 60 - largo_cifra,
               altura+125, canvas)
-
         ##Prociento
         largo_cifra = pdfmetrics.stringWidth('{:.1%}'.format(porcentaje) + ' de tu consumo', 'Montserrat-B', 15)
-
         texto('{:.1%}'.format(porcentaje) + ' de tu consumo', 15, azul_2, 'Montserrat-B', width - 55 - largo_cifra,
              altura+100, canvas)
-
         ##KWH
         largo_cifra = pdfmetrics.stringWidth('{:,}'.format(consumo) + ' kWh', 'Montserrat-L', 15)
-
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura+80, canvas)
-
-        ClavesS = 'N'
-        if pd.notna(Claves):
-            ClavesS = Claves.split(",")
-
-        if ClavesS[0]=='C':
-            nota = LeeClavesTV(Claves, Uso, consumo, DAC)
-        elif ClavesS[0] == 'L':
-            nota = LeeClavesLavaSeca(Claves, consumo)
-        elif ClavesS[0] == 'S':
-            nota = LeeClavesLavaSeca(Claves, consumo)
-
+        # Automatizacion ######################
+        if not pd.isna(Claves):
+            nota = Recomendaciones(Claves, consumo, tarifa, Uso)
+        # Automatizacion  ######################
         parrafos = []
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
@@ -1052,22 +880,18 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
             parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
         frame = Frame(120, altura-30, width * 0.7, height * 0.12)
         frame.addFromList(parrafos, canvas)
-
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780 ,
                          width=40, height=40)
         altura = altura - 220
         i = i + 1
-
         if i == 3 and largo >0 :
             canvas.showPage()
             i = 0
             altura=490
             largo=largo-3
         Medio=False
-
     canvas.showPage()
-
 
 def por_A_fugas(Fugas):
     totalf=len(Fugas)
@@ -1078,7 +902,6 @@ def por_A_fugas(Fugas):
 
 def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
     """ Pagina de color azul antes de presentar los resultados."""
-
     canvas.setFillColorRGB(96 / 255, 192 / 255, 215 / 255)
     canvas.rect(0, 0, width, height, fill=1, stroke=False)
     canvas.drawImage("Imagenes\Spark1_blueBG.png", width - 70, height - 65, width=40, height=40)
@@ -1093,7 +916,6 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
                   " al bimestre, son perdidas por algún tipo de fuga, como: <br/><br/>"\
                 "1° Fuga de equipo <br/><br/>2° Fuga de circuito <br/><br/>3° Fuga de Stand-by<br/><br/>"\
                 f"Aproximadamente el <b>{round(atacables * 100, 1):,}%</b> de estas pérdidas son atacables y tienen un gran potencial de ahorro."
-
     parrafo_frame(mensaje, Estilos.negro, 49, 50, .4, .5,canvas)
     mensaje = "Para identificar el nivel de ahorro de las diferentes pérdidas de energía que detectamos, te reforzaremos visualmente con los siguientes iconos:"
     canvas.drawImage(f"Imagenes/Figuras/Fugas_cuadro.png",300, 290,  width=220,height=85, mask='auto')
@@ -1111,19 +933,14 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa):
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares=col_one_list = LFugas['E'].tolist()
     #print(Lugares)
-
-
     for lista in Lugares:
         fugas= fugas_.loc[fugas_['E']==lista]
         ata= fugas.loc[fugas['A']=='Si']
         noata=fugas.loc[fugas['A']=='No']
         atar=fugas.loc[fugas['A']=='R']
-
         fugasenhoja(canvas, width, height, ata, lista,0,True)
         fugasenhoja(canvas, width, height, noata, lista,1,False)
         fugasenhoja(canvas, width, height, atar, lista,2,True)
-
-
 
 def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
 
@@ -1135,7 +952,6 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
         altura = 350
         canvas.line(50, altura + 50, 300, altura + 50)
         ind=1
-
         for index, fugat in atac.iterrows():
             if ind > 4:
                 canvas.showPage()
@@ -1145,27 +961,21 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
                 detalles_fugas(canvas, width, height, lista, idx, costoT, consumoT, porcientoT)
                 altura = 350
                 canvas.line(50, altura + 50, 300, altura + 50)
-
                 parrafos = []
                 notasA = 'Continuación...'
                 parrafos.append(Paragraph(notasA, Estilos.azul_2_chico2))
                 frame = Frame(45, altura+30, 100, 50)
                 frame.addFromList(parrafos, canvas)
-
-
                 ind = 1
-
             Nfuga = fugat[3]
             costo = round(fugat[12])
             consumo = round(fugat[10], 1)
             porciento = round(fugat[11] * 100, 1)
             potencia = fugat[9]
             parrafos = []
-
             parrafos.append(Paragraph(Nfuga, Estilos.negroB))
             frame = Frame(50, altura, 250, 50)
             frame.addFromList(parrafos, canvas)
-
             if len(Nfuga)<40:
                 parrafo_frame("Potencia", Estilos.base2, 50, altura - 55, .2, .1, canvas)
                 parrafo_frame("Consumo", Estilos.base2, 150, altura - 55, .2, .1, canvas)
@@ -1195,15 +1005,8 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
                 frame.addFromList(parrafos, canvas)
                 canvas.line(50, altura - 25, 300, altura - 25)
                 altura=altura-5
-
-
-
-
             ind = ind + 1
-
-
             altura = altura - 80
-
             if not Atacable:
                 Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
                          'debido a que pueden afectar tanto tu comfort como tu seguridad'
@@ -1222,7 +1025,6 @@ def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje):
     canvas.line(60, height - 50, 60 + largo_encabezado, height - 50)
     texto('PÉRDIDAS DE ENERGÍA Y MEDICIÓN DE VOLTAJE', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
     texto('TU VOLTAJE',25,azul_1,'Montserrat-B',70,height - 120, canvas)
-
     if len(graficas_voltaje) == 1:
         texto('Aquí te mostramos la gráfica del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
         canvas.drawImage(graficas_voltaje[0], 60, height * 0.375, width =width * 0.8, height =height * .35)
@@ -1238,17 +1040,13 @@ def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje):
         canvas.drawImage(graficas_voltaje[0], width * 0.35 - 15, height * 0.55, width=width * 0.35, height=height * 0.2)
         canvas.drawImage(graficas_voltaje[1], 60, height * 0.35, width=width * 0.35, height=height * 0.2)
         canvas.drawImage(graficas_voltaje[2], width * (1 - 0.35) - 60, height * 0.35, width=width * 0.35, height=height * 0.2)
-
     canvas.drawImage(f"Imagenes/Figuras/recuadro2.png",30, height*0.075,width=width*0.9,height=height*0.25)
-
     bajo = nivel_voltaje[0]
     alto = nivel_voltaje[1]
-
     if bajo or alto:
         color = "rojo"
     else:
         color = "verde"
-
     if bajo:
         picos_bajos = "picos bajos"
     else:
@@ -1263,7 +1061,6 @@ def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje):
         y = " y "
     else:
         y = ""
-
     mensaje = {}
     mensaje["rojo"] = f"Tu suministro de voltaje tiene {picos_bajos}{y}{picos_altos}. Es"\
             " necesario proteger ciertos equipos. Ya estamos reportando"\
@@ -1291,7 +1088,6 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
 
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     gris = [65 / 255, 65 / 255, 65 / 255]
-
     costado(canvas)
     Aparatos=aparatos.copy()
     ##############################################################################################################################################
@@ -1313,8 +1109,6 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
     canvas.line(50, altura +90, 550, altura +90)
     cont=0
     for index, fugat in Aparatos.iterrows():
-
-
         Nfuga = fugat[3]
         costo = round(fugat[12])
         consumo = round(fugat[10], 1)
@@ -1322,9 +1116,7 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
         carita = fugat[0]
         canvas.drawImage(f"Imagenes/cara_{carita}.png", 285, altura+30, width=20,
                          height=20,   mask='auto')
-
         parrafos = []
-
         i = 0
         largo = (len(fugat))
         i = i + 1
@@ -1340,22 +1132,17 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
         parrafos.append(Paragraph(str(consumo) + ' kWh', Estilos.cuadros_bajo2))
         frame = Frame(320, altura , 80, 50)
         frame.addFromList(parrafos, canvas)
-
         parrafos.append(Paragraph(str(porciento) + ' %', Estilos.cuadros_bajo2))
         frame = Frame(420, altura , 80, 50)
         frame.addFromList(parrafos, canvas)
-
         parrafos.append(Paragraph('$ ' + str(costo), Estilos.cuadros_bajo2))
         frame = Frame(500, altura , 80, 50)
         frame.addFromList(parrafos, canvas)
-
         canvas.line(50, altura+25, 550, altura +25)
         altura = altura -30
-
         if cont==18:
             canvas.showPage()
-            largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE COSNUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',
-                                                      12)
+            largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE COSNUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
             canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
             texto('DESCIFRAMIENTO DE PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
             texto("CUADRO RESUMEN", 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
@@ -1373,19 +1160,13 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
 def estrategia_ahorro(canvas, width, height, n, ):
     gris = [65 / 255, 65 / 255, 65 / 255]
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
-    consumo_subsidiado =344
-    consumo_actual=744
-    consumo_recomendaciones=344
-
     for i in range(n):
         largo_encabezado = pdfmetrics.stringWidth('ESTRATEGIA DE AHORRO', 'Montserrat-B', 12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('ESTRATEGIA DE AHORRO', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
         texto('TU ESTRATEGIA \n' + 'DE AHORRO', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
-
         costado(canvas)
         canvas.showPage()
-
     largo_encabezado = pdfmetrics.stringWidth('ESTRATEGIA DE AHORRO', 'Montserrat-B', 12)
     canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
     texto('ESTRATEGIA DE AHORRO', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
@@ -1402,15 +1183,12 @@ def medidor(canvas, width, height, robo, revisar, nivel, color_voltaje):
         raise Exception
     gris = [65 / 255, 65 / 255, 65 / 255]
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
-
     largo_encabezado = pdfmetrics.stringWidth('EVALUACIÓN DEL MEDIDOR', 'Montserrat-B', 12)
     canvas.line(60, height - 30, largo_encabezado + 60, height - 30)
     texto('EVALUACIÓN DEL MEDIDOR', 12, gris, 'Montserrat-B', 60, height - 45, canvas)
     texto('EL ESTADO\n' + 'DE TU MEDIDOR', 36, azul_1, 'Montserrat-B', 60, height - 110, canvas)
-
     pos_x = 150
     pos_y = 410
-
     if robo.lower() in ["s", "si", "sí"]:
         candado = 2
     elif robo.lower() in ["n", "no"]:
@@ -1419,7 +1197,6 @@ def medidor(canvas, width, height, robo, revisar, nivel, color_voltaje):
         print("Error en la celda de robo")
         candado = 1
         logging.warning("Hay un error en la celda de robo.")
-
     if revisar.lower() in ["s", "si", "sí"]:
         medidor = 2
     elif revisar.lower() in ["n", "no"]:
@@ -1428,41 +1205,34 @@ def medidor(canvas, width, height, robo, revisar, nivel, color_voltaje):
         print("Error en la celda de revisar medidor")
         medidor = 1
         logging.warning("Hay un error en la celda de revisar medidor")
-
     if color_voltaje == "rojo":
         rayo = 3
     elif color_voltaje == "verde":
         rayo = 1
     else:
         rayo = 2
-
     im = "Imagenes/Figuras/medidor.png"
     w, h = Image.open(im).size
     esc = 3.3
     canvas.drawImage(im, pos_x, pos_y, width=int(w / esc), height=int(h / esc), mask='auto')
-
     im = f"Imagenes/Figuras/medidor_{medidor}.png"
     w, h = Image.open(im).size
     esc = 3.25
     canvas.drawImage(im, pos_x + 87, pos_y + 130, width=int(w / esc), height=int(h / esc), mask='auto')
-
     im = f"Imagenes/Figuras/candado_{candado}.png"
     w, h = Image.open(im).size
     esc = 5
     canvas.drawImage(im, pos_x - 25, pos_y + 25, width=int(w / esc), height=int(h / esc), mask='auto')
-
     im = f"Imagenes/Figuras/rayo_{rayo}.png"
     w, h = Image.open(im).size
     esc = 4.6
     canvas.drawImage(im, pos_x + 177, pos_y + 36, width=int(w / esc), height=int(h / esc), mask='auto')
-
     cuadros_x = 90
     cuadros_y = 280
     im = f"Imagenes/Figuras/cuadro.png"
     w, h = Image.open(im).size
     esc = 2.3
     separado = int(h / esc) + 6
-
     mal=True
     if mal:
         yy=-25
@@ -1479,7 +1249,6 @@ def medidor(canvas, width, height, robo, revisar, nivel, color_voltaje):
         im = f"Imagenes/Figuras/cuadro.png"
         w, h = Image.open(im).size
         esc = 2.3
-
         if i == 0:
             canvas.drawImage(im, cuadros_x, cuadros_y - separado * i+ ty, width=int(w / esc), height=int(h / esc)+hh,
                              mask='auto')
@@ -1531,7 +1300,6 @@ def notas(canvas):
     largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
     canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
     texto('NOTAS', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
-
     largo_1 = pdfmetrics.stringWidth('LLÁMANOS', 'Montserrat-B', 12)
     canvas.setFillColorRGB(253 / 255, 211 / 255, 0 / 255)
     canvas.rect(60 + 5, height - 250 - 5, largo_1 + 15, 13 + 7, stroke=0, fill=1)
@@ -1541,17 +1309,6 @@ def notas(canvas):
           f'más. Escríbenos o llámanos al <b>(55) 7595 - 3352</b> para agendar tu llamada de asesoría con uno de nuestros expertos.' \
           '<br/><br/><b>Estamos para ayudarte a ahorrar.</b>'
     parrafo(msg, Estilos.base, 0.8, 0.3, 0.117, 0.66, canvas)
-
-    # largo_2 = pdfmetrics.stringWidth('OBSERVACIONES', 'Montserrat-B', 12)
-    # canvas.setFillColorRGB(253 / 255, 211 / 255, 0 / 255)
-    # canvas.rect(60 + 5, height - 450 - 5, largo_2 + 17, 13 + 7, stroke=0, fill=1)
-    # texto('OBSERVACIONES', 13, gris, 'Montserrat-B', 60 + 10, height - 450, canvas)
-    # msg = 'Para concluir nuestro servicio Premium realizamos una limpieza de la caja de ' \
-    #       'circuitos y un balanceo de cargas de tu casa para brindarte una mejor ' \
-    #       'seguridad y certeza de que tus equipos están recibiendo la energía adecuada ' \
-    #       'sin correr riesgos de sobrevoltaje'
-    # parrafo(msg, Estilos.base, 0.8, 0.3, 0.117, 0.43, canvas)
-
     costado(canvas)
     canvas.showPage()
 
@@ -1567,24 +1324,15 @@ def Clasificador(aparatos):
     Aparatos.sort_values(by=['L'], inplace=True, ascending=False)
     Aparatos = Aparatos.loc[Aparatos['M'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['M'], inplace=True, ascending=False)
-
     carita= definircarita(Aparatos)
-
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
     AparatosC = Aparatos.loc[Aparatos['A'] == 1]
     deMaG=['Refrigerador','Congelador','Minibar','Cava','Hielos','Dispensador']
-
     for i in deMaG:
         AparatosMaG= AparatosM.loc[AparatosM['D'].str.contains(i)]
-
         AparatosM=AparatosM[~AparatosM['D'].str.contains(i)]
-
         AparatosG=AparatosG.append(AparatosMaG)
-
-
-
-
 
     return AparatosG, AparatosM,AparatosC
 
@@ -1605,7 +1353,6 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     ahorro_bimestral=140
     tipo_tarifa='DAC'
     fonts()
-
     portada(canvas, width, height)
     intro(canvas, width, height)
     potencial_ahorro(canvas, width, height,consumo_bimestral, tarifa,costo,ahorro_bimestral, tipo_tarifa)
