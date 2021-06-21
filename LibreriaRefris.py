@@ -88,9 +88,9 @@ def Clasifica(Claves):
 def LeeClavesR(Claves):
     Texto=''
     lib=libreria2()
-    print(lib)
+
     if pd.notna(Claves):
-        ClavesSep=Claves.split(", ")
+        ClavesSep=Claves.split(",")
         Datos= ClavesSep[1].split("/")
         TRef=Datos[0]
         TCong = Datos[1]
@@ -128,5 +128,8 @@ def LeeClavesR(Claves):
             Texto = Texto + ' ' + lib.loc[5, 'E']
         if 'VN' in Claves:
             Texto = Texto + ' ' + lib.loc[9, 'E']
+
+        Texto=Texto.replace('[/n]','<br />')
+
 
     return Texto

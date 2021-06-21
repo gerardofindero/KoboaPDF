@@ -130,7 +130,7 @@ cuadros_numero = ParagraphStyle(name='Cuadros',
 
 cuadros_bajo = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=11,
+                                fontSize=10,
                                 leading=11,
                                 textColor=gris
                                 )

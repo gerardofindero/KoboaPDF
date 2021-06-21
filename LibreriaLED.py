@@ -151,12 +151,13 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         ENTY= ['nada','nada']
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
-    print('Numero de focos ' + str(Numero))
+    #print('Numero de focos ' + str(Numero))
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
     Watts = Watts/Numero # Se sacan los watts por foco.
-    print('Potencia ' + str(Watts))
+    #print('Potencia ' + str(Watts))
     
     # Textos al reporte cuando el foco ya es LED.
+
     if tex =='Ya es LED':
         if conteoled == 1:
             TextoCompleto = TextoCompleto + Lib.loc[45, 'E']
@@ -164,16 +165,18 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         elif conteoled <= 5:
             TextoCompleto = TextoCompleto + Lib.loc[45+max((conteoled-1),5), 'E']
             conteoled = conteoled + 1
+            if conteoled==5:
+                conteoled = 2
     
     # Texto al reporte cuando los focos NO son LED.
     elif tex !='NO HAY CARS':
         Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
         # la base de datos de luminarias
         # Imprimir en pantalla características de focos
-        print('Temperatura de color: ' + str(Car1))
-        print('Dimeable: ' + str(Car2))
-        print('Inteligente: ' + str(Car3))
-        print('Filamento: ' + str(Car4))
+        #print('Temperatura de color: ' + str(Car1))
+        #print('Dimeable: ' + str(Car2))
+        #print('Inteligente: ' + str(Car3))
+        #print('Filamento: ' + str(Car4))
         if conteoNOled == 1:
             TextoCompleto = Lib.loc[32, 'E']
             conteoNOled  = conteoNOled + 1
@@ -210,16 +213,16 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             #Se cambian las variables para adecuarlas a la base de datos
             tipo=ENTY[0]
             tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco oara ser igual a la de la base de datos.
-            print('Tipo: ' + str(tipo))
+            #print('Tipo: ' + str(tipo))
             entrada=ENTY[1]
             entrada = DiccionarioLuz(entrada)
-            print('Entrada tipo: ' + str(entrada))
+            #print('Entrada tipo: ' + str(entrada))
             #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
             ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4)
             
-            print('Potencia c LED: '+ str(ConLED))
-            print('Precio; '+ str(Precio))
-            print('Link: '+ Link)
+            #print('Potencia c LED: '+ str(ConLED))
+            #print('Precio; '+ str(Precio))
+            #print('Link: '+ Link)
             #Formulas
             TT = (1 - (ConLED / Watts))*100
             ROI = abs((Numero * Precio) / ((TT/100) * VV * DAC)) # Calcula retorno de inversion en bimestres.
@@ -284,7 +287,7 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila): # Esta función se ja
     
     Filtro = Filtro2.loc[Filtro2['AB'] =='Top choice']
 
-    print(Filtro)
+
 
     return Filtro['F'].values[0],Filtro['R'].values[0],Filtro['Q'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
 

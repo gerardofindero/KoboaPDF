@@ -12,7 +12,7 @@ def libreria2():
     except:
         print("No se encuentra el archivo ")
         breakpoint()
-    Dicc = ['A', 'B', 'C', 'D', 'E','F'] # Define los nombres de las columnas en Excel.
+    Dicc = ['A', 'B', 'C', 'D', 'E','F','G'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
 
 
@@ -49,10 +49,10 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
     Texto=''
     lib, precios=libreria2()
     if pd.notna(Claves):
-        ClavesSep=Claves.split(", ")
+        ClavesSep=Claves.split(",")
         Datos= ClavesSep[1].split("/")
-        Potencia=Datos[0]
-        Standby = Datos[1]
+        Potencia=float(Datos[0])
+        Standby = float(Datos[1])
         Pulgadas=Datos[2]
         percentil=70
 
@@ -74,27 +74,29 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
 
 
 
-        if Consumo>80:
-            Texto = Texto + ' ' + lib.loc[3, 'E']
+        # if Consumo>80:
+        #     Texto = Texto + ' ' + lib.loc[3, 'G']
+        #
+        # if Uso>=30:
+        #     Texto = Texto + ' ' + lib.loc[10, 'G']
+        #
+        # ## Uso
+        # if Uso<20:
+        #     Texto = Texto + ' ' + lib.loc[2, 'G']
+        #
+        # if Uso>=20:
+        #     Texto = Texto + ' ' + lib.loc[15, 'G']
+        #
+        #
+        # if Potencia > MaxP:
+        #     Texto= Texto+' '+lib.loc[1,'G']
+        # if Potencia <= MaxP:
+        #     Texto= Texto+' Tu TV tiene un consumo promedio'
 
-        if Uso>=30:
-            Texto = Texto + ' ' + lib.loc[10, 'E']
-
-        ## Uso
-        if Uso<20:
-            Texto = Texto + ' ' + lib.loc[0, 'E']
-
-        if Uso>=20:
-            Texto = Texto + ' ' + lib.loc[15, 'E']
-
-
-        if Potencia > MaxP:
-            Texto= Texto+' '+lib.loc[1,'E']
-        if Potencia <= MaxP:
-            Texto= Texto+' Tu TV tiene un consumo promedio'
-
+        Texto = Texto + ' ' + lib.loc[2, 'G'] +' ' + lib.loc[3, 'G']
         if Standby > 0:
-            Texto= Texto + lib.loc[9,'E']
+            Texto= Texto + lib.loc[8,'G']
+        Texto= Texto.replace('[/n]','<br /> <br />')
 
 
     return Texto

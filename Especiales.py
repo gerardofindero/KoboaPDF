@@ -11,7 +11,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
     Columnas=Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("equipos_especiales", case=False)]
     Equipos= Circuito[InfoEquipos]
-
+    stnby=Circuito.filter(regex='circuito_standby_c_i')[0]
 
     #print(Circuito.filter(regex='equipos_especiales1_c_i'))
 
@@ -23,7 +23,8 @@ def especiales(Excel,Nocircuito, NomCircuito):
     InfoDeco = Circuito.filter(regex='especial1')
     Aparatos_C.loc['Especial1', 'Zona']     = InfoDeco.filter(regex='zona_c_i')[0]
     Aparatos_C.loc['Especial1','Nominal']   = consumoEq(InfoDeco.filter(regex='nominal')[0])
-    Aparatos_C.loc['Especial1','Standby']   = consumoEq(InfoDeco.filter(regex='standby')[0])
+    Aparatos_C.loc['Especial1','Standby']   = stnby
+
     if Aparatos_C.loc['Especial1','Standby'] !=0:
         Aparatos_C.loc['Especial1', 'Atacable']='Si'
     else:
@@ -47,7 +48,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial2', 'Zona'] = InfoDeco.filter(regex='zona_c_i')[0]
         Aparatos_C.loc['Especial2', 'Nominal'] = consumoEq(InfoDeco.filter(regex='nominal')[0])
 
-        Aparatos_C.loc['Especial2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+        Aparatos_C.loc['Especial2', 'Standby'] = stnby
 
 
         if Aparatos_C.loc['Especial2','Standby'] !=0:
@@ -74,7 +75,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial3', 'Zona'] = InfoDeco.filter(regex='zona_c_i')[0]
         Aparatos_C.loc['Especial3', 'Nominal'] = consumoEq(InfoDeco.filter(regex='nominal')[0])
 
-        Aparatos_C.loc['Especial3', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+        Aparatos_C.loc['Especial3', 'Standby'] = stnby
 
         if Aparatos_C.loc['Especial3','Standby'] !=0:
             Aparatos_C.loc['Especial3', 'Atacable']='Si'
