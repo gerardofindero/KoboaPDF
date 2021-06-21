@@ -12,6 +12,8 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
+import libreriaPlanchas as libpla
+
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
@@ -93,23 +95,23 @@ def Nombre_Cliente():
 
     #NCliente = 'Casa Manantiales'
     #NCliente = 'Marcela Gessaghi'
-    NCliente = 'Prueba luces'
+    NCliente = 'Carlos Estefan'
 
     return NCliente
 
 ###################### MAIN  #####################################
-if __name__ == '__main__9':
+if __name__ == '__main__':
 
     NCliente=Nombre_Cliente()
 
     print("Que quieres hacer? ")
-    print("1.- Crear lista ")
+    print("1.- Crear Excel")
     print("2.- Leer Kobo y Crear Deciframiento ")
-    print("3.- Crear Reporte")
+    print("4.- Crear Reporte")
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -125,13 +127,8 @@ if __name__ == '__main__9':
 
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        Pulgadas = 20
-        Watts = 80
-        kWh = 50
-        # CC = kWh - (2.989644 + 0.034468 * 40) / 0.2606
-        XX = np.log(Watts)
-        Percentil = stats.norm.sf((XX - (3.189644 + 0.034468 * Pulgadas)) / 0.2606)
-        print(Percentil)
+        texto=libpla.leerConsumoPlanchas(50)
+        print(texto)
 
 
     if Opcion == '4':

@@ -17,6 +17,12 @@ from pathlib import Path
 from LibreriaLED import variablesLuces
 from LibreriaRefris import LeeClavesR,Clasifica
 from LibreriaTV import LeeClavesTV,Clasifica
+from LibreriaLavaSeca import  LeeClavesLavaSeca
+from libreriaPlanchas import  leerConsumoPlanchas
+from Caritas import definircarita
+
+
+
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
@@ -382,7 +388,7 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
 
         nuevo = int(nuevo)
     else:
-        print(nuevo_consumo)
+
         nuevo = int(nuevo_consumo * tarifa)
 
     factor = .25
@@ -614,7 +620,6 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         largoTx=(len(tex))
 
         tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI) # Está usando columnas, no renglones para los índices
-        print(tex)
         #FormulasLuces(luz[0], luz[8], luz[10], ConLED, Precio, DAC):
 
         if len(luzz) < 15:
@@ -652,21 +657,21 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         frame.addFromList(parrafos, canvas)
 
         parrafoss=[]
-        if largoTx<70:
+        if largoTx<45:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
-            frame = Frame(258, altura - 15, 295, 60)
-        elif 70<=largoTx<150:
+            frame = Frame(258, altura - 5, 295, 60)
+        elif 45<=largoTx<150:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
-            frame = Frame(258, altura-10, 295, 60)
+            frame = Frame(258, altura-0, 295, 60)
         elif largoTx>150 and largoTx<=210:
             parrafoss.append(Paragraph(tex, Estilos.Lumi2))
-            frame = Frame(258, altura-10, 295, 65)
+            frame = Frame(258, altura+5, 65)
         elif 350>=largoTx>210:
             parrafoss.append(Paragraph(tex, Estilos.Lumi3))
-            frame = Frame(258, altura-12, 295, 65)
+            frame = Frame(258, altura+5, 295, 65)
         elif largoTx > 350:
             parrafoss.append(Paragraph(tex, Estilos.Lumi4))
-            frame = Frame(258, altura - 10, 295, 65)
+            frame = Frame(258, altura + 5, 295, 65)
 
         frame.addFromList(parrafoss, canvas)
         canvas.line(70, altura + 51, 548, altura + 51)
@@ -735,7 +740,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         codigos = aparato[16]
         Eq=Clasifica(codigos)
         uso = aparato[7]
-
+        Claves=aparato[16]
         nombre_=Dicc_Aparatos(nombre)
 
         parrafos = []
@@ -801,11 +806,13 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
 ##### Escribir en cuadro recomendaciones
-        Consejos='=)'
-        if Eq=='R':
-            Consejos = LeeClavesR(codigos)
-        if Eq=='C':
-            Consejos = LeeClavesTV(codigos,uso,consumo,tarifa)
+        # Consejos='=)'
+        # if Eq=='R':
+        #     Consejos = LeeClavesR(codigos)
+        # if Eq=='C':
+        #     Consejos = LeeClavesTV(codigos,uso,consumo,tarifa)
+
+        Consejos=LeeClavesR(Claves)
 
         #Consejos='hola =)'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
@@ -837,6 +844,9 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
         dinero = round(aparato[12])
         anual = dinero*6
         nota = aparato[13]
+        Claves= aparato[16]
+        Uso=0
+        DAC=6.1
 
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',
                                                   12)
@@ -912,12 +922,21 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
               altura-90, canvas)
 
         parrafos = []
+
+        ClavesS = Claves.split(',')
+        if ClavesS[0]=='C':
+            nota = LeeClavesTV(Claves, Uso, consumo, DAC)
+        if ClavesS[0] == 'L' or ClavesS[0] == 'S':
+            nota = LeeClavesLavaSeca(Claves, consumo)
+        if Claves[0]=='P':
+            nota = leerConsumoPlanchas(consumo)
+
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
             parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
 
-        frame = Frame(120, altura-190, width * 0.7, height * 0.1)
+        frame = Frame(120, altura-270, width * 0.7, height * 0.2)
         frame.addFromList(parrafos, canvas)
 
         ##LogoRayo
@@ -955,6 +974,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
         dinero = round(aparato[12])
         anual = dinero * 6
         nota = aparato[13]
+        Claves =aparato[16]
 
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',
                                                   12)
@@ -1014,12 +1034,23 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura+80, canvas)
 
+        ClavesS = 'N'
+        if pd.notna(Claves):
+            ClavesS = Claves.split(",")
+
+        if ClavesS[0]=='C':
+            nota = LeeClavesTV(Claves, Uso, consumo, DAC)
+        elif ClavesS[0] == 'L':
+            nota = LeeClavesLavaSeca(Claves, consumo)
+        elif ClavesS[0] == 'S':
+            nota = LeeClavesLavaSeca(Claves, consumo)
+
         parrafos = []
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
             parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-        frame = Frame(120, altura-20, width * 0.7, height * 0.1)
+        frame = Frame(120, altura-30, width * 0.7, height * 0.12)
         frame.addFromList(parrafos, canvas)
 
         ##LogoRayo
@@ -1039,19 +1070,10 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC):
 
 
 def por_A_fugas(Fugas):
-    totalF = 1
-    totalA = 1
-    if len(Fugas) ==0 or len(Fugas)==NaN:
-        totalf=0
-    else:
-        totalf=len(Fugas) 
-        Atacc=Fugas[Fugas['A'].str.contains('Si')]
-        totalA=len(Atacc)
-    if totalF == 0:
-        porA = 0
-    else:
-        totalf =1
-        porA=totalA/totalf
+    totalf=len(Fugas)
+    Atacc=Fugas[Fugas['A'].str.contains('Si')]
+    totalA=len(Atacc)
+    porA=totalA/totalf
     return porA
 
 def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
@@ -1543,19 +1565,10 @@ def Clasificador(aparatos):
     Aparatos=aparatos.copy()
     Aparatos = Aparatos.loc[Aparatos['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['L'], inplace=True, ascending=False)
-
-
     Aparatos = Aparatos.loc[Aparatos['M'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['M'], inplace=True, ascending=False)
-    # AparatosG=  Aparatos.loc[Aparatos['M'] >   250]
-    # AparatosM = Aparatos.loc[Aparatos['M'] <=  250]
-    # AparatosM = AparatosM.loc[AparatosM['M'] > 100]
-    # AparatosC = Aparatos.loc[Aparatos['M'] <=  100]
 
-    # AparatosG=  Aparatos.loc[Aparatos['L'] >   0.03]
-    # AparatosM = Aparatos.loc[Aparatos['L'] <=  0.03]
-    # AparatosM = AparatosM.loc[AparatosM['L'] > 0.022]
-    # AparatosC = Aparatos.loc[Aparatos['L'] <=  0.06]
+    carita= definircarita(Aparatos)
 
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
