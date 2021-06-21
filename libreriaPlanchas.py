@@ -22,17 +22,22 @@ def leerConsumoPlanchas(consumo):
     statistics.columns = Dicc
     # media y desviacion estandar almacenados en el excel de planchas
     # en esta sección se esta trabajdno con la transformación consumo**0.3 (kWh)
-    media=statistics.loc[0,'A']
-    desStd=statistics.loc[3,'A']
+    media=statistics.loc[0,'B']
+    desStd=statistics.loc[3,'B']
     consumoTrans= consumo**0.3
-    percentil= norm.cdf(consumoTrans,loc=media,scale=desStd)
+    percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
+    percentil=round(percentil,2)
+    print(percentil)
     lib=leerLibreriaPlanchas()
     if percentil <0.33:
-        texto=lib.loc[3,'C']
-    if 0.33>=percentil<0.66:
-        texto = lib.loc[4, 'C']
-    if percentil>=0.66:
-        texto = lib.loc[5, 'C']
+        texto=lib.loc[3,'C'].replace('[1-perc_cons]',str(int((1-percentil)*100)))
+        return texto
+    elif 0.33<percentil<0.66:
+        texto = lib.loc[4, 'C'].replace('[perc_cons]',str(int(percentil*100)))
+        return texto
+    elif percentil>0.66:
+        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100)))
+        return texto
 
-    return texto
+
 

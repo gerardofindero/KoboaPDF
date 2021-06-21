@@ -18,6 +18,7 @@ from LibreriaLED import variablesLuces
 from LibreriaRefris import LeeClavesR,Clasifica
 from LibreriaTV import LeeClavesTV,Clasifica
 from LibreriaLavaSeca import  LeeClavesLavaSeca
+from libreriaPlanchas import  leerConsumoPlanchas
 from Caritas import definircarita
 
 

@@ -127,7 +127,7 @@ if __name__ == '__main__':
 
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        texto=libpla.leerConsumoPlanchas(9)
+        texto=libpla.leerConsumoPlanchas(50)
         print(texto)
 
 
