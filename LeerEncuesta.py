@@ -13,6 +13,7 @@ from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
 import libreriaPlanchas as libpla
+from libreriaMicroondas import leerConsumoMicroondas
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
@@ -127,8 +128,8 @@ if __name__ == '__main__':
 
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        texto=libpla.leerConsumoPlanchas(50)
-        print(texto)
+        print(leerConsumoMicroondas(50))
+
 
 
     if Opcion == '4':
