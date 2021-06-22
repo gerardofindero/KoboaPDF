@@ -18,6 +18,7 @@ from LibreriaRefris import LeeClavesR,Clasifica
 from LibreriaTV import LeeClavesTV,Clasifica
 from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
+from libreriaMicroondas import leerConsumoMicroondas
 from Caritas import definircarita
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
@@ -628,6 +629,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso):
         Consejos = LeeClavesLavaSeca(Claves, consumo)
     if Claves[0] == 'P':
         Consejos = leerConsumoPlanchas(consumo)
+    if Claves[0] == 'M':
+        Consejos = leerConsumoMicroondas(consumo)
 
     return Consejos
 
