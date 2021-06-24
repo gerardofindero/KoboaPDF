@@ -25,6 +25,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
     indx=0
     StandbyCod =Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     notass=Circuito.filter(regex='refrigeracion_notas_c_i')[0]
+    Tierra = Circuito.filter(regex='refrigeracion_tierra_c_i')[0]
     for i in Equipos:
         if i == 1:
             if indx == 1:

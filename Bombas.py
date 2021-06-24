@@ -12,7 +12,7 @@ def bombas (Excel,Nocircuito):
     InfoEquipos = Columnas[Columnas.str.contains("plomeria", case=False)]
     Equipos= Circuito[InfoEquipos]
     indx=0
-    CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')
+    CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     InfoDeco = Equipos.filter(regex='bomba1')
     Bomba = InfoDeco.filter(regex='tipo')[0]
     zona=InfoDeco.filter(regex='zona')[0]
@@ -37,7 +37,7 @@ def bombas (Excel,Nocircuito):
         InfoBomba= InfoDeco.filter(regex='bombap')
         Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoBomba.filter(regex='nominal')[0])
         Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(InfoBomba.filter(regex='standby')[0])
-        Aparatos_C.loc['Bomba de Presión', 'CodigoS'] = InfoBomba.filter(regex='standby_codigofindero')[0]
+        Aparatos_C.loc['Bomba de Presión', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='real_codigofindero')[0]
         Aparatos_C.loc['Bomba de Presión', 'Nominal'] = InfoBomba.filter(regex='nominal')[0]
         Aparatos_C.loc['Bomba de Presión', 'Notas'] = InfoBomba.filter(regex='notas')[0]
@@ -64,7 +64,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'voz'] = InfoDeco.filter(regex='voz')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'CodigoN'] = InfoDeco.filter(regex='real_codigofindero')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = zona
         Aparatos_C.loc['Bomba de GravitaciónGravitacion', 'Atacable'] = 'Si'
 

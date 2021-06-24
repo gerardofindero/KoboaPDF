@@ -20,6 +20,9 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
 from Caritas import definircarita
+from reportlab import platypus
+from  reportlab.lib.styles import ParagraphStyle as PS
+from reportlab.platypus import SimpleDocTemplate
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
@@ -709,9 +712,6 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 # Automatizacion ######################
         Consejos=Recomendaciones(Claves,consumo,tarifa,Uso)
 # Automatizacion  ######################
-
-
-        #Consejos='hola =)'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
@@ -1364,7 +1364,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     porF=por_A_fugas(fugas)
     aparatosG,aparatosM, aparatosC= Clasificador(aparatos)
     aparatos_grandes(canvas, width, height,aparatosG,Tarifa)
-    aparatos_bajos(canvas, width, height,aparatosM,aparatosC)
+    aparatos_bajos(canvas, width, height,aparatosM,aparatosC,Tarifa)
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)
     hojas_fugas(canvas, width, height, fugas, Tarifa)

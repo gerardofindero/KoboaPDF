@@ -18,9 +18,8 @@ def libreriaL():
         Libreria = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx")
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
-
+        Libreria = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx")
     # Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
     Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc # Asigna los nombres de las columnas de Excel al data frame de Python

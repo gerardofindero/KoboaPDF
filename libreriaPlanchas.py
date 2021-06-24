@@ -4,8 +4,10 @@ def leerLibreriaPlanchas():
     try:
         Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",sheet_name='libreriaPlanchas')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        Libreria = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
+            sheet_name='libreriaPlanchas')
+
     Dicc = ['A','B', 'C'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
     return Libreria
@@ -16,9 +18,10 @@ def leerConsumoPlanchas(consumo):
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
             sheet_name='statistics')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
-    Dicc = ['A', 'B', 'C','D','F']  # Define los nombres de las columnas en Excel.
+        statistics = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
+            sheet_name='statistics')
+    Dicc = ['A', 'B', 'C','D']  # Define los nombres de las columnas en Excel.
     statistics.columns = Dicc
     # media y desviacion estandar almacenados en el excel de planchas
     # en esta sección se esta trabajdno con la transformación consumo**0.3 (kWh)

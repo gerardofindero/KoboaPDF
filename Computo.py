@@ -39,13 +39,12 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'computadora' in Nomedidos:
                     print("computadora no desconectado")
                 else:
-                    Aparatos_C.loc['Computadora', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Computadora', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['Computadora', 'CodigoS'] = stnbyCod
 
 
             if indx == 4:
                 InfoDeco = Circuito.filter(regex='laptop')
-                #Aparatos_C.loc['Laptop', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Laptop', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Laptop', 'Nominal'] = InfoDeco.filter(regex='consumo')[0]
                 Aparatos_C.loc['Laptop', 'Notas'] = InfoDeco.filter(regex='notas')[0]
@@ -83,7 +82,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'repetidor' in Nomedidos:
                     print("Repetidor no desconectado")
                 else:
-                    Aparatos_C.loc['Repetidor', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Repetidor', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['Repetidor', 'CodigoS'] = stnbyCod
 
 
@@ -97,28 +96,13 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Equipos Apple', 'Zona'] = Zona
                 if 'apple' in Nomedidos:
                     print("Equipo_Apple no desconectado")
-                # InfoDeco = Circuito.filter(regex='mini')
-                # Aparatos_C.loc['Equipos Apple', 'Marca'] = InfoDeco.filter(regex='equipos_apple_c_i')[0]
-                # Aparatos_C.loc['Equipos Apple', 'Notas'] = notass
-                # Aparatos_C.loc['Equipos Apple', 'Zona'] = Zona
-                # InfoDeco = Circuito.filter(regex='apple_time')
-                # Aparatos_C.loc['Equipos Apple', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-                # Aparatos_C.loc['Equipos Apple', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
-                # Aparatos_C.loc['Equipos Apple', 'Notas'] = notass
-                # Aparatos_C.loc['Equipos Apple', 'Existencia'] = 1
-                # Aparatos_C.loc['Equipos Apple', 'Atacable'] = 'Si'
-                # InfoDeco = Circuito.filter(regex='airport')
-                # Aparatos_C.loc['Equipos Apple', 'Standby']  = consumoEq(InfoDeco.filter(regex='standby')[0])
-                # Aparatos_C.loc['Equipos Apple', 'Marca']    = InfoDeco.filter(regex='equipos_apple_c_i')[0]
-                # Aparatos_C.loc['Equipos Apple', 'Notas']   = notass
-                # Aparatos_C.loc['Equipos Apple', 'Zona']    = Zona
 
 
             if indx == 8:
                 InfoDeco = Circuito.filter(regex='modem2')
                 Aparatos_C.loc['Modem Extra', 'Zona'] = Zona
 
-                Aparatos_C.loc['Modem Extra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                Aparatos_C.loc['Modem Extra', 'Standby'] = consumoEq(stnby)
                 #Aparatos_C.loc['Modem Extra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby_estimado')[0])
                 Aparatos_C.loc['Modem Extra', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Modem Extra', 'Existencia'] = 1
@@ -142,21 +126,14 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'impresora' in Nomedidos:
                     print("Impresora no desconectado")
                 else:
-                    Aparatos_C.loc['Impresora', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Impresora', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['Impresora', 'CodigoS'] = stnbyCod
 
 
             if indx == 10:
                 InfoDeco = Circuito.filter(regex='regulador')
                 Aparatos_C.loc['Regulador', 'Zona'] = Zona
-                # if InfoDeco.filter(regex='consumo_A').empty:
-                #     Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo_A')[0])
-                # if InfoDeco.filter(regex='consumo_B').empty:
-                #     Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo_B')[0])
-                # if InfoDeco.filter(regex='estimacion_A').empty:
-                #     Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='estimacion_A')[0])
-                # if InfoDeco.filter(regex='estimacion_B').empty:
-                #     Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='estimacion_B')[0])
+
                 if InfoDeco.filter(regex='regulador_apagado_c_i')[0] == 'Si':
                     Aparatos_C.loc['Regulador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                     Aparatos_C.loc['Regulador', 'CodigoS'] = stnbyCod
@@ -190,7 +167,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                     if 'nobreak' in Nomedidos:
                         print("Nobreak no desconectado")
                     else:
-                        Aparatos_C.loc['Nobreak', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                        Aparatos_C.loc['Nobreak', 'Standby'] = consumoEq(stnby)
                         Aparatos_C.loc['Nobreak', 'CodigoS'] = stnbyCod
 
 
@@ -208,7 +185,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'monitor' in Nomedidos:
                     print("Monitor no desconectado")
                 else:
-                    Aparatos_C.loc['Monitor', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Monitor', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['Monitor', 'CodigoS'] = stnbyCod
 
 
@@ -238,7 +215,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'router' in Nomedidos:
                     print("Router no desconectado")
                 else:
-                    Aparatos_C.loc['Router', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Router', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['Router', 'CodigoS'] = stnbyCod
 
             if indx == 15:
@@ -252,7 +229,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'HDD' in Nomedidos:
                     print("Router no desconectado")
                 else:
-                    Aparatos_C.loc['HDD', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['HDD', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['HDD', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
 
                 Aparatos_C.loc['HDD', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
@@ -274,7 +251,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'otro' in Nomedidos:
                     print("Otro no desconectado")
                 else:
-                    Aparatos_C.loc['Otro', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Otro', 'Standby'] = consumoEq(stnby)
                     Aparatos_C.loc['Otro', 'CodigoS'] = stnbyCod
 
         indx = indx + 1

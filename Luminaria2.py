@@ -435,7 +435,7 @@ def iluminacion (Excel,Nocircuito):
         sobreilum = InfoEsc.filter(regex='sobreilum')[0]
         notas = InfoEsc.filter(regex='notas')[0]
         tec = tec.split()
-        print(tec)
+
         for i in tec:
             if i == 'incandescente':
                 InfoLum = InfoEsc.filter(regex='incandescentes')
@@ -789,7 +789,5 @@ def iluminacion (Excel,Nocircuito):
     Aparatos_C.replace('hal_geno', 'halogena',inplace=True)
     Aparatos = Aparatos_C[Aparatos_C['Tecnologia'].notna()]
     Aparatos.reset_index()
-
-    print(Aparatos['TipoyTam'])
 
     return Aparatos

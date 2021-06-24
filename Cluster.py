@@ -1,18 +1,17 @@
 import pandas as pd
 from Consumo    import calc_consumo , consumoEq
-from Condiciones import condicionesCluster
 from Correciones import Lugar
 import numpy as np
+from LibreriaTV import ClavesClusterTV
 
 def clustertv(Excel,Nocircuito,NomCircuito):
 
     Aparatos_C = pd.DataFrame(index=['TV','Decodificador1','Decodificador2','Regulador1','Regulador2','NoBreak','Modem','Bluray','HomeTheater'
-                                     'Repetidor','Antena','Sonido','Bocinas','Surround', 'Consola1','Consola2','Equipoextra','Equipo Ahorro']
-                              ,columns=['Marca','Standby','Nominal','Lugar','Tolerancia', 'Pulgadas','Atacable','Existencia','CodigoN','CodigoS','Notas','CodigoFin'])
+                                     'Repetidor','Antena','Sonido','Bocinas','Surround', 'Consola1','Consola2','Equipoextra','Equipo Ahorro','Cluster']
+                              ,columns=['Marca','Standby','Nominal','Lugar','Tolerancia', 'Pulgadas','Atacable','Existencia','CodigoN','CodigoS','Notas','CodigoFin','Clave'])
 
     Info_C = pd.DataFrame(index=['Nombre Circuito','Ubicación', 'Notas', 'Consumo Total'],columns=['Info'])
     Info_C.loc['Nombre Circuito', 'Info'] = NomCircuito[0]
-
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("clustertv", case=False)]
@@ -23,8 +22,12 @@ def clustertv(Excel,Nocircuito,NomCircuito):
     Nominal=0
 
     CodStandby=Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
-
+    Tierra = Circuito.filter(regex='clustertv_tierra_c_i')[0]
+    Enchufes = Circuito.filter(regex='clustertv_enchufes_c_i')[0]
+    Maniobras = Circuito.filter(regex='clustertv_maniobras_c_i')[0]
     InfoDeco = Circuito.filter(regex='clustertv_notas_c_i')
+
+
     if not InfoDeco.empty:
         Notas=InfoDeco[0]
 
@@ -40,6 +43,8 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Nomedidos = Circuito.filter(regex='clustertv_equipos_desconectar_c_i')[0]
     else:
         Nomedidos = " no_hay"
+
+    print(Nomedidos)
 
 
     for i in Equipos:
@@ -59,28 +64,18 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['TV', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
                 Aparatos_C.loc['TV', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['TV', 'Notas'] = Notas
-
                 if Aparatos_C.loc['TV', 'Standby'] != 0:
                     Aparatos_C.loc['TV', 'Atacable'] = 'Si'
                 else:
                     Aparatos_C.loc['TV', 'Atacable'] = 'NF'
-
+                Aparatos_C.loc['TV', 'Clave'] = ClavesClusterTV(Aparatos_C)
 
             if indx == 2:
             ##Decodificador
                 NomAparato = 'decodificador1'
                 InfoDeco = Circuito.filter(regex=NomAparato)
-
-                if 'decodificador1' in Nomedidos:
-                    print("decodificador 1 no desconectado")
-                else:
-                    Aparatos_C.loc['Decodificador1', 'CodigoS'] = CodStandby
-                    Aparatos_C.loc['Decodificador1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-
-
                 Aparatos_C.loc['Decodificador1', 'Existencia'] = 1
                 Otro = InfoDeco.filter(regex='marca_otro_c_i')
-
                 if pd.isna(Otro[0]):
 
                     Aparatos_C.loc['Decodificador1','Marca']   = InfoDeco.filter(regex='decodificador1_marca_c_i')[0]
@@ -91,23 +86,25 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Decodificador1', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Decodificador1', 'Lugar'] = Zona
 
+                if 'decodificador1' in Nomedidos:
+                    print("decodificador 1 no desconectado")
+                else:
+                    Aparatos_C.loc['Decodificador1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+
             if indx == 3:
             ##Modem
                 NomAparato = 'modem'
                 InfoDeco = Circuito.filter(regex=NomAparato)
-
                 Aparatos_C.loc['Modem', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Modem', 'Existencia'] = 1
                 Aparatos_C.loc['Modem', 'Atacable'] = 'No'
-
                 Aparatos_C.loc['Modem', 'Lugar'] = Zona
-
-                print(Nomedidos)
+                Aparatos_C.loc['Modem', 'CodigoS'] = CodStandby
                 if 'modem' in Nomedidos:
-                    print("repetidor no desconectado")
+                    print("modem no desconectado")
                 else:
                     Aparatos_C.loc['Modem', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-                    Aparatos_C.loc['Modem', 'CodigoS'] =  CodStandby
+
 
 
             if indx == 4:
@@ -120,18 +117,15 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Repetidor', 'Atacable'] = 'No'
                 Aparatos_C.loc['Repetidor', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Repetidor', 'Lugar'] = Zona
-                print(Nomedidos)
                 if 'repetidor' in Nomedidos:
                     print("repetidor no desconectado")
                 else:
-                    Aparatos_C.loc['Repetidor', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
                     Aparatos_C.loc['Repetidor', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
             if indx == 5:
                 NomAparato = 'consola1'
                 InfoDeco = Circuito.filter(regex=NomAparato)
                 Aparatos_C.loc['Consola1', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                Aparatos_C.loc['Consola1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Consola1', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Consola1', 'Existencia'] = 1
                 Aparatos_C.loc['Consola1', 'Atacable'] = 'Si'
@@ -139,65 +133,74 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Consola1', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Consola1', 'Lugar'] = Zona
 
+                if 'consola1' in Nomedidos:
+                    print("consola1 no desconectado")
+                else:
+                    Aparatos_C.loc['Consola1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+
             ##Antena
             if indx == 6:
                 NomAparato = 'antena'
                 InfoDeco = Circuito.filter(regex=NomAparato)
-                Aparatos_C.loc['Antena', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Antena', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Antena', 'Existencia'] = 1
                 Aparatos_C.loc['Antena', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Antena', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Antena', 'Lugar'] = Zona
+                if 'antena' in Nomedidos:
+                    print("antena no desconectado")
+                else:
+                    Aparatos_C.loc['Antena', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
             # Sonido
             if indx == 7:
                 NomAparato = 'sonido'
                 InfoDeco = Circuito.filter(regex=NomAparato)
                 Aparatos_C.loc['Sonido', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                Aparatos_C.loc['Sonido', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Sonido', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Sonido', 'Existencia'] = 1
                 Aparatos_C.loc['Sonido', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Sonido', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
                 Aparatos_C.loc['Sonido', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Sonido', 'Lugar'] = Zona
+
+                if 'sonido' in Nomedidos:
+                    print("sonido no desconectado")
+                else:
+                    Aparatos_C.loc['Sonido', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
             ##Bocinas
             if indx == 8:
                 NomAparato = 'bocina'
                 # Aparatos_C.loc['Bocinas', 'Aparatos'] = NomAparato
                 InfoDeco = Circuito.filter(regex=NomAparato)
-                Aparatos_C.loc['Bocinas', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Bocinas', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Bocinas', 'Existencia'] = InfoDeco.filter(regex='numero')[0]
                 Aparatos_C.loc['Bocinas', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Bocinas', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Bocinas', 'Lugar'] = Zona
+                if 'bocina' in Nomedidos:
+                    print("bocinas no desconectado")
+                else:
+                    Aparatos_C.loc['Bocinas', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
 
-            # Sonido
+            # Blueray
             if indx == 9:
                 NomAparato = 'bluray'
                 InfoDeco = Circuito.filter(regex=NomAparato)
                 tipo= InfoDeco.filter(regex='tipo')[0]
-
-                if 'bluray' in Nomedidos:
-                    print("decodificador 1 no desconectado")
-                else:
-                    Aparatos_C.loc['Bluray', 'CodigoS'] = CodStandby
-                    Aparatos_C.loc['Bluray', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-
-
+                Aparatos_C.loc['Bluray', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Bluray', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
-
                 InfoDeco = Circuito.filter(regex=tipo)
                 Aparatos_C.loc['Bluray', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-
                 Aparatos_C.loc['Bluray', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Bluray', 'Existencia'] = 1
                 Aparatos_C.loc['Bluray', 'Atacable'] = 'Si'
-
-
                 Aparatos_C.loc['Blueray', 'Lugar'] = Zona
+                if 'bluray' in Nomedidos:
+                    print("blueray no desconectado")
+                else:
+
+                    Aparatos_C.loc['Bluray', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
             if indx == 10:
             ##Regulador
@@ -242,22 +245,18 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 NomAparato = 'decodificador2'
                 # Aparatos_C.loc['Decodificador2', 'Aparatos'] = NomAparato
                 InfoDeco = Circuito.filter(regex=NomAparato)
-
-                if 'decodificador1' in Nomedidos:
-                    print("decodificador 1 no desconectado")
-                else:
-                    Aparatos_C.loc['Decodificador2', 'CodigoS'] = CodStandby
-                    Aparatos_C.loc['Decodificador2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-
-
                 if InfoDeco.filter(regex='marca')[0] == 'otro':
                     Aparatos_C.loc['Decodificador2', 'Marca'] = InfoDeco.filter(regex='otro')[0]
                 else:
                     Aparatos_C.loc['Decodificador2', 'Marca'] = InfoDeco.filter(regex='marca')[0]
+                Aparatos_C.loc['Decodificador2', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Decodificador2', 'Existencia'] = 1
                 Aparatos_C.loc['Decodificador2', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Decodificador2', 'Lugar'] = Zona
-
+                if 'decodificador2' in Nomedidos:
+                    print("decodificador2 no desconectado")
+                else:
+                    Aparatos_C.loc['Decodificador2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
             ##Regulador2
             if indx == 13:
@@ -280,14 +279,16 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 NomAparato = 'consola2'
                 InfoDeco = Circuito.filter(regex=NomAparato)
                 Aparatos_C.loc['Consola2', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                Aparatos_C.loc['Consola2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Consola2', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Consola2', 'Existencia'] = 1
                 Aparatos_C.loc['Consola2', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Consola2', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
                 Aparatos_C.loc['Consola2', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Consola2', 'Lugar'] = Zona
-
+                if 'consola2' in Nomedidos:
+                    print("consola2 no desconectado")
+                else:
+                    Aparatos_C.loc['Consola2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
             if indx == 15:
             ##EquipoExtra
@@ -300,13 +301,11 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Equipoextra', 'Existencia'] = 1
                 Aparatos_C.loc['Equipoextra', 'Atacable'] = 'No'
                 Aparatos_C.loc['Equipoextra', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
-
                 Aparatos_C.loc['Equipoextra', 'Lugar'] = Zona
-                print(Nomedidos)
-                if 'otro1' in Nomedidos:
+                Aparatos_C.loc['Equipoextra', 'CodigoS'] = CodStandby
+                if 'eqextra' in Nomedidos:
                     print("eqextra no desconectado no desconectado")
                 else:
-                    Aparatos_C.loc['Equipoextra', 'CodigoS'] =  CodStandby
                     Aparatos_C.loc['Equipoextra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
             if indx == 16:
@@ -319,15 +318,12 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Equipoextra2', 'Existencia'] = 1
                 Aparatos_C.loc['Equipoextra2', 'Atacable'] = 'No'
                 Aparatos_C.loc['Equipoextra2', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
-
                 Aparatos_C.loc['Equipoextra2', 'Lugar'] = Zona
-                print(Nomedidos)
-                if 'otro1' in Nomedidos:
+                Aparatos_C.loc['Equipoextra2', 'CodigoS'] = CodStandby
+                if 'eqextra2' in Nomedidos:
                     print("eqextra no desconectado no desconectado")
                 else:
-                    Aparatos_C.loc['Equipoextra2', 'CodigoS'] =  CodStandby
                     Aparatos_C.loc['Equipoextra2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-
 
             if indx == 17:
             ##EquipoExtra
@@ -339,13 +335,11 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Equipoextra3', 'Existencia'] = 1
                 Aparatos_C.loc['Equipoextra3', 'Atacable'] = 'No'
                 Aparatos_C.loc['Equipoextra3', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
-
                 Aparatos_C.loc['Equipoextra3', 'Lugar'] = Zona
-                print(Nomedidos)
-                if 'otro1' in Nomedidos:
+                Aparatos_C.loc['Equipoextra3', 'CodigoS'] = CodStandby
+                if 'eqextra3' in Nomedidos:
                     print("eqextra no desconectado no desconectado")
                 else:
-                    Aparatos_C.loc['Equipoextra3', 'CodigoS'] =  CodStandby
                     Aparatos_C.loc['Equipoextra3', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
         InfoDeco = Circuito.filter(regex='eqdeahorro')
@@ -355,39 +349,26 @@ def clustertv(Excel,Nocircuito,NomCircuito):
             Aparatos_C.loc['Equipo Ahorro', 'Atacable'] = 'No'
         indx = indx + 1
 
-    InfoDeco = Circuito.filter(regex='clustertv_notas_c_i')
-    if not InfoDeco[0]:
-        Info_C.loc['Notas', 'Info'] = InfoDeco[0]
-        Aparatos_C.loc['Notas', 'Marca'] = InfoDeco[0]
-        Aparatos_C.loc['Notas', 'Existencia'] = 1
-    else:
-        Info_C.loc['Notas', 'Info'] = Circuito.filter(regex='clustertv_notas_c_i')[0]
-        Aparatos_C.loc['Notas', 'Marca'] = Circuito.filter(regex='clustertv_notas_c_i')[0]
+    Aparatos_C.loc['Notas', 'Marca'] ='Sin notas'
+    Aparatos_C.loc['Notas', 'Existencia'] = 1
+    if not pd.isna(Circuito.filter(regex='clustertv_notas_c_i')[0]):
+        TExtocompleto=Circuito.filter(regex='clustertv_notas_c_i')[0] +'; '+ Maniobras
+        Info_C.loc['Notas', 'Info']      = TExtocompleto
+        Aparatos_C.loc['Notas', 'Marca'] = TExtocompleto
         Aparatos_C.loc['Notas', 'Existencia'] = 1
 
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()
     TotConsumo = calc_consumo(Aparatos_C)
     Info_C.loc['Consumo Total', 'Info'] = TotConsumo
-    #Aparatos.loc[]
-
     EquiposC = Aparatos.fillna(0)
-    NumAparatos = EquiposC['Existencia'].sum()
-
-    Multis=0
-    Tolerancia=False
-
     if EquiposC.loc['Equipo Ahorro','Marca']!=0:
         Multis=1
-    #if EquiposC.loc['TV','Tolerancia']!=0:
-    Tolerancia  = True
-    Voltaje     = True
     zona=Zona
-
-    Lib=condicionesCluster(Aparatos_C,Nominal,TotConsumo,NumAparatos,Tolerancia,Multis, Voltaje)
-    Aparatos.loc['TV', 'CodigoFin'] = Lib
     Info_C.loc['Consumo Total', 'Info'] = TotConsumo
+    print(Aparatos.loc['Notas','Marca'])
 
-    #print(Aparatos)
-    return Aparatos.copy() , TotConsumo, Lib, zona
+
+
+    return Aparatos, TotConsumo, zona
 

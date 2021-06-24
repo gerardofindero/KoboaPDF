@@ -4,10 +4,9 @@ import pandas as pd
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreria.xlsx")
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Proto_Libreria_Refrigeradores.xlsx")
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        Libreria = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Proto_Libreria_Refrigeradores.xlsx")
     Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
     return Libreria
@@ -129,7 +128,10 @@ def LeeClavesR(Claves):
         if 'VN' in Claves:
             Texto = Texto + ' ' + lib.loc[9, 'E']
 
-        Texto=Texto.replace('[/n]','<br />')
-
+        # Texto=Texto.replace('[/n]','<br />')
+        # Address = 'Link de compra'
+        # linkA = 'http://www.amazon.com.mx/'
+        # LinkS = '<link href="' + linkA + '"color="blue">' + Address + ' </link>'
+        # Texto = Texto + '<br /> ' + '<br /> '+ LinkS
 
     return Texto

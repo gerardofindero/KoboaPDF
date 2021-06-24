@@ -12,7 +12,7 @@ def leer_tarifa_Dac():
 
 # Intenta leer primero el archivo de tarifas desde el path de la computadora y si no puede se va al disco duro "D:"
     try:
-        Tarifas = pd.read_excel('/Users/javierlascurain-leon/Findero Dropbox/Tarifas/Lista_Tarifas.xlsx', sheet_name='DAC')
+        Tarifas = pd.read_excel('D:/Findero Dropbox/Tarifas/Lista_Tarifas.xlsx', sheet_name='DAC')
     except:
         directorio=Path(__file__).parents[3]
         dirr='../../../Tarifas/Lista_Tarifas.xlsx'
