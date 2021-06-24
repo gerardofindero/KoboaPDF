@@ -28,7 +28,7 @@ def separar_fugas(Equip):
     Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
-
+    Equipos['Claves'] = Aparatos['Clave']
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
@@ -207,7 +207,7 @@ def separar_fugasTV(Equipo):
     Aparatos['Pulgadas']=Aparatos['Pulgadas']
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
-    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
+    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' de '+Aparatos['Pulgadas']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
@@ -216,7 +216,7 @@ def separar_fugasTV(Equipo):
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Equipoextra', "", regex=True)
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Equipoextra2', "", regex=True)
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Equipoextra3', "", regex=True)
-    Equipos['Claves'] = Aparatos['CodigoFin']
+    Equipos['Claves'] = Aparatos['Clave']
 
 
 

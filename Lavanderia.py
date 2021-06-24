@@ -1,9 +1,11 @@
 import pandas as pd
 from Consumo    import calc_consumo , consumoEq
+from LibreriaLavaSeca import ClavesLavaSeca
+
 def lavanderia(Excel,Nocircuito, NomCircuito):
     Aparatos_C = pd.DataFrame(
         index=['Lavadora', 'Secadora', 'Lavasecadora', 'Plancha', 'PlanchaV','Regulador'],
-        columns=[ 'Marca','Standby', 'Nominal','Existencia','Atacable','Zona','Notas','CodigoN','CodigoS','ReguladorL','ReguladorS','Regulador'])
+        columns=[ 'Marca','Standby', 'Nominal','Existencia','Atacable','Zona','Notas','CodigoN','CodigoS','ReguladorL','ReguladorS','Regulador','Clave'])
 
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
@@ -11,6 +13,8 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
     Equipos = Circuito[InfoEquipos]
     CodStandby = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     Notass=Circuito.filter(regex='lavanderia_notas_c_i')[0]
+    Tierra = Circuito.filter(regex='lavanderia_tierra_c_i')[0]
+
     indx=0
     for i in Equipos:
         if i == 1:
@@ -28,7 +32,8 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Lavadora', 'Notas'] = Notass
                 Aparatos_C.loc['Lavadora', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Lavadora', 'CodigoS'] = CodStandby
-
+                Aparatos_C.loc['Lavadora', 'Clave'] = 'L,'+ str(Aparatos_C.loc['Lavadora', 'Standby'])
+                #Aparatos_C.loc['Lavadora', 'Clave'] =ClavesLavaSeca(Aparatos_C.loc['Lavadora','Standby'])
 
 
             if indx == 2:
@@ -47,7 +52,8 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Secadora', 'CodigoS'] = CodStandby
 
                 Aparatos_C.loc['Secadora', 'Regulador'] = consumoEq(InfoDeco.filter(regex='reguladorSN')[0])
-
+                #Aparatos_C.loc['Secadora', 'Clave'] = ClavesLavaSeca(Aparatos_C.loc['Secadora', 'Standby'])
+                Aparatos_C.loc['Secadora', 'Clave'] = 'S,' + str(Aparatos_C.loc['Secadora', 'Standby'])
             if indx == 3:
                 InfoDeco = Circuito.filter(regex='lavaseca')
                 Aparatos_C.loc['Lavasecadora', 'Nominal'] = InfoDeco.filter(regex='consumo')[0]
@@ -62,7 +68,7 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['Lavasecadora', 'Atacable'] = 'NF'
                 Aparatos_C.loc['Lavasecadora', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Lavasecadora', 'CodigoS'] = CodStandby
-
+                Aparatos_C.loc['Lavasecadora', 'Clave'] = 'LV'
 
 
 
@@ -75,7 +81,7 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Plancha', 'Atacable'] = 'NF'
                 Aparatos_C.loc['Plancha', 'Notas'] = Notass
                 Aparatos_C.loc['Plancha', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
-
+                Aparatos_C.loc['Plancha', 'Clave'] = 'P'
 
 
             if indx == 5:
@@ -87,6 +93,7 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['PlanchaV', 'Atacable'] = 'NF'
                 Aparatos_C.loc['PlanchaV', 'Notas'] = Notass
                 Aparatos_C.loc['PlanchaV', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                Aparatos_C.loc['Plancha', 'Clave'] = 'P'
 
         indx=indx+1
 

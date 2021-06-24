@@ -6,36 +6,31 @@ import numpy as np
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Lavadora/Protolibreria_LavadorasySecadoras.xlsx")
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Lavadora/Protolibreria_LavadorasySecadoras.xlsx",sheet_name='Reporte')
         Precios = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx",sheet_name='Precio')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        Libreria = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Lavadora Y Secadora/Protolibreria_LavadorasySecadoras.xlsx",sheet_name='Reporte')
     Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
 
 
 
-    return Libreria, Precios
+    return Libreria
 
 
 
-def ClavesLavaSeca(EquiposClusterLS):
-    EquiposLAVSEC = EquiposClusterLS
-    Lib=libreria2()
-
-    for i in EquiposLAVSEC.index:
-        Standby = EquiposLAVSEC.loc['TV', 'Standby']
-        Codigo = 'C,'+str(Standby)
+def ClavesLavaSeca(Standby):
+    Codigo = 'L,'+str(Standby)
 
     return  Codigo
 
 
 def LeeClavesLavaSeca(Claves,consumo):
     Texto=''
-    lib, precios=libreria2()
-
+    lib=libreria2()
+    kWh=consumo
     if pd.notna(Claves):
         ClavesS = Claves.split(",")
 
@@ -53,15 +48,30 @@ def LeeClavesLavaSeca(Claves,consumo):
             if 0.33 > Percentil:
                 Ca = 1
 
-            if consumo < 20:
+            if Ca==1:
                 Texto = Texto + ' ' + lib.loc[0, 'E']
+            if Ca==2:
+                Texto = Texto + ' ' + lib.loc[1, 'E']
+            if Ca==3:
+                Texto = Texto + ' ' + lib.loc[2, 'E']
 
         if ClavesS[0] == 'S':
-            if consumo < 20:
+            Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.7147, scale=1.2349))
+
+            if Percentil > 0.7:
+                Ca = 3
+            if 0.33 < Percentil < 0.7:
+                Ca = 2
+            if 0.33 > Percentil:
+                Ca = 1
+
+            if Ca==1:
                 Texto = Texto + ' ' + lib.loc[3, 'E']
+            if Ca==2:
+                Texto = Texto + ' ' + lib.loc[4, 'E']
+            if Ca==3:
+                Texto = Texto + ' ' + lib.loc[5, 'E']
 
-        if Standby > 0:
-            Texto= Texto + lib.loc[7,'E']
-
-    print(Texto)
+        # if Standby > 0:
+        #     Texto= Texto + lib.loc[7,'E']
     return Texto

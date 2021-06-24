@@ -36,7 +36,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     workbook = xlwings.Book(archivo_resultados)
     gris = (200, 200, 200)
-    Consumo_bimestral = '=Resumen!E4'
+    Consumo_bimestral = '=Resumen!A9'
     Tarifa = leer_tarifa_Dac()
     try:
         workbook.sheets.add('Desciframiento')

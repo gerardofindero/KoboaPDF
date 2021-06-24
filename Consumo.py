@@ -1,3 +1,5 @@
+import pandas as pd
+
 def calc_consumo(Aparatos):
     consumo = Aparatos['Standby'].copy()
     consumo.dropna(inplace=True)
@@ -8,12 +10,14 @@ def calc_consumo(Aparatos):
 
 def consumoEq(consumo):
     watts=0
+    if pd.isna(consumo):
+        consumo=0
+
     try:
         watts = round(float(consumo))
-        print('El consumo se tomó en watts al no venir especificado')
+        #print('El consumo se tomó en watts al no venir especificado')
 
     except:
-        #print(consumo)
         consumo = consumo.lower()
         consumo= consumo.replace(' ','')
         consumo = consumo.replace('o','0')
@@ -23,7 +27,7 @@ def consumoEq(consumo):
         if "w" in consumo:
             watts = float(consumo.replace('w', ' '))
         if consumo=='nm':
-            watts = 0.01
+            watts = 0.00001
 
     return watts
 
@@ -47,10 +51,7 @@ def temperatura(temp):
 
         if "c" in grados:
             cel = float(grados.replace('c', ' '))
-            ###################################################################################################################################
-            ##############################################################################################33
-            #############################################################################################3
-            ######################################################
+
         if 'nm'in grados:
-            cel = 0
+            cel = 999
     return round(cel)
