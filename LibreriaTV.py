@@ -104,7 +104,6 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
                 Texto = Texto + ' ' + lib.loc[7, 'G']
                 Address = 'Link de compra'
                 LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-                print(LinkS)
                 Texto = Texto + '<br /> '+  '<br /> '+LinkS
 
 

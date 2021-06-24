@@ -46,7 +46,10 @@ def leerConsumoPlanchas(consumo):
         texto = lib.loc[4, 'C'].replace('[perc_cons]',str(int(percentil*100)))
         return texto
     elif percentil>0.66:
-        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}', links.loc[0,'C'])
+        linkA = links.loc[0,'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}',LinkS )
         return texto
 
 
