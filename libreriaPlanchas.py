@@ -4,8 +4,10 @@ def leerLibreriaPlanchas():
     try:
         Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",sheet_name='libreriaPlanchas')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        Libreria = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
+            sheet_name='libreriaPlanchas')
+
     Dicc = ['A','B', 'C'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
     return Libreria
@@ -19,8 +21,12 @@ def leerConsumoPlanchas(consumo):
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
             sheet_name='links')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        statistics = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
+            sheet_name='statistics')
+        links   = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
+            sheet_name='links')
     statistics.columns = ['A', 'B', 'C','D']  # Define los nombres de las columnas en Excel.
     links.columns =  ['A','B','C']
     # media y desviacion estandar almacenados en el excel de planchas
@@ -39,7 +45,10 @@ def leerConsumoPlanchas(consumo):
         texto = lib.loc[4, 'C'].replace('[perc_cons]',str(int(percentil*100)))
         return texto
     elif percentil>0.66:
-        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}', links.loc[0,'C'])
+        linkA = links.loc[0,'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}',LinkS )
         return texto
 
 
