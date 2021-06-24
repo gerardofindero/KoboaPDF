@@ -57,11 +57,10 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
         if j == 1:
             if indx == 1:
                 print("Cluster")
-                Datos_CL, Consum ,Codigo , Zona = clustertv(Excel,Nocircuito,NomCircuito)
+                Datos_CL, Consum , Zona = clustertv(Excel,Nocircuito,NomCircuito)
                 DatosCL = DatosCL.append(Datos_CL)
                 Datos_CL.to_excel(writer,  index=True,startrow=primafila)
                 primafila = primafila+ len(Datos_CL) + 4
-                #Codigo.to_excel(writer, sheet_name='Libreria', index=True, startrow=FilaLib)
                 DatosCL['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCL['Circuito'].fillna(NomCircuito[0], inplace=True)
                 DatosCL['Zona'].fillna(Zona, inplace=True)

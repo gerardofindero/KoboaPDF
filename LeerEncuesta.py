@@ -12,18 +12,16 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
-from libreriaClusterTV import armarTexto
-from libreriaPlanchas import leerConsumoPlanchas
+import libreriaPlanchas as libpla
+from libreriaMicroondas import leerConsumoMicroondas
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
     ClientEx=ClientEx +'.xlsx'
-    try:
-        Excel = pd.read_excel(Path.home() / 'Desktop' /ClientEx )
-    except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+
+    Excel = pd.read_excel(Path.home() / 'Desktop' /ClientEx )
+
     return Excel,Cliente
 
 def Crear_Kobo(NCliente):
@@ -50,8 +48,8 @@ def Crear_Kobo(NCliente):
     print(Nombre)
     writer = ExcelWriter(Path.home() / 'Desktop' / Nombre , engine='xlsxwriter')
 
-    fila=3 #ENTENDER SU FUNCION
-    filaLib=0 #ENTENDER SU FUNCION
+    fila=3 #
+    filaLib=0 #
     for i in range(TotRenglones):
     #i=0
         Nocircuito=i
@@ -94,9 +92,9 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
 
-    #NCliente = 'Casa Manantiales'
-    NCliente = 'Pablo Rion'
-    #NCliente = 'Carlos Estefan'
+    #NCliente = 'Enrique Tawil'
+    #NCliente = 'Cliente Prueba'
+    NCliente = 'Carlos Estefan'
 
     return NCliente
 
@@ -112,7 +110,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='3'
+    Opcion='4'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -121,16 +119,10 @@ if __name__ == '__main__':
     if Opcion == '2':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
-        #leer_lista(NCliente)
         #hipervinculos(NCliente)
-        #ConLED, Precio, Link  =BuscarLED()
-
-
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        #print(armarTexto(gastobimestral=388.8, horasBimestre=439, listDisp=['A','decodificador1','regulador1','nobreak'], estbVol=True, toleDisp=True,timerKobo=True))
-        print(leerConsumoPlanchas(50))
-
+        print(leerConsumoMicroondas(50))
 
     if Opcion == '4':
         print("Generando Reporte")

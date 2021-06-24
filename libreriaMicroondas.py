@@ -4,8 +4,10 @@ def leerLibreriaMicroondas():
     try:
         Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",sheet_name='libreriaMicroondas')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        Libreria = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",
+            sheet_name='libreriaMicroondas')
+
     Dicc = ['A','B', 'C'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
     return Libreria
@@ -16,8 +18,9 @@ def leerConsumoMicroondas(consumo):
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",
             sheet_name='statistics')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        statistics = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",
+            sheet_name='statistics')
     Dicc = ['A', 'B', 'C','D','F']  # Define los nombres de las columnas en Excel.
     statistics.columns = Dicc
     # media y desviacion estandar almacenados en el excel de libreria_microondas.xlsx

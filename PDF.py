@@ -20,6 +20,9 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
 from Caritas import definircarita
+from reportlab import platypus
+from  reportlab.lib.styles import ParagraphStyle as PS
+from reportlab.platypus import SimpleDocTemplate
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
@@ -709,9 +712,6 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 # Automatizacion ######################
         Consejos=Recomendaciones(Claves,consumo,tarifa,Uso)
 # Automatizacion  ######################
-
-
-        #Consejos='hola =)'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
@@ -739,8 +739,6 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         dinero = round(aparato[12])
         Claves= aparato[16]
         Uso=0
-        nota = aparato[13]
-
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
@@ -1329,16 +1327,14 @@ def Clasificador(aparatos):
     Aparatos.sort_values(by=['L'], inplace=True, ascending=False)
     Aparatos = Aparatos.loc[Aparatos['M'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['M'], inplace=True, ascending=False)
-    #carita= definircarita(Aparatos)
+    carita= definircarita(Aparatos)
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
     AparatosC = Aparatos.loc[Aparatos['A'] == 1]
     deMaG=['Refrigerador','Congelador','Minibar','Cava','Hielos','Dispensador']
     for i in deMaG:
         AparatosMaG= AparatosM.loc[AparatosM['D'].str.contains(i)]
-        AparatosMaG = AparatosC.loc[AparatosC['D'].str.contains(i)]
         AparatosM=AparatosM[~AparatosM['D'].str.contains(i)]
-        AparatosC = AparatosC[~AparatosC['D'].str.contains(i)]
         AparatosG=AparatosG.append(AparatosMaG)
 
     return AparatosG, AparatosM,AparatosC

@@ -6,36 +6,37 @@ import numpy as np
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx",sheet_name='Libreria')
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Libreria')
         Precios = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx",sheet_name='Precio')
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Precio')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        Libreria = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
+            sheet_name='Libreria')
+        Precios = pd.read_excel( f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Precio')
+        Reemplazos = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
+            sheet_name='Reemplazos')
+
     Dicc = ['A', 'B', 'C', 'D', 'E','F','G'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
+    Dicc = ['A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J','K','L','M','N','O','P','Q','R']  # Define los nombres de las columnas en Excel.
+    Reemplazos.columns = Dicc
 
 
-
-    return Libreria, Precios
+    return Libreria, Precios, Reemplazos
 
 
 
 def ClavesClusterTV(EquiposClusterTV):
     EquiposCTV = EquiposClusterTV
-    EquiposR = EquiposCTV.fillna(0)
-    Lib=libreria2()
-    for i in EquiposCTV.index:
-        Standby = EquiposClusterTV.loc['TV', 'Standby']
-        Pulgadas  = EquiposClusterTV.loc['TV', 'Pulgadas']
-        ConsumoTV   = EquiposClusterTV.loc['TV', 'Nominal']
+    EquiposCTV = EquiposCTV.fillna(0)
+    Standby     = EquiposClusterTV.loc['TV', 'Standby']
+    Pulgadas    = EquiposClusterTV.loc['TV', 'Pulgadas']
+    PotenciaTV   = EquiposClusterTV.loc['TV', 'Nominal']
+    Codigo = 'C,'+ str(PotenciaTV) +'/'+str(Standby)+'/'+str(Pulgadas)
 
-        Codigo = 'C,'+ str(ConsumoTV) +'/'+str(Standby)+'/'+str(Pulgadas)
-
-
-
-
-    return  Codigo
+    return Codigo
 
 
 def Clasifica(Claves):
@@ -45,58 +46,77 @@ def Clasifica(Claves):
     return ClavesSep[0]
 
 
+def EncontrarRemplazo(reemplazo,Pulgadas):
+    mx=Pulgadas+Pulgadas*.1
+    mn = Pulgadas - Pulgadas * .1
+    Filtro1 = reemplazo.loc[(reemplazo['C'].astype(int)) < mx]
+    Filtro2 = Filtro1.loc[Filtro1['C'].astype(int) > mn]
+    Filtro2.reset_index(drop=True, inplace=True)
+    print(Filtro2['P'][0])
+    return Filtro2['P'][0]
+
+
 def LeeClavesTV(Claves,Uso,Consumo,DAC):
     Texto=''
-    lib, precios=libreria2()
+    lib, precios, reemplazos =libreria2()
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
         Datos= ClavesSep[1].split("/")
         Potencia=float(Datos[0])
         Standby = float(Datos[1])
-        Pulgadas=Datos[2]
-        percentil=70
+        Pulgadas=float(Datos[2])
 
-
-        Pulgadas=20
-        Watts=80
-        kWh=50
-        #CC = kWh - (2.989644 + 0.034468 * 40) / 0.2606
-        XX = np.log(Watts)
+        #Precio = 0.0151*((Pulgadas)*4) - 2.6271((Pulgadas)*3) + 164.63((Pulgadas)**2) - 4134*(Pulgadas) + 37921
+        Precio =5000
+        Ahorro= (Potencia - math.exp(3.189644 + 0.034468 * Pulgadas)) / Potencia
+        XX = np.log(Potencia)
         Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
-        print(Percentil)
+        ROI=Precio/(DAC*Ahorro*Consumo)
 
-        y = 25.567 *(math.exp(0.035* Pulgadas))
-        MaxP=(y+(y*.25))
-        MinP=(y - (y * .25))
+        if Consumo<10:
+            Texto = Texto + ' ' + lib.loc[0, 'G']
 
-        Ahorro = y*Consumo/Potencia
-        Ahorro = 1-(Ahorro/Consumo)
-
+            if Percentil<0.9:
+                Texto = Texto + ' ' + lib.loc[1, 'G']
 
 
-        # if Consumo>80:
-        #     Texto = Texto + ' ' + lib.loc[3, 'G']
-        #
-        # if Uso>=30:
-        #     Texto = Texto + ' ' + lib.loc[10, 'G']
-        #
-        # ## Uso
-        # if Uso<20:
-        #     Texto = Texto + ' ' + lib.loc[2, 'G']
-        #
-        # if Uso>=20:
-        #     Texto = Texto + ' ' + lib.loc[15, 'G']
-        #
-        #
-        # if Potencia > MaxP:
-        #     Texto= Texto+' '+lib.loc[1,'G']
-        # if Potencia <= MaxP:
-        #     Texto= Texto+' Tu TV tiene un consumo promedio'
+        if 10<=Consumo<100:
+            Texto = Texto + ' ' + lib.loc[2, 'G']
 
-        Texto = Texto + ' ' + lib.loc[2, 'G'] +' ' + lib.loc[3, 'G']
-        if Standby > 0:
-            Texto= Texto + lib.loc[8,'G']
-        Texto= Texto.replace('[/n]','<br /> <br />')
+            if Percentil<0.9:
+                Texto = Texto + ' ' + lib.loc[3, 'G']
+
+            if ROI<18:
+                Texto = Texto + ' ' + lib.loc[4, 'G']
+                linkA=EncontrarRemplazo(reemplazos, Pulgadas)
+                Address = 'Link de compra'
+                LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+                Texto = Texto + '<br /> '+ '<br /> '+LinkS
+
+        if 100<=Consumo:
+            Texto = Texto + ' ' + lib.loc[5, 'G']
+
+            if Percentil<0.9:
+                Texto = Texto + ' ' + lib.loc[6, 'G']
+
+            if ROI<18:
+                linkA=EncontrarRemplazo(reemplazos, Pulgadas)
+                Texto = Texto + ' ' + lib.loc[7, 'G']
+                Address = 'Link de compra'
+                LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+                print(LinkS)
+                Texto = Texto + '<br /> '+  '<br /> '+LinkS
+
+
+        if Standby>0.3:
+            Texto = Texto + ' ' + lib.loc[8, 'G']
+
+    Texto = Texto.replace('[/n]','<br />')
+    Texto = Texto.replace('[...]', ' ')
+    Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
+    Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
+    Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
+
 
 
     return Texto
