@@ -13,6 +13,7 @@ from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
 from libreriaClusterTV import armarTexto
+from libreriaPlanchas import leerConsumoPlanchas
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
@@ -127,8 +128,8 @@ if __name__ == '__main__':
 
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(armarTexto(gastobimestral=388.8, horasBimestre=439, listDisp=['A','decodificador1','regulador1','nobreak'], estbVol=True, toleDisp=True,timerKobo=True))
-
+        #print(armarTexto(gastobimestral=388.8, horasBimestre=439, listDisp=['A','decodificador1','regulador1','nobreak'], estbVol=True, toleDisp=True,timerKobo=True))
+        print(leerConsumoPlanchas(50))
 
 
     if Opcion == '4':
