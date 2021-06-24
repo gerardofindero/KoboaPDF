@@ -39,7 +39,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 if 'computadora' in Nomedidos:
                     print("computadora no desconectado")
                 else:
-                    Aparatos_C.loc['Computadora', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Computadora', 'Standby'] = stnby
                     Aparatos_C.loc['Computadora', 'CodigoS'] = stnbyCod
 
 

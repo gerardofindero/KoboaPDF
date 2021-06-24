@@ -12,8 +12,7 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
-import libreriaPlanchas as libpla
-from libreriaMicroondas import leerConsumoMicroondas
+from libreriaClusterTV import armarTexto
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
@@ -95,8 +94,8 @@ def Nombre_Cliente():
 
 
     #NCliente = 'Casa Manantiales'
-    #NCliente = 'Marcela Gessaghi'
-    NCliente = 'Carlos Estefan'
+    NCliente = 'Pablo Rion'
+    #NCliente = 'Carlos Estefan'
 
     return NCliente
 
@@ -128,7 +127,7 @@ if __name__ == '__main__':
 
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(leerConsumoMicroondas(50))
+        print(armarTexto(gastobimestral=388.8, horasBimestre=439, listDisp=['A','decodificador1','regulador1','nobreak'], estbVol=True, toleDisp=True,timerKobo=True))
 
 
 
