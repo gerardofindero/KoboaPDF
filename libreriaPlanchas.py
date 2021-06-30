@@ -41,14 +41,29 @@ def leerConsumoPlanchas(consumo):
     if percentil <0.33:
         texto=lib.loc[3,'C'].replace('[1-perc_cons]',str(int((1-percentil)*100)))
         return texto
-    elif 0.33<percentil<0.66:
-        texto = lib.loc[4, 'C'].replace('[perc_cons]',str(int(percentil*100)))
+    elif 0.33<=percentil<0.45:
+        linkA = links.loc[0, 'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />' + '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+        texto = lib.loc[4, 'C'].replace('[perc_cons]', str(int(percentil * 100))).replace('{link_blog_planchas}', LinkS)
         return texto
-    elif percentil>0.66:
+    elif 0.45<=percentil<0.55:
+        linkA = links.loc[0, 'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />' + '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+        texto = lib.loc[5, 'C'].replace('[perc_cons]', str(int(percentil * 100))).replace('{link_blog_planchas}', LinkS)
+        return texto
+    elif 0.55<=percentil<0.66:
+        linkA = links.loc[0, 'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />' + '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+        texto = lib.loc[6, 'C'].replace('[perc_cons]', str(int(percentil * 100))).replace('{link_blog_planchas}', LinkS)
+        return texto
+    elif percentil>=0.66:
         linkA = links.loc[0,'C']
         Address = 'Estrategia para planchas'
         LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}',LinkS )
+        texto = lib.loc[7, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}',LinkS )
         return texto
 
 
