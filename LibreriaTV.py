@@ -34,7 +34,8 @@ def ClavesClusterTV(EquiposClusterTV):
     Standby     = EquiposClusterTV.loc['TV', 'Standby']
     Pulgadas    = EquiposClusterTV.loc['TV', 'Pulgadas']
     PotenciaTV   = EquiposClusterTV.loc['TV', 'Nominal']
-    Codigo = 'C,'+ str(PotenciaTV) +'/'+str(Standby)+'/'+str(Pulgadas)
+    Tolerancia = EquiposClusterTV.loc['TV', 'Tolerancia']
+    Codigo = 'C,'+Tolerancia + str(PotenciaTV) +'/'+str(Standby)+'/'+str(Pulgadas)
 
     return Codigo
 
@@ -61,7 +62,8 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
     lib, precios, reemplazos =libreria2()
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
-        Datos= ClavesSep[1].split("/")
+        Tolerancia = ClavesSep[1]
+        Datos= ClavesSep[2].split("/")
         Potencia=float(Datos[0])
         Standby = float(Datos[1])
         Pulgadas=float(Datos[2])

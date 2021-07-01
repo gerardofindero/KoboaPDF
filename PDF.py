@@ -20,6 +20,7 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
 from Caritas import definircarita
+import libreriaClusterTV as CTV
 from libreriaClusterTV import armarTexto
 from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
@@ -959,6 +960,8 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
 
 def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
     Lequipos = []
+    Ltoler=[]
+    Lconsumo=[]
     if not atac.empty:
         consumoT = round(atac['K'].sum(), 1)
         costoT = round(atac['M'].sum())
@@ -1027,11 +1030,22 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 altura=altura-5
             ind = ind + 1
             altura = altura - 80
+
+            if voltaje==1:
+                voltaje=True
+            else:
+                voltaje= False
+
             Lequipos.append(Nfuga)
+            Ltoler.append(False)
+            Lconsumo.append(potencia)
 
             if Atacable and ind==5:
-                Consejos = armarTextoCTV(consumoT, horasBimestre=100, listDisp=Lequipos, estbVol=True, toleDisp=True,
-                                         timerKobo=True, maniobras=None)
+                print(voltaje)
+                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
+                print(dfCTV)
+                Consejos=(CTV.armarTexto(voltaje, dfCTV))
+
                 if len(Consejos)<750:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
                 else:
@@ -1041,9 +1055,12 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 Lequipos=[]
 
             if Atacable and ind<5 and np>=1:
-                Consejos = armarTextoCTV(consumoT, horasBimestre=100, listDisp=Lequipos, estbVol=voltaje, toleDisp=True,
-                                         timerKobo=True, maniobras=None)
-                parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
+                Consejos=(CTV.armarTexto(voltaje, dfCTV))
+                if len(Consejos) < 750:
+                    parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+                else:
+                    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
                 frame = Frame(330, 50, 200, 330, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
                 Lequipos=[]

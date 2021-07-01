@@ -57,7 +57,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['TV', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['TV', 'Marca'] = InfoDeco.filter(regex='clustertv_tv1_c_i')[0]
                 Aparatos_C.loc['TV', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                Aparatos_C.loc['TV', 'Tolerancia'] = InfoDeco.filter(regex='tolerancia')[0]
+                Aparatos_C.loc['TV', 'Tolerancia'] = Def_Tolerante(InfoDeco.filter(regex='tolerancia')[0])
                 Aparatos_C.loc['TV', 'Pulgadas'] = InfoDeco.filter(regex='tamano')[0]
                 Aparatos_C.loc['TV', 'Existencia'] = 1
                 Aparatos_C.loc['TV', 'Lugar'] = Zona
@@ -162,6 +162,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Sonido', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
                 Aparatos_C.loc['Sonido', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Sonido', 'Lugar'] = Zona
+                Aparatos_C.loc['Sonido', 'Tolerancia']=False
 
                 if 'sonido' in Nomedidos:
                     print("sonido no desconectado")

@@ -21,6 +21,9 @@ def leerLibreriaCTV():
     libCTV.columns = ['A','B', 'C','D','E'] # Define los nombres de las columnas en Excel.
     libUPS.columns = ['A','B','C','D','E']
     return [libCTV, libUPS]
+
+
+
 def caractCTV(dfCTV):
     # Sonido
     sLogic= (dfCTV.disp == 'Sonido'     ) | \
@@ -43,7 +46,9 @@ def caractCTV(dfCTV):
     else:
         tolTV = None
     # Reguladore
-    regLogic=((dfCTV['disp']=='Regulador1') | (dfCTV['disp']=='Regulador2'))
+    #regLogic=((dfCTV['disp']=='Regulador') | (dfCTV['disp']=='Regulador2'))
+    regLogic=dfCTV.disp.str.contains('Regulador')
+    print(type(regLogic))
     nReg=(regLogic*1).sum()
     if nReg>1:
         regulador = True
@@ -55,14 +60,15 @@ def caractCTV(dfCTV):
         regulador = False
         consumoRegulador = None
     # Consumo excluyendo *
-    excLogic=(dfCTV.disp=='Decodificador1')|\
+    excLogic=(dfCTV.disp=='Decodificador')|\
     (dfCTV.disp=='Decodificador2')|\
     (dfCTV.disp=='Modem')|\
     (dfCTV.disp=='NoBreak')|\
     (dfCTV.disp=='Repetidor')|\
     (dfCTV.disp=='Antena')
     consumoStanby = dfCTV.loc[~excLogic,'cons'].sum()
-    decodificador= ((dfCTV.disp== 'Decodificador1')|(dfCTV.disp== 'Decodificador2')).any()
+    decodificador= ((dfCTV.disp== 'Decodificador')|(dfCTV.disp== 'Decodificador2')).any()
+    consumoRegulador=consumoRegulador[0]
     return [consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido, decodificador]
 def roiUPS(dfCTV):
     ROIUPS=3
@@ -87,11 +93,14 @@ def regDes(consumoRegulador, libCTV):
 def regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,libCTV):
 
     if volEst:
+        print('volEst')
+        print(type(consumoRegulador), type(consumoStanby))
         if (consumoStanby-consumoRegulador)<=2:
             # A1 B1 - CTV04S03 CTV04S05 CTV04S06
             texto = libCTV.loc[5,'E']+libCTV.loc[7,'E']+libCTV.loc[8,'E']
         if (consumoStanby-consumoRegulador)>2:
             # A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22
+            print('# A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22')
             texto = libCTV.loc[0,'E']+libCTV.loc[1,'E']+'\n'+libCTV.loc[5,'E']+libCTV.loc[8,'E']+'\n'+libCTV.loc[26,'E']
     else:
         if tolTV:
@@ -129,46 +138,72 @@ def armarTexto(volEst,dfCTV):
     [lib, libUPS]=leerLibreriaCTV()
     texto=''
     [consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido,decodificador] = caractCTV(dfCTV)
+    print([consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido,decodificador])
     if UPS:
         ROIUPS = roiUPS(lib)
 
     if   ((consumoStanby >= 2)==False) and (UPS==False):
         # 1 CTV20
+        print('1 CTV20')
         texto=lib.loc[24,'E']
 
     elif ((consumoStanby >= 2) == False) and (UPS == True ):
         # ROIUPS=ROI_UPS()
         if (regulador == False) and (ROIUPS <= 3):
             # 3 UPS01 UPS03
+            print('# 3 UPS01 UPS03')
             texto = libUPS.loc[0, 'E'] + '\n' + libUPS.loc[2, 'E']
 
         if (regulador == False) and (ROIUPS > 3):
-            # 3 UPS02 UPS03
+            # 4 UPS02 UPS03
+            print('# 4 UPS02 UPS03')
             texto = libUPS.loc[1, 'E'] + '\n' + libUPS.loc[2, 'E']
 
         if (regulador == True) and (UPS == True):
             # Linea A
+            print('# Linea A')
             texto = texto + 'REQUIERO UNA RECOMENDACIÓN MANUAL HYA UN UPS Y REGULADOR EN EL CTV\n'
             texto = regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,lib) # acomodar argumentos
 
     elif ((consumoStanby >= 2) == True ) and (UPS == False):
         if not regulador :
             # 2 CTV01 CTV02 CTV04S06
+            print('# 2 CTV01 CTV02 CTV04S06')
             texto=lib.loc[0,'E']+'\n'+lib.loc[1,'E']+lib.loc[8,'E']
         if regulador:
             # Linea B
+            print('# Linea B')
             texto= regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,lib) # acomodar argumentos
 
     elif ((consumoStanby >= 2) == True ) and (UPS == True ):
         if (regulador == False) and (ROIUPS <= 3):
             # 5 UPS01 CTV23 UPS03
+            print('# 5 UPS01 CTV23 UPS03')
             texto = libUPS.loc[0, 'E'] + '\n'+lib.loc[27,'E'] +'\n'+ libUPS.loc[2, 'E']
 
         if (regulador == False) and (ROIUPS > 3):
             # 6 UPS02 CTV23 UPS03
+            print('# 6 UPS02 CTV23 UPS03')
             texto = libUPS.loc[1, 'E'] + '\n' +lib.loc[27,'E'] +'\n'+ libUPS.loc[2, 'E']
     if decodificador:
         texto=texto+'\n'+lib.loc[2,'E']
+
+    if len(dfCTV)>1:
+        texto=texto.replace('{s}','s')
+        texto = texto.replace('{n}', 'n')
+    else:
+        texto=texto.replace('{s}','')
+        texto = texto.replace('{n}', '')
+        texto = texto.replace('dispositivo', 'equipo')
+        texto = texto.replace('tiene un alto consumo','se mantiene consumiendo energía')
+
+
+    linkA = 'www.google.com'
+    Address = 'link'
+    LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+    texto = texto.replace('[link protector de sobrevoltaje]',LinkS)
+
+
     return texto
 
 
