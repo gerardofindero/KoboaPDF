@@ -53,7 +53,7 @@ def caractCTV(dfCTV):
         consumoRegulador = 0
     elif nReg==1:
         regulador = True
-        consumoRegulador = dfCTV.loc[regLogic, 'cons']
+        consumoRegulador = int(dfCTV.loc[regLogic, 'cons'])
     else:
         regulador = False
         consumoRegulador = 0
@@ -68,10 +68,10 @@ def caractCTV(dfCTV):
     decodificador= ((dfCTV.disp== 'Decodificador')|(dfCTV.disp== 'Decodificador2')).any()
     print('VEces')
     print(consumoRegulador)
-    if consumoRegulador is None:
-        consumoRegulador=0
-    else:
-        consumoRegulador=consumoRegulador[1]
+    # if consumoRegulador is None:
+    #     consumoRegulador=0
+    # else:
+    #     consumoRegulador=consumoRegulador[1]
     print(consumoRegulador)
 
     return [consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido, decodificador]
