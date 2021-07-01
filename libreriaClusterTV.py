@@ -48,7 +48,6 @@ def caractCTV(dfCTV):
     # Reguladore
     #regLogic=((dfCTV['disp']=='Regulador') | (dfCTV['disp']=='Regulador2'))
     regLogic=dfCTV.disp.str.contains('Regulador')
-    print(type(regLogic))
     nReg=(regLogic*1).sum()
     if nReg>1:
         regulador = True
@@ -68,8 +67,16 @@ def caractCTV(dfCTV):
     (dfCTV.disp=='Antena')
     consumoStanby = dfCTV.loc[~excLogic,'cons'].sum()
     decodificador= ((dfCTV.disp== 'Decodificador')|(dfCTV.disp== 'Decodificador2')).any()
-    consumoRegulador=consumoRegulador[0]
+    print('VEces')
+    print(consumoRegulador)
+    if consumoRegulador is None:
+        consumoRegulador=0
+    else:
+        consumoRegulador=consumoRegulador[1]
+    print(consumoRegulador)
+
     return [consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido, decodificador]
+
 def roiUPS(dfCTV):
     ROIUPS=3
     return  ROIUPS
@@ -94,7 +101,7 @@ def regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,n
 
     if volEst:
         print('volEst')
-        print(type(consumoRegulador), type(consumoStanby))
+        print(consumoRegulador)
         if (consumoStanby-consumoRegulador)<=2:
             # A1 B1 - CTV04S03 CTV04S05 CTV04S06
             texto = libCTV.loc[5,'E']+libCTV.loc[7,'E']+libCTV.loc[8,'E']
