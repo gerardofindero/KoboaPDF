@@ -35,29 +35,28 @@ def caractCTV(dfCTV):
     if sonido:
         tolSonido = all(dfCTV.loc[sLogic,'tol'])
     else:
-        tolSonido = None
-    if any(dfCTV.disp=='NoBreak'):
+        tolSonido = False
+    if any(dfCTV.disp.str.contains('NoBreak')):
         UPS=True
     else:
         UPS=False
     # TV
-    if any(dfCTV.disp=='TV'):
-        tolTV = all(dfCTV.tol[dfCTV.disp=='TV'])
+    if any(dfCTV.disp.str.contains('TV')):
+        tolTV = all(dfCTV.tol[dfCTV.disp.str.contains('TV')])
     else:
-        tolTV = None
-    # Reguladore
-    #regLogic=((dfCTV['disp']=='Regulador') | (dfCTV['disp']=='Regulador2'))
+        tolTV = False
+    # Reguladores
     regLogic=dfCTV.disp.str.contains('Regulador')
     nReg=(regLogic*1).sum()
     if nReg>1:
         regulador = True
-        consumoRegulador = None
+        consumoRegulador = 0
     elif nReg==1:
         regulador = True
         consumoRegulador = dfCTV.loc[regLogic, 'cons']
     else:
         regulador = False
-        consumoRegulador = None
+        consumoRegulador = 0
     # Consumo excluyendo *
     excLogic=(dfCTV.disp=='Decodificador')|\
     (dfCTV.disp=='Decodificador2')|\

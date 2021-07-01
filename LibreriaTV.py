@@ -9,6 +9,9 @@ def libreria2():
         Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Libreria')
         Precios = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Precio')
+        Reemplazos = pd.read_excel(
+            f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
+            sheet_name='Reemplazos')
     except:
         Libreria = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
