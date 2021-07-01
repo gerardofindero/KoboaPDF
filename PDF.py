@@ -20,7 +20,7 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
 from Caritas import definircarita
-from libreriaClusterTV import armarTextoCTV
+from libreriaClusterTV import armarTexto
 from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import SimpleDocTemplate

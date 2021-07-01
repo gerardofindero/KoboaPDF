@@ -10,8 +10,14 @@ def leerLibreriaCTV():
         f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
         sheet_name='libreriaCTV')
     except:
-        print("No se encuentra el archivo ")
-        breakpoint()
+        libCTV = pd.read_excel(
+        f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
+        sheet_name='libreriaCTV')
+        libUPS = pd.read_excel(
+        f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
+        sheet_name='libreriaCTV')
+
+
     libCTV.columns = ['A','B', 'C','D','E'] # Define los nombres de las columnas en Excel.
     libUPS.columns = ['A','B','C','D','E']
     return [libCTV, libUPS]
@@ -118,6 +124,7 @@ def regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,n
             elif nReg==1:
                 texto = texto + '\n' + regDes( consumoRegulador)
     return texto
+
 def armarTexto(volEst,dfCTV):
     [lib, libUPS]=leerLibreriaCTV()
     texto=''
