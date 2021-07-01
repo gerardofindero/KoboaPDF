@@ -12,8 +12,7 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
-import libreriaPlanchas as libpla
-from libreriaMicroondas import leerConsumoMicroondas
+import libreriaClusterTV as CTV
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
@@ -110,7 +109,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -122,8 +121,10 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(leerConsumoMicroondas(50))
-
+        dfCTV=pd.DataFrame.from_dict({'disp':['T','NoBreak','Regulador','Bocinas'],'tol':[False,True,True,True],'cons':[3,4,5,6]})
+        #print(dfCTV)
+        volEst=False
+        print(CTV.armarTexto(volEst,dfCTV))
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
