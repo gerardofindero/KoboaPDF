@@ -34,10 +34,10 @@ def LeeClavesLavaSeca(Claves,consumo):
     if pd.notna(Claves):
         ClavesS = Claves.split(",")
 
-    Standby=float(ClavesS[1])
+    #Standby=float(ClavesS[1])
 
     if pd.notna(Claves):
-        if ClavesS[0]=='L':
+        if ClavesS[0]=='LV':
             kWh = float(consumo)
             Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.3034, scale=0.4575424))
 
@@ -55,7 +55,9 @@ def LeeClavesLavaSeca(Claves,consumo):
             if Ca==3:
                 Texto = Texto + ' ' + lib.loc[2, 'E']
 
-        if ClavesS[0] == 'S':
+            Texto = Texto.replace('["PCML"]', str(int(100-Percentil*100)))
+
+        if ClavesS[0] == 'SC':
             Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.7147, scale=1.2349))
 
             if Percentil > 0.7:
@@ -72,6 +74,10 @@ def LeeClavesLavaSeca(Claves,consumo):
             if Ca==3:
                 Texto = Texto + ' ' + lib.loc[5, 'E']
 
+            Texto = Texto.replace('["PCMS"]', str(int(100-Percentil*100)))
+
         # if Standby > 0:
         #     Texto= Texto + lib.loc[7,'E']
+
+
     return Texto

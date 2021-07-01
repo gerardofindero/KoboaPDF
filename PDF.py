@@ -20,6 +20,7 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
 from Caritas import definircarita
+from libreriaClusterTV import armarTextoCTV
 from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import SimpleDocTemplate
@@ -593,14 +594,15 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             canvas.setLineWidth(.3)
             texto('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
             if largo > 4:
-                canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, largo*50)
+                canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, (largo*50))
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
             else:
 
-                canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, (altura - ((largo) * 50) + 57), 480, (largo) * 55)
-                canvas.line(254, altura-((largo-4)*33)-15, 254, altura-((largo-4)*33)-17 + (largo-4)*50+10)
-                canvas.line(154,altura-((largo-4)*33)-15, 154, altura-((largo-4)*33)-17 + (largo-4)*50+10)
-                canvas.line(205, altura-((largo-4)*33)-15, 205, altura-((largo-4)*33)-17 + (largo-4)*+50+10)
+                canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, ((altura+15) - ((largo-1) * 60)), 480, ((largo) * 60))
+                canvas.line(254, altura-((largo-4)*40), 254, altura-((largo-4)*40))
+                canvas.line(154, altura-((largo-4)*40), 154, altura-((largo-4)*33))
+                canvas.line(205, altura-((largo-4)*40), 205, altura-((largo-4)*33))
+
             texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
             texto('Continuación...', 12, gris, 'Montserrat-B', 60, height - 240, canvas)
             canvas.setLineWidth(.3)
@@ -624,15 +626,15 @@ def Dicc_Aparatos(nombre):
 def Recomendaciones(Claves,consumo,DAC,Uso):
     Consejos=''
     ClavesS = Claves.split(',')
-    if ClavesS[0] == 'R':
+    if ClavesS[0] == 'RF':
         Consejos = LeeClavesR(Claves)
-    if ClavesS[0] == 'C':
+    if ClavesS[0] == 'TV':
         Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
-    if ClavesS[0] == 'L' or ClavesS[0] == 'S':
+    if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
         Consejos = LeeClavesLavaSeca(Claves, consumo)
-    if Claves[0] == 'P':
+    if Claves == 'PL':
         Consejos = leerConsumoPlanchas(consumo)
-    if Claves[0] == 'M':
+    if Claves == 'MC':
         Consejos = leerConsumoMicroondas(consumo)
 
     return Consejos
@@ -822,6 +824,10 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         largo=len(aparatosC)+1
     else:
         largo = len(aparatosC)-3
+
+
+
+
     for index, aparato in aparatosC.iterrows():
         nombre = aparato[3]
         carita = aparato[0]
@@ -880,7 +886,13 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
-            parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
+            if len(nota)<250:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
+            elif 250<=len(nota)<500:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
+            else:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
+
         frame = Frame(120, altura-30, width * 0.7, height * 0.12)
         frame.addFromList(parrafos, canvas)
         ##LogoRayo
@@ -927,7 +939,7 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
     canvas.showPage()
 
 
-def hojas_fugas(canvas, width, height, fugas_, tarifa):
+def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     """ Crea la hoja que muestra donde esta la fuga, que aparatos hay y si es atacable o no """
     fugas_['D']=fugas_['D'].str.replace('Fuga', '', regex=True)
     LFugas=fugas_.copy()
@@ -941,12 +953,12 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa):
         ata= fugas.loc[fugas['A']=='Si']
         noata=fugas.loc[fugas['A']=='No']
         atar=fugas.loc[fugas['A']=='R']
-        fugasenhoja(canvas, width, height, ata, lista,0,True)
-        fugasenhoja(canvas, width, height, noata, lista,1,False)
-        fugasenhoja(canvas, width, height, atar, lista,2,True)
+        fugasenhoja(canvas, width, height, ata, lista,0,True,voltaje)
+        fugasenhoja(canvas, width, height, noata, lista,1,False,voltaje)
+        fugasenhoja(canvas, width, height, atar, lista,2,True,voltaje)
 
-def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
-
+def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
+    Lequipos = []
     if not atac.empty:
         consumoT = round(atac['K'].sum(), 1)
         costoT = round(atac['M'].sum())
@@ -955,6 +967,9 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
         altura = 350
         canvas.line(50, altura + 50, 300, altura + 50)
         ind=1
+
+
+        np=0
         for index, fugat in atac.iterrows():
             if ind > 4:
                 canvas.showPage()
@@ -970,6 +985,8 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
                 frame = Frame(45, altura+30, 100, 50)
                 frame.addFromList(parrafos, canvas)
                 ind = 1
+                np=np+1
+
             Nfuga = fugat[3]
             costo = round(fugat[12])
             consumo = round(fugat[10], 1)
@@ -1010,12 +1027,37 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable):
                 altura=altura-5
             ind = ind + 1
             altura = altura - 80
-            if not Atacable:
-                Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
-                         'debido a que pueden afectar tanto tu comfort como tu seguridad'
-                parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
-                frame = Frame(330, 50, 200, 330,showBoundary = 0 )
+            Lequipos.append(Nfuga)
+
+            if Atacable and ind==5:
+                Consejos = armarTextoCTV(consumoT, horasBimestre=100, listDisp=Lequipos, estbVol=True, toleDisp=True,
+                                         timerKobo=True, maniobras=None)
+                if len(Consejos)<750:
+                    parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+                else:
+                    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+                frame = Frame(330, 50, 200, 330, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
+                Lequipos=[]
+
+            if Atacable and ind<5 and np>=1:
+                Consejos = armarTextoCTV(consumoT, horasBimestre=100, listDisp=Lequipos, estbVol=voltaje, toleDisp=True,
+                                         timerKobo=True, maniobras=None)
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+                frame = Frame(330, 50, 200, 330, showBoundary=0)
+                frame.addFromList(parrafos, canvas)
+                Lequipos=[]
+                np=0
+
+
+        if not Atacable:
+            Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
+                     'debido a que pueden afectar tanto tu comfort como tu seguridad'
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+            frame = Frame(330, 50, 200, 330,showBoundary = 0 )
+            frame.addFromList(parrafos, canvas)
+
+
 
         canvas.showPage()
 
@@ -1339,7 +1381,7 @@ def Clasificador(aparatos):
 
     return AparatosG, AparatosM,AparatosC
 
-def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS):
+def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,Voltaje):
 
     if SolarS.empty:
         solar=False
@@ -1355,6 +1397,8 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     width, height = A4
     ahorro_bimestral=140
     tipo_tarifa='DAC'
+    color_voltaje = int(Voltaje)
+
     fonts()
     portada(canvas, width, height)
     intro(canvas, width, height)
@@ -1367,12 +1411,12 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     aparatos_bajos(canvas, width, height,aparatosM,aparatosC,Tarifa)
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)
-    hojas_fugas(canvas, width, height, fugas, Tarifa)
+    hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje)
     cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL)
     robo='no'
     revisar='no'
     nivel=1
-    color_voltaje=1
+
     medidor(canvas, width, height, robo, revisar, nivel, color_voltaje)
     estrategia_ahorro(canvas,width,height,0)
     notas(canvas)

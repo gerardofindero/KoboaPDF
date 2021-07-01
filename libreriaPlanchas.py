@@ -39,16 +39,25 @@ def leerConsumoPlanchas(consumo):
     #print(percentil)
     lib=leerLibreriaPlanchas()
     if percentil <0.33:
+        linkA = links.loc[0,'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
         texto=lib.loc[3,'C'].replace('[1-perc_cons]',str(int((1-percentil)*100)))
+        texto = texto.replace('[link_blog_planchas]', LinkS)
         return texto
     elif 0.33<percentil<0.66:
+        linkA = links.loc[0,'C']
+        Address = 'Estrategia para planchas'
+        LinkS = '<br />'+'<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
         texto = lib.loc[4, 'C'].replace('[perc_cons]',str(int(percentil*100)))
+        texto= texto.replace('[link_blog_planchas]',LinkS)
         return texto
     elif percentil>0.66:
         linkA = links.loc[0,'C']
         Address = 'Estrategia para planchas'
         LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
         texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}',LinkS )
+        texto = texto.replace('[link_blog_planchas]', LinkS)
         return texto
 
 

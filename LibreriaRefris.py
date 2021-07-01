@@ -128,6 +128,12 @@ def LeeClavesR(Claves):
         if 'VN' in Claves:
             Texto = Texto + ' ' + lib.loc[9, 'E']
 
+
+        Texto = Texto.replace('[/n]', '<br />')
+        Texto = Texto.replace('[...]', ' ')
+        # Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
+        # Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
+        # Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
         # Texto=Texto.replace('[/n]','<br />')
         # Address = 'Link de compra'
         # linkA = 'http://www.amazon.com.mx/'

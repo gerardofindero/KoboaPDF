@@ -92,9 +92,9 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
 
-    #NCliente = 'Enrique Tawil'
+    NCliente = 'Enrique Tawil'
     #NCliente = 'Cliente Prueba'
-    NCliente = 'Carlos Estefan'
+    #NCliente = 'Carlos Estefan'
 
     return NCliente
 
@@ -128,12 +128,12 @@ if __name__ == '__main__':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
         #Excel, Cliente = abrirexcel()
-        aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar = leer_deciframiento(NCliente)
+        aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
         print(solar[0])
         if solar[0] =='Si':
             datosSolar = leer_solar(NCliente)
 
-        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar)
+        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje)
 
 
 
