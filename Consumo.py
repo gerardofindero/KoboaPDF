@@ -55,3 +55,19 @@ def temperatura(temp):
         if 'nm'in grados:
             cel = 999
     return round(cel)
+
+def Def_Tolerante(tolerancia):
+    Tolerancia=False
+    if pd.isna(tolerancia):
+        Tolerancia=False
+    else:
+        if "127_volts" in tolerancia:
+            Tolerancia=False
+
+        if "100_110_a_220_240_volts" in tolerancia:
+            Tolerancia=True
+
+        if "no_haydatos" in tolerancia:
+            Tolerancia=False
+
+    return Tolerancia
