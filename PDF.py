@@ -1041,30 +1041,31 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             Lconsumo.append(potencia)
 
             if Atacable and ind==5:
-                print(voltaje)
                 dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
                 print(dfCTV)
                 Consejos=(CTV.armarTexto(voltaje, dfCTV))
 
-                if len(Consejos)<750:
+                if len(Consejos)<650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
                 else:
-                    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-                frame = Frame(330, 50, 200, 330, showBoundary=0)
+                    parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+                frame = Frame(330, 40, 200, 350, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
                 Lequipos=[]
+                print(Consejos)
 
             if Atacable and ind<5 and np>=1:
                 dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
                 Consejos=(CTV.armarTexto(voltaje, dfCTV))
-                if len(Consejos) < 750:
+                if len(Consejos) < 650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
                 else:
-                    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-                frame = Frame(330, 50, 200, 330, showBoundary=0)
+                    parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+                frame = Frame(330, 40, 200, 350, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
                 Lequipos=[]
                 np=0
+                print(Consejos)
 
 
         if not Atacable:
