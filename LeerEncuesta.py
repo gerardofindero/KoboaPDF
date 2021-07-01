@@ -121,7 +121,10 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(CTV.armarTexto())
+        dfCTV=pd.DataFrame.from_dict({'disp':['T','NoBreak','Regulador','Bocinas'],'tol':[False,True,True,True],'cons':[3,4,5,6]})
+        #print(dfCTV)
+        volEst=False
+        print(CTV.armarTexto(volEst,dfCTV))
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
