@@ -130,15 +130,22 @@ cuadros_numero = ParagraphStyle(name='Cuadros',
 
 cuadros_bajo = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=10,
-                                leading=11,
+                                fontSize=14,
+                                leading=14,
                                 textColor=gris
                                 )
 
 cuadros_bajo2 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=10,
+                                fontSize=12,
                                 leading=11,
+                                textColor=gris
+                                )
+
+cuadros_bajo3 = ParagraphStyle(name='Cuadros',
+                                fontName='montserrat',
+                                fontSize=8,
+                                leading=8,
                                 textColor=gris
                                 )
 

@@ -16,7 +16,7 @@ def leer_deciframiento(Cliente):
     Consumo=Exx.loc[1,['C']]
     Costo=Exx.loc[1,['D']]
     Solar =Exx.loc[2, ['G']]
-
+    Voltaje = Exx.loc[1, ['G']]
     Exx.dropna(subset=['C'],inplace=True)
     #Exx.fillna(0,inplace=True)
     Luces = Exx[Exx['D'].str.contains('Luces', regex=False,na=False)]
@@ -30,7 +30,7 @@ def leer_deciframiento(Cliente):
 
     ConsumoFugas=Fugas['K'].sum()
 
-    return Aparatos,Luces,Fugas,Consumo,Costo,Tarifa, ConsumoFugas, Solar
+    return Aparatos,Luces,Fugas,Consumo,Costo,Tarifa, ConsumoFugas, Solar,Voltaje
 
 def leer_potencial(Cliente):
     archivo_resultados = carpeta_clientes(Cliente)

@@ -118,5 +118,5 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
     Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
 
 
-
+    print(Texto)
     return Texto

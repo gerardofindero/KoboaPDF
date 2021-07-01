@@ -255,8 +255,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     # Lo que pasa si el foco no está especificado en términos de tecnología.
     else:
         TextoCompleto = 'No existe información suficiente para una recomendación'
-    
 
+    TextoCompleto = TextoCompleto.replace('[...]','')
+    TextoCompleto = TextoCompleto.replace('del [T]%', '')
     return TextoCompleto, conteoled, conteoNOled, conteoROI
 
 
