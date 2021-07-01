@@ -202,8 +202,8 @@ aparatos = ParagraphStyle(name='Aparatos',
 aparatos2 = ParagraphStyle(name='Aparatos',
                                 fontName='montserrat',
                                 alignment=TA_JUSTIFY,
-                                fontSize=9,
-                                leading=12,
+                                fontSize=10,
+                                leading=10,
                                 textColor=gris
                                 )
 
@@ -212,6 +212,14 @@ aparatos3 = ParagraphStyle(name='Aparatos',
                                 alignment=TA_JUSTIFY,
                                 fontSize=11,
                                 leading=15,
+                                textColor=gris
+                                )
+
+aparatos4 = ParagraphStyle(name='Aparatos',
+                                fontName='montserrat',
+                                alignment=TA_JUSTIFY,
+                                fontSize=10,
+                                leading=12,
                                 textColor=gris
                                 )
 
