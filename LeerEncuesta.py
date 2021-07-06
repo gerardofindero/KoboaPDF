@@ -13,6 +13,8 @@ from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from LibreriaLED import BuscarLED
 import libreriaClusterTV as CTV
+import libreriaReguladores as lg
+import libreriaUPS as lups
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
@@ -109,7 +111,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -121,10 +123,22 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        dfCTV=pd.DataFrame.from_dict({'disp':['T','NoBreak','Regulador','Bocinas'],'tol':[False,True,True,True],'cons':[3,4,5,6]})
-        #print(dfCTV)
-        volEst=False
-        print(CTV.armarTexto(volEst,dfCTV))
+        dfCTV=pd.DataFrame.from_dict({'disp':['TV','Decodificador','NoBreak','Bocinas'],
+                                      'nominal' :[30,30, 10, 10]                   ,
+                                      'standby' :[.3,  .3, 10,  .5]                   ,
+                                      'tol'     :[True , True , True , True ]     ,
+                                      'cReg'    :[False , False, False, False ]     ,
+                                      'cUPS'    :[True, False, False, True]     ,
+                                      'ampere'  :[1 , 1, 1, 1]                   ,})
+        volEst=True
+        VAmax=1000
+        Vpro=120
+        FPfuga=0.8
+        # print(lg.roiReg(dfCTV, VAmax, Vpro, FPfuga, 'E'))
+        # print(lups.recomendaciónUPS(dfCTV, VAmax, Vpro, FPfuga))
+        print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
+
+
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
