@@ -1,6 +1,42 @@
 import pandas as pd
 import numpy as np
 from scipy.stats import norm
+
+def roiReg(dfCTV,VAmax,Vpro,FPfuga,uso):
+    try:
+        data = pd.read_excel(
+            f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
+            sheet_name='data')
+    except:
+        data = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
+            sheet_name='data')
+    print(dfCTV)
+    data=data.loc[data.uso==uso,['modelo','marca','va','w','standby','contactos','precio','link']]
+    potRegulador = dfCTV.loc[dfCTV.disp.str.contains('Regulador'),['nominal','standby']].to_numpy()
+    potRegulador = np.amax(potRegulador)
+    VAregulador  =  float(potRegulador/FPfuga)
+    VAnoConReg   =  float(Vpro*dfCTV.loc[dfCTV.cReg==False,['ampere']].sum())
+    VAreco=VAmax-VAregulador-VAnoConReg
+    VAreco=VAreco/0.8
+    if any(data.va>VAreco):
+        posibilidades=data.loc[data.va>VAreco,['marca','standby','modelo','precio','link']].sort_values(by='precio')
+        minIndx=posibilidades.loc[:,'precio'].idxmin()
+        costoNuevoRegulador=posibilidades.at[minIndx,'precio']
+        roi= potRegulador-posibilidades.at[minIndx,'standby'] # diferencia en consumo (w)
+        roi= roi*24.0*60.0*6.1/1000 # ahorro en kWh/bimestre
+        roi = costoNuevoRegulador/roi/6 # roi en años
+        print(roi)
+        if roi <= 3:
+            roiM3 = True
+            marcaYmodelo = 'Te recomendamos el reguladorde la marca ' + posibilidades.at[minIndx,'marca'] + ' modelo ' + posibilidades.at[minIndx,'modelo']
+        else:
+            roiM3=False
+            marcaYmodelo=''
+    else:
+        roiM3=False
+        marcaYmodelo=''
+    return [roiM3, marcaYmodelo]
 def leerLibreriaReguladores():
     try:
         Libreria = pd.read_excel(
