@@ -204,10 +204,12 @@ def armarTexto(volEst,dfCTV):
         texto = texto.replace('tiene un alto consumo','se mantiene consumiendo energía')
 
 
-    linkA = 'www.google.com'
+    linkA = 'https://www.amazon.com.mx/STEREN-Protector-Reg-Refrigeradores-Microo/dp/B00VQVS0S6/ref=asc_df_B00VQVS0S6/' \
+            '?tag=gledskshopmx-20&linkCode=df0&hvadid=451019505516&hvpos=&hvnetw=g&hvrand=7504729041127336050&hvpone=' \
+            '&hvptwo=&hvqmt=&hvdev=c&hvdvcmdl=&hvlocint=&hvlocphy=1010043&hvtargid=pla-980059199486&psc=1'
     Address = 'link'
     LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-    texto = texto.replace('[link protector de sobrevoltaje]',LinkS)
+    texto = texto.replace('{linkProtectorVolatje}',LinkS)
 
 
     return texto
