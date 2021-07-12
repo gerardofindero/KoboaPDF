@@ -16,6 +16,9 @@ import libreriaClusterTV as CTV
 import libreriaReguladores as lg
 import libreriaUPS as lups
 import libreriaCafeteras as lc
+
+
+
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
@@ -95,7 +98,7 @@ def Nombre_Cliente():
 
     #NCliente = 'Enrique Tawil'
     NCliente = 'Cliente Prueba'
-    #NCliente = 'Carlos Estefan'
+    NCliente = 'Stephanie Marie Luise'
 
     return NCliente
 
@@ -111,7 +114,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -140,7 +143,7 @@ if __name__ == '__main__':
         print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
         """
         #lc.leerLibreriaCafeteras()
-        print(lc.dias('lunes martes andlasnda domingo'))
+        print(lc.armarTxtCaf(30, 10,'martes omingos abados iercoles'))
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
