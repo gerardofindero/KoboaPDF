@@ -477,14 +477,14 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     #parrafos='Tu gasto en uluminación es muy alto'
     parrafos = []
     #notasA = 'Tu gasto en iluminación es muy alto  '
-    notasB = 'Normalmente vemos gastos alrededor de $200 pesos al bimestre(35kWh) para una casa completa'
+    #notasB = 'Normalmente vemos gastos alrededor de $200 pesos al bimestre(35kWh) para una casa completa'
     notasC = 'Como parte de nuestros servicios, encontramos estas luminarias para enfocar esfuerzos en lo que vale la pena reemplazarlos'
     parrafos.append(Paragraph(notasA, Estilos.cuadros_bajo))
     frame = Frame(60, hh, width * 0.35, height * 0.5)
     frame.addFromList(parrafos, canvas)
-    parrafos.append(Paragraph(notasB, Estilos.cuadros_bajo))
-    frame = Frame(60, 90, width * 0.35, height * 0.5)
-    frame.addFromList(parrafos, canvas)
+    # parrafos.append(Paragraph(notasB, Estilos.cuadros_bajo))
+    # frame = Frame(60, 90, width * 0.35, height * 0.5)
+    # frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasC, Estilos.cuadros_bajo))
     frame = Frame(60, 40, width * 0.35, height * 0.5)
     frame.addFromList(parrafos, canvas)
@@ -1043,7 +1043,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             if Atacable and ind==5:
                 dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
                 print(dfCTV)
-                Consejos=(CTV.armarTexto(voltaje, dfCTV))
+                Consejos=(CTV.armarTexto(voltaje, dfCTV,135,120,0.8))
 
                 if len(Consejos)<650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
