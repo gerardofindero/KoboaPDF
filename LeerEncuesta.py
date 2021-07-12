@@ -111,7 +111,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='3'
+    Opcion='4'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?

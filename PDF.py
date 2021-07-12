@@ -1043,7 +1043,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             if Atacable and ind==5:
                 dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
                 print(dfCTV)
-                Consejos=(CTV.armarTexto(voltaje, dfCTV))
+                Consejos=(CTV.armarTexto(voltaje, dfCTV,135,120,0.8))
 
                 if len(Consejos)<650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
