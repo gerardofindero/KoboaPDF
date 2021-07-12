@@ -15,7 +15,7 @@ from LibreriaLED import BuscarLED
 import libreriaClusterTV as CTV
 import libreriaReguladores as lg
 import libreriaUPS as lups
-
+import libreriaCafeteras as lc
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
@@ -123,6 +123,7 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
+        """
         dfCTV=pd.DataFrame.from_dict({'disp':['TV','Decodificador','NoBreak','Bocinas'],
                                       'nominal' :[30,30, 10, 10]                   ,
                                       'standby' :[.3,  .3, 10,  .5]                   ,
@@ -137,8 +138,9 @@ if __name__ == '__main__':
         # print(lg.roiReg(dfCTV, VAmax, Vpro, FPfuga, 'E'))
         # print(lups.recomendaciónUPS(dfCTV, VAmax, Vpro, FPfuga))
         print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
-
-
+        """
+        #lc.leerLibreriaCafeteras()
+        print(lc.dias('lunes martes andlasnda domingo'))
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
