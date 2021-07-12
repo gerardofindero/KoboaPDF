@@ -15,7 +15,9 @@ from LibreriaLED import BuscarLED
 import libreriaClusterTV as CTV
 import libreriaReguladores as lg
 import libreriaUPS as lups
-import libreriaCafeteras as lc
+#import libreriaCafeteras as lc
+
+
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
@@ -94,8 +96,8 @@ def Nombre_Cliente():
 
 
     #NCliente = 'Enrique Tawil'
-    NCliente = 'Cliente Prueba'
-    #NCliente = 'Carlos Estefan'
+    #NCliente = 'Cliente Prueba'
+    NCliente = 'Stephanie Marie Luise'
 
     return NCliente
 
