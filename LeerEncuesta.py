@@ -15,8 +15,7 @@ from LibreriaLED import BuscarLED
 import libreriaClusterTV as CTV
 import libreriaReguladores as lg
 import libreriaUPS as lups
-import libreriaCafeteras as lc
-
+#import libreriaCafeteras as lc
 
 
 ####################  FUNCIONES ###################################
@@ -97,8 +96,8 @@ def Nombre_Cliente():
 
 
     #NCliente = 'Enrique Tawil'
-    NCliente = 'Cliente Prueba'
-    NCliente = 'Stephanie Marie Luise'
+    #NCliente = 'Cliente Prueba'
+    NCliente = 'Stephanie Luise'
 
     return NCliente
 
@@ -114,7 +113,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='3'
+    Opcion='4'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -143,7 +142,7 @@ if __name__ == '__main__':
         print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
         """
         #lc.leerLibreriaCafeteras()
-        print(lc.armarTxtCaf(30, 10,'martes omingos abados iercoles'))
+        print(lc.dias('lunes martes andlasnda domingo'))
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()

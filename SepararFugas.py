@@ -28,7 +28,7 @@ def separar_fugas(Equip):
     Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
-    Equipos['Claves'] = Aparatos['Clave']
+    #Equipos['Claves'] = Aparatos['Clave']
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
@@ -192,11 +192,13 @@ def separar_fugasTV(Equipo):
 
     Equipos = pd.DataFrame(columns=['Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Notas','Claves'])
     Fugas   = pd.DataFrame(columns=['Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Atacable','Notas'])
+
     Aparatos=Equipo.copy()
     Fuga = Equipo.copy()
 
     #Aparatos.drop(index='Notas', inplace=True)
     Aparatos['Nominal'].fillna(0, inplace=True)
+    Aparatos.fillna('X', inplace=True)
     Fuga['Standby'].fillna(0, inplace=True)
 
 
@@ -207,7 +209,8 @@ def separar_fugasTV(Equipo):
     Aparatos['Pulgadas']=Aparatos['Pulgadas']
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
-    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' de '+Aparatos['Pulgadas']
+
+    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' de '
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)

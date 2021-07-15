@@ -6,12 +6,10 @@ import numpy as np
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Lavadora/Protolibreria_LavadorasySecadoras.xlsx",sheet_name='Reporte')
-        Precios = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/ProtoLibreriaTVs_EDM.xlsx",sheet_name='Precio')
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Lavadora/Libreria_LavadorasySecadoras.xlsx",sheet_name='Reporte')
     except:
         Libreria = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Lavadora Y Secadora/Protolibreria_LavadorasySecadoras.xlsx",sheet_name='Reporte')
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Lavadora Y Secadora/Libreria_LavadorasySecadoras.xlsx",sheet_name='Reporte')
     Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
 
@@ -41,37 +39,32 @@ def LeeClavesLavaSeca(Claves,consumo):
             kWh = float(consumo)
             Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.3034, scale=0.4575424))
 
-            if Percentil > 0.7:
-                Ca = 3
-            if 0.33 < Percentil < 0.7:
-                Ca = 2
-            if 0.33 > Percentil:
-                Ca = 1
-
-            if Ca==1:
-                Texto = Texto + ' ' + lib.loc[0, 'E']
-            if Ca==2:
-                Texto = Texto + ' ' + lib.loc[1, 'E']
-            if Ca==3:
+            if Percentil >= 0.8:
+                Texto = Texto + ' ' + lib.loc[4, 'E']
+            if 0.6 <= Percentil < 0.8:
+                Texto = Texto + ' ' + lib.loc[3, 'E']
+            if 0.4 <= Percentil < 0.6:
                 Texto = Texto + ' ' + lib.loc[2, 'E']
+            if 0.3 <= Percentil < 0.4:
+                Texto = Texto + ' ' + lib.loc[1, 'E']
+            if 0.3 > Percentil:
+                Texto = Texto + ' ' + lib.loc[0, 'E']
+
 
             Texto = Texto.replace('["PCML"]', str(int(100-Percentil*100)))
 
         if ClavesS[0] == 'SC':
             Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.7147, scale=1.2349))
 
-            if Percentil > 0.7:
-                Ca = 3
-            if 0.33 < Percentil < 0.7:
-                Ca = 2
-            if 0.33 > Percentil:
-                Ca = 1
-
-            if Ca==1:
-                Texto = Texto + ' ' + lib.loc[3, 'E']
-            if Ca==2:
-                Texto = Texto + ' ' + lib.loc[4, 'E']
-            if Ca==3:
+            if Percentil >= 0.8:
+                Texto = Texto + ' ' + lib.loc[9, 'E']
+            if 0.6 <= Percentil < 0.8:
+                Texto = Texto + ' ' + lib.loc[8, 'E']
+            if 0.4 <= Percentil < 0.6:
+                Texto = Texto + ' ' + lib.loc[7, 'E']
+            if 0.3 <= Percentil < 0.4:
+                Texto = Texto + ' ' + lib.loc[6, 'E']
+            if 0.3 > Percentil:
                 Texto = Texto + ' ' + lib.loc[5, 'E']
 
             Texto = Texto.replace('["PCMS"]', str(int(100-Percentil*100)))
