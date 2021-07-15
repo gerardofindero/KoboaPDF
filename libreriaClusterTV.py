@@ -124,25 +124,25 @@ def regDes(consumoRegulador,dfCTV, libCTV,VAmax,Vpro,FPfuga,Uso):
         [ROI, marcaYmodelo]= lr.roiReg(dfCTV,VAmax,Vpro,FPfuga,Uso)
         if ROI > 3:
             # *.2 CTV16 CTV17'
-            print('# *.2 CTV16 CTV17')
+            #print('# *.2 CTV16 CTV17')
             textoAdd = libCTV.loc[20,'E'] + libCTV.loc[20,'E']
         else:
             # *.3 CTV16 CTV18
-            print('# *.3 CTV16 CTV18')
+            #print('# *.3 CTV16 CTV18')
             textoAdd = libCTV.loc[20,'E'] + libCTV.loc[22,'E']
             textoAdd = textoAdd.replace('[reemplazoRegulador]', marcaYmodelo)
     return textoAdd
 def regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,libCTV,VAmax,Vpro,FPfuga,Uso,dfCTV):
 
     if volEst:
-        print('volEst')
-        print(consumoRegulador)
+        #print('volEst')
+        #print(consumoRegulador)
         if (consumoStanby-consumoRegulador)<=2:
             # A1 B1 - CTV04S03 CTV04S05 CTV04S06
             texto = libCTV.loc[5,'E']+libCTV.loc[7,'E']+libCTV.loc[8,'E']
         if (consumoStanby-consumoRegulador)>2:
             # A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22
-            print('# A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22')
+            #('# A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22')
             texto = libCTV.loc[0,'E']+libCTV.loc[1,'E']+'\n'+libCTV.loc[5,'E']+libCTV.loc[8,'E']+'\n'+libCTV.loc[26,'E']
     else:
         if tolTV:
@@ -180,11 +180,11 @@ def armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga):
     [lib, libUPS, links]=leerLibreriaCTV()
     texto=''
     [consumoStanby, regulador, nReg,consumoRegulador,standbyUPS, UPS, tolTV, sonido, tolSonido,decodificador] = caractCTV(dfCTV)
-    print([consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido,decodificador])
+    #print([consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido,decodificador])
 
     if   ((consumoStanby >= 2)==False) and (UPS==False):
         # 1 CTV20
-        print('1 CTV20')
+        #print('1 CTV20')
         texto=lib.loc[24,'E']
 
     elif ((consumoStanby >= 2) == False) and (UPS == True ):
@@ -194,18 +194,18 @@ def armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga):
 
         if (regulador == True) and (UPS == True):
             # Linea A
-            print('# Linea A')
+            #print('# Linea A')
             texto = texto + 'REQUIERO UNA RECOMENDACIÓN MANUAL HYA UN UPS Y REGULADOR EN EL CTV\n'
             texto = regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,lib,VAmax,Vpro,FPfuga,'E',dfCTV) # acomodar argumentos
 
     elif ((consumoStanby >= 2) == True ) and (UPS == False):
         if not regulador :
             # 2 CTV01 CTV02 CTV04S06
-            print('# 2 CTV01 CTV02 CTV04S06')
+            #print('# 2 CTV01 CTV02 CTV04S06')
             texto=lib.loc[0,'E']+'\n'+lib.loc[1,'E']+lib.loc[8,'E']
         if regulador:
             # Linea B
-            print('# Linea B')
+            #print('# Linea B')
             texto= regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,lib,VAmax,Vpro,FPfuga,'E',dfCTV) # acomodar argumentos
 
     elif ((consumoStanby >= 2) == True ) and (UPS == True ):

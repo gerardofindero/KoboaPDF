@@ -16,11 +16,13 @@ def leerLibreriaCafeteras():
         estadisticas = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/cafeteras/libreriaCafeteras.xlsx",
             sheet_name='statistics')
-    libreria.columns = ['A','B','C']
+    libreria.columns = ['A','B','C','D']
     estadisticas.columns = ['A','B']
     print(libreria)
     print(estadisticas)
     return [libreria, estadisticas]
+
+
 def dias(dscr):
     txt=''
     dias=[]
@@ -40,10 +42,15 @@ def dias(dscr):
     if ('Domingo' in dscr) or ('domingo' in dscr):
         dias.append('domingo')
     numDias=len(dias)
+    txt=''
     if numDias==0:
         txt=''
     elif numDias==1:
-        txt=''+txt.replace(dias[0],,1)
+        txt=''+txt.replace(dias[0],1)
+
+
+
+
 def armarTxtCaf(kwh, hrsUso,dscr):
     [lib, st] = leerLibreriaCafeteras()
     media = st.at[0,'B']

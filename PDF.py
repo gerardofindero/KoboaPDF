@@ -19,6 +19,7 @@ from LibreriaTV import LeeClavesTV,Clasifica
 from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
+from libreriaCafeteras import armarTxtCaf
 from Caritas import definircarita
 import libreriaClusterTV as CTV
 from libreriaClusterTV import armarTexto
@@ -201,12 +202,18 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     AMA_1 = [235 / 255, 200 / 255, 0 / 255]
     Azul = (0 / 255, 76 / 255, 101 / 255)
     width, height = A4
-    cobrada    =  float(consumo)
-    consumo    = SolarS.loc['Medidor','Total']
-    costoCob = consumo * DAC
-    costo   = float(costo)
-    totalSemana= SolarS.loc['ProduccionSem','Total']
-    totalBimestre= SolarS.loc['ProduccionBim','Total']
+    #cobrada    =  float(consumo)
+    cobrada = 0
+    # consumo    = SolarS.loc['Medidor','Total']
+    consumo = 0
+    costoCob = consumo * tarifa
+    #costo   = float(costo)
+    costo = 0
+    # totalSemana= SolarS.loc['ProduccionSem','Total']
+    # totalBimestre= SolarS.loc['ProduccionBim','Total']
+
+    totalSemana= 0
+    totalBimestre= 0
     factor=0.5
     x=0
     y=80
@@ -229,17 +236,28 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     parrafos.append(Paragraph(notasA, Estilos.azul_1_grande2))
     frame = Frame(60, 450, 190, 200)
     frame.addFromList(parrafos, canvas)
-    notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F1'])+'W'
-    notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F1']) +'kWh'
-    notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F1']) +'kWh'
-    notasBA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F2'])+'W'
-    notasBB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F2']) +'kWh'
-    notasBC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F2']) +'kWh'
+    # notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F1'])+'W'
+    # notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F1']) +'kWh'
+    # notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F1']) +'kWh'
+    # notasBA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F2'])+'W'
+    # notasBB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F2']) +'kWh'
+    # notasBC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F2']) +'kWh'
 
-    if not SolarS.loc['MaxW','F3']!= np.nan:
-        notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F3'])+'W'
-        notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F3']) +'kWh'
-        notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F3']) +'kWh'
+    notasAA = 'Pico máximo: ' + str(0) + 'W'
+    notasAB = 'Producción máxima en un día: ' + str(0) + 'kWh'
+    notasAC = 'Producción mínima en un día: ' + str(0) + 'kWh'
+    notasBA = 'Pico máximo: ' + str(0) + 'W'
+    notasBB = 'Producción máxima en un día: ' + str(0) + 'kWh'
+    notasBC = 'Producción mínima en un día: ' + str(0) + 'kWh'
+
+    # if not SolarS.loc['MaxW','F3']!= np.nan:
+    #     # notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F3'])+'W'
+    #     # notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F3']) +'kWh'
+    #     # notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F3']) +'kWh'
+    #
+    #     notasAA = 'Pico máximo: ' + str(0)+'W'
+    #     notasAB = 'Producción máxima en un día: '+str(0) +'kWh'
+    #     notasAC = 'Producción mínima en un día: '+str(0) +'kWh'
 
     parrafos.append(Paragraph(notasAA, Estilos.azul_2_chico2))
     frame = Frame(300, 150, 190, 200)
@@ -449,11 +467,11 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     conteoNOled = 1
     conteoROI = 1
 
-    if TotalD<=200:
+    if TotalD<=300:
         notasA = 'Tu gasto en iluminación es óptimo  '
         hh=110
         carita=1
-    elif 200<TotalD and TotalD<=700:
+    elif 300<TotalD and TotalD<=700:
         notasA = 'Tu gasto en iluminación mayor al promedio  '
         hh=120
         carita=2
@@ -486,7 +504,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     # frame = Frame(60, 90, width * 0.35, height * 0.5)
     # frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasC, Estilos.cuadros_bajo))
-    frame = Frame(60, 40, width * 0.35, height * 0.5)
+    frame = Frame(60, 60, width * 0.35, height * 0.5)
     frame.addFromList(parrafos, canvas)
 
     margen = 50
@@ -637,6 +655,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso):
         Consejos = leerConsumoPlanchas(consumo)
     if Claves == 'MC':
         Consejos = leerConsumoMicroondas(consumo)
+    # if Claves == 'CF':
+    #     Consejos = armarTxtCaf(consumo,Uso,'Ninguno')
 
     return Consejos
 
@@ -706,6 +726,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
+
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
         canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
@@ -716,6 +737,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Consejos=Recomendaciones(Claves,consumo,tarifa,Uso)
 # Automatizacion  ######################
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+        #print(Consejos)
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
 
@@ -734,6 +756,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     i=0
     altura = 650
+
     for index,aparato in aparatosM.iterrows():
         nombre = aparato[3]
         carita = aparato[0]
@@ -801,7 +824,12 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
-            parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
+            if len(nota) < 400:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
+            elif 400 <= len(nota) < 700:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
+            else:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
         frame = Frame(120, altura-270, width * 0.7, height * 0.2)
         frame.addFromList(parrafos, canvas)
         ##LogoRayo
@@ -887,9 +915,9 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
-            if len(nota)<250:
+            if len(nota)<200:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-            elif 250<=len(nota)<500:
+            elif 200<=len(nota)<400:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
             else:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
@@ -995,6 +1023,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             consumo = round(fugat[10], 1)
             porciento = round(fugat[11] * 100, 1)
             potencia = fugat[9]
+            horaS =fugat[7]
             parrafos = []
             parrafos.append(Paragraph(Nfuga, Estilos.negroB))
             frame = Frame(50, altura, 250, 50)
@@ -1040,9 +1069,9 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             Ltoler.append(False)
             Lconsumo.append(potencia)
 
+
             if Atacable and ind==5:
-                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
-                print(dfCTV)
+                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,Lconsumo)),columns =['disp', 'tol','cons','standby'])
                 Consejos=(CTV.armarTexto(voltaje, dfCTV,135,120,0.8))
 
                 if len(Consejos)<650:
@@ -1052,10 +1081,10 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 frame = Frame(330, 40, 200, 350, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
                 Lequipos=[]
-                print(Consejos)
+
 
             if Atacable and ind<5 and np>=1:
-                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo)),columns =['disp', 'tol','cons'])
+                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
                 Consejos=(CTV.armarTexto(voltaje, dfCTV))
                 if len(Consejos) < 650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
@@ -1064,8 +1093,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 frame = Frame(330, 40, 200, 350, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
                 Lequipos=[]
-                np=0
-                print(Consejos)
+
 
 
         if not Atacable:
@@ -1388,10 +1416,13 @@ def Clasificador(aparatos):
     Aparatos = Aparatos.loc[Aparatos['M'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['M'], inplace=True, ascending=False)
     carita= definircarita(Aparatos)
+
+    #print(carita)
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
     AparatosC = Aparatos.loc[Aparatos['A'] == 1]
     deMaG=['Refrigerador','Congelador','Minibar','Cava','Hielos','Dispensador']
+
     for i in deMaG:
         AparatosMaG= AparatosM.loc[AparatosM['D'].str.contains(i)]
         AparatosM=AparatosM[~AparatosM['D'].str.contains(i)]
@@ -1421,8 +1452,8 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     portada(canvas, width, height)
     intro(canvas, width, height)
     potencial_ahorro(canvas, width, height,consumo_bimestral, tarifa,costo,ahorro_bimestral, tipo_tarifa)
-    if solar:
-        Solar(canvas,tarifa,costo,consumo,SolarS)
+    #if solar:
+    Solar(canvas,tarifa,costo,consumo,SolarS)
     porF=por_A_fugas(fugas)
     aparatosG,aparatosM, aparatosC= Clasificador(aparatos)
     aparatos_grandes(canvas, width, height,aparatosG,Tarifa)

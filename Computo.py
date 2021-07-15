@@ -5,7 +5,7 @@ from Consumo    import calc_consumo , consumoEq
 def computo(Excel,Nocircuito, NomCircuito):
     Aparatos_C = pd.DataFrame(
         index=['Computadora','Laptop','Modem','Repetidor','Equipos Apple','Extra','Impresora','Regulador','Nobreak','Monitor','Switch','Router','HDD', 'Otro','Notas'],
-        columns=['Marca','Standby','Nominal', 'Zona','Existencia','Atacable','Notas','CodigoN','CodigoS'])
+        columns=['Marca','Standby','Nominal', 'Zona','Existencia','Atacable','Notas','CodigoN','CodigoS','Clave'])
 
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns

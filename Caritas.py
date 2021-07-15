@@ -6,13 +6,18 @@ import math
 def caritaLava(consumo,clave):
 
     kWh = float(consumo)
-    Percentil=(1-stats.norm.sf(x=(np.log(kWh)), loc=3.3034, scale=0.4575424))
-    if Percentil>0.7:
+    Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.3034, scale=0.4575424))
+    if Percentil>=0.8:
         Ca = 3
-    if 0.33<Percentil<0.7:
+    if 0.6<=Percentil<0.8:
         Ca = 2
-    if 0.33 > Percentil:
+    if 0.4<=Percentil<0.6:
+        Ca = 2
+    if 0.3 <= Percentil<0.4:
+        Ca = 2
+    if 0.3 > Percentil:
         Ca = 1
+    print (Ca)
     return Ca
 
 
@@ -32,7 +37,6 @@ def caritaSeca(consumo,clave):
 def caritaEquipos(consumo,clave):
     kWh=float(consumo)
     Percentil=(1-stats.norm.sf(x=(np.log(kWh)), loc=3.7, scale=1.23))
-    print(kWh)
     if kWh>=30:
         Ca = 3
     elif 15<kWh<30:
@@ -133,23 +137,21 @@ def definircarita(Equipo):
             consumo = aparato[10]
             equipoid = aparato[16][0]
 
-        if equipoid == 'R':
+        if equipoid == 'RF':
             Carita = caritaRefri(consumo,clave)
-        elif equipoid == 'C':
+        elif equipoid == 'TV':
             Carita = caritaTV(consumo,clave)
-        elif equipoid == 'L':
+        elif equipoid == 'LV':
             Carita =caritaLava(consumo,clave)
-        elif equipoid == 'S':
+        elif equipoid == 'SC':
             Carita =caritaSeca(consumo,clave)
-        elif equipoid == 'B':
+        elif equipoid == 'BM':
             Carita =caritaBomba(consumo,clave)
-        elif equipoid == 'P':
+        elif equipoid == 'PL':
             Carita =caritaPlancha(consumo,clave)
         else:
             Carita =caritaEquipos(consumo, clave)
 
-
-        print(Carita)
 
     return Carita
 

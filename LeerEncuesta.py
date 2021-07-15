@@ -97,7 +97,7 @@ def Nombre_Cliente():
 
     #NCliente = 'Enrique Tawil'
     #NCliente = 'Cliente Prueba'
-    NCliente = 'Stephanie Marie Luise'
+    NCliente = 'Stephanie Luise'
 
     return NCliente
 

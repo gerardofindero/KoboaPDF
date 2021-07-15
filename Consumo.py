@@ -33,6 +33,8 @@ def consumoEq(consumo):
 
 def temperatura(temp):
     cel=0
+    if pd.isna(temp):
+        temp='NM'
     try:
         cel = round(float(temp))
         print('La temperatura se tomó en Celsius al no venir especificado')

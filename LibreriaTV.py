@@ -56,7 +56,6 @@ def EncontrarRemplazo(reemplazo,Pulgadas):
     Filtro1 = reemplazo.loc[(reemplazo['C'].astype(int)) < mx]
     Filtro2 = Filtro1.loc[Filtro1['C'].astype(int) > mn]
     Filtro2.reset_index(drop=True, inplace=True)
-    print(Filtro2['P'][0])
     return Filtro2['P'][0]
 
 
@@ -76,6 +75,8 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         Ahorro= (Potencia - math.exp(3.189644 + 0.034468 * Pulgadas)) / Potencia
         XX = np.log(Potencia)
         Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
+        if Consumo==0:
+            Consumo=0.1
         ROI=Precio/(DAC*Ahorro*Consumo)
 
         if Consumo<10:
@@ -109,7 +110,6 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
                 Texto = Texto + ' ' + lib.loc[7, 'G']
                 Address = 'Link de compra'
                 LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-                print(LinkS)
                 Texto = Texto + '<br /> '+  '<br /> '+LinkS
 
 
@@ -122,6 +122,4 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
     Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
     Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
 
-
-    print(Texto)
     return Texto
