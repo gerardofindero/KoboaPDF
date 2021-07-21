@@ -5,6 +5,9 @@ class libreriaTubosFluorescentes:
         # Kobo Info de kobo en diccionario, tarifa DAC, potencia total de los tubos led, energía consumida
         self.txt        = ''    # inicia variable del texto para el reporte al cliente
         self.sustitutos = pd.DataFrame(columns=['tipo','cantidad','costo','link','ahorroBimestral','roi'])
+        self.lmXwt5    = 92 * 0.93
+        self.lmXwt8    = 89 * 0.90
+        self.lmXwt12   = 80 * 0.78
         try:
             self.libTxt = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
@@ -226,7 +229,13 @@ class libreriaTubosFluorescentes:
                       (self.dbTubos.Entrada == self.entr) & \
                       (self.dbTubos.Longitud == self.lntb) & \
                       (self.dbTubos.Color == self.temp)
-        self.lumT = (self.dbTubos.loc[self.filtro, 'Lum/W típicos']*self.w_t).iat[0]
+        #self.lumT = (self.dbTubos.loc[self.filtro, 'Lum/W típicos']*self.w_t).iat[0]
+        if   self.tipo == 't12':
+            self.lumT = self.w_t * self.lmXwt12
+        elif self.tipo == 't8':
+            self.lumT = self.w_t * self.lmXwt8
+        elif (self.tipo == 't5') or (self.tipo=='t2'):
+            self.lumT = self.w_t * self.lmXwt5
         self.tubL = float(self.dbTubos.loc[self.filtro, 'Longitud'].iat[0].replace('largo_',''))
 
         # if 'RTbL' in tipRem:
