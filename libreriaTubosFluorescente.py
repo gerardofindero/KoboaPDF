@@ -120,8 +120,10 @@ class libreriaTubosFluorescentes:
         # LUMENES POR METRO CON BASE EN LONGITUD DEL CAJILLO O LONGITUD DE LOS TUBOS
         if self.caji:
             lmXm = self.lumT/self.caln
+            lng  = self.caln
         else:
             lmXm = self.lumT/ (self.ntub*self.tubL)
+            lng  = self.tubL*self.ntub
         # FILTRO DE LUMENES POR METRO
         #selc=((self.dbTiras['Lm/m']/100)>(lmXm*0.9))&((self.dbTiras['Lm/m']/100)<(lmXm*1.35))
         selc = ((self.dbTiras['Lm/m'] / 100) > (lmXm * 0.5)) & ((self.dbTiras['Lm/m'] / 100) < (lmXm * 2.0))
@@ -129,14 +131,14 @@ class libreriaTubosFluorescentes:
         # ESTIMACIÓN DE ESPACIO FALTANTE PARA CUBRIR LA LONGITUD
         cortes=~pd.isnull(opcTir.loc[:, 'Intervalos de Corte [cm]'])
         opcTir.loc[cortes,'residuo']=\
-                self.caln % opcTir.loc[cortes,'Intervalos de Corte [cm]']
+                lng % opcTir.loc[cortes,'Intervalos de Corte [cm]']
         opcTir.loc[~cortes,'residuo']=\
-                self.caln % opcTir.loc[~cortes,'Longitud Tira LED [cm]']
+                lng % opcTir.loc[~cortes,'Longitud Tira LED [cm]']
         # ESTIMACIÓN DE LA LONGITUD DE TIRA NECESARIA PARA OBTENER LOS W QUE USARA LA TIRA LED
         opcTir.loc[cortes, 'lonTiras'] = \
-                self.caln / opcTir.loc[cortes, 'Longitud Tira LED [cm]']
+                lng / opcTir.loc[cortes, 'Longitud Tira LED [cm]']
         opcTir.loc[~cortes, 'lonTiras'] = \
-                self.caln / opcTir.loc[~cortes, 'Longitud Tira LED [cm]']
+                lng / opcTir.loc[~cortes, 'Longitud Tira LED [cm]']
         # ESTIMACION DEL NÚMERO DE TIRAS QUE DEBEN COMPRARSE
         opcTir['nTiras']=opcTir.lonTiras.apply(np.ceil)
         # AHORRO BIMESTRAL
@@ -188,8 +190,6 @@ class libreriaTubosFluorescentes:
         wXp  = self.w_t  / self.plnu
         plar = self.plta.max()
         panc = self.plta.min()
-        print(lmXp)
-        print(wXp)
         if self.port == 'sobresale':
             filPla =  self.dbPanel.loc[:,'Sobresale']=='si'
         elif self.port == 'colgante':

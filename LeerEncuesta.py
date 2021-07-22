@@ -17,6 +17,7 @@ import libreriaReguladores as lg
 import libreriaUPS as lups
 import libreriaCafeteras as lc
 from libreriaTubosFluorescente import libreriaTubosFluorescentes
+from libreriaTirasLED import libreriaTirasLED
 
 
 ####################  FUNCIONES ###################################
@@ -142,19 +143,20 @@ if __name__ == '__main__':
         # print(lups.recomendaciónUPS(dfCTV, VAmax, Vpro, FPfuga))
         print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
         """
+
         #lc.leerLibreriaCafeteras()
         #print(lc.dias('lunes martes andlasnda domingo'))
         kobo={'tipo':'t5',        # t2 t5 t8 t12
               'entr':'g5',        # g5 g13 fa8
               'dist':'paralelo',     # serie paralelo aislado
               'port':'colgante',  # colgante sobresale introduce sin
-              'func':'principal', # principal indirecta nocturna espejos estudio arte mesas bodegas pecera
+              'func':'indirecta', # principal indirecta nocturna espejos estudio arte mesas bodegas pecera
               'ntub': 6,          # número de tubos
               'detr':True,       # Señales de vida util por finalizar
               'difu':True,        # difusor
               'temp':'fria',      # fria calida
               'lntb':'largo_61',  # largo_ .... 30 35  53 61 91 122 152 183
-              'caji':True,       # Es un cajillo?
+              'caji':False,       # Es un cajillo?
               'caln':61*6,        # longitud del cajillo
               'plta':np.array([60, 60]),           # placa tamaño
               'plnu':3            # placa número
@@ -167,8 +169,14 @@ if __name__ == '__main__':
         ltf=libreriaTubosFluorescentes()
         ltf.setData(kobo,DAC,wt,kwh,dscr)
         ltf.buildText()
-        print(ltf.sustitutos)
-        print(ltf.txt)
+        #print(ltf.sustitutos)
+        #print(ltf.txt)
+        #print(ltf.dbTiras)
+        ltl=libreriaTirasLED()
+        ltl.setData(100,'fria',6.1,15,(15*24*7/1000),'lunes')
+        ltl.buildText()
+        print(ltl.txt)
+        #print(ltl.sustitutos)
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
