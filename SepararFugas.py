@@ -28,7 +28,7 @@ def separar_fugas(Equip):
     Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
-    #Equipos['Claves'] = Aparatos['Clave']
+    Equipos['Claves'] = Aparatos['Clave']
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
@@ -71,6 +71,7 @@ def separar_fugasBB(Equip):
     Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
+    Equipos['Claves'] = Aparatos['Clave']
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
@@ -119,6 +120,7 @@ def separar_fugasC(Equip):
     Equipos['Equipo'] = Equipos['Equipo'].replace('!', "",regex=True)
     Equipos['Texto'] = Equipos['Texto'].replace('!', "",regex=True)
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "",regex=True)
+    Equipos['Claves'] = Aparatos['Clave']
 
 
     Fuga.dropna(subset=['Standby'], inplace=True)
@@ -170,6 +172,7 @@ def separar_fugasE(Equip):
     Equipos['Notas'] = Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('!', "", regex=True)
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
+    Equipos['Claves'] = Aparatos['Clave']
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
@@ -276,6 +279,7 @@ def separar_fugasA(Equip):
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
     Equipos['Texto'] = Aparatos['Notas']
     Equipos['Notas'] = Aparatos['Notas']
+    Equipos['Claves'] = Aparatos['Clave']
 
 
     Fuga.dropna(subset=['Standby'], inplace=True)
@@ -355,6 +359,7 @@ def separar_fugasCal(Equip):
     Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
     Equipos['Notas']  = Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
+    Equipos['Claves'] = Aparatos['Clave']
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]

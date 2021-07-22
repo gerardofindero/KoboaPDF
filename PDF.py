@@ -655,8 +655,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso):
         Consejos = leerConsumoPlanchas(consumo)
     if Claves == 'MC':
         Consejos = leerConsumoMicroondas(consumo)
-    # if Claves == 'CF':
-    #     Consejos = armarTxtCaf(consumo,Uso,'Ninguno')
+    if Claves == 'CF':
+        Consejos = armarTxtCaf(consumo,Uso,'Ninguno')
 
     return Consejos
 
@@ -917,7 +917,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         else:
             if len(nota)<200:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-            elif 200<=len(nota)<400:
+            elif 200<=len(nota)<350:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
             else:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))

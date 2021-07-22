@@ -10,7 +10,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                                      'Congelador2','Minibar2','Cava2','Hielos2','Adicional','Regulador','Regulador2',
                                      'Regulador Refrigerador','Regulador Congelador','Refrigeracion','Problemas']
                               ,columns=['Marca','Volumen','Temp Refri','Temp Conge','Pot Compresor','Temp Compresor','Nominal',
-                                        'Prob Comp','Prob Descr','Empaques','Termostato','Ventilacion','Cierre', 'Existencia','Standby','CodigoN','Notas','Claves'])
+                                        'Prob Comp','Prob Descr','Empaques','Termostato','Ventilacion','Cierre', 'Existencia',
+                                        'Standby','CodigoN','Notas','Claves'])
     Regulador = pd.DataFrame(index=['Regulador'],columns=['Marca','Standby','Existencia'])
     Info_R    = pd.DataFrame(index=['Refrigeracion'], columns=['Notas','CodigoS','Standby'])
     # Libreria = pd.DataFrame(index=['Refrigerador','Congelador','Minibar','Cava','Hielos'], columns=['Marca', 'Codigo', 'Texto'])

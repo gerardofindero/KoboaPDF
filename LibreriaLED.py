@@ -222,7 +222,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
 
         ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno )
-
+        TT=0
         if ConLED != 0:
 
             #print('Potencia c LED: '+ str(ConLED))
@@ -257,13 +257,23 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             print ('No se encontró el tipo de foco buscado')
             #Por la falta de información se usa un estandar en consumo LED y no se pone link
             TextoCompleto = TextoCompleto + '. NO SE ENCONTRO EL TIPO DE FOCO BUSCADO'
-    
+            if Tecno == 'fluorescente':
+                TT = 40
+            if Tecno == 'incandescente':
+                TT = 70
+            if Tecno == 'halogena':
+                TT = 60
+            TextoCompleto = TextoCompleto.replace('del [T]%', 'alrededor del [T]%')
+            TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
+
+
     # Lo que pasa si el foco no está especificado en términos de tecnología.
     else:
         TextoCompleto = 'No existe información suficiente para una recomendación'
+        TextoCompleto = TextoCompleto.replace('[...]','')
 
-    TextoCompleto = TextoCompleto.replace('[...]','')
-    TextoCompleto = TextoCompleto.replace('del [T]%', '')
+
+
     return TextoCompleto, conteoled, conteoNOled, conteoROI
 
 

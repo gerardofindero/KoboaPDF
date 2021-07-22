@@ -25,54 +25,54 @@ def ClavesRefri(EquiposRefri):
         TempC = (EquiposR['Temp Conge'][0])
         NominalComp = int(EquiposR['Pot Compresor'][0])
         TempComp = float(EquiposR['Temp Compresor'][0])
-        Codigo = 'R,'+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp)
+        Codigo = 'RF,'+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp)
 
         ## Compresor
         if NominalComp > 50:
-            Codigo += ", CN"
+            Codigo += ",CN"
 
         #Calor
             if TempComp > 50:
-                Codigo +=', TM'
+                Codigo +=',TM'
 
         #Ruido
             if 'ruido' in str(EquiposR['Prob Comp']):
-                Codigo +=', RU'
+                Codigo +=',RU'
 
         #Ventilador
             if 'ventilador' in str(EquiposR['Prob Comp']):
-                Codigo +=", VE"
+                Codigo +=",VE"
 
             if 'encerrado' in str(EquiposR['Ventilacion']):
-                Codigo +=", VN"
+                Codigo +=",VN"
 
         # Suciedad
             if 'suciedad' in str(EquiposR['Prob Comp']):
-                Codigo += ", SU"
+                Codigo += ",SU"
         # Viejo
             if 'viejo' in str(EquiposR['Prob Comp']):
-                Codigo += ", VI"
+                Codigo += ",VI"
         #Cierre
         if EquiposR['Cierre'][0]!= 0:
 
-            Codigo += ", CI"
+            Codigo += ",CI"
 
         if EquiposR['Empaques'][0] != 'si':
-            Codigo += ", EB"
+            Codigo += ",EB"
         else:
-            Codigo += ", EM"
+            Codigo += ",EM"
 
         #Temperatura interior
         if -10 > EquiposR['Temp Conge'][0] >-14:
-            Codigo += ', TCB'
+            Codigo += ',TCB'
         if EquiposR['Temp Conge'][0] <-14:
-            Codigo += ', TCM'
+            Codigo += ',TCM'
         # Temperatura interior
 
         if 3 >= TempR >= -7:
-            Codigo += ', TRB'
+            Codigo += ',TRB'
         if EquiposR['Temp Refri'][0] < -8:
-            Codigo += ', TRM'
+            Codigo += ',TRM'
 
     return  Codigo
 

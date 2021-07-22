@@ -138,14 +138,14 @@ cuadros_bajo = ParagraphStyle(name='Cuadros',
 cuadros_bajo2 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
                                 fontSize=12,
-                                leading=11,
+                                leading=12,
                                 textColor=gris
                                 )
 
 cuadros_bajo3 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=8,
-                                leading=8,
+                                fontSize=9,
+                                leading=9,
                                 textColor=gris
                                 )
 
