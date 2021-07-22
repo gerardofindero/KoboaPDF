@@ -43,10 +43,22 @@ def dias(dscr):
         dias.append('domingo')
     numDias=len(dias)
     txt=''
-    if numDias==0:
-        txt=''
-    elif numDias==1:
-        txt=''+txt.replace(dias[0],1)
+    if numDias == 0:
+        txt = ''
+    elif numDias == 1:
+        txt = 'el día ' + dias[0]
+    elif numDias == 2:
+        txt = 'los días ' + dias[0] + ' y ' + dias[1]
+    elif numDias > 2:
+        txt = 'los días'
+        for c, dia in enumerate(dias):
+            if c < (numDias - 2):
+                txt = txt + ' ' + dias[c] + ','
+            elif c == (numDias - 2):
+                txt = txt + ' ' + dias[c]
+            else:
+                txt = txt + ' y ' + dias[c]
+    return txt
 
 
 
