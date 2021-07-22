@@ -36,6 +36,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Computadora', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Computadora', 'Zona'] = Zona
                 Aparatos_C.loc['Computadora', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                Aparatos_C.loc['Computadora', 'Clave'] = 'X'
                 if 'computadora' in Nomedidos:
                     print("computadora no desconectado")
                 else:
@@ -51,6 +52,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Laptop', 'Existencia'] = 1
                 Aparatos_C.loc['Laptop', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Laptop', 'Zona'] = Zona
+                Aparatos_C.loc['Laptop', 'Clave'] = 'X'
                 Aparatos_C.loc['Laptop', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 #Aparatos_C.loc['Laptop', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
 
@@ -62,6 +64,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Modem', 'Existencia'] = 1
                 Aparatos_C.loc['Modem', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Modem', 'Zona'] = Zona
+                Aparatos_C.loc['Modem', 'Clave'] = 'X'
                 if 'modem' in Nomedidos:
                     print("Modem no desconectado")
                 else:
@@ -78,6 +81,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Repetidor', 'Notas'] = InfoDeco.filter(regex='notas')[0]
 
                 Aparatos_C.loc['Repetidor', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
+                Aparatos_C.loc['Repetidor', 'Clave'] = 'X'
 
                 if 'repetidor' in Nomedidos:
                     print("Repetidor no desconectado")
@@ -94,6 +98,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Equipos Apple', 'Marca'] = InfoDeco.filter(regex='equipos_apple_c_i')[0]
                 Aparatos_C.loc['Equipos Apple', 'Notas'] = notass
                 Aparatos_C.loc['Equipos Apple', 'Zona'] = Zona
+                Aparatos_C.loc['Equipos Apple', 'Clave'] = 'X'
                 if 'apple' in Nomedidos:
                     print("Equipo_Apple no desconectado")
 
@@ -107,7 +112,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Modem Extra', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Modem Extra', 'Existencia'] = 1
                 Aparatos_C.loc['Modem Extra', 'Atacable'] = 'No'
-
+                Aparatos_C.loc['Modem Extra', 'Clave'] = 'X'
                 if 'modem2' in Nomedidos:
                     print("Modem Extra no desconectado")
                 else:
@@ -123,6 +128,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Impresora', 'Existencia'] = 1
                 Aparatos_C.loc['Impresora', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Impresora', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
+                Aparatos_C.loc['Impresora', 'Clave'] = 'X'
                 if 'impresora' in Nomedidos:
                     print("Impresora no desconectado")
                 else:
@@ -148,7 +154,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Regulador', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Regulador', 'Existencia'] = 1
                 Aparatos_C.loc['Regulador', 'Atacable'] = 'Si'
-
+                Aparatos_C.loc['Regulador', 'Clave'] = 'X'
                 Aparatos_C.loc['Regulador', 'Notas'] = notass
 
             if indx == 11:
@@ -159,7 +165,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Nobreak', 'Existencia'] = 1
                 Aparatos_C.loc['Nobreak', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Nobreak', 'Notas'] = notass
-
+                Aparatos_C.loc['Nobreak', 'Clave'] = 'X'
                 if InfoDeco.filter(regex='nobreak_apagado_c_i')[0] == 'Si':
                     Aparatos_C.loc['Nobreak', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                     Aparatos_C.loc['Nobreak', 'CodigoS'] =stnbyCod
@@ -182,6 +188,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Monitor', 'Existencia'] = 1
                 Aparatos_C.loc['Monitor', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Monitor', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
+                Aparatos_C.loc['Monitor', 'Clave'] = 'X'
                 if 'monitor' in Nomedidos:
                     print("Monitor no desconectado")
                 else:
@@ -198,7 +205,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Switch', 'Atacable'] = 'No'
                 Aparatos_C.loc['Switch', 'Existencia'] = 1
                 Aparatos_C.loc['Switch', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
-
+                Aparatos_C.loc['Switch', 'Clave'] = 'X'
                 if 'switch' in Nomedidos:
                     print("Switch no desconectado")
                 else:
@@ -212,6 +219,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Router', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
                 Aparatos_C.loc['Router', 'Existencia'] = 1
                 Aparatos_C.loc['Router', 'Atacable'] = 'No'
+                Aparatos_C.loc['Router', 'Clave'] = 'X'
                 if 'router' in Nomedidos:
                     print("Router no desconectado")
                 else:
@@ -225,6 +233,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['HDD', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['HDD', 'Existencia'] = 1
                 Aparatos_C.loc['HDD', 'Atacable'] = 'No'
+                Aparatos_C.loc['HDD', 'Clave'] = 'X'
 
                 if 'HDD' in Nomedidos:
                     print("Router no desconectado")
@@ -247,7 +256,7 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Otro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Otro', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
 
-
+                Aparatos_C.loc['Otro', 'Clave'] = 'X'
                 if 'otro' in Nomedidos:
                     print("Otro no desconectado")
                 else:

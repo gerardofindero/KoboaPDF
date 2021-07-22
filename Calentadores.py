@@ -7,7 +7,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
 
     Aparatos_C = pd.DataFrame(
         index=['Ambiente','Calefaccion' ,'Boiler Electrico','Boiler de Gas','Toallas', 'Calentador Otro'],
-        columns=[ 'Zona','Marca','Standby', 'Nominal','Existencia','Notas','Atacable','CodigoN','CodigoS'])
+        columns=[ 'Zona','Marca','Standby', 'Nominal','Existencia','Notas','Atacable','CodigoN','CodigoS','Clave'])
 
     Circuito = Excel.loc[Nocircuito]
     Columnas = Excel.columns
@@ -33,7 +33,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Ambiente', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Ambiente', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Ambiente', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
-
+                Aparatos_C.loc['Ambiente', 'Clave'] = 'X'
             if indx == 4:
                 InfoDeco = Circuito.filter(regex='calefaccion_fija')
 
@@ -46,7 +46,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Calefaccion', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Calefaccion', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Calefaccion', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
-
+                Aparatos_C.loc['Calefaccion', 'Clave'] = 'X'
             if indx == 1:
                 InfoDeco = Circuito.filter(regex='boiler_luz')
 
@@ -59,6 +59,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Boiler Electrico', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
                 Aparatos_C.loc['Boiler Electrico', 'Existencia'] = 1
+                Aparatos_C.loc['Boiler Electrico', 'Clave'] = 'X'
 
             if indx == 2:
                 InfoDeco = Circuito.filter(regex='boiler_gas')
@@ -70,6 +71,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Boiler de Gas', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Boiler de Gas', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Boiler de Gas', 'CodigoS'] = CodStnby
+                Aparatos_C.loc['Boiler de Gas', 'Clave'] = 'X'
 
             if indx == 5:
                 InfoDeco = Circuito.filter(regex='toallas')
@@ -81,6 +83,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Toallas', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Toallas', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Toallas', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+                Aparatos_C.loc['Toallas', 'Clave'] = 'X'
 
             if indx == 6:
                 InfoDeco = Equipos.filter(regex='otro')
@@ -92,6 +95,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Calentador Otro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Notas', 'Existencia'] = 1
                 Aparatos_C.loc['Calentador Otro', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                Aparatos_C.loc['Calentador Otro', 'Clave'] = 'X'
                 #Aparatos_C.loc['Calentador Otro', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
                 #Aparatos_C.loc['Zona', 'Existencia'] = 1
         indx = indx + 1

@@ -4,7 +4,7 @@ from Consumo    import consumoEq
 def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C = pd.DataFrame(
         index=['Aire Acondicionado','Evaporador','Condensador'],
-        columns=['Zona', 'Tecnologia', 'Ubicacion','Nominal', 'CodigoN','Standby','CodigoS','Volumen cuarto','Existencia','Zona', 'Atacable'])
+        columns=['Zona', 'Tecnologia', 'Ubicacion','Nominal', 'CodigoN','Standby','CodigoS','Volumen cuarto','Existencia','Zona', 'Atacable','Clave'])
 
     Aparatos_C = pd.DataFrame(columns=['Aparatos'])
     Circuito = Excel.loc[Nocircuito]
@@ -52,6 +52,7 @@ def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Aire Acondicionado', 'CodigoN'] = Equipos.filter(regex='aires_consumo_codigofindero_c_i')[0]
     #print(Equipos.filter(regex='consumo_c_i'))
     Aparatos_C.loc['Aire Acondicionado', 'Nominal'] = consumoEq(Equipos.filter(regex='aires_consumo_c_i')[0])
+    Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'X'
     #print(Aparatos_C)
     return Aparatos_C
     indx=0

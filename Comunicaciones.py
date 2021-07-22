@@ -6,7 +6,7 @@ from Consumo    import calc_consumo , consumoEq
 def comunicaciones(Excel,Nocircuito, NomCircuito):
     Aparatos_C = pd.DataFrame(
         index=['Telefono','Conmutador','Modem','Repetidor','Switch','Router','Fax','Regulador' 'Otro','Equipos','Notas'],
-        columns=['Marca','Standby', 'Zona','Nominal','Existencia','Atacable','Notas','CodigoN','CodigoS'])
+        columns=['Marca','Standby', 'Zona','Nominal','Existencia','Atacable','Notas','CodigoN','CodigoS','Clave'])
 
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
@@ -36,6 +36,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Telefono', 'Existencia'] = 1
                 Aparatos_C.loc['Telefono', 'Atacable'] = 'No'
                 Aparatos_C.loc['Telefono', 'Notas'] = 'No'
+                Aparatos_C.loc['Telefono', 'Clave'] = 'X'
 
 
                 # if 'telefono' in Nomedidos:
@@ -57,6 +58,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Conmutador', 'Existencia'] = 1
                 Aparatos_C.loc['Conmutador', 'Atacable'] = 'No'
                 Aparatos_C.loc['Conmutador', 'Notas'] = 'No'
+                Aparatos_C.loc['Conmutador', 'Clave'] = 'X'
 
                 if 'conmutador' in Nomedidos:
                     print("conmutador no desconectado")
@@ -77,6 +79,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Modem', 'Atacable'] = 'No'
                 Aparatos_C.loc['Modem', 'Notas'] = 'No'
                 Aparatos_C.loc['Modem', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['Modem', 'Clave'] = 'X'
 
                 if not InfoDeco.filter(regex='regonob_c_i')[0] == 'ninguno':
                     if InfoDeco.filter(regex='regonob_c_i')[0] == 'regulador':
@@ -100,6 +103,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Repetidor', 'Existencia'] = 1
                 Aparatos_C.loc['Repetidor', 'Atacable'] = 'No'
                 Aparatos_C.loc['Repetidor', 'Notas'] = InfoDeco.filter(regex='notas')[0]
+                Aparatos_C.loc['Repetidor', 'Clave'] = 'X'
 
                 if 'repetidor' in Nomedidos:
                     print("repetidor no desconectado")
@@ -118,6 +122,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Switch', 'Existencia'] = 1
                 Aparatos_C.loc['Switch', 'Atacable'] = 'No'
                 Aparatos_C.loc['Switch', 'Notas'] = InfoDeco.filter(regex='notas')[0]
+                Aparatos_C.loc['Switch', 'Clave'] = 'X'
 
                 if 'switch' in Nomedidos:
                     print("switch no desconectado")
@@ -132,6 +137,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Router', 'Existencia'] = 1
                 Aparatos_C.loc['Router', 'Atacable'] = 'No'
                 Aparatos_C.loc['Router', 'Notas'] = InfoDeco.filter(regex='notas')[0]
+                Aparatos_C.loc['Router', 'Clave'] = 'X'
 
                 if 'router' in Nomedidos:
                     print("router no desconectado")
@@ -147,6 +153,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Fax', 'Existencia'] = 1
                 Aparatos_C.loc['Fax', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Fax', 'Notas'] = InfoDeco.filter(regex='notas')[0]
+                Aparatos_C.loc['Fax', 'Clave'] = 'X'
 
                 if 'fax' in Nomedidos:
                     print("fax no desconectado")
@@ -166,7 +173,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Otro', 'Existencia'] = 1
                 Aparatos_C.loc['Otro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Otro', 'Notas'] = InfoDeco.filter(regex='nota')[0]
-
+                Aparatos_C.loc['Otro', 'Clave'] = 'X'
 
                 if 'otro' in Nomedidos:
                     print("otro no desconectado")
@@ -188,7 +195,7 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Equipos', 'CodigoS'] = 'FF'
         Aparatos_C.loc['Equipos', 'Atacable'] = 'No'
         Aparatos_C.loc['Equipos', 'Existencia'] = 1
-
+        Aparatos_C.loc['Equipos', 'Clave'] = 'X'
 
     Aparatos = Aparatos_C[Aparatos_C['Standby'].notna()]
     Aparatos.reset_index()

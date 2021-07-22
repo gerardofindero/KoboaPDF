@@ -1,9 +1,6 @@
 from SepararFugas import *
-import datetime
-import os
 from pandas import ExcelWriter
 from pathlib         import Path
-from datetime import datetime
 import pandas as pd
 import xlwings
 from Tarifa          import leer_tarifa_Dac
@@ -155,13 +152,21 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     infoL= leer_lista(Cliente)
     infoL['B']=infoL['B'].str.upper()
     cony=0
+    infoL['J'].fillna('X')
+    print(infoL['J'])
     for i in Equipos['Codigo']:
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
             Sheet1.range(7 + cony, 6).value =infoL.loc[identificados[0],'D']
             Sheet1.range(7 + cony, 7).value = infoL.loc[identificados[0], 'F']
-            Sheet1.range(7+ cony, 16).value = infoL.loc[identificados[0], 'H']
+            Sheet1.range(7 + cony, 16).value = infoL.loc[identificados[0], 'H']
+            Sheet1.range(7 + cony, 8).value = infoL.loc[identificados[0], 'J']
+
+        else:
+            Sheet1.range(7 + cony, 8).value ='=K8 * 1000 / J8'
+
+
         cony=cony+1
     cony = 0
     inicioL = len(Equipos) + 10

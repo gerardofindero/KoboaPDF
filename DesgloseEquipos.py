@@ -92,7 +92,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 primafila = primafila+len(Datos_IL) + 4
                 notass = DatosIlu[["Tablero",'Circuito','Tecnologia','Lugar','Notas']]
                 notass.columns=['Tablero','Circuito', 'Equipo','Lugar','Notas']
-                notass.dropna(subset=['Notas'], inplace=True)
+                notass=notass.dropna(subset=['Notas'])
                 Notas_Equipos= notass
                 Notas_ = Notas_.append(Notas_Equipos)
 

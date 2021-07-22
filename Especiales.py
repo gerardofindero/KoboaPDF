@@ -5,7 +5,7 @@ from Consumo    import calc_consumo , consumoEq
 def especiales(Excel,Nocircuito, NomCircuito):
     Aparatos_C = pd.DataFrame(
         index=['Especial1', 'Especial2', 'Especial3'],
-        columns=['Equipo' ,'Standby', 'Nominal', 'Marca','Zona','Existencia','Atacable','Notas','CodigoN','CodigoS'])
+        columns=['Equipo' ,'Standby', 'Nominal', 'Marca','Zona','Existencia','Atacable','Notas','CodigoN','CodigoS','Clave'])
 
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
@@ -29,6 +29,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
 
     Aparatos_C.loc['Especial1', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]
     Aparatos_C.loc['Especial1','CodigoS']   = CodStandby
+    Aparatos_C.loc['Especial1', 'Clave'] = 'X'
     if Aparatos_C.loc['Especial1','Standby'] !=0:
         Aparatos_C.loc['Especial1', 'Atacable']='Si'
     else:
@@ -51,6 +52,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial2', 'CodigoN'] = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
         Aparatos_C.loc['Especial2', 'CodigoS'] = CodStandby
         Aparatos_C.loc['Especial2', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]
+        Aparatos_C.loc['Especial2', 'Clave'] = 'X'
         if Aparatos_C.loc['Especial2', 'Standby'] != 0:
             Aparatos_C.loc['Especial2', 'Atacable'] = 'Si'
         else:
@@ -71,6 +73,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial3', 'CodigoN'] = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
         Aparatos_C.loc['Especial3', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]
         Aparatos_C.loc['Especial3','CodigoS']   = CodStandby
+        Aparatos_C.loc['Especial3', 'Clave'] = 'X'
         if Aparatos_C.loc['Especial3','Standby'] !=0:
             Aparatos_C.loc['Especial3', 'Atacable']='Si'
         else:

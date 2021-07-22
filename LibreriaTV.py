@@ -38,7 +38,12 @@ def ClavesClusterTV(EquiposClusterTV):
     Pulgadas    = EquiposClusterTV.loc['TV', 'Pulgadas']
     PotenciaTV   = EquiposClusterTV.loc['TV', 'Nominal']
     Tolerancia = EquiposClusterTV.loc['TV', 'Tolerancia']
-    Codigo = 'C,'+Tolerancia + str(PotenciaTV) +'/'+str(Standby)+'/'+str(Pulgadas)
+    if Tolerancia == 'no_haydatos':
+        Tolerancia= 'F'
+    else:
+        Tolerancia ='T'
+
+    Codigo = 'TV,'+Tolerancia +','+ str(PotenciaTV) +'/'+str(Standby)+'/'+str(Pulgadas)
 
     return Codigo
 
@@ -46,7 +51,7 @@ def ClavesClusterTV(EquiposClusterTV):
 def Clasifica(Claves):
     ClavesSep='N'
     if pd.notna(Claves):
-        ClavesSep=Claves.split(", ")
+        ClavesSep=Claves.split(",")
     return ClavesSep[0]
 
 
