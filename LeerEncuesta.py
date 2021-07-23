@@ -18,6 +18,7 @@ import libreriaUPS as lups
 import libreriaCafeteras as lc
 from libreriaTubosFluorescente import libreriaTubosFluorescentes
 from libreriaTirasLED import libreriaTirasLED
+import libreriaPlanchas as lp
 
 
 ####################  FUNCIONES ###################################
@@ -127,6 +128,7 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
+        print(lp.leerConsumoPlanchas(30,35))
         """
         dfCTV=pd.DataFrame.from_dict({'disp':['TV','Decodificador','NoBreak','Bocinas'],
                                       'nominal' :[30,30, 10, 10]                   ,
@@ -146,6 +148,7 @@ if __name__ == '__main__':
 
         #lc.leerLibreriaCafeteras()
         #print(lc.dias('lunes martes andlasnda domingo'))
+        """"
         kobo={'tipo':'t5',        # t2 t5 t8 t12
               'entr':'g5',        # g5 g13 fa8
               'dist':'paralelo',     # serie paralelo aislado
@@ -177,6 +180,7 @@ if __name__ == '__main__':
         ltl.buildText()
         print(ltl.txt)
         #print(ltl.sustitutos)
+        """
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()

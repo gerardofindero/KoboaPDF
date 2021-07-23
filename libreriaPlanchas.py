@@ -1,5 +1,6 @@
 import pandas as pd
 from scipy.stats import norm
+import funcionesComunes as fc
 def leerLibreriaPlanchas():
     try:
         Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",sheet_name='libreriaPlanchas')
@@ -8,11 +9,11 @@ def leerLibreriaPlanchas():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
             sheet_name='libreriaPlanchas')
 
-    Dicc = ['A','B', 'C'] # Define los nombres de las columnas en Excel.
+    Dicc = ['A','B', 'C','D'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
     return Libreria
 
-def leerConsumoPlanchas(consumo):
+def leerConsumoPlanchas(consumo, hrsUso):
     try:
         statistics = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
@@ -29,6 +30,7 @@ def leerConsumoPlanchas(consumo):
             sheet_name='links')
     statistics.columns = ['A', 'B', 'C','D']  # Define los nombres de las columnas en Excel.
     links.columns =  ['A','B','C']
+    col = 'D'
     # media y desviacion estandar almacenados en el excel de planchas
     # en esta sección se esta trabajdno con la transformación consumo**0.3 (kWh)
     media=statistics.loc[0,'B']
@@ -38,33 +40,28 @@ def leerConsumoPlanchas(consumo):
     percentil=round(percentil,2)
     #print(percentil)
     lib=leerLibreriaPlanchas()
+    Addres = 'Estrategia para planchas'
+    Link   = links.loc[0, 'C']
+
+    texto=''
+    if (not (hrsUso is None)) and percentil>= 0.45:
+        texto = texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso))
+
     if percentil <0.33:
-        texto=lib.loc[3,'C'].replace('[1-perc_cons]',str(int((1-percentil)*100)))
-        return texto
+        texto=lib.loc[4,'C']
     elif 0.33<=percentil<0.45:
-        linkA = links.loc[0, 'C']
-        Address = 'Estrategia para planchas'
-        LinkS = '<br />' + '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-        texto = lib.loc[4, 'C'].replace('[perc_cons]', str(int(percentil * 100))).replace('{link_blog_planchas}', LinkS)
-        return texto
+        texto = texto + ' '+lib.loc[5, col]
     elif 0.45<=percentil<0.55:
-        linkA = links.loc[0, 'C']
-        Address = 'Estrategia para planchas'
-        LinkS = '<br />' + '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-        texto = lib.loc[5, 'C'].replace('[perc_cons]', str(int(percentil * 100))).replace('{link_blog_planchas}', LinkS)
-        return texto
+        texto = texto + ' '+lib.loc[6, col]
     elif 0.55<=percentil<0.66:
-        linkA = links.loc[0, 'C']
-        Address = 'Estrategia para planchas'
-        LinkS = '<br />' + '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-        texto = lib.loc[6, 'C'].replace('[perc_cons]', str(int(percentil * 100))).replace('{link_blog_planchas}', LinkS)
-        return texto
+        texto = texto + ' '+lib.loc[7, col]
     elif percentil>=0.66:
-        linkA = links.loc[0,'C']
-        Address = 'Estrategia para planchas'
-        LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-        texto = lib.loc[7, 'C'].replace('[perc_cons]',str(int(percentil*100))).replace( '{link_blog_planchas}',LinkS )
-        return texto
+        texto = texto + ' '+lib.loc[8, col]
+
+    texto =  texto.replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
+
+    texto =  texto.replace('\n','<br />')
+    return texto
 
 
 
