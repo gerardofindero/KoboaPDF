@@ -13,7 +13,7 @@ def leerLibreriaPlanchas():
     Libreria.columns = Dicc
     return Libreria
 
-def leerConsumoPlanchas(consumo, hrsUso):
+def leerConsumoPlanchas(consumo, hrsUso=None):
     try:
         statistics = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
@@ -44,7 +44,7 @@ def leerConsumoPlanchas(consumo, hrsUso):
     Link   = links.loc[0, 'C']
 
     texto=''
-    if (not (hrsUso is None)) and percentil>= 0.45:
+    if (not (hrsUso is None)) and (not hrsUso==0 )and percentil>= 0.45:
         texto = texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso))
 
     if percentil <0.33:
