@@ -1470,7 +1470,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     estrategia_ahorro(canvas,width,height,0)
     notas(canvas)
     contraportada(canvas, width, height)
-    canvas.save()
+
     try:
         canvas.save()
     except Exception as e:

@@ -177,6 +177,7 @@ def regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,n
     return texto
 
 def armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga):
+    print('Analizando las recomendaciones en fugas')
     [lib, libUPS, links]=leerLibreriaCTV()
     texto=''
     [consumoStanby, regulador, nReg,consumoRegulador,standbyUPS, UPS, tolTV, sonido, tolSonido,decodificador] = caractCTV(dfCTV)

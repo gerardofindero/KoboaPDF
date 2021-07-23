@@ -74,24 +74,22 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         Potencia=float(Datos[0])
         Standby = float(Datos[1])
         Pulgadas=float(Datos[2])
-
-        print(Potencia)
-        print(Standby)
-        print(Pulgadas)
-
         Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
 
         Ahorro= (Potencia - math.exp(3.189644 + 0.034468 * Pulgadas)) / Potencia
         XX = np.log(Potencia)
         Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
+
+
         if Consumo==0:
             Consumo=0.1
         ROI=Precio/(DAC*Ahorro*Consumo)
+        print(ROI)
 
         if Consumo<10:
             Texto = Texto + ' ' + lib.loc[0, 'G']
 
-            if Percentil<0.9:
+            if Percentil>0.9:
                 Texto = Texto + ' ' + lib.loc[1, 'G']
 
 
@@ -122,7 +120,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
                 Texto = Texto + '<br /> '+  '<br /> '+LinkS
 
 
-        if Standby>0.3:
+        if Standby>1:
             Texto = Texto + ' ' + lib.loc[8, 'G']
 
     Texto = Texto.replace('[/n]','<br />')
