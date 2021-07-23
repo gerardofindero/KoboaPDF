@@ -98,8 +98,8 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
 
-    #NCliente = 'Enrique Tawil'
-    NCliente = 'Cliente Prueba'
+    NCliente = 'Paloma Fernandez'
+    #NCliente = 'Cliente Prueba'
     #NCliente = 'Stephanie Luise'
 
     return NCliente
@@ -116,7 +116,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='3'
+    Opcion='4'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?

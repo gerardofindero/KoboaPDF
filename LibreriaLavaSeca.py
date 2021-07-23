@@ -52,6 +52,7 @@ def LeeClavesLavaSeca(Claves,consumo):
 
 
             Texto = Texto.replace('["PCML"]', str(int(100-Percentil*100)))
+            Texto = Texto.replace('[/n]', '<br />')
 
         if ClavesS[0] == 'SC':
             Percentil = (1 - stats.norm.sf(x=(np.log(kWh)), loc=3.7147, scale=1.2349))
