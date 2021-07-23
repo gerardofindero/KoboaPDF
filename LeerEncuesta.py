@@ -128,7 +128,7 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(lp.leerConsumoPlanchas(30,35))
+        print(lp.leerConsumoPlanchas(30))
         """
         dfCTV=pd.DataFrame.from_dict({'disp':['TV','Decodificador','NoBreak','Bocinas'],
                                       'nominal' :[30,30, 10, 10]                   ,
