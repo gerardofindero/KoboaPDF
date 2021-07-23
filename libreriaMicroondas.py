@@ -8,11 +8,11 @@ def leerLibreriaMicroondas():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",
             sheet_name='libreriaMicroondas')
 
-    Dicc = ['A','B', 'C'] # Define los nombres de las columnas en Excel.
+    Dicc = ['A','B', 'C','D'] # Define los nombres de las columnas en Excel.
     Libreria.columns = Dicc
     return Libreria
 
-def leerConsumoMicroondas(consumo):
+def leerConsumoMicroondas(consumo, hrsUso=None):
     try:
         statistics = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",
@@ -30,20 +30,29 @@ def leerConsumoMicroondas(consumo):
     consumoTrans= consumo**0.4
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     percentil=round(percentil,2)
-    print(percentil)
     lib=leerLibreriaMicroondas()
+    col='D'
+    texto = ''
+    print(percentil)
+    print(hrsUso)
+
+    if (not (hrsUso is None)) and(hrsUso!=0)and(percentil>=0.45):
+        print('entre')
+        texto= texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso)) +' '
+
     if percentil <0.33:
-        texto=lib.loc[3,'C'].replace('[1-perc_cons]',str(int((1-percentil)*100)))
-        return texto
+        texto= texto+lib.loc[4,col]
+
     elif 0.33<=percentil<0.45:
-        texto = lib.loc[4, 'C'].replace('[perc_cons]',str(int(percentil*100)))
-        return texto
+        texto =texto +lib.loc[5, col]
+
     elif 0.45<=percentil<0.55:
-        texto = lib.loc[5, 'C'].replace('[perc_cons]',str(int(percentil*100)))
-        return texto
+        texto = texto +lib.loc[6, col]
+
     elif 0.55<=percentil<0.66:
-        texto = lib.loc[6, 'C'].replace('[perc_cons]',str(int(percentil*100)))
-        return texto
+        texto = texto +lib.loc[7, col]
+
     elif percentil>=0.66:
-        texto = lib.loc[7, 'C'].replace('[perc_cons]',str(int(percentil*100)))
-        return texto
+        texto = texto +lib.loc[8, col]
+    texto = texto.replace('[1-perc_cons]',str(int((1-percentil)*100))).replace('[perc_cons]',str(int(percentil*100)))
+    return texto
