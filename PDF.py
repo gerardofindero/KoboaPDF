@@ -652,7 +652,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso):
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
         Consejos = LeeClavesLavaSeca(Claves, consumo)
     if Claves == 'PL':
-        Consejos = leerConsumoPlanchas(consumo)
+        Consejos = leerConsumoPlanchas(consumo,Uso)
     if Claves == 'MC':
         Consejos = leerConsumoMicroondas(consumo)
     if Claves == 'CF':
