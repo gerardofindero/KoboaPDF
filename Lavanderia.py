@@ -10,10 +10,12 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("lavanderia_equipos", case=False)]
-    Equipos = Circuito[InfoEquipos]
-    CodStandby = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
-    Notass=Circuito.filter(regex='lavanderia_notas_c_i')[0]
-    Tierra = Circuito.filter(regex='lavanderia_tierra_c_i')[0]
+    Equipos     = Circuito[InfoEquipos]
+    CodStandby  = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
+    Notass      = Circuito.filter(regex='lavanderia_notas_c_i')[0]
+    Tierra      = Circuito.filter(regex='lavanderia_tierra_c_i')[0]
+    Maniobras   = Circuito.filter(regex='maniobras_c_i')[0]
+    ManiobrasD  = Circuito.filter(regex='maniobras_detalles_c_i')[0]
 
     indx=0
     for i in Equipos:
@@ -34,6 +36,9 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Lavadora', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Lavadora', 'Clave'] = 'LV,'+ str(Aparatos_C.loc['Lavadora', 'Standby'])
                 #Aparatos_C.loc['Lavadora', 'Clave'] =ClavesLavaSeca(Aparatos_C.loc['Lavadora','Standby'])
+                Aparatos_C.loc['Lavadora', 'Maniobras'] = Maniobras
+                Aparatos_C.loc['Lavadora', 'ManiobrasD'] = ManiobrasD
+
 
 
             if indx == 2:
@@ -55,6 +60,8 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 #Aparatos_C.loc['Secadora', 'Clave'] = ClavesLavaSeca(Aparatos_C.loc['Secadora', 'Standby'])
                 Aparatos_C.loc['Secadora', 'Clave'] = 'SC,' + str(Aparatos_C.loc['Secadora', 'Standby'])
 
+                Aparatos_C.loc['Secadora', 'Maniobras'] = Maniobras
+                Aparatos_C.loc['Secadora', 'ManiobrasD'] = ManiobrasD
 
 
             if indx == 3:
@@ -72,6 +79,8 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Lavasecadora', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Lavasecadora', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Lavasecadora', 'Clave'] = 'LV'
+                Aparatos_C.loc['Lavasecadora', 'Maniobras'] = Maniobras
+                Aparatos_C.loc['Lavasecadora', 'ManiobrasD'] = ManiobrasD
 
 
 
@@ -85,6 +94,9 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Plancha', 'Notas'] = Notass
                 Aparatos_C.loc['Plancha', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Plancha', 'Clave'] = 'PL'
+
+                Aparatos_C.loc['Lavadora', 'Maniobras'] = 'X'
+                Aparatos_C.loc['Lavadora', 'ManiobrasD'] = 'X'
 
 
             if indx == 5:
