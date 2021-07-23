@@ -25,6 +25,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
     Tierra = Circuito.filter(regex='clustertv_tierra_c_i')[0]
     Enchufes = Circuito.filter(regex='clustertv_enchufes_c_i')[0]
     Maniobras = Circuito.filter(regex='clustertv_maniobras_c_i')[0]
+    Maniobras_Detalles = Circuito.filter(regex='clustertv_maniobras_detalles_c_i')[0]
     InfoDeco = Circuito.filter(regex='clustertv_notas_c_i')
 
 
@@ -353,9 +354,9 @@ def clustertv(Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Notas', 'Marca'] ='Sin notas'
     Aparatos_C.loc['Notas', 'Existencia'] = 1
     if not pd.isna(Circuito.filter(regex='clustertv_notas_c_i')[0]):
-        TExtocompleto=Circuito.filter(regex='clustertv_notas_c_i')[0] +'; '+ Maniobras
-        Info_C.loc['Notas', 'Info']      = TExtocompleto
-        Aparatos_C.loc['Notas', 'Marca'] = TExtocompleto
+        Textocompleto=Circuito.filter(regex='clustertv_notas_c_i')[0] +'; '+ Maniobras
+        Info_C.loc['Notas', 'Info']      = Textocompleto
+        Aparatos_C.loc['Notas', 'Marca'] = Textocompleto
         Aparatos_C.loc['Notas', 'Existencia'] = 1
 
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
