@@ -13,7 +13,7 @@ def leerLibreriaPlanchas():
     Libreria.columns = Dicc
     return Libreria
 
-def leerConsumoPlanchas(consumo, hrsUso):
+def leerConsumoPlanchas(consumo, hrsUso=None):
     try:
         statistics = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
