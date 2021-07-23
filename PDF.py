@@ -1028,6 +1028,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             parrafos.append(Paragraph(Nfuga, Estilos.negroB))
             frame = Frame(50, altura, 250, 50)
             frame.addFromList(parrafos, canvas)
+
             if len(Nfuga)<40:
                 parrafo_frame("Potencia", Estilos.base2, 50, altura - 55, .2, .1, canvas)
                 parrafo_frame("Consumo", Estilos.base2, 150, altura - 55, .2, .1, canvas)
@@ -1093,7 +1094,6 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 frame = Frame(330, 40, 200, 350, showBoundary=0)
                 frame.addFromList(parrafos, canvas)
                 Lequipos=[]
-
 
 
         if not Atacable:
@@ -1452,8 +1452,8 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     portada(canvas, width, height)
     intro(canvas, width, height)
     potencial_ahorro(canvas, width, height,consumo_bimestral, tarifa,costo,ahorro_bimestral, tipo_tarifa)
-    #if solar:
-    Solar(canvas,tarifa,costo,consumo,SolarS)
+    if solar:
+        Solar(canvas,tarifa,costo,consumo,SolarS)
     porF=por_A_fugas(fugas)
     aparatosG,aparatosM, aparatosC= Clasificador(aparatos)
     aparatos_grandes(canvas, width, height,aparatosG,Tarifa)
@@ -1470,7 +1470,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     estrategia_ahorro(canvas,width,height,0)
     notas(canvas)
     contraportada(canvas, width, height)
-
+    canvas.save()
     try:
         canvas.save()
     except Exception as e:

@@ -15,7 +15,10 @@ def bombas (Excel,Nocircuito):
     CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     InfoDeco = Equipos.filter(regex='bomba1')
     Bomba = InfoDeco.filter(regex='tipo')[0]
-    zona=InfoDeco.filter(regex='zona')[0]
+    zona = InfoDeco.filter(regex='zona')[0]
+    if zona=='otro':
+        zona = InfoDeco.filter(regex='zona_otro')[0]
+
     #Aparatos_C.loc['Bomba', 'CodigoS'] = 'X'
     #Aparatos_C.loc['Bomba', 'CodigoN'] = 'X'
 

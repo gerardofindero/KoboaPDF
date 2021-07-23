@@ -230,6 +230,8 @@ def armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga):
     LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
     texto = texto.replace('{link protector de sobrevoltaje}',LinkS)
 
+
+    print(texto)
     return texto
 
 

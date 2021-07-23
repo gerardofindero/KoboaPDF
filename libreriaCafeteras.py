@@ -18,8 +18,6 @@ def leerLibreriaCafeteras():
             sheet_name='statistics')
     libreria.columns = ['A','B','C','D']
     estadisticas.columns = ['A','B']
-    print(libreria)
-    print(estadisticas)
     return [libreria, estadisticas]
 
 
@@ -64,6 +62,7 @@ def dias(dscr):
 
 
 def armarTxtCaf(kwh, hrsUso,dscr):
+    print(dscr)
     [lib, st] = leerLibreriaCafeteras()
     media = st.at[0,'B']
     dstd  = st.at[1,'B']
@@ -80,5 +79,5 @@ def armarTxtCaf(kwh, hrsUso,dscr):
         txt = txt + lib.at[3, 'C']
     elif 0.66<percentil:
         txt = txt + lib.at[4, 'C']
-    txt=txt.replace('[diasUso]',dias(dscr)).replace('[totalHoras]',int(hrsUso)) # se utilizó .... los días **** o todos los días
+    txt=txt.replace('[diasUso]',dias(dscr)).replace('[totalHoras]',str(hrsUso)) # se utilizó .... los días **** o todos los días
     return txt

@@ -17,8 +17,6 @@ import libreriaReguladores as lg
 import libreriaUPS as lups
 import libreriaCafeteras as lc
 from libreriaTubosFluorescente import libreriaTubosFluorescentes
-from libreriaTirasLED import libreriaTirasLED
-import libreriaPlanchas as lp
 
 
 ####################  FUNCIONES ###################################
@@ -98,8 +96,8 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
 
-    #NCliente = 'Enrique Tawil'
-    NCliente = 'Cliente Prueba'
+    NCliente = 'Paloma Fernandez'
+    #NCliente = 'Cliente Prueba'
     #NCliente = 'Stephanie Luise'
 
     return NCliente
@@ -116,7 +114,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='3'
+    Opcion='4'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -128,7 +126,6 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(lp.leerConsumoPlanchas(30,35))
         """
         dfCTV=pd.DataFrame.from_dict({'disp':['TV','Decodificador','NoBreak','Bocinas'],
                                       'nominal' :[30,30, 10, 10]                   ,
@@ -145,21 +142,19 @@ if __name__ == '__main__':
         # print(lups.recomendaciónUPS(dfCTV, VAmax, Vpro, FPfuga))
         print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
         """
-
         #lc.leerLibreriaCafeteras()
         #print(lc.dias('lunes martes andlasnda domingo'))
-        """"
         kobo={'tipo':'t5',        # t2 t5 t8 t12
               'entr':'g5',        # g5 g13 fa8
               'dist':'paralelo',     # serie paralelo aislado
               'port':'colgante',  # colgante sobresale introduce sin
-              'func':'indirecta', # principal indirecta nocturna espejos estudio arte mesas bodegas pecera
+              'func':'principal', # principal indirecta nocturna espejos estudio arte mesas bodegas pecera
               'ntub': 6,          # número de tubos
               'detr':True,       # Señales de vida util por finalizar
               'difu':True,        # difusor
               'temp':'fria',      # fria calida
               'lntb':'largo_61',  # largo_ .... 30 35  53 61 91 122 152 183
-              'caji':False,       # Es un cajillo?
+              'caji':True,       # Es un cajillo?
               'caln':61*6,        # longitud del cajillo
               'plta':np.array([60, 60]),           # placa tamaño
               'plnu':3            # placa número
@@ -172,15 +167,11 @@ if __name__ == '__main__':
         ltf=libreriaTubosFluorescentes()
         ltf.setData(kobo,DAC,wt,kwh,dscr)
         ltf.buildText()
-        #print(ltf.sustitutos)
-        #print(ltf.txt)
-        #print(ltf.dbTiras)
-        ltl=libreriaTirasLED()
-        ltl.setData(100,'fria',6.1,15,(15*24*7/1000),'lunes')
-        ltl.buildText()
-        print(ltl.txt)
-        #print(ltl.sustitutos)
-        """
+        print(ltf.sustitutos)
+        print(ltf.txt)
+
+
+
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()

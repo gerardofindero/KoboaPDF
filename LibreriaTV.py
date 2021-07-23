@@ -75,8 +75,12 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         Standby = float(Datos[1])
         Pulgadas=float(Datos[2])
 
-        #Precio = 0.0151*((Pulgadas)*4) - 2.6271((Pulgadas)*3) + 164.63((Pulgadas)**2) - 4134*(Pulgadas) + 37921
-        Precio =5000
+        print(Potencia)
+        print(Standby)
+        print(Pulgadas)
+
+        Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
+
         Ahorro= (Potencia - math.exp(3.189644 + 0.034468 * Pulgadas)) / Potencia
         XX = np.log(Potencia)
         Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
