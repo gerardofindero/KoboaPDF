@@ -44,7 +44,7 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     Link   = links.loc[0, 'C']
 
     texto=''
-    if (not (hrsUso is None)) and percentil>= 0.45:
+    if (not (hrsUso is None)) and (not hrsUso==0 )and percentil>= 0.45:
         texto = texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso))
 
     if percentil <0.33:
