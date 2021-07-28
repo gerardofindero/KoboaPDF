@@ -213,7 +213,7 @@ def separar_fugasTV(Equipo):
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
 
-    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' de '
+    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' en '+Aparatos['Zona']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)

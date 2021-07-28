@@ -49,7 +49,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Presión', 'Marca'] = ' '
         Aparatos_C.loc['Bomba de Presión', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Presión', 'Encendido +35min'] = Equipos.filter(regex='hidro_tiempo_c_i')[0]
-        Aparatos_C.loc['Bomba de Presion', 'Clave'] = 'X'
+        Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'X'
 
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
