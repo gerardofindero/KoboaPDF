@@ -100,7 +100,7 @@ def Nombre_Cliente():
 
     NCliente = 'Paloma Fernandez'
     #NCliente = 'Cliente Prueba'
-    #NCliente = 'Stephanie Luise'
+    #NCliente = 'Bernardo Rueda'
 
     return NCliente
 
@@ -116,7 +116,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='2'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?

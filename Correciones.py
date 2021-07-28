@@ -31,6 +31,8 @@ def Lugar(lugar):
         lugar = 'Recámara niñas'
     if lugar == 'rec_mara_principal':
         lugar = 'Recámara principal'
+    if lugar == 'recamara_principal':
+        lugar = 'Recámara principal'
     if lugar == 'jard_n':
         lugar='Jardín'
     if lugar == 'bibliotecatv_c_i':
