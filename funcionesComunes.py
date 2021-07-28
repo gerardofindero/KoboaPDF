@@ -9,7 +9,8 @@ def ligarTextolink(texto, link):
     :param link:  Link de la pagina
     :return: cadena de texto original o cadena con el texto ligado al hipervinculo
     """
-    if (link == 'nan') or (link == ''):
+    #print(link)
+    if (link == 'nan') or (link == '') or np.isnan(link):
         return texto
     else:
         texto = '<br />' + '<link href="' + link + '"color="blue">' + texto + ' </link>'
@@ -53,3 +54,36 @@ def dias(dscr):
             else:
                 txt = txt + ' y ' + dias[c]
     return txt
+
+def listarComas(lista):
+    n = len(lista)
+    if n == 0:
+        return ''
+    elif n == 1:
+        return lista[0]
+    elif n == 2:
+        return  lista[0]+' y '+ lista[1]
+    elif n>2:
+        txt=''
+        for c, cosa in enumerate(lista):
+            if c < (n-2):
+                txt= txt + ' '+ lista[c]+','
+            elif c == (c-2):
+                txt = txt +  ' ' + lista[c]
+            else:
+                txt = txt + ' y ' + lista[c]
+        return txt
+
+def selecTxt(df,codigo):
+    index = df.index[df.Codigo == codigo][0]
+    txt   = df.at[index,'Texto']
+    return txt
+
+def checarROI(df):
+    df.sort_values(by=['ahorroBimestral', 'roi'], ascending=[False, True])
+    if (df.roi<3).any():
+        return [True,
+                df.loc[df.roi<3,:].reset_index(drop=True).loc[:5,:].copy()]
+    else:
+        return [False,
+                df.reset_index(drop=True).loc[:5, :].copy()]
