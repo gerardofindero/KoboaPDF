@@ -129,10 +129,13 @@ class libreriaReguladores:
             self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi' ])
             self.DAC    = DAC
             self.nomReg = nomReg # nombre del regulador
-            self.VA     = VA     # VA de requeridos
             self.w      = w      # potencia de estand by del regulador
             self.uso    = uso    # uso del regulador
             self.tol    = tol
+            if uso == 'elec':
+                self.VA = (VA/0.8) * 1.20
+            elif uso == 'meca':
+                self.VA = (VA/0.6) * 1.20
             self.atacable = 'Si'
             self.nSub   = nSub
             self.nSob   = nSob
@@ -223,7 +226,7 @@ class libreriaReguladores:
             print('dispositivo principal vacio')
         elif not isinstance(dispPrincipal,str):
             print('dispositivo principal no es una cadena')
-        elif dispPrincipal not in ['refri','tv','conge','lavadora','computo','comu','audio']:
+        elif dispPrincipal not in ['Refrigerador','TV','Congelador','Lavadora','Vala']:
             print('dispositivo principal no esta en la lista reconocida')
         else:
             val_dispPrincipal=True
@@ -255,12 +258,14 @@ class libreriaReguladores:
             print('tSob no es numerico')
         else:
             val_tSob = True
+
         if tSub is None:
             print('tSub es nulo')
         elif not isinstance(tSub,(int,float)):
             print('tSub no es numerico')
         else:
-            val_nSub = True
+            val_tSub = True
+
         if val_nomReg and val_VA and val_w and val_uso and val_vEstElec and\
                 val_vEstMec and val_tol and val_dispPrincipal and val_DAC and\
                 val_nSub and val_nSob and val_tSub and val_tSob:
@@ -270,8 +275,8 @@ class libreriaReguladores:
             print('VARIABLES NO ACEPTADAS, setData fallido')
             return False
     def recRem(self):
-        reco = self.dbReg.loc[self.dbReg.uso=='elec',:].reset_index(drop=True).copy()
-        filtro = (reco.va>=self.VA) & (reco.va<=(self.VA*1.5))
+        reco = self.dbReg.loc[self.dbReg.uso==self.uso,:].reset_index(drop=True).copy()
+        filtro = reco.va>=self.VA
         filtro = filtro & (reco.standby<self.w)
         reco = reco.loc[filtro,:].copy()
         reco.loc[:,'kwhAhorroBimestral'] = (self.w-reco.loc[:,'standby'])*24*60/1000
