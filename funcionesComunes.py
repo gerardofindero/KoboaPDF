@@ -9,8 +9,7 @@ def ligarTextolink(texto, link):
     :param link:  Link de la pagina
     :return: cadena de texto original o cadena con el texto ligado al hipervinculo
     """
-    #print(link)
-    if (link == 'nan') or (link == '') or np.isnan(link):
+    if pd.isna(link) or (link == ''):# or np.isnan(link):
         return texto
     else:
         texto = '<br />' + '<link href="' + link + '"color="blue">' + texto + ' </link>'
