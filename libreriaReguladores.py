@@ -116,6 +116,9 @@ class libreriaReguladores:
             self.dbReg = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
                 sheet_name='data')
+            self.dbPro = pd.read_excel(
+                f"../../../Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
+                sheet_name='protectorVoltaje')
         except:
             self.dbReg = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
@@ -123,10 +126,13 @@ class libreriaReguladores:
             self.libReg = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
                 sheet_name='libreriaReguladores')
+            self.dbPro = pd.read_excel(
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
+                sheet_name='protectorVoltaje')
     def setData(self,nomReg=None,VA=None,w=None,uso=None,dispPrincipal=None,tol=None,vEstEle=None,vEstMec=None,DAC=None,nSob=None,nSub=None,tSob=None,tSub=None):
         print('Libreria de raguladores setData\nRevizando variables:')
         if self.validacionVariables(nomReg,VA,w,uso,dispPrincipal,tol,vEstEle,vEstMec,DAC,nSob,nSub,tSob,tSub):
-            self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi' ])
+            self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi','accion' ])
             self.DAC    = DAC
             self.nomReg = nomReg # nombre del regulador
             self.w      = w      # potencia de estand by del regulador
@@ -292,7 +298,8 @@ class libreriaReguladores:
                 'link': reco.link,
                 'kwhAhorroBimestral': reco.kwhAhorroBimestral,
                 'ahorroBimestral': reco.ahorroBimestral,
-                'roi': reco.roi})
+                'roi': reco.roi,
+                'accion':(['compra']*len(reco))})
         self.sustitutos = self.sustitutos.append(df,ignore_index=True)
     def checkProtector(self):
         if self.uso == 'elec':
@@ -301,7 +308,20 @@ class libreriaReguladores:
         if self.uso == 'meca':
             if ((self.nSob+self.nSub)<7) and ((self.tSub+self.tSob)<0.17):
                 self.requiereRegulador = False
-
+        if not self.requiereRegulador:
+            wkhAhorroBimestral = (self.w-self.dbPro.at[0,'standby'])*24*60/1000
+            ahorroBimestral    = wkhAhorroBimestral*self.DAC
+            roi                = self.dbPro.at[0,'costo']/ahorroBimestral/6
+            df = pd.DataFrame({
+                'tipo': ['Protector'],
+                'cantidad': [1],
+                'costo': [self.dbPro.at[0,'costo']],
+                'link': [self.dbPro.at[0,'link']],
+                'kwhAhorroBimestral': [wkhAhorroBimestral],
+                'ahorroBimestral': [ahorroBimestral],
+                'roi': roi,
+                'accion': ['compra']})
+            self.sustitutos = self.sustitutos.append(df.loc[df.roi<3,:], ignore_index=True)
     def armarTxt(self):
         txt = ''
         print('\nIniciando armarTxt')
@@ -311,16 +331,34 @@ class libreriaReguladores:
             print('INICIANDO MÓDULO DE REGULADORES DE FORMA INDIVIDUAL\n')
             if self.vEst:
                 txt = txt + fc.selecTxt(self.libReg,'REG01').replace('[nomReg]',self.nomReg)
+                df = pd.DataFrame({
+                    'kwhAhorroBimestral': self.w*24*60/1000,
+                    'ahorroBimestral': self.w*24*60*self.DAC/1000,
+                    'accion': ['retirar']})
+                self.sustitutos = self.sustitutos.append(df, ignore_index=True)
             else:
                 if self.tol:
                     txt = txt + fc.selecTxt(self.libReg,'REG02').replace('[nomReg]',self.nomReg)
+                    df = pd.DataFrame({
+                        'kwhAhorroBimestral': self.w * 24 * 60 / 1000,
+                        'ahorroBimestral': self.w * 24 * 60 * self.DAC / 1000,
+                        'accion': ['retirar']})
+                    self.sustitutos = self.sustitutos.append(df, ignore_index=True)
                 else:
                     self.checkProtector()
                     if not self.requiereRegulador:
-                        if self.uso == 'elec':
-                            txt = txt + fc.selecTxt(self.libReg, 'REG03S01')
+                        if len(self.sustitutos)<1:
+                            txt = txt + '[CON ESTOS DATOS EL PROTECTOR DE VOLTAJE NO ES VIABLE]'
+                        elif self.uso == 'elec':
+                            reemplazo = fc.ligarTextolink('Protector de voltaje', self.sustitutos.at[0, 'link']) + \
+                                        ' con ahorro anual de $' + str(
+                                round(self.sustitutos.at[0, 'ahorroBimestral']*6, 2))
+                            txt = txt + fc.selecTxt(self.libReg, 'REG03S01').replace('[recomendación]',reemplazo)
                         elif self.uso == 'meca':
-                            txt = txt + fc.selecTxt(self.libReg, 'REG03S02')
+                            reemplazo = fc.ligarTextolink('Protector de voltaje', self.sustitutos.at[0, 'link']) + \
+                                        ' con ahorro anual de $' + str(
+                                round(self.sustitutos.at[0, 'ahorroBimestral']*6, 2))
+                            txt = txt + fc.selecTxt(self.libReg, 'REG03S02').replace('[recomendación]',reemplazo)
                     else:
                         if self.w < self.ref:
                             txt = txt + fc.selecTxt(self.libReg,'REG04').replace('[nomReg]',self.nomReg)
@@ -331,12 +369,13 @@ class libreriaReguladores:
                                 txt = txt + '[NO SE ENCONTRO NINGUN REEMPLAZO DE REGULADOR]'
                             elif self.roiM3:
                                 reemplazo = fc.ligarTextolink('Regulador',self.sustitutos.at[0,'link']) +\
-                                            ' con ahorro bimestral de $' + str(round(self.sustitutos.at[0,'ahorroBimestral'],2))
+                                            ' con ahorro anual de $' + str(round(self.sustitutos.at[0,'ahorroBimestral']*6,2))
                                 txt = txt + fc.selecTxt(self.libReg,'REG05').replace('[recomendación]',reemplazo).replace('[nomReg]',self.nomReg)
                             else:
                                 reemplazo = fc.ligarTextolink('Regulador',
                                                               self.sustitutos.at[0, 'link']) + \
-                                            ' con ahorro bimestral de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral'],2))
+                                            ' con ahorro anual de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral']*6,2))
                                 txt = txt + fc.selecTxt(self.libReg, 'REG06').replace('[recomendación]', reemplazo).replace('[nomReg]',self.nomReg)
+        txt = txt.replace('\n','<br />')
         self.txt = txt
 
