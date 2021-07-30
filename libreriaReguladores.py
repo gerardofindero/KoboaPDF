@@ -18,8 +18,9 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
             return dfDes
 
         else:
-            dfDes.loc[indexReg,['VA','uso','tol']] = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
+            dfDes.loc[indexReg,['VA','wC','uso','tol']] = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
             dfDes.loc[indexReg,'VA'] = pd.to_numeric(dfDes.loc[indexReg,'VA'] )
+            dfDes.loc[indexReg, 'wC'] = pd.to_numeric(dfDes.loc[indexReg, 'wC'])
             dfDes.loc[indexReg, 'tol'] = dfDes.loc[indexReg, 'tol'] == 'T'
             if (dfDes.uso=='elec').all():
                 if vEstEle:
@@ -28,7 +29,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nReg > 1:
                         dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
                     dfDes.loc[indexReg, 'A'] = 'Si'
-                    return dfDes.loc[:,'A':'Q']
+                    return dfDes.loc[:,'A':'Q'].copy()
 
 
             elif (dfDes.uso=='meca').all():
@@ -38,7 +39,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nReg > 1:
                         dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
                     dfDes.loc[indexReg, 'A'] = 'Si'
-                    return dfDes.loc[:,'A':'Q']
+                    return dfDes.loc[:,'A':'Q'].copy()
             else:
                 indexElec  = dfDes.loc[indexReg,:].index[dfDes.loc[indexReg,'uso']=='elec']
                 nElec = len(indexElec)
@@ -65,8 +66,9 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                         VA = dfDes.at[i,'VA']
                         uso = dfDes.at[i,'uso']
                         tol = dfDes.at[i,'tol']
+                        wC =  dfDes.at[i,'wC']
                         libRegObj.setData(
-                            nomReg=nombre, VA=VA , w=w, uso=uso,
+                            nomReg=nombre, VA=VA, wC=wC , w=w, uso=uso,
                             dispPrincipal=dispPrincipal,
                             tol=tol, vEstEle=vEstEle, vEstMec=vEstMec,
                             DAC=DAC,nSob=nSob,nSub=nSub,tSob=tSob,tSub=tSub)
@@ -90,8 +92,9 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                         VA = dfDes.at[i, 'VA']
                         uso = dfDes.at[i, 'uso']
                         tol = dfDes.at[i, 'tol']
+                        wC = dfDes.at[i, 'wC']
                         libRegObj.setData(
-                        nomReg=nombre, VA=VA, w=w, uso=uso,
+                        nomReg=nombre, VA=VA,wC=wC, w=w, uso=uso,
                         dispPrincipal=dispPrincipal,
                         tol=tol, vEstEle=vEstEle, vEstMec=vEstMec,
                         DAC=DAC,nSob=nSob,nSub=nSub,tSob=tSob,tSub=tSub)
@@ -99,7 +102,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                         dfDes.loc[i, 'N'] = libRegObj.txt
                         dfDes.loc[i, 'A'] = libRegObj.atacable
 
-                return dfDes.loc[:, 'A':'Q']
+                return dfDes.loc[:, 'A':'Q'].copy()
 
     else:
         return dfDes
@@ -108,7 +111,7 @@ class libreriaReguladores:
     def __init__(self):
         self.txt=''
         self.val     = False
-        self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link','kwhAhorroBimestral','ahorroBimestral', 'roi',])
+        self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link','kwhAhorroBimestral','ahorroBimestral', 'roi','accion'])
         try:
             self.libReg = pd.read_excel(
                 f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
@@ -129,9 +132,11 @@ class libreriaReguladores:
             self.dbPro = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
                 sheet_name='protectorVoltaje')
-    def setData(self,nomReg=None,VA=None,w=None,uso=None,dispPrincipal=None,tol=None,vEstEle=None,vEstMec=None,DAC=None,nSob=None,nSub=None,tSob=None,tSub=None):
+    def setData(self,nomReg = None,VA = None,wC = None,w = None,
+                uso=None,dispPrincipal=None,tol=None,vEstEle=None,
+                vEstMec=None,DAC=None,nSob=None,nSub=None,tSob=None,tSub=None):
         print('Libreria de raguladores setData\nRevizando variables:')
-        if self.validacionVariables(nomReg,VA,w,uso,dispPrincipal,tol,vEstEle,vEstMec,DAC,nSob,nSub,tSob,tSub):
+        if self.validacionVariables(nomReg,VA,wC,w,uso,dispPrincipal,tol,vEstEle,vEstMec,DAC,nSob,nSub,tSob,tSub):
             self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi','accion' ])
             self.DAC    = DAC
             self.nomReg = nomReg # nombre del regulador
@@ -139,9 +144,18 @@ class libreriaReguladores:
             self.uso    = uso    # uso del regulador
             self.tol    = tol
             if uso == 'elec':
-                self.VA = (VA/0.8) * 1.20
+                VAc = (wC/0.8) * 1.20
+                if VA > VAc:
+                    self.VA = VA
+                else:
+                    self.VA = VAc
             elif uso == 'meca':
-                self.VA = (VA/0.6) * 1.20
+                VAc = (wC/0.6) * 1.20
+                if VA > VAc:
+                    self.VA = VA
+                else:
+                    self.VA = VAc
+
             self.atacable = 'Si'
             self.nSub   = nSub
             self.nSob   = nSob
@@ -157,7 +171,7 @@ class libreriaReguladores:
             self.val=True
         else:
             self.val=False
-    def validacionVariables(self,nomReg,VA,w,uso,dispPrincipal,tol,vEstEle,vEstMec,DAC,nSob,nSub,tSob,tSub):
+    def validacionVariables(self,nomReg,VA,wC,w,uso,dispPrincipal,tol,vEstEle,vEstMec,DAC,nSob,nSub,tSob,tSub):
         val_nomReg        = False
         val_VA            = False
         val_w             = False
@@ -171,6 +185,16 @@ class libreriaReguladores:
         val_nSob          = False
         val_tSub          = False
         val_tSob          = False
+        val_wC            = False
+        if wC is None:
+            print('Watts de los conectado al regulador es None')
+        elif not isinstance(wC,(int,float)):
+            print('Watts de los conectado al regulador no es numerico')
+        elif wC == 0:
+            print('Watts de los conectado al regulador es 0')
+        else:
+            val_wC = True
+
         if nomReg=='':
             print('Nombre de regulador vacio')
         elif nomReg is None:
@@ -274,7 +298,7 @@ class libreriaReguladores:
 
         if val_nomReg and val_VA and val_w and val_uso and val_vEstElec and\
                 val_vEstMec and val_tol and val_dispPrincipal and val_DAC and\
-                val_nSub and val_nSob and val_tSub and val_tSob:
+                val_nSub and val_nSob and val_tSub and val_tSob and val_wC:
             print('Variables aceptadas, procediendo con asignacion del setData')
             return True
         else:
