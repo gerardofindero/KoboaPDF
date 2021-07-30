@@ -1,123 +1,238 @@
 import pandas as pd
 import numpy as np
-def reducirdatos():
-    try:
-        data = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/libreriaUPS.xlsx",
-            sheet_name= "UPS y NoBreaks")
-    except:
-        data = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/libreriaUPS.xlsx",
-            sheet_name="UPS y NoBreaks")
-    sb = 'Total Input Power in W at 0% Load Min Config Lowest Dependency (ac)'  # standby
-    va = 'Apparent Output Power Rating Minimum Configuration (VA)'  # VA
-    numCR = 'Number of Battery Backup and Surge Protected Outlets'  # numero de conectores con respaldo de bateria
-    numSR = 'Number of Surge Protected Only Outlets'  # numero de conectores sin respaldo de bateria
-    entrada = 'Rated Input Voltage (V rms)'  # voltaje de entrada del nobreak (escoger los que trabajan a 120 Vrms)
-    costo = 'Cost (MXN)'  # costo en pesos mexicanos
-    link = 'Buy Link'  # link de compra
-    marca = 'Brand Name'
-    modelo = 'Model Name'
-    selec = (data.loc[:, va] < 1600) & (data.loc[:, sb] < 15)
-    data=data.loc[selec,:].copy()
-    vrms120 = data.loc[:,entrada].str.split(pat='-').apply(vrms)
-    data=data.loc[vrms120,:].copy()
-    writer = pd.ExcelWriter('dbUPSreducida.xlsx')
-    data.to_excel(writer, 'data')
-    writer.save()
-    print(data)
+import funcionesComunes as fc
 
-def leerLibreriaUPSLimpieza():
-    try:
-        data = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/libreriaUPS.xlsx",
-            sheet_name= "UPS y NoBreaks")
-    except:
-        data = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/libreriaUPS.xlsx",
-            sheet_name="UPS y NoBreaks"
-        )
-    sb      = 'Total Input Power in W at 0% Load Min Config Lowest Dependency (ac)' # standby
-    va      = 'Apparent Output Power Rating Minimum Configuration (VA)'             # VA
-    numCR   = 'Number of Battery Backup and Surge Protected Outlets'                # numero de conectores con respaldo de bateria
-    numSR   = 'Number of Surge Protected Only Outlets'                              # numero de conectores sin respaldo de bateria
-    entrada = 'Rated Input Voltage (V rms)'                                         # voltaje de entrada del nobreak (escoger los que trabajan a 120 Vrms)
-    costo   = 'Cost (MXN)'                                                          # costo en pesos mexicanos
-    link    = 'Buy Link'                                                            # link de compra
-    marca   = 'Brand Name'
-    modelo  = 'Model Name'
-    selec = (data.loc[:,va]<1600) & (data.loc[:,sb]<15)
-    data=data.loc[selec,[sb,va,numCR,numSR,entrada,costo,link,marca,modelo]].copy()
-    data.columns=['sb','va','numCR','numSR','entrada','costo','link','marca','modelo']
-    vrms120=data.entrada.str.split(pat='-').apply(vrms)
-    data=data.loc[vrms120,['sb','va','numCR','numSR','costo','link','marca','modelo']].copy().reset_index()
-    print(data)
-    return data
-def leerLibreriaUPS():
-    try:
-        data = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/dbUPSreducida.xlsx",
-            sheet_name= "data")
-    except:
-        data = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/dbUPSreducida.xlsx",
-            sheet_name="data"
-        )
-    sb      = 'Total Input Power in W at 0% Load Min Config Lowest Dependency (ac)' # standby
-    va      = 'Apparent Output Power Rating Minimum Configuration (VA)'             # VA
-    numCR   = 'Number of Battery Backup and Surge Protected Outlets'                # numero de conectores con respaldo de bateria
-    numSR   = 'Number of Surge Protected Only Outlets'                              # numero de conectores sin respaldo de bateria
-    entrada = 'Rated Input Voltage (V rms)'                                         # voltaje de entrada del nobreak (escoger los que trabajan a 120 Vrms)
-    costo   = 'Cost (MXN)'                                                          # costo en pesos mexicanos
-    link    = 'Buy Link'                                                            # link de compra
-    marca   = 'Brand Name'
-    modelo  = 'Model Name'
-    data=data.loc[:,[sb,va,numCR,numSR,entrada,costo,link,marca,modelo]].copy()
-    data.columns=['sb','va','numCR','numSR','entrada','costo','link','marca','modelo']
-    return data
+def sepNobAta(dfDes,DAC):
+    # A atacable D Nombre N texto Q claves
+    indexNB = dfDes.index[dfDes.D.str.contains('nobreak|no break|NoBreak|No Break', case=False)]
 
-def vrms(vrmsRstr):
-    vrmsRnumeric = [float(i) for i in vrmsRstr]
-    vrmsRnumeric = ((120<=max(vrmsRnumeric)) & (120>=min(vrmsRnumeric)))
-    return vrmsRnumeric
-def roiUPS(sugUPS, sbUPS):
-    ahorro = (sbUPS-sugUPS.at[0,'sb'])*24*60*6.1/1000 # ahorro al bimestre
-    roi    = sugUPS.at[0,'costo']/ahorro/6
-    return roi
-def recomendacionUPS(dfDisp,VAmax,Vpro,FPfuga):
-    dbUPS=leerLibreriaUPS()
-    if dfDisp.disp.str.contains('NoBreak').any():
-        nUPS=sum(dfDisp.disp.str.contains('NoBreak'))
-        if nUPS==1:
-            sbUPS     = float(dfDisp.loc[dfDisp.disp.str.contains('NoBreak'),'standby'])
-            nDispCone = float(sum(dfDisp.cUPS))
-            VAUPS     = sbUPS/FPfuga
-            VAnoConecUPS = Vpro * dfDisp.loc[dfDisp.cUPS==False,'ampere'].sum()
-            VAreco = VAmax-VAUPS-VAnoConecUPS
-            VAreco = VAreco/0.8
-            if (dbUPS.va>VAreco).any():
-                posibilidades = dbUPS.loc[dbUPS.va>VAreco,:]
-                posibilidades = posibilidades.loc[dbUPS.costo.notnull(),:]
-                minIndx       = posibilidades.costo.idxmin()
-                sugUPS        = posibilidades.loc[[minIndx]].copy().reset_index()
-                if sugUPS.at[0,'sb']<sbUPS:
-                    roi = roiUPS(sugUPS, sbUPS)
-                    if any(sugUPS.link.isna()):
-                        sugUPS.loc[0,'link']=''
-                    result=[roi                  ,
-                            sugUPS.at[0,'marca'] ,
-                            sugUPS.at[0,'modelo'],
-                            sugUPS.at[0,'link']]
-                    return result
+    dfDes.loc[indexNB, ['VA', 'wC']] = dfDes.loc[indexNB, 'Q'].str.split(',', expand=True)
+    dfDes.loc[indexNB, 'VA'] = pd.to_numeric(dfDes.loc[indexNB, 'VA'])
+    dfDes.loc[indexNB, 'wC'] = pd.to_numeric(dfDes.loc[indexNB, 'wC'])
 
-                else:
-                    print('EL STANDBY DEL NOBREAK SUGERIDO ES MAYOR AL DEL ENCONTRADO EN CASA')
+    dfDes[['fuga', 'nombre', 'dispPrincipal', 'trash']] = dfDes.loc[indexNB, 'D'].str.split(' ', n=3, expand=True)
+    dfDes.loc[indexNB, 'nombre'] = dfDes.at[indexNB, 'nombre'] + ' ' + dfDes.at[indexNB, 'dispPrincipal']
+
+    for i in indexNB:
+        libUPSObj = libreriaUPS()
+        libUPSObj.setData(nomNB        = dfDes.at[i,'nombre'],
+                          VA            = dfDes.at[i,'nombre'],
+                          wC            = dfDes.at[i,'wC'],
+                          w             = dfDes.at[i, 'J'],
+                          dispPrincipal = dfDes.at[i,'dispPrincipal'],
+                          DAC=DAC)
+        libUPSObj.armarTxt()
+        dfDes.loc[i, 'N'] = libUPSObj.txt
+        dfDes.loc[i, 'A'] = libUPSObj.atacable
+    return dfDes.iloc[:,'A':'Q'].copy()
+class libreriaUPS:
+    def __init__(self):
+        self.txt = ''
+        self.val = False
+        self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
+        try:
+            self.lib = pd.read_excel(
+                f"../../../Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/libreriaUPS.xlsx",
+                sheet_name="Libreria UPS")
+            self.dbUPS = pd.read_excel(
+                f"../../../Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/dbUPSreducida.xlsx",
+                sheet_name="data")
+        except:
+            self.lib = pd.read_excel(
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/libreriaUPS.xlsx",
+                sheet_name="Libreria UPS")
+            self.dbUPS = pd.read_excel(
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/No Breaks UPS/dbUPSreducida.xlsx",
+                sheet_name="data")
+        sb = 'Total Input Power in W at 0% Load Min Config Lowest Dependency (ac)'  # standby
+        va = 'Apparent Output Power Rating Minimum Configuration (VA)'  # VA
+        numCR = 'Number of Battery Backup and Surge Protected Outlets'  # numero de conectores con respaldo de bateria
+        numSR = 'Number of Surge Protected Only Outlets'  # numero de conectores sin respaldo de bateria
+        entrada = 'Rated Input Voltage (V rms)'  # voltaje de entrada del nobreak (escoger los que trabajan a 120 Vrms)
+        costo = 'Cost (MXN)'  # costo en pesos mexicanos
+        link = 'Buy Link'  # link de compra
+        marca = 'Brand Name'
+        modelo = 'Model Name'
+        self.dbUPS = self.dbUPS.loc[:, [sb, va, numCR, numSR, entrada, costo, link, marca, modelo]]
+        self.dbUPS.columns =['sb', 'va', 'numCR', 'numSR', 'entrada', 'costo', 'link', 'marca', 'modelo']
+        filtro = pd.notnull(self.dbUPS.costo) & pd.notnull(self.dbUPS.link) & pd.notnull(self.dbUPS.va) & pd.notnull(self.dbUPS.sb)
+        self.dbUPS = self.dbUPS.loc[filtro,:].reset_index(drop=True).copy()
+
+
+    def validacionVariables(self, nomNB, VA, wC, w, dispPrincipal, DAC):
+        val_wC            = False
+        val_w             = False
+        val_DAC           = False
+        val_dispPrincipal = False
+        val_VA            = False
+        val_nomReg        = False
+
+        if wC is None:
+            print('Watts de los conectado al regulador es None')
+        elif not isinstance(wC, (int, float)):
+            print('Watts de los conectado al regulador no es numerico')
+        elif wC == 0:
+            print('Watts de los conectado al regulador es 0')
+        else:
+            val_wC = True
+
+        if nomNB == '':
+            print('Nombre de regulador vacio')
+        elif nomNB is None:
+            print('Nombre de regulador nulo')
+        elif not isinstance(nomNB, str):
+            print('Nombre de regulador no es de una cadea')
+        else:
+            val_nomReg = True
+
+        if VA == 0:
+            print('VA valor de 0')
+        elif VA is None:
+            print('VA es nula')
+        elif not isinstance(VA, (int, float)):
+            print('VA no es nuemrica')
+        else:
+            val_VA = True
+
+        if w == 0:
+            print('w de standby valor de 0')
+        elif w is None:
+            print('w de standby es nula')
+        elif not isinstance(w, (int, float)):
+            print('w de standby no es nuemrica')
+        else:
+            val_w = True
+
+        if dispPrincipal=='':
+            print('dispositivo principal vacio')
+        elif not isinstance(dispPrincipal,str):
+            print('dispositivo principal no es una cadena')
+        elif dispPrincipal not in ['Refrigerador','TV','Congelador','Lavadora','Vala']:
+            print('dispositivo principal no esta en la lista reconocida')
+        else:
+            val_dispPrincipal=True
+
+        if DAC is None:
+            print('DAC es nulo')
+        elif not isinstance(DAC, (int, float)):
+            print('DAC es no es numerico')
+        elif DAC==0:
+            print('DAC es 0')
+        else:
+            val_DAC=True
+        if val_wC and val_w and val_DAC and val_dispPrincipal and val_VA and val_nomReg:
+            print('Variables aceptadas, procediendo con asignacion del setData')
+            return True
+        else:
+            print('VARIABLES NO ACEPTADAS, setData fallido')
+            return False
+
+    def setData(self, nomNB, VA, wC, w, dispPrincipal, DAC):
+        self.txt = ''
+        print('Libreria UPS setData\nRevizando variables:')
+        if self.validacionVariables(nomNB, VA, wC, w, dispPrincipal, DAC):
+            self.nomNB = nomNB
+            self.DAC   = DAC
+            self.w     = w
+            self.dispPrincipal = dispPrincipal
+            self.atacable = 'Si'
+            VAc = (wC / 0.8) * 1.20
+            if VA > VAc:
+                self.VA = VA
             else:
-                print("VA de los sispositivos conectados al ups es superior a 1600")
-        elif nUPS>1:
-            print("RECOMENSACIÓN MANUAL, HAY MAS DE UN NOBREAK")
-    else:
-        print ("NO SE DETECTO UPS EN EL DF PROPORCIONADO")
+                self.VA = VAc
+            self.val=True
+        else:
+            self.val=False
+    def recRem(self):
+        filtro = (self.VA < self.dbUPS.va) & (self.dbUPS.sb < self.w)
+        reco =self.dbUPS.loc[filtro,:].copy()
+        reco.loc[:,'kwhAhorroBimestral'] = (self.w-reco.sb)*24*60/1000
+        reco.loc[:,'ahorroBimestral'   ] = reco.kwhAhorroBimestral*self.DAC
+        reco.loc[:,'roi'               ] = reco.costo/reco.ahorroBimestral/6
+        [self.roiM3, reco]=fc.checarROI(reco)
+
+        if len(reco)!=0:
+            df= pd.DataFrame({
+                'tipo': (['Regulador'] * len(reco)),
+                'cantidad': [1]*len(reco),
+                'costo': reco.costo,
+                'link': reco.link,
+                'kwhAhorroBimestral': reco.kwhAhorroBimestral,
+                'ahorroBimestral': reco.ahorroBimestral,
+                'roi': reco.roi,
+                'accion':(['compra']*len(reco))})
+        self.sustitutos = self.sustitutos.append(df,ignore_index=True)
+
+    def armarTxt(self):
+        txt = ''
+        print('\nIniciando armarTxt')
+        dispQueRequierenNoBreak = []
+        indispensable = self.dispPrincipal in dispQueRequierenNoBreak
+        if not indispensable:
+            if self.w > 3:
+                self.recRem()
+                if len(self.sustitutos)<1:
+                    txt = txt + '[NO SE ENCONTRO UN REEMPLAZO DE NOBREAK VIABLE]'
+                elif self.roiM3:
+                    reemplazo = fc.ligarTextolink('Nobreak', self.sustitutos.at[0, 'link']) + \
+                                ' con ahorro anual de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral'] * 6, 2))
+                    txt = txt + fc.selecTxt(self.lib,'UPS01').replace('[recomendacion]',reemplazo)
+                    df = pd.DataFrame({
+                        'kwhAhorroBimestral': self.w * 24 * 60 / 1000,
+                        'ahorroBimestral': self.w * 24 * 60 * self.DAC / 1000,
+                        'accion': ['retirar']})
+                    self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+                elif not self.roiM3:
+                    reemplazo = fc.ligarTextolink('Nobreak', self.sustitutos.at[0, 'link']) + \
+                                ' con ahorro anual de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral'] * 6, 2))
+                    txt = txt + fc.selecTxt(self.lib,'UPS02').replace('[recomendacion]',reemplazo)
+                    df = pd.DataFrame({
+                        'kwhAhorroBimestral': self.w * 24 * 60 / 1000,
+                        'ahorroBimestral': self.w * 24 * 60 * self.DAC / 1000,
+                        'accion': ['retirar']})
+                    self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+            else:
+                txt = txt + fc.selecTxt(self.lib,'UPS03')
+                df = pd.DataFrame({
+                    'kwhAhorroBimestral': self.w * 24 * 60 / 1000,
+                    'ahorroBimestral': self.w * 24 * 60 * self.DAC / 1000,
+                    'accion': ['retirar']})
+                self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+        else:
+            if self.w > 3:
+                self.recRem()
+                if len(self.sustitutos)<1:
+                    txt = txt + '[NO SE ENCONTRO UN REEMPLAZO DE NOBREAK VIABLE]'
+                elif self.roiM3:
+                    reemplazo = fc.ligarTextolink('Nobreak', self.sustitutos.at[0, 'link']) + \
+                                ' con ahorro anual de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral'] * 6, 2))
+                    txt = txt + fc.selecTxt(self.lib, 'UPS04').replace('[recomendacion]',reemplazo)
+                    df = pd.DataFrame({
+                        'kwhAhorroBimestral': self.w * 24 * 60 / 1000,
+                        'ahorroBimestral': self.w * 24 * 60 * self.DAC / 1000,
+                        'accion': ['retirar']})
+                    self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+                elif not self.roiM3:
+                    reemplazo = fc.ligarTextolink('Nobreak', self.sustitutos.at[0, 'link']) + \
+                                ' con ahorro anual de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral'] * 6, 2))
+                    txt = txt + fc.selecTxt(self.lib, 'UPS05').replace('[recomendacion]',reemplazo)
+                    df = pd.DataFrame({
+                        'kwhAhorroBimestral': self.w * 24 * 60 / 1000,
+                        'ahorroBimestral': self.w * 24 * 60 * self.DAC / 1000,
+                        'accion': ['retirar']})
+                    self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+            else:
+                txt = txt + fc.selecTxt(self.lib, 'UPS06')
+                self.atacable = 'No'
+        self.txt = txt.replace('[nomNB]', self.nomNB).replace('\n','<br />')
+
+
+
+
+
+
+
 
 
 
