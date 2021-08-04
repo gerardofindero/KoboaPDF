@@ -1,240 +1,243 @@
 import pandas as pd
-import libreriaReguladores as lr
-import libreriaUPS as lups
-def leerLibreriaCTV():
-    try:
-        libCTV = pd.read_excel(
-        f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
-        sheet_name='libreriaCTV')
-        links = pd.read_excel(
+import re
+import numpy as np
+import funcionesComunes as fc
+
+def analizarCTV(df,DAC):
+    # A atacable D Nombre N texto Q claves
+    txt=''
+    df = df.copy()
+    indexCTV = df.index[df.Q.str.contains('ctv',na=False)]
+    df = df.loc[indexCTV, :]
+    df[['ctv', 'tag', 'claves']] = df.loc[indexCTV,'Q'].str.split(pat=',', n=2, expand=True)
+    df[['fuga','nombre1','nombre2','trash']] = df.loc[indexCTV,'D'].str.split(pat=' ', n = 3, expand=True)
+    df = df.loc[~df.nombre1.str.contains('nobreak|no break|NoBreak|No Break|regulador|Regulador'),:]
+    df.loc[:,'nombre1'] = (df.loc[:,'nombre1'] + ' '+df.loc[:,'nombre2']).str.replace('_',' ')
+    tags = df.tag.unique()
+    for tag in tags:
+        claves=df.at[(df.index[df.tag==tag])[0],'claves']
+        w = df.loc[df.tag==tag,'J'].sum()
+        apa = df.loc[df.tag==tag,'nombre1'].tolist()
+        apa = fc.listarComas(apa)
+        libCTV= libreriaCTV()
+        libCTV.setData(w=w,la=apa,clv=claves, DAC=DAC)
+        libCTV.armarTxt()
+        txt= libreriaCTV.txt+'\n'
+    return txt
+
+
+
+
+class libreriaCTV:
+    def __init__(self):
+        self.txt=''
+        self.sustitutos = pd.DataFrame(
+            columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
+        try:
+            self.libCTV = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
+            sheet_name='libreriaCTV')
+            self.links = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
             sheet_name='links')
-        libUPS = pd.read_excel(
-        f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
-        sheet_name='libreriaCTV')
-    except:
-        libCTV = pd.read_excel(
-        f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
-        sheet_name='libreriaCTV')
-        links = pd.read_excel(
+            variables = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
+            sheet_name='variables')
+        except:
+            self.lib = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
+            sheet_name='libreriaCTV')
+            self.links = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
             sheet_name='links')
-        libUPS = pd.read_excel(
-        f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
-        sheet_name='libreriaCTV')
+            variables = pd.read_excel(
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
+                sheet_name='variables')
+        self.val = False
+        self.ct  = variables.at[variables.index[variables.variables=='nt' ][0],'costo']
+        self.cs  = variables.at[variables.index[variables.variables=='ns' ][0],'costo']
+        self.cm6 = variables.at[variables.index[variables.variables=='nm6'][0],'costo']
+        self.cm8 = variables.at[variables.index[variables.variables=='nm8'][0],'costo']
+        self.ce1 = variables.at[variables.index[variables.variables=='ne1'][0],'costo']
+        self.ce2 = variables.at[variables.index[variables.variables=='ne2'][0],'costo']
+        self.ca  = variables.at[variables.index[variables.variables=='na' ][0],'costo']
+        self.cce = variables.at[variables.index[variables.variables=='nce'][0],'costo']
+        self.ccs = variables.at[variables.index[variables.variables=='ncs'][0],'costo']
+    def validarDatos(self,w=None,la=None,clv=None,DAC=None):
+        print('\n Validando variables (CTV)')
+        val_w    = False
+        val_la   = False
+        val_clv  = False
+        val_DAC  = False
+        self.val = False
 
-
-    libCTV.columns = ['A','B', 'C','D','E'] # Define los nombres de las columnas en Excel.
-    libUPS.columns = ['A','B','C','D','E']
-    links.columns  = ['A','B','C','D']
-    return [libCTV, libUPS, links]
-
-def ligarTextolink(texto, link):
-    if link == 'nan':
-        link=''
-    if len(link)>0:
-        texto = '<br />' + '<link href="' + link + '"color="blue">' + texto + ' </link>'
-        return texto
-    else:
-        return texto
-
-def caractCTV(dfCTV):
-    # Sonido
-    sLogic= (dfCTV.disp.str.contains('Sonido'     )) | \
-            (dfCTV.disp.str.contains('Bocinas'    )) | \
-            (dfCTV.disp.str.contains('Surround'   )) | \
-            (dfCTV.disp.str.contains('HomeTheater'))
-
-    sonido=sLogic.any()
-    if sonido:
-        tolSonido = all(dfCTV.loc[sLogic,'tol'])
-    else:
-        tolSonido = False
-    if any(dfCTV.disp.str.contains('NoBreak')):
-        standbyUPS = float(dfCTV.loc[dfCTV.disp.str.contains('NoBreak'),'standby'])
-        UPS=True
-    else:
-        standbyUPS = 0
-        UPS=False
-    # TV
-    if any(dfCTV.disp.str.contains('TV')):
-        tolTV = all(dfCTV.tol[dfCTV.disp.str.contains('TV')])
-    else:
-        tolTV = False
-    # Reguladores
-    regLogic=dfCTV.disp.str.contains('Regulador')
-    nReg=(regLogic*1).sum()
-    if nReg>1:
-        regulador = True
-        consumoRegulador = 0
-    elif nReg==1:
-        regulador = True
-        consumoRegulador = int(dfCTV.loc[regLogic, 'standby'])
-    else:
-        regulador = False
-        consumoRegulador = 0
-    # Consumo excluyendo *
-    excLogic=(dfCTV.disp=='Decodificador')|\
-    (dfCTV.disp=='Decodificador2')|\
-    (dfCTV.disp=='Modem')|\
-    (dfCTV.disp=='NoBreak')|\
-    (dfCTV.disp=='Repetidor')|\
-    (dfCTV.disp=='Antena')
-    consumoStanby = dfCTV.loc[~excLogic,'standby'].sum()
-    decodificador= ((dfCTV.disp== 'Decodificador')|(dfCTV.disp== 'Decodificador2')).any()
-
-    return [consumoStanby, regulador, nReg,consumoRegulador,standbyUPS ,UPS, tolTV, sonido, tolSonido, decodificador]
-
-def gastoUPS(standby):
-    gasto= standby*24*60*6.1/1000
-    return gasto
-def upsNodo(consumoStanby,volEst,texto, standbyUPS,lib,links,dfCTV,VAmax,Vpro,FPfuga):
-    refUPS = 3 # consumo en watts promedio de nobreaks por debajo de 16000 VA y 15 watts en la base de datos de energiStar
-    if volEst:
-        texto = lib.loc[28, 'E']
-        if standbyUPS < refUPS:
-            texto = texto + ' ' + lib.loc[30, 'E'].replace('[costoAlBimestreUPS]', str(gastoUPS(standbyUPS)))
+        if pd.isnull(w):
+            print('w es nulo')
+        elif not isinstance(w,(int,float)):
+            print('w no es numerico')
+        elif w<0:
+            print('w es igual a negativo')
         else:
-            [ROIUPS, marca, modelo, linkUPS] = lups.recomendacionUPS(dfCTV, VAmax, Vpro, FPfuga)
-            if ROIUPS <= 3:
-                marcaYModelo = 'UPS de la marca ' + marca + ' modelo ' + modelo
-                texto = texto + ' ' + lib.loc[31, 'E'].replace('[reemplazoUPS]',
-                                                               ligarTextolink(marcaYModelo, str(linkUPS)))
+            val_w=True
+        if pd.isnull(la):
+            print('lista de aparatos es nulla')
+        elif not isinstance(la,str):
+            print('lista de aparatos no es de tipo cadena')
+        elif len(la)<=0:
+            print('lista de dispositivos vacia')
+        else:
+            val_la = True
+
+        if pd.isnull(clv):
+            print('lista de claves es nulla')
+        elif not isinstance(clv,str):
+            print('lista de claves no es de tipo cadena')
+        else:
+            val_clv = True
+
+        if pd.isnull(DAC):
+            print('DAC es nulo')
+        elif not isinstance(DAC,(int,float)):
+            print('DAC no es numerico')
+        elif DAC<=0:
+            print('DAC menor o igual a 0')
+        else:
+            val_w=True
+
+        if val_w and val_la and val_clv and val_DAC:
+            self.val=True
+        else:
+            self.val=False
+
+    def checkROI(self):
+        costo = 0
+        c     = 0
+
+        if re.search('1t'):
+            costo+= self.ct
+            c+=1
+
+        if re.search('2t'):
+            costo+= self.ct*2
+            c += 1
+
+        if re.search('1s'):
+            costo+= self.cs
+            c += 1
+        if re.search('2s'):
+            costo+= self.cs*2
+            c += 1
+
+        if re.search('1m6'):
+            costo+= self.cm6
+            c += 1
+        if re.search('2m6'):
+            costo+= self.cm6*2
+            c += 1
+
+        if re.search('1m8'):
+            costo+=self.cm8
+            c += 1
+        if re.search('2m8'):
+            costo+=self.cm8*2
+            c += 1
+
+        if re.search('1e1'):
+            costo+=self.ce1
+            c += 1
+        if re.search('2e1'):
+            costo+=self.ce1*2
+            c += 1
+
+        if re.search('1e2'):
+            costo += self.ce2
+            c += 1
+        if re.search('2e2'):
+            costo += self.ce2 * 2
+            c += 1
+
+        if re.search('1a'):
+            costo += self.ca
+            c += 1
+        if re.search('2a'):
+            costo += self.ca*2
+            c += 1
+
+        if re.search('1ce'):
+            costo += self.cce
+            c += 1
+        if re.search('2ce'):
+            costo += self.cce*2
+            c += 1
+
+        if re.search('1cs'):
+            costo += self.ccs
+            c += 1
+        if re.search('2cs'):
+            costo += self.ccs * 2
+            c += 1
+
+        if costo == 0: costo += self.ct
+
+
+        kwhAhorroBimestral = (self.w - 2)*24*60/1000
+        ahorroBimestral    = kwhAhorroBimestral*self.DAC
+        roi = costo/ahorroBimestral/6
+        if roi <=3:
+            self.roiM3 = True
+        else:
+            self.roiM3 = False
+
+        df = pd.DataFrame({
+            'tipo': ['timer['+self.clv+']'],
+            'cantidad': [1],
+            'costo': [costo],
+            'link': [self.links.at[0, 'link']],
+            'kwhAhorroBimestral': [kwhAhorroBimestral],
+            'ahorroBimestral': [ahorroBimestral],
+            'roi': roi,
+            'accion': ['compra']})
+        self.sustitutos = self.sustitutos.append(df.loc[df.roi < 3, :], ignore_index=True)
+
+    def setData(self,w = None, la = None,clv=None, DAC=None):
+        self.roiM3=False
+        print('Iniciando setData de libreria CTV')
+        self.validarDatos(w=w,la=la,clv=clv,DAC=DAC)
+        if self.val:
+            self.w   = w
+            self.la  = la
+            self.clv = clv
+            self.DAC = DAC
+            print('\nVariables aceptadas')
+        else:
+            print('\nVariables no aceptadas\nSet Data fallido')
+    def armarTxt(self):
+        print('Iniciando armadado de texto para CTV')
+        txt=''
+        if self.w<2:
+            if len(self.la.split('y'))>1:
+                txt = txt + fc.selecTxt(self.lib,'CTV01').replace('{s}','').replace('{n}','').replace('{el/los}','el')
             else:
-                texto = texto + ' ' + lib.loc[32, 'E']
-    else:
-        texto = lib.loc[29, 'E']
-        tolDispUPS = dfCTV.loc[dfCTV.cUPS == True, 'tol'].all()
-        if tolDispUPS:
-            texto = texto + ' ' + lib.loc[30, 'E'].replace('[costoAlBimestreUPS]', str(gastoUPS(standbyUPS)))
+                txt = txt + fc.selecTxt(self.lib, 'CTV01').replace('{','').replace('}','').replace('{el/los}','los')
         else:
-            texto = texto + ' ' + lib.loc[33, 'E']
-    texto=texto.replace('[Consulta nuestro blog sobre UPS]',ligarTextolink('Consulta nuestro blog sobre UPS',str(links.at[10,'C'])))
-    #print(str(links.at[10,'C'])=='nan')
-    if consumoStanby > 2:
-        texto = texto +'\n'+ lib.loc[27,'E']
-    return texto
+            self.checkROI()
+            reemplazo = fc.ligarTextolink('Timer inteligente', self.sustitutos.at[0, 'link']) + \
+                        ' con ahorro anual de $' + str(round(self.sustitutos.at[0, 'ahorroBimestral'] * 6, 2))
+            if self.roiM3:
+                if len(self.la.split('y')) > 1:
 
-def regDes(consumoRegulador,dfCTV, libCTV,VAmax,Vpro,FPfuga,Uso):
-    # * = A5 A6 B5 B6
-    if consumoRegulador < 5:
-        # *.1 - CTV15
-        textoAdd = libCTV.loc[19,'E']
-    else:
-        [ROI, marcaYmodelo]= lr.roiReg(dfCTV,VAmax,Vpro,FPfuga,Uso)
-        if ROI > 3:
-            # *.2 CTV16 CTV17'
-            #print('# *.2 CTV16 CTV17')
-            textoAdd = libCTV.loc[20,'E'] + libCTV.loc[20,'E']
-        else:
-            # *.3 CTV16 CTV18
-            #print('# *.3 CTV16 CTV18')
-            textoAdd = libCTV.loc[20,'E'] + libCTV.loc[22,'E']
-            textoAdd = textoAdd.replace('[reemplazoRegulador]', marcaYmodelo)
-    return textoAdd
-def regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,libCTV,VAmax,Vpro,FPfuga,Uso,dfCTV):
+                    txt = txt + fc.selecTxt(self.lib, 'CTV03').replace('{s}', '').replace('{n}', '').replace('{el/los}',
+                                                                                                             'el')
+                else:
+                    txt = txt + fc.selecTxt(self.lib, 'CTV03').replace('{', '').replace('}', '').replace('{el/los}',
+                                                                                                         'los')
+            else:
+                if len(self.la.split('y')) > 1:
 
-    if volEst:
-        #print('volEst')
-        #print(consumoRegulador)
-        if (consumoStanby-consumoRegulador)<=2:
-            # A1 B1 - CTV04S03 CTV04S05 CTV04S06
-            texto = libCTV.loc[5,'E']+libCTV.loc[7,'E']+libCTV.loc[8,'E']
-        if (consumoStanby-consumoRegulador)>2:
-            # A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22
-            #('# A2 B2 - CTV01 CTV02 CTV04S03 CTV04S06 CTV22')
-            texto = libCTV.loc[0,'E']+libCTV.loc[1,'E']+'\n'+libCTV.loc[5,'E']+libCTV.loc[8,'E']+'\n'+libCTV.loc[26,'E']
-    else:
-        if tolTV:
-            if not sonido:
-                if (consumoStanby - consumoRegulador)<=2:
-                    # A3.1 B3.1 - CTV04S02 CTV04S04 CTV04S06
-                    texto = libCTV.loc[4, 'E'] + ' ' + libCTV.loc[6, 'E'] + libCTV.loc[8, 'E']
-                if (consumoStanby - consumoRegulador)> 2:
-                    # A3.2 B3.2 - CTV01 CTV02 CTV04S02 CTV04S04 CTV04S06
-                    texto = libCTV.loc[0, 'E'] + ' ' + libCTV.loc[1, 'E'] + '\n' + libCTV.loc[4, 'E'] + ' ' + libCTV.loc[6, 'E'] + libCTV.loc[8, 'E']
-            if sonido:
-                if tolSonido and ((consumoStanby - consumoRegulador)<=2):
-                    # A3.1 B3.1 - CTV04S02 CTV04S04 CTV04S06
-                    texto = libCTV.loc[4, 'E'] + ' ' + libCTV.loc[6, 'E'] + libCTV.loc[8, 'E']
-                if tolSonido and ((consumoStanby - consumoRegulador)> 2):
-                    # A3.2 B3.2 - CTV01 CTV02 CTV04S02 CTV04S04 CTV04S06
-                    texto = libCTV.loc[0, 'E'] + ' ' + libCTV.loc[1, 'E'] + '\n' + libCTV.loc[4, 'E'] + ' ' + libCTV.loc[6, 'E'] + libCTV.loc[8, 'E']
-                if not tolSonido:
-                    # A6 B6 - priemra parte CTV01 CTV02 CTV10
-                    texto = libCTV.loc[0, 'E'] + ' ' + libCTV.loc[1, 'E'] + libCTV.loc[14, 'E']
-                    if nReg>1:
-                        texto = texto + '\n'+ 'HAY MAS DE UN REGULADOR\nREQUIERO RECOMENDACIÓN MANUAL'
-                    elif nReg==1:
-                        texto = texto+ '\n' + regDes( consumoRegulador, dfCTV,libCTV,VAmax,Vpro,FPfuga,Uso)
-        if not tolTV:
-            # A5 B5 - priemra parte CTV01 CTV02 CTV10
-            texto = libCTV.loc[0, 'E'] + ' ' + libCTV.loc[1, 'E'] + libCTV.loc[14, 'E']
-            if nReg > 1:
-                texto = texto + '\n' + 'HAY MAS DE UN REGULADOR\nREQUIERO RECOMENDACIÓN MANUAL'
-            elif nReg==1:
-                texto = texto + '\n' + regDes( consumoRegulador,dfCTV ,libCTV,VAmax,Vpro,FPfuga,Uso)
-    return texto
-
-def armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga):
-    print('Analizando las recomendaciones en fugas')
-    [lib, libUPS, links]=leerLibreriaCTV()
-    texto=''
-    [consumoStanby, regulador, nReg,consumoRegulador,standbyUPS, UPS, tolTV, sonido, tolSonido,decodificador] = caractCTV(dfCTV)
-    #print([consumoStanby, regulador, nReg,consumoRegulador, UPS, tolTV, sonido, tolSonido,decodificador])
-
-    if   ((consumoStanby >= 2)==False) and (UPS==False):
-        # 1 CTV20
-        #print('1 CTV20')
-        texto=lib.loc[24,'E']
-
-    elif ((consumoStanby >= 2) == False) and (UPS == True ):
-        if not regulador:
-            # Linea 3 y 4
-            texto = upsNodo(consumoStanby,volEst,texto, standbyUPS,lib,links,dfCTV,VAmax,Vpro,FPfuga)
-
-        if (regulador == True) and (UPS == True):
-            # Linea A
-            #print('# Linea A')
-            texto = texto + 'REQUIERO UNA RECOMENDACIÓN MANUAL HYA UN UPS Y REGULADOR EN EL CTV\n'
-            texto = regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,lib,VAmax,Vpro,FPfuga,'E',dfCTV) # acomodar argumentos
-
-    elif ((consumoStanby >= 2) == True ) and (UPS == False):
-        if not regulador :
-            # 2 CTV01 CTV02 CTV04S06
-            #print('# 2 CTV01 CTV02 CTV04S06')
-            texto=lib.loc[0,'E']+'\n'+lib.loc[1,'E']+lib.loc[8,'E']
-        if regulador:
-            # Linea B
-            #print('# Linea B')
-            texto= regNodo(texto,volEst,consumoStanby,consumoRegulador,tolTV,sonido,tolSonido,nReg,lib,VAmax,Vpro,FPfuga,'E',dfCTV) # acomodar argumentos
-
-    elif ((consumoStanby >= 2) == True ) and (UPS == True ):
-        if not regulador:
-            # Linea 5 y 6
-            texto = upsNodo(consumoStanby,volEst, texto, standbyUPS, lib,links, dfCTV, VAmax, Vpro, FPfuga)
-    if decodificador:
-        texto=texto+'\n'+lib.loc[2,'E']
-
-    if len(dfCTV)>1:
-        texto=texto.replace('{s}','s')
-        texto = texto.replace('{n}', 'n')
-    else:
-        texto=texto.replace('{s}','')
-        texto = texto.replace('{n}', '')
-        texto = texto.replace('dispositivo', 'equipo')
-        texto = texto.replace('tiene un alto consumo','se mantiene consumiendo energía')
-
-
-    linkA = links.loc[7,'C']
-    Address = 'Protector de voltaje 40A'
-    LinkS = '<br />'+'<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-    texto = texto.replace('{link protector de sobrevoltaje}',LinkS)
-
-
-    print(texto)
-    return texto
-
-
-
-
+                    txt = txt + fc.selecTxt(self.lib, 'CTV02').replace('{s}', '').replace('{n}', '').replace('{el/los}',
+                                                                                                             'el')
+                else:
+                    txt = txt + fc.selecTxt(self.lib, 'CTV02').replace('{', '').replace('}', '').replace('{el/los}',
+                                                                                                         'los')
+                txt = txt.replace('[recomendacion]',reemplazo)
+        self.txt = txt.replace('\n','<br />')
