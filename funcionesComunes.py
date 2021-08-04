@@ -65,9 +65,9 @@ def listarComas(lista):
     elif n>2:
         txt=''
         for c, cosa in enumerate(lista):
-            if c < (n-2):
+            if c < (n-1):
                 txt= txt + ' '+ lista[c]+','
-            elif c == (c-2):
+            elif c == (c-1):
                 txt = txt +  ' ' + lista[c]
             else:
                 txt = txt + ' y ' + lista[c]
