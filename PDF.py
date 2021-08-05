@@ -26,7 +26,6 @@ from libreriaClusterTV import armarTexto
 from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import SimpleDocTemplate
-
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
                     datefmt='%Y-%m-%d %H:%M:%S')
@@ -642,8 +641,8 @@ def Dicc_Aparatos(nombre):
 
 
 
-def Recomendaciones(Claves,consumo,DAC,Uso):
-    Consejos=''
+def Recomendaciones(Claves,consumo,DAC,Uso,nota):
+    Consejos=nota
     ClavesS = Claves.split(',')
     if ClavesS[0] == 'RF':
         Consejos = LeeClavesR(Claves)
@@ -734,7 +733,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
 
 # Automatizacion ######################
-        Consejos=Recomendaciones(Claves,consumo,tarifa,Uso)
+        Consejos=Recomendaciones(Claves,consumo,tarifa,Uso,notas)
 # Automatizacion  ######################
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
         #print(Consejos)
@@ -763,6 +762,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         porcentaje = aparato[11]
         consumo = round(aparato[10])
         dinero = round(aparato[12])
+        nota= aparato[13]
         Claves= aparato[16]
         Uso=0
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
@@ -819,7 +819,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         parrafos = []
         # Automatizacion ######################
         if not pd.isna(Claves):
-            nota = Recomendaciones(Claves, consumo, tarifa, Uso)
+            nota = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
         # Automatizacion  ######################
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
@@ -865,6 +865,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         dinero = round(aparato[12])
         nota = aparato[13]
         Claves =aparato[16]
+        Uso=aparato[7]
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
@@ -908,10 +909,15 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura+80, canvas)
         # Automatizacion ######################
+
         if not pd.isna(Claves):
-            nota = Recomendaciones(Claves, consumo, tarifa, Uso)
+            nota = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
         # Automatizacion  ######################
         parrafos = []
+
+
+
+
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
@@ -977,6 +983,9 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares=col_one_list = LFugas['E'].tolist()
     #print(Lugares)
+
+    ClasificadorFugas(fugas_)
+
     for lista in Lugares:
         fugas= fugas_.loc[fugas_['E']==lista]
         ata= fugas.loc[fugas['A']=='Si']
@@ -1069,11 +1078,12 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             Lequipos.append(Nfuga)
             Ltoler.append(False)
             Lconsumo.append(potencia)
-
+            Consejos=''
 
             if Atacable and ind==5:
-                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,Lconsumo)),columns =['disp', 'tol','cons','standby'])
-                Consejos=(CTV.armarTexto(voltaje, dfCTV,135,120,0.8))
+                #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,Lconsumo)),columns =['disp', 'tol','cons','standby'])
+
+                #Consejos=(CTV.armarTexto(voltaje, dfCTV,135,120,0.8))
 
                 if len(Consejos)<650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
@@ -1085,8 +1095,9 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
 
 
             if Atacable and ind<5 and np>=1:
-                dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
-                Consejos=(CTV.armarTexto(voltaje, dfCTV))
+                # dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
+                # Consejos=(CTV.armarTexto(voltaje, dfCTV))
+                Consejos='Todo bien'
                 if len(Consejos) < 650:
                     parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
                 else:
@@ -1429,6 +1440,15 @@ def Clasificador(aparatos):
         AparatosG=AparatosG.append(AparatosMaG)
 
     return AparatosG, AparatosM,AparatosC
+
+
+def ClasificadorFugas(fugas):
+    print(fugas)
+
+
+
+
+
 
 def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,Voltaje):
 

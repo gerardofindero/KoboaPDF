@@ -14,6 +14,13 @@ def cocina(Excel,Nocircuito, NomCircuito):
     #print(Equipos)
     stnby = Circuito.filter(regex='circuito_standby_c_i')[0]
     stnbyCod = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
+
+    if Equipos.filter(regex='zona_c_i')[0] == 'otro':
+        zona = Equipos.filter(regex='zona_otro_c_i')[0]
+    else:
+        zona = Equipos.filter(regex='zona_c_i')[0]
+
+
     indx = 0
     for i in Equipos:
         if i == 1:
@@ -27,20 +34,24 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Microondas', 'Marca']    = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Microondas', 'Existencia'] = 1
                 Aparatos_C.loc['Microondas', 'Atacable'] = 'Si'
-                Aparatos_C.loc['Microondas', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Microondas', 'Zona'] = zona
 
                 Aparatos_C.loc['Microondas', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Microondas', 'CodigoS'] = stnbyCod
                 Aparatos_C.loc['Microondas', 'Clave'] = 'MC'
 
+
             if indx == 3:
                 InfoDeco = Circuito.filter(regex='cafetera1')
                 Aparatos_C.loc['Cafetera', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Cafetera', 'Standby'] = stnby
-                Aparatos_C.loc['Cafetera', 'Marca'] = InfoDeco.filter(regex='marca')[0]
+                if InfoDeco.filter(regex='marca_c_i')[0] == 'otro':
+                    Aparatos_C.loc['Cafetera', 'Marca'] = InfoDeco.filter(regex='marca_otro_c_i')[0]
+                else:
+                    Aparatos_C.loc['Cafetera', 'Marca'] = InfoDeco.filter(regex='marca_c_i')[0]
                 Aparatos_C.loc['Cafetera', 'Existencia'] = 1
                 Aparatos_C.loc['Cafetera', 'Atacable'] = 'Si'
-                Aparatos_C.loc['Cafetera', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Cafetera', 'Zona'] = zona
                 Aparatos_C.loc['Cafetera', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Cafetera', 'CodigoS'] = stnbyCod
                 Aparatos_C.loc['Cafetera', 'Clave'] = 'CF'
@@ -49,7 +60,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 InfoDeco = Circuito.filter(regex='licuadora')
                 Aparatos_C.loc['Licuadora', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Licuadora', 'Existencia'] = 1
-                Aparatos_C.loc['Licuadora', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Licuadora', 'Zona'] = zona
                 Aparatos_C.loc['Licuadora', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Licuadora', 'Clave'] = 'X'
 
@@ -57,7 +68,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 InfoDeco = Circuito.filter(regex='horno')
                 Aparatos_C.loc['Horno', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Horno', 'Existencia'] = 1
-                Aparatos_C.loc['Horno', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Horno', 'Zona'] = zona
                 Aparatos_C.loc['Horno', 'Atacable'] = 'NF'
                 Aparatos_C.loc['Horno', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Horno', 'Clave'] = 'X'
@@ -66,7 +77,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Lavavajillas', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Lavavajillas', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Lavavajillas', 'Existencia'] = 1
-                Aparatos_C.loc['Lavavajillas', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Lavavajillas', 'Zona'] = zona
                 Aparatos_C.loc['Lavavajillas', 'Atacable'] = 'NF'
                 Aparatos_C.loc['Lavavajillas', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Lavavajillas', 'Clave'] = 'X'
@@ -79,7 +90,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Cafetera2', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Cafetera2', 'Existencia'] = 1
                 Aparatos_C.loc['Cafetera2', 'Atacable'] = 'Si'
-                Aparatos_C.loc['Cafetera2', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Cafetera2', 'Zona'] = zona
                 Aparatos_C.loc['Cafetera2', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Cafetera2', 'CodigoS'] = stnbyCod
                 Aparatos_C.loc['Cafetera2', 'Clave'] = 'CF'
@@ -88,7 +99,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Dispensador', 'Standby'] = stnby
                 Aparatos_C.loc['Dispensador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Dispensador', 'Existencia'] = 1
-                Aparatos_C.loc['Dispensador', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Dispensador', 'Zona'] = zona
                 Aparatos_C.loc['Dispensador', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Dispensador', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Dispensador', 'CodigoS'] = stnbyCod
@@ -98,7 +109,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Filtro', 'Standby'] = stnby
                 Aparatos_C.loc['Filtro', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Filtro', 'Existencia'] = 1
-                Aparatos_C.loc['Filtro', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Filtro', 'Zona'] = zona
                 Aparatos_C.loc['Filtro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Filtro', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Filtro', 'CodigoS'] = stnbyCod
@@ -109,7 +120,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 InfoDeco = Circuito.filter(regex='estufa')
                 Aparatos_C.loc['Estufa', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Estufa', 'Existencia'] = 1
-                Aparatos_C.loc['Estufa', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Estufa', 'Zona'] = zona
                 Aparatos_C.loc['Estufa', 'Atacable'] = 'NF'
                 Aparatos_C.loc['Estufa', 'CodigoN'] =InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Estufa', 'Clave'] = 'X'
@@ -118,7 +129,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 InfoDeco = Circuito.filter(regex='tostador')
                 Aparatos_C.loc['Tostador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Tostador', 'Existencia'] = 1
-                Aparatos_C.loc['Tostador', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Tostador', 'Zona'] = zona
                 Aparatos_C.loc['Tostador', 'Atacable'] = 'NF'
                 Aparatos_C.loc['Tostador', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Tostador', 'Clave'] = 'X'
@@ -128,7 +139,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Thermomix', 'Standby'] = stnby
                 Aparatos_C.loc['Thermomix', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Thermomix', 'Existencia'] = 1
-                Aparatos_C.loc['Thermomix', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Thermomix', 'Zona'] = zona
                 Aparatos_C.loc['Thermomix', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Thermomix', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Thermomix', 'CodigoS'] = stnbyCod
@@ -139,7 +150,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Otro', 'Standby'] = stnby
                 Aparatos_C.loc['Otro', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Otro', 'Atacable'] = 'Si'
-                Aparatos_C.loc['Otro', 'Zona'] = 'Cocina'
+                Aparatos_C.loc['Otro', 'Zona'] = zona
                 Aparatos_C.loc['Otro', 'Existencia'] = 1
                 Aparatos_C.loc['Otro', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Otro', 'CodigoS'] = stnbyCod

@@ -102,5 +102,4 @@ def calentadores(Excel,Nocircuito, NomCircuito):
 
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()
-    print(Aparatos)
     return Aparatos

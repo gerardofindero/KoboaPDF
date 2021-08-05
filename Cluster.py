@@ -3,6 +3,8 @@ from Consumo    import calc_consumo , consumoEq
 from Correciones import Lugar
 import numpy as np
 from LibreriaTV import ClavesClusterTV
+from libreriaReguladores import sepRegAta
+
 
 def clustertv(Excel,Nocircuito,NomCircuito):
 

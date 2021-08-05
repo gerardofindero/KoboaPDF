@@ -408,6 +408,11 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
+
+
+    regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
+    print(regusDF)
+
     Luminaria.fillna(' ', inplace=True)
     Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
     Luminaria.loc[Luminaria['TipoyTam'].str.contains('tubo'), 'Tipytam'] = 'tubos'

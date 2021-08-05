@@ -310,9 +310,10 @@ def separar_fugasR(Equipo):
     Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
     Equipos['Codigo'] = Aparatos['CodigoN']
+
     Equipos['Equipo']        = Aparatos['index'] + ' ' + Aparatos['Marca']
     Equipos['Potencia Kobo'] = Aparatos['Pot Compresor']
-    Equipos['Lugar']         = 'Cocina'
+    Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
     Equipos['Texto']         = Aparatos['Notas']
     Equipos['Notas'] = Aparatos['Notas']
@@ -324,7 +325,7 @@ def separar_fugasR(Equipo):
     Fugas['Codigo']         = Fuga['CodigoS']
     Fugas['Equipo']         = 'Fuga '+Fuga['index'] + ' ' + Fuga['Marca']
     Fugas['Potencia Kobo']  = Fuga['Standby']
-    Fugas['Lugar']          = 'Cocina'
+    Fugas['Lugar']          = Fuga['Zona']
     Fugas['Ubicacion']      = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
     Fugas['Texto']          = Fuga['Notas']
     Fugas['Notas']          = Fuga['Notas']
