@@ -19,6 +19,9 @@ import libreriaCafeteras as lc
 from libreriaTubosFluorescente import libreriaTubosFluorescentes
 from libreriaTirasLED import libreriaTirasLED
 import libreriaPlanchas as lp
+from leerVoltaje import leer_volts
+
+
 
 
 ####################  FUNCIONES ###################################
@@ -98,9 +101,9 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
 
-    NCliente = 'Paloma Fernandez'
+    NCliente = 'SC Paz'
     #NCliente = 'Cliente Prueba'
-    #NCliente = 'Bernardo Rueda'
+    #NCliente = 'Beatriz Escobedo'
 
     return NCliente
 
@@ -116,7 +119,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='2'
+    Opcion='4'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -124,63 +127,16 @@ if __name__ == '__main__':
 
     if Opcion == '2':
         print("Deciframiento y Kobo")
+        VE = leer_volts(NCliente)
         Crear_Kobo(NCliente)
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        print(lp.leerConsumoPlanchas(30))
-        """
-        dfCTV=pd.DataFrame.from_dict({'disp':['TV','Decodificador','NoBreak','Bocinas'],
-                                      'nominal' :[30,30, 10, 10]                   ,
-                                      'standby' :[.3,  .3, 10,  .5]                   ,
-                                      'tol'     :[True , True , True , True ]     ,
-                                      'cReg'    :[False , False, False, False ]     ,
-                                      'cUPS'    :[True, False, False, True]     ,
-                                      'ampere'  :[1 , 1, 1, 1]                   ,})
-        volEst=True
-        VAmax=1000
-        Vpro=120
-        FPfuga=0.8
-        # print(lg.roiReg(dfCTV, VAmax, Vpro, FPfuga, 'E'))
-        # print(lups.recomendaciónUPS(dfCTV, VAmax, Vpro, FPfuga))
-        print(CTV.armarTexto(volEst,dfCTV,VAmax,Vpro,FPfuga))
-        """
+        leer_volts(NCliente)
 
-        #lc.leerLibreriaCafeteras()
-        #print(lc.dias('lunes martes andlasnda domingo'))
-        """"
-        kobo={'tipo':'t5',        # t2 t5 t8 t12
-              'entr':'g5',        # g5 g13 fa8
-              'dist':'paralelo',     # serie paralelo aislado
-              'port':'colgante',  # colgante sobresale introduce sin
-              'func':'indirecta', # principal indirecta nocturna espejos estudio arte mesas bodegas pecera
-              'ntub': 6,          # número de tubos
-              'detr':True,       # Señales de vida util por finalizar
-              'difu':True,        # difusor
-              'temp':'fria',      # fria calida
-              'lntb':'largo_61',  # largo_ .... 30 35  53 61 91 122 152 183
-              'caji':False,       # Es un cajillo?
-              'caln':61*6,        # longitud del cajillo
-              'plta':np.array([60, 60]),           # placa tamaño
-              'plnu':3            # placa número
-              }
-        DAC=6.1
-        wt=14*6
-        kwh=wt*6*7/1000
-        dscr='lunes martes andlasnda domingo'
-        #dscr = ''
-        ltf=libreriaTubosFluorescentes()
-        ltf.setData(kobo,DAC,wt,kwh,dscr)
-        ltf.buildText()
-        #print(ltf.sustitutos)
-        #print(ltf.txt)
-        #print(ltf.dbTiras)
-        ltl=libreriaTirasLED()
-        ltl.setData(100,'fria',6.1,15,(15*24*7/1000),'lunes')
-        ltl.buildText()
-        print(ltl.txt)
-        #print(ltl.sustitutos)
-        """
+
+
+
     if Opcion == '4':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
