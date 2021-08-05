@@ -70,14 +70,14 @@ def armarTxtCaf(kwh, hrsUso,dscr):
     percentil= norm.cdf(kwh,loc=media,scale=dstd)
     txt=''
     if percentil <=0.33:
-        txt=txt+lib.at[0,'C']
+        txt=txt+lib.at[0,'D']
     elif 0.33<percentil<= 0.45:
-        txt = txt + lib.at[1, 'C']
+        txt = txt + lib.at[1, 'D']
     elif 0.45<percentil<=0.55:
-        txt = txt + lib.at[2, 'C']
+        txt = txt + lib.at[2, 'D']
     elif 0.55<percentil<=0.66:
-        txt = txt + lib.at[3, 'C']
+        txt = txt + lib.at[3, 'D']
     elif 0.66<percentil:
-        txt = txt + lib.at[4, 'C']
+        txt = txt + lib.at[4, 'D']
     txt=txt.replace('[diasUso]',dias(dscr)).replace('[totalHoras]',str(hrsUso)) # se utilizó .... los días **** o todos los días
     return txt
