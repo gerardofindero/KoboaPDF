@@ -78,20 +78,21 @@ def armarTxtCaf(kwh, hrsUso=0,dscr=''):
     elif 0.55<percentil<=0.66:
         if len(diasUso)!=0:
             txt = txt + lib.at[3, 'D'].replace('[diasUso]',diasUso)
-            if (hrsUso==0) or hrsUso is None or not isinstance(hrsUso,(int,float)):
+            if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
                 txt =txt.replace(' acumulando un total de [totalHoras] horas de uso durante la semana.','.')
         else:
             txt = txt + lib.at[4, 'D']
-            if (hrsUso==0) or hrsUso is None or not isinstance(hrsUso,(int,float)):
+            if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
                 txt =txt.replace('Este electrodomestico acumuló un total de [totalHoras] horas de uso durante la semana.','')
     elif 0.66<percentil:
         if len(diasUso)!=0:
             txt = txt + lib.at[5, 'D'].replace('[diasUso]',diasUso)
-            if(hrsUso == 0) or hrsUso is None or not isinstance(hrsUso, (int, float)):
+            if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
                 txt = txt.replace(' y acumulo un total de [totalHoras] horas de uso durante la semana', '')
         else:
-            if (hrsUso==0) or hrsUso is None or not isinstance(hrsUso,(int,float)):
-                txt =txt.replace('Este dispositivo acumuló un total de [totalHoras] horas de uso durante la semana. ','')
+            print('aqui')
             txt = txt + lib.at[6, 'D']
+            if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
+                txt = txt.replace('Este dispositivo acumuló un total de [totalHoras] horas de uso durante la semana. ','')
 
-    return txt
+    return txt.replace('\n','<br />')#.replace('<br /><br />','<br />')
