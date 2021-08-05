@@ -4,7 +4,8 @@ import numpy as np
 class libreriaTirasLED:
     def __init__(self):
         self.txt = ''  # inicia variable del texto para el reporte al cliente
-        self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link', 'ahorroBimestral', 'roi'])
+        self.sustitutos = pd.DataFrame(
+            columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
         try:
             self.libTxt = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
@@ -109,8 +110,9 @@ class libreriaTirasLED:
 
         opcTir['nTiras'] = opcTir.lonTiras.apply(np.ceil)
 
-        opcTir.loc[:, 'ahorroBimestral'] =\
-            (self.wt - (opcTir.loc[:, 'lonTiras'] * opcTir.loc[:, 'Potencia Tira LED [W]'])) * 24 * 60 * self.DAC * (self.hrsUso / 24 / 7) / 1000
+        opcTir.loc[:, 'kwhAhorroBimestral'] =\
+            (self.wt - (opcTir.loc[:, 'lonTiras'] * opcTir.loc[:, 'Potencia Tira LED [W]'])) * 24 * 60  * (self.hrsUso / 24 / 7) / 1000
+        opcTir.loc[:,'ahorroBimestral'] = opcTir.kwhAhorroBimestral * self.DAC
 
         opcTir.loc[:, 'roi'] = \
             (opcTir.nTiras * opcTir.loc[:, 'Costo Tira LED']) / opcTir.loc[:, 'ahorroBimestral'] / 6
@@ -128,17 +130,22 @@ class libreriaTirasLED:
                                'cantidad': opcTir['nTiras'][:nSugerencias],
                                'costo': opcTir['Costo Tira LED'][:nSugerencias],
                                'link': opcTir['Link Tira LED'][:nSugerencias],
+                               'kwhAhorroBimestral':opcTir['kwhAhorroBimestral'][:nSugerencias],
                                'ahorroBimestral': opcTir['ahorroBimestral'][:nSugerencias],
-                               'roi': opcTir['roi'][:nSugerencias]})
+                               'roi': opcTir['roi'][:nSugerencias],
+                               'accion':(['compra']*nSugerencias)})
 
+            #columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
         else:
             df = pd.DataFrame({'tipo': (['Tira LED'] * 5),
                                'cantidad': opcTir['nTiras'][:5],
                                'costo': opcTir['Costo Tira LED'][:5],
                                'link': opcTir['Link Tira LED'][:5],
+                               'kwhAhorroBimestral': opcTir['kwhAhorroBimestral'][:5],
                                'ahorroBimestral': opcTir['ahorroBimestral'][:5],
-                               'roi': opcTir['roi'][:5]})
+                               'roi': opcTir['roi'][:5],
+                               'accion':(['compra']*5)})
 
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
 

@@ -4,7 +4,8 @@ class libreriaTubosFluorescentes:
     def __init__(self):
         # Kobo Info de kobo en diccionario, tarifa DAC, potencia total de los tubos led, energía consumida
         self.txt        = ''    # inicia variable del texto para el reporte al cliente
-        self.sustitutos = pd.DataFrame(columns=['tipo','cantidad','costo','link','ahorroBimestral','roi'])
+        self.sustitutos = pd.DataFrame(
+            columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
         self.lmXwt5    = 92 * 0.93
         self.lmXwt8    = 89 * 0.90
         self.lmXwt12   = 80 * 0.78
@@ -142,7 +143,8 @@ class libreriaTubosFluorescentes:
         # ESTIMACION DEL NÚMERO DE TIRAS QUE DEBEN COMPRARSE
         opcTir['nTiras']=opcTir.lonTiras.apply(np.ceil)
         # AHORRO BIMESTRAL
-        opcTir.loc[:,'ahorroBimestral']= (self.w_t-(opcTir.loc[:,'lonTiras']*opcTir.loc[:,'Potencia Tira LED [W]']))*24*60*self.DAC*(self.hrsUso/24/7)/1000
+        opcTir.loc[:,'kwhAhorroBimestral'] = (self.w_t-(opcTir.loc[:,'lonTiras']*opcTir.loc[:,'Potencia Tira LED [W]']))*24*60*self.DAC*(self.hrsUso/24/7)/1000
+        opcTir.loc[:,'ahorroBimestral'   ] = opcTir.loc[:,'kwhAhorroBimestral']*self.DAC
         # ROI
         opcTir.loc[:,'roi']=(opcTir.nTiras*opcTir.loc[:,'Costo Tira LED'])/opcTir.loc[:,'ahorroBimestral']/6
 
@@ -160,8 +162,10 @@ class libreriaTubosFluorescentes:
                                'cantidad'       : opcTir['nTiras'][:nSugerencias],
                                'costo'          : opcTir['Costo Tira LED'][:nSugerencias],
                                'link'           : opcTir['Link Tira LED'][:nSugerencias],
+                               'kwhAhorroBimestral': opcTir['kwhAhorroBimestral'][:nSugerencias],
                                'ahorroBimestral': opcTir['ahorroBimestral'][:nSugerencias],
-                               'roi'            : opcTir['roi'][:nSugerencias]})
+                               'roi'            : opcTir['roi'][:nSugerencias],
+                               'accion'         : (['compra']*nSugerencias)})
             # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
         else:
@@ -169,21 +173,26 @@ class libreriaTubosFluorescentes:
                              'cantidad'       : opcTir['nTiras'][:5],
                              'costo'          : opcTir['Costo Tira LED'][:5],
                              'link'           : opcTir['Link Tira LED'][:5],
+                             'kwhAhorroBimestral':opcTir['kwhAhorroBimestral'][:5],
                              'ahorroBimestral': opcTir['ahorroBimestral'][:5],
-                             'roi'            : opcTir['roi'][:5]})
+                             'roi'            : opcTir['roi'][:5],
+                             'accion'         : (['compra']*5)})
             # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
 
     def RTbL(self):
         self.rec=self.dbTubos.loc[self.filtro,:].reset_index(drop=True).copy()
-        ahorro=(self.w_t - (self.rec.at[0, 'Potencia Tubo LED [W]'] * self.ntub))*24*60*self.DAC*(self.hrsUso/168)/1000
-        roiRTbL=self.ntub*self.rec.at[0,'Costo Tubo LED']/ahorro/6
+        kwhAhorroBimestral=(self.w_t - (self.rec.at[0, 'Potencia Tubo LED [W]'] * self.ntub))*24*60*(self.hrsUso/168)/1000
+        ahorroBimestral = kwhAhorroBimestral*self.DAC
+        roiRTbL=self.ntub*self.rec.at[0,'Costo Tubo LED']/ahorroBimestral/6
         self.sustitutos=self.sustitutos.append({'tipo'           :'Tubo LED',
                                                 'cantidad'       : self.ntub,
                                                 'costo'          : self.rec.at[0,'Costo Tubo LED'],
                                                 'link'           : self.rec.at[0,'Link Tubo LED'],
-                                                'ahorroBimestral': ahorro,
-                                                'roi':roiRTbL},
+                                                'kwhAhorroBimestral': kwhAhorroBimestral,
+                                                'ahorroBimestral': ahorroBimestral,
+                                                'roi':roiRTbL,
+                                                'accion':'compra'},
                                                 ignore_index=True)
     def RPL(self):
         lmXp = self.lumT / self.plnu
@@ -201,7 +210,8 @@ class libreriaTubosFluorescentes:
         filPla = filPla & (self.dbPanel['Lumenes Panel [Lm]'] > (lmXp * 0.5)) & (self.dbPanel['Lumenes Panel [Lm]'] < (lmXp * 2))
         opcPla = self.dbPanel.loc[filPla,:].reset_index().copy()
         print(opcPla['Lumenes Panel [Lm]'],'\n',opcPla['Potencia Panel [W]'])
-        opcPla['ahorro'] = (wXp-opcPla['Potencia Panel [W]'])*24*60*(self.hrsUso/7/24)*self.DAC*self.plnu/1000
+        opcPla['kwhAhorroBimestral'] = (wXp-opcPla['Potencia Panel [W]'])*24*60*(self.hrsUso/7/24)*self.plnu/1000
+        opcPla['ahorro'] = opcPla *self.DAC
         opcPla['roi']    = opcPla['Costo Panel LED']*self.plnu/opcPla['ahorro']/6
         opcPla=opcPla.loc[opcPla['ahorro']>=0,:].reset_index(drop=True).copy()
         if len(opcPla) < 5:
@@ -210,8 +220,10 @@ class libreriaTubosFluorescentes:
                                'cantidad': ([self.plnu] * nSugerencias),
                                'costo': opcPla['Costo Panel LED'][:nSugerencias],
                                'link': opcPla['Link Panel LED'][:nSugerencias],
+                               'kwhAhorroBimestral':opcPla['kwhAhorroBimestral'][:nSugerencias],
                                'ahorroBimestral': opcPla['ahorro'][:nSugerencias],
-                               'roi': opcPla['roi'][:nSugerencias]})
+                               'roi': opcPla['roi'][:nSugerencias],
+                               'accion' : (['compra']*nSugerencias)})
             # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
         else:
@@ -219,8 +231,10 @@ class libreriaTubosFluorescentes:
                                'cantidad': ([self.plnu] * 5),
                                'costo': opcPla['Costo Panel LED'][:5],
                                'link': opcPla['Link Panel LED'][:5],
+                               'kwhAhorroBimestral': opcPla['kwhAhorroBimestral'][:5],
                                'ahorroBimestral': opcPla['ahorro'][:5],
-                               'roi': opcPla['roi'][:5]})
+                               'roi': opcPla['roi'][:5],
+                               'accion' : (['compra']*5)})
             # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
 
