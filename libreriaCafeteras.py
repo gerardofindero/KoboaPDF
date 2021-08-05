@@ -61,8 +61,8 @@ def dias(dscr):
 
 
 
-def armarTxtCaf(kwh, hrsUso,dscr):
-    print(dscr)
+def armarTxtCaf(kwh, hrsUso=0,dscr=''):
+    diasUso = dias(dscr)
     [lib, st] = leerLibreriaCafeteras()
     media = st.at[0,'B']
     dstd  = st.at[1,'B']
@@ -76,8 +76,22 @@ def armarTxtCaf(kwh, hrsUso,dscr):
     elif 0.45<percentil<=0.55:
         txt = txt + lib.at[2, 'D']
     elif 0.55<percentil<=0.66:
-        txt = txt + lib.at[3, 'D']
+        if len(diasUso)!=0:
+            txt = txt + lib.at[3, 'D'].replace('[diasUso]',diasUso)
+            if (hrsUso==0) or hrsUso is None or not isinstance(hrsUso,(int,float)):
+                txt =txt.replace(' acumulando un total de [totalHoras] horas de uso durante la semana.','.')
+        else:
+            txt = txt + lib.at[4, 'D']
+            if (hrsUso==0) or hrsUso is None or not isinstance(hrsUso,(int,float)):
+                txt =txt.replace('Este electrodomestico acumuló un total de [totalHoras] horas de uso durante la semana.','')
     elif 0.66<percentil:
-        txt = txt + lib.at[4, 'D']
-    txt=txt.replace('[diasUso]',dias(dscr)).replace('[totalHoras]',str(hrsUso)) # se utilizó .... los días **** o todos los días
+        if len(diasUso)!=0:
+            txt = txt + lib.at[5, 'D'].replace('[diasUso]',diasUso)
+            if(hrsUso == 0) or hrsUso is None or not isinstance(hrsUso, (int, float)):
+                txt = txt.replace(' y acumulo un total de [totalHoras] horas de uso durante la semana', '')
+        else:
+            if (hrsUso==0) or hrsUso is None or not isinstance(hrsUso,(int,float)):
+                txt =txt.replace('Este dispositivo acumuló un total de [totalHoras] horas de uso durante la semana. ','')
+            txt = txt + lib.at[6, 'D']
+
     return txt
