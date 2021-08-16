@@ -340,11 +340,14 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Exx.drop(Exx.index[:12],inplace=True)
     donde=Exx.loc[Exx['A'] == 'Periodo:']
     Exx = Exx.drop(Exx[Exx['C'] == 'Total'].index)
+
     if not Refri.empty:
+
         print("Refri")
         Equipo,Fuga = separar_fugasR(Refri)
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+        print(Equipos)
 
     if not Clust.empty:
         print("Cluster")
