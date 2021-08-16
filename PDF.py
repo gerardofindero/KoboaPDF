@@ -22,7 +22,7 @@ from libreriaMicroondas import leerConsumoMicroondas
 from libreriaCafeteras import armarTxtCaf
 from Caritas import definircarita
 import libreriaClusterTV as CTV
-from libreriaClusterTV import armarTexto
+#from libreriaClusterTV import armarTexto
 from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import SimpleDocTemplate
@@ -822,7 +822,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
             nota = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
         # Automatizacion  ######################
         if nota == '.':
-            parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
+            parrafos.append(Paragraph('Sin comentarios ni notas', Estilos.cuadros_bajo))
         else:
             if len(nota) < 400:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
@@ -925,9 +925,10 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
             elif 200<=len(nota)<350:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
-            else:
+            elif 350 <= len(nota) < 500:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
-
+            else:
+                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo4))
         frame = Frame(120, altura-30, width * 0.7, height * 0.12)
         frame.addFromList(parrafos, canvas)
         ##LogoRayo
