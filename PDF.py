@@ -22,7 +22,6 @@ from libreriaMicroondas import leerConsumoMicroondas
 from libreriaCafeteras import armarTxtCaf
 from Caritas import definircarita
 import libreriaClusterTV as CTV
-from libreriaClusterTV import armarTexto
 from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import SimpleDocTemplate

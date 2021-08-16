@@ -20,7 +20,7 @@ from libreriaTubosFluorescente import libreriaTubosFluorescentes
 from libreriaTirasLED import libreriaTirasLED
 import libreriaPlanchas as lp
 from leerVoltaje import leer_volts
-
+import libreriaBombas as lb
 
 
 
@@ -119,7 +119,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
@@ -132,9 +132,10 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        leer_volts(NCliente)
 
-
+        libBom=lb.libreriaBombasGravitacionales()
+        libBom.setData(hrsUso=10,w=700,Z=10,Q=30,L=10+(1.73*3),D=1.27,nC90=9,material='Cobre',T=20)
+        #lb.graficas()
 
 
     if Opcion == '4':
