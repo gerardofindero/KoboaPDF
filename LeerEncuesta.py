@@ -100,10 +100,10 @@ def Crear_Kobo(NCliente):
 ##################################################################
 def Nombre_Cliente():
 
-
-    NCliente = 'SC Paz'
     #NCliente = 'Cliente Prueba'
+    #NCliente = 'Antonio Ortega'
     #NCliente = 'Beatriz Escobedo'
+    NCliente = 'Monica Cortes'
 
     return NCliente
 

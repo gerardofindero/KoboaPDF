@@ -365,7 +365,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Problemas', 'Marca'] = Circuito.filter(regex='_problemas_otro_c_i')[0]
                 Aparatos_C.loc['Problemas', 'Existencia']=1
 
-                if indx == 2:
+                if indx == 7:
                     NomAparato = 'congelador2'
                     InfoDeco = Circuito.filter(regex=NomAparato)
                     Aparatos_C.loc['Congelador2', 'Existencia'] = 1
@@ -421,7 +421,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                         Aparatos_C.loc['Regulador Congelador2', 'Existencia'] = 1
                         Aparatos_C.loc['Regulador Congelador2', 'Notas'] = notass
 
-                if indx == 3:
+                if indx == 8:
                     NomAparato = 'minibar2'
                     InfoDeco = Circuito.filter(regex=NomAparato)
                     Aparatos_C.loc['Minibar2', 'Existencia'] = 1
@@ -463,7 +463,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                         Aparatos_C.loc['Regulador', 'Existencia'] = 1
                         Aparatos_C.loc['Regulador', 'Notas'] = notass
 
-                if indx == 4:
+                if indx == 9:
                     NomAparato = 'cava2'
                     InfoDeco = Circuito.filter(regex=NomAparato)
                     Aparatos_C.loc['Cava2', 'Existencia'] = 1
@@ -515,7 +515,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                         Aparatos_C.loc['Regulador', 'Existencia'] = 1
                         Aparatos_C.loc['Regulador', 'Notas'] = notass
 
-                if indx == 5:
+                if indx == 10:
                     NomAparato = 'hielos2'
                     InfoDeco = Circuito.filter(regex=NomAparato)
                     Aparatos_C.loc['Hielos2', 'Existencia'] = 1
@@ -611,6 +611,6 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
 
     Codigos=condicionesRefrigeracion(Aparatos)
     Aparatos['Claves']=Codigos
-    print(Aparatos['Claves'])
+
 
     return Aparatos,TotalCons, Codigos
