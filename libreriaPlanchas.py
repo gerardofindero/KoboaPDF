@@ -59,7 +59,7 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     elif percentil>=0.66:
         texto = texto + ' '+lib.loc[8, col]
 
-    texto =  texto.replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
+    texto =  texto.replace('[1-perc_cons]',str(int(percentil*100))).replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
 
     texto =  texto.replace('\n','<br />')
     return texto
