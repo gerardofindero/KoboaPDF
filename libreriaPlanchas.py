@@ -61,6 +61,7 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
 
     texto =  texto.replace('[1-perc_cons]',str(int(percentil*100))).replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
 
+
     texto =  texto.replace('\n','<br />')
     return texto
 
