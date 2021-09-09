@@ -41,10 +41,12 @@ Created on Tue Aug 10 13:29:50 2021
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+
+
 class libreriaBombasGravitacionales:
     def __init__(self):
         self.kc90 = 1   # factor de resisencia de codo de 90°
-        self.g    = 9.8 # mestro por segundo
+        self.g    = 9.8 # metros por segundo
         try:
             self.cur = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/curBom.xlsx")
