@@ -1,4 +1,5 @@
 import locale
+import sys
 from reportlab.pdfgen import canvas as canvas_
 from reportlab.lib.pagesizes import A4
 from datetime import date
@@ -20,6 +21,7 @@ from LibreriaLavaSeca import  LeeClavesLavaSeca
 from libreriaPlanchas import  leerConsumoPlanchas
 from libreriaMicroondas import leerConsumoMicroondas
 from libreriaCafeteras import armarTxtCaf
+from libreriaReguladores import sepRegAta
 from Caritas import definircarita
 import libreriaClusterTV as CTV
 #from libreriaClusterTV import armarTexto
@@ -232,7 +234,7 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     notasB = 'Tus paneles Solares tienen un buen desempeño, producen la energía esperada tomando en cuenta la temporada del año'
     notasC = 'Tus paneles solares se encuentran muy por debajo de lo esperado, algún factor no deja que funcionen correctamente'
 
-    parrafos.append(Paragraph(notasA, Estilos.azul_1_grande2))
+    parrafos.append(Paragraph(notasB, Estilos.azul_1_grande2))
     frame = Frame(60, 450, 190, 200)
     frame.addFromList(parrafos, canvas)
     # notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F1'])+'W'
@@ -325,7 +327,7 @@ def intro(canvas, width, height, datos=5287899):
 
 def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, ahorro_bimestral, tipo_tarifa):
     """ Se hace la página que muestra el potencial de ahorro """
-    tarifa= float(costo)/float(consumo_bimestral)
+    tarifa= tarifaf
     NoPaneles=round(ahorro_bimestral/68)
     ahorro_paneles=round(NoPaneles*13500)
     co2=round(ahorro_bimestral*0.52*6)
@@ -420,7 +422,7 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
     parrafo_frame("<b>ALREDEDOR DE</b>", Estilos.blanco_chico, x, y - 45, .22, .3,canvas)
     parrafo_frame("<b>ALREDEDOR DE</b>", Estilos.blanco_chico, x + 260, y - 45, .22, .3,canvas)
 
-    ahorro = int(costo_bimestral - nuevo_consumo * tarifa)
+    ahorro = int(tarifa* ahorro_bimestral)
 
     parrafo_frame("<b>${:,}</b>".format(ahorro), Estilos.blanco_grande, x , y - 60, .22, .3,canvas)
     parrafo_frame("<b>${:,}{asterisco}</b>".format(int(nuevo_consumo * tarifa), asterisco=asterisco),
@@ -545,7 +547,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         porc=str(round(luz[11]*100,1))+' %'
         cost='$ '+str(round(luz[12]))
         tex= str(luz[13])
-        largoTx=(len(tex))
+        largoTx=sys.getsizeof(tex)
         tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI) # Está usando columnas, no renglones para los índices
 
         if len(luzz) < 15:
@@ -572,6 +574,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             parrafos.append(Paragraph(luzz, Estilos.Lumi5))
             frame = Frame(72, altura - 5, 80, 60)
             frame.addFromList(parrafos, canvas)
+
         parrafos.append(Paragraph(porc, Estilos.cuadros_bajo))
         frame = Frame(160, altura, 90, 50)
         frame.addFromList(parrafos, canvas)
@@ -579,21 +582,24 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         frame = Frame(210, altura, 90, 50)
         frame.addFromList(parrafos, canvas)
         parrafoss=[]
+        print(tex)
+        print(largoTx)
         if largoTx<45:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
-            frame = Frame(258, altura - 5, 295, 60)
-        elif 45<=largoTx<150:
-            parrafoss.append(Paragraph(tex, Estilos.Lumi))
-            frame = Frame(258, altura-0, 295, 60)
-        elif largoTx>150 and largoTx<=210:
+            frame = Frame(258, altura - 15, 295, 65)
+        elif 45<=largoTx<90:
             parrafoss.append(Paragraph(tex, Estilos.Lumi2))
-            frame = Frame(258, altura+5, 65)
-        elif 350>=largoTx>210:
+            frame = Frame(258, altura -15, 295, 65)
+        elif largoTx>90 and largoTx<=210:
             parrafoss.append(Paragraph(tex, Estilos.Lumi3))
-            frame = Frame(258, altura+5, 295, 65)
-        elif largoTx > 350:
+            frame = Frame(258, altura-10,295, 65)
+        elif 350>=largoTx>210:
             parrafoss.append(Paragraph(tex, Estilos.Lumi4))
-            frame = Frame(258, altura + 5, 295, 65)
+            frame = Frame(258, altura-10, 295, 65)
+        elif largoTx > 350:
+            parrafoss.append(Paragraph(tex, Estilos.Lumi5))
+            frame = Frame(258, altura -10, 295, 65)
+
         frame.addFromList(parrafoss, canvas)
         canvas.line(70, altura + 51, 548, altura + 51)
         altura=altura-50
@@ -978,14 +984,19 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
 def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     """ Crea la hoja que muestra donde esta la fuga, que aparatos hay y si es atacable o no """
     fugas_['D']=fugas_['D'].str.replace('Fuga', '', regex=True)
+    fugas_['N'] = '.'
     LFugas=fugas_.copy()
     LFugas = LFugas.loc[LFugas['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     LFugas.sort_values(by=['L'], inplace=True, ascending=False)
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
-    Lugares=col_one_list = LFugas['E'].tolist()
-    #print(Lugares)
-
-    ClasificadorFugas(fugas_)
+    Lugares= LFugas['E'].tolist()
+    vEstEle=True
+    vEstMec=True
+    nSob=0
+    nSub=0
+    tSob=0
+    tSub=0
+    sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
 
     for lista in Lugares:
         fugas= fugas_.loc[fugas_['E']==lista]
@@ -1011,6 +1022,9 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
 
 
         np=0
+        repetido=False
+        Consejos=''
+
         for index, fugat in atac.iterrows():
             if ind > 4:
                 canvas.showPage()
@@ -1034,10 +1048,13 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             porciento = round(fugat[11] * 100, 1)
             potencia = fugat[9]
             horaS =fugat[7]
+            Consejo=fugat[13]
             parrafos = []
             parrafos.append(Paragraph(Nfuga, Estilos.negroB))
             frame = Frame(50, altura, 250, 50)
             frame.addFromList(parrafos, canvas)
+
+
 
             if len(Nfuga)<40:
                 parrafo_frame("Potencia", Estilos.base2, 50, altura - 55, .2, .1, canvas)
@@ -1068,9 +1085,11 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 frame.addFromList(parrafos, canvas)
                 canvas.line(50, altura - 25, 300, altura - 25)
                 altura=altura-5
+
+
+
             ind = ind + 1
             altura = altura - 80
-
             if voltaje==1:
                 voltaje=True
             else:
@@ -1079,33 +1098,27 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             Lequipos.append(Nfuga)
             Ltoler.append(False)
             Lconsumo.append(potencia)
-            Consejos=''
 
-            if Atacable and ind==5:
-                #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,Lconsumo)),columns =['disp', 'tol','cons','standby'])
-
-                #Consejos=(CTV.armarTexto(voltaje, dfCTV,135,120,0.8))
-
-                if len(Consejos)<650:
-                    parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
-                else:
-                    parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
-                frame = Frame(330, 40, 200, 350, showBoundary=0)
-                frame.addFromList(parrafos, canvas)
-                Lequipos=[]
+            # dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
+            # Consejos=(CTV.armarTexto(voltaje, dfCTV))
 
 
-            if Atacable and ind<5 and np>=1:
-                # dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
-                # Consejos=(CTV.armarTexto(voltaje, dfCTV))
-                Consejos='Todo bien'
-                if len(Consejos) < 650:
-                    parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
-                else:
-                    parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
-                frame = Frame(330, 40, 200, 350, showBoundary=0)
-                frame.addFromList(parrafos, canvas)
-                Lequipos=[]
+            if Consejo == '.' and repetido == False:
+                Consejos = Consejos+' ' + 'Te puedes apoyar de un timer inteligente para reducir el consumo de energía de tus dispositivos y recuperar tu inversión en el corto plazo.'
+                repetido=True
+            else:
+                Consejos = Consejos +' '+ fugat[13]
+            print(Consejos)
+
+        print('.....')
+        if Atacable:
+            if len(Consejos) < 650:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+            else:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+            frame = Frame(330, 40, 200, 350, showBoundary=0)
+            frame.addFromList(parrafos, canvas)
+            Lequipos=[]
 
 
         if not Atacable:
@@ -1427,9 +1440,9 @@ def Clasificador(aparatos):
     Aparatos.sort_values(by=['L'], inplace=True, ascending=False)
     Aparatos = Aparatos.loc[Aparatos['M'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['M'], inplace=True, ascending=False)
-    carita= definircarita(Aparatos)
 
-    #print(carita)
+    definircarita(Aparatos)
+
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
     AparatosC = Aparatos.loc[Aparatos['A'] == 1]
@@ -1440,18 +1453,18 @@ def Clasificador(aparatos):
         AparatosM=AparatosM[~AparatosM['D'].str.contains(i)]
         AparatosG=AparatosG.append(AparatosMaG)
 
-    return AparatosG, AparatosM,AparatosC
-
-
-def ClasificadorFugas(fugas):
-    print(fugas)
+    return AparatosG, AparatosM,AparatosC,Aparatos
 
 
 
 
 
 
-def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,Voltaje):
+
+
+
+
+def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,Voltaje,Ahorro):
 
     if SolarS.empty:
         solar=False
@@ -1465,7 +1478,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     filename = f"{cliente_}.pdf"
     canvas = canvas_.Canvas(filename)
     width, height = A4
-    ahorro_bimestral=140
+    ahorro_bimestral=Ahorro
     tipo_tarifa='DAC'
     color_voltaje = int(Voltaje)
 
@@ -1476,7 +1489,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     if solar:
         Solar(canvas,tarifa,costo,consumo,SolarS)
     porF=por_A_fugas(fugas)
-    aparatosG,aparatosM, aparatosC= Clasificador(aparatos)
+    aparatosG,aparatosM, aparatosC, aparatos= Clasificador(aparatos)
     aparatos_grandes(canvas, width, height,aparatosG,Tarifa)
     aparatos_bajos(canvas, width, height,aparatosM,aparatosC,Tarifa)
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)

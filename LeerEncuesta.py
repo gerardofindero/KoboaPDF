@@ -11,6 +11,7 @@ from Ahorro          import potencial_ahorro2
 from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
+from Potencial_de_ahorro import potecial_ahorro
 from LibreriaLED import BuscarLED
 import libreriaClusterTV as CTV
 import libreriaReguladores as lg
@@ -100,10 +101,9 @@ def Crear_Kobo(NCliente):
 ##################################################################
 def Nombre_Cliente():
 
-    #NCliente = 'Cliente Prueba'
-    #NCliente = 'Antonio Ortega'
-    #NCliente = 'Beatriz Escobedo'
-    NCliente = 'Monica Cortes'
+    #NCliente = 'Joaquin Gamero'
+    NCliente = 'Armando Mendoza'
+
 
     return NCliente
 
@@ -122,18 +122,18 @@ if __name__ == '__main__':
     Opcion='4'
 
 
-    if Opcion == '1': # NO CONVENDRIA LIMPIAR ESTO PARA TENER ESTE ARCHIVO MAS LEGIBLE?
+    if Opcion == '1':
         print("Creando Lista")
 
     if Opcion == '2':
         print("Deciframiento y Kobo")
-        VE = leer_volts(NCliente)
+        #VE = leer_volts(NCliente)
         Crear_Kobo(NCliente)
         #hipervinculos(NCliente)
 
-    if Opcion == '3': # IGUAL AL COMENTARIO ANTERIOR, NO CONVENDRIA LIMPIAR ESTO?
-        leer_volts(NCliente)
-
+    if Opcion == '3':
+        potecial_ahorro(NCliente)
+        leer_potencial(NCliente)
 
 
 
@@ -141,12 +141,15 @@ if __name__ == '__main__':
         print("Generando Reporte")
         datosSolar=pd.DataFrame()
         #Excel, Cliente = abrirexcel()
+        ahorro=leer_potencial(NCliente)
+        #ahorro=140
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
         print(solar[0])
+
         if solar[0] =='Si':
             datosSolar = leer_solar(NCliente)
 
-        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje)
+        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro)
 
 
 

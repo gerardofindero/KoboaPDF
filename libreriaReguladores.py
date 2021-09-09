@@ -132,6 +132,7 @@ class libreriaReguladores:
             self.dbPro = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
                 sheet_name='protectorVoltaje')
+
     def setData(self,nomReg = None,VA = None,wC = None,w = None,
                 uso=None,dispPrincipal=None,tol=None,vEstEle=None,
                 vEstMec=None,DAC=None,nSob=None,nSub=None,tSob=None,tSub=None):
@@ -171,6 +172,7 @@ class libreriaReguladores:
             self.val=True
         else:
             self.val=False
+
     def validacionVariables(self,nomReg,VA,wC,w,uso,dispPrincipal,tol,vEstEle,vEstMec,DAC,nSob,nSub,tSob,tSub):
         val_nomReg        = False
         val_VA            = False
@@ -346,11 +348,12 @@ class libreriaReguladores:
                 'roi': roi,
                 'accion': ['compra']})
             self.sustitutos = self.sustitutos.append(df.loc[df.roi<3,:], ignore_index=True)
+
     def armarTxt(self):
         txt = ''
         print('\nIniciando armarTxt')
         if not self.val:
-            print('Variables no validadas - No se peude proceder con el módulo')
+            print('Variables no validadas - No se puede proceder con el módulo')
         else:
             print('INICIANDO MÓDULO DE REGULADORES DE FORMA INDIVIDUAL\n')
             if self.vEst:

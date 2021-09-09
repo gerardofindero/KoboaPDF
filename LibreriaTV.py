@@ -84,19 +84,19 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         if Consumo==0:
             Consumo=0.1
         ROI=Precio/(DAC*Ahorro*Consumo)
-        print(ROI)
+        print(Percentil)
 
         if Consumo<10:
             Texto = Texto + ' ' + lib.loc[0, 'G']
 
-            if Percentil>0.9:
+            if Percentil>0.8:
                 Texto = Texto + ' ' + lib.loc[1, 'G']
 
 
         if 10<=Consumo<100:
             Texto = Texto + ' ' + lib.loc[2, 'G']
 
-            if Percentil<0.9:
+            if Percentil<0.8:
                 Texto = Texto + ' ' + lib.loc[3, 'G']
 
             if ROI<18:

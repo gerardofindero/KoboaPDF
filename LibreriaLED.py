@@ -38,7 +38,7 @@ def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensad
 
     ## Se lee la libreria textos de luminarias con la función libreriaL() y se asigna a 'Lib'
     Lib = libreriaL()
-
+    print(Luminaria)
     ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO). 
     Luminaria['Adicional'].fillna('NA', inplace=True)
 
@@ -139,11 +139,11 @@ def libreriaLED():
 ## En esta funión se llevan a cabo los calculos para tener el % de ahorro y el ROI
 ## se eligen los textos correpondientes.
 
-def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI): # Variables se jalan de archivo de Excel en pestaña Desciframiento. DE DONDE SALE 'tex'
+def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
     #Se lee libreria de textos
     Lib =  libreriaL()
-    TextoCompleto = ''
-    ENTY = ['nada', 'nada']
+    TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
+    ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
     if len(EntyTip.split()) == 2:
         ENTY = EntyTip.split()
@@ -215,7 +215,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
         #Se cambian las variables para adecuarlas a la base de datos
         tipo=ENTY[0]
-        tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco oara ser igual a la de la base de datos.
+        tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco para ser igual a la de la base de datos.
         #print('Tipo: ' + str(tipo))
         entrada=ENTY[1]
         entrada = DiccionarioLuz(entrada)
@@ -230,7 +230,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             #print('Precio; '+ str(Precio))
             #print('Link: '+ Link)
             #Formulas
-            TT = (1 - (ConLED / Watts))*100
+            TT = (1 - (float(ConLED) / Watts))*100
             ROI = abs((Numero * Precio) / ((TT/100) * VV * DAC)) # Calcula retorno de inversion en bimestres.
 
             ## Se elige el texto correspondiente de la libreria de textos para el ROI correspondiente
@@ -252,6 +252,10 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             TextoCompleto = TextoCompleto.replace('[NUML]', str(round(Numero, 0)))
             TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
             TextoCompleto = TextoCompleto.replace('[...]', '')
+
+            Address = 'Link de compra'
+            LinkS = '<link href="' + str(Link) + '"color="blue">' + Address + ' </link>'
+            TextoCompleto = TextoCompleto + '<br /> '+  '<br /> '+LinkS
             TextoCompleto = TextoCompleto+'. ' + Link
 
         else:
@@ -271,7 +275,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     # Lo que pasa si el foco no está especificado en términos de tecnología.
     else:
         TextoCompleto = 'No existe información suficiente para una recomendación'
-        TextoCompleto = TextoCompleto.replace('[...]','')
+
+    TextoCompleto = TextoCompleto.replace('[...]','')
+    TextoCompleto = TextoCompleto.replace('[/n]','<br />')
 
 
 
@@ -289,7 +295,7 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec): # Esta función s
     ## Para buscar por potencia equivalente se  usa un rango de +-20% en el foco orginal
     mx=potencia+(potencia*0.2)
     mn=potencia-(potencia*0.2)
-
+    LIB=LIB.fillna(0)
     ## Se va filtrando la base de datos con la información del excel y se elige la opción TOP choice
     Filtro1 = LIB.loc[LIB['F'] == tipo]
     Filtro2 = Filtro1.loc[Filtro1['G'] == entrada]
@@ -298,17 +304,17 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec): # Esta función s
         Filtro3 = Filtro2.loc[(Filtro2['J'].astype(int)) < mx]
         Filtro4 = Filtro3.loc[Filtro3['J'] > mn]
     else:
-        Filtro3 = Filtro2.loc[(Filtro2['H'].astype(int)) < mx]
-        Filtro4 = Filtro3.loc[Filtro3['H'] > mn]
+        Filtro3 = Filtro2.loc[(Filtro2['I'].astype(int)) < mx]# Parece estar aquí el error de que no encontraba focos porque H se refiere a la potencia en LED, no en equivalente halógeno/incandescente.
+        Filtro4 = Filtro3.loc[Filtro3['I'] > mn] # Parece estar aquí el error de que no encontraba focos
 
     Filtro5 = Filtro4.loc[Filtro4['M'] == color]
     Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
     Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
     Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
     Filtro = Filtro8.loc[Filtro2['AA'] =='Top choice']
-
+    print(Filtro['H'])
     if not Filtro.empty:
-        return Filtro['F'].values[0],Filtro['R'].values[0],Filtro['Q'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
+        return Filtro['H'].values[0],Filtro['W'].values[0],Filtro['V'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
 
     else:
         return 0, 0, ''
