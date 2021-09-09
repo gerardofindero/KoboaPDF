@@ -38,6 +38,7 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     consumoTrans= consumo**0.3
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     percentil=round(percentil,2)
+    print(percentil)
     #print(percentil)
     lib=leerLibreriaPlanchas()
     Addres = 'Estrategia para planchas'
@@ -48,7 +49,7 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
         texto = texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso))
 
     if percentil <0.33:
-        texto=lib.loc[4,'C']
+        texto=lib.loc[4,col]
     elif 0.33<=percentil<0.45:
         texto = texto + ' '+lib.loc[5, col]
     elif 0.45<=percentil<0.55:

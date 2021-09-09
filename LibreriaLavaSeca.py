@@ -52,6 +52,7 @@ def LeeClavesLavaSeca(Claves,consumo):
 
 
             Texto = Texto.replace('["PCML"]', str(int(100-Percentil*100)))
+            Texto = Texto.replace('["PCMLF"]', str(int(Percentil * 100)))
             Texto = Texto.replace('[/n]', '<br />')
 
         if ClavesS[0] == 'SC':
@@ -69,6 +70,9 @@ def LeeClavesLavaSeca(Claves,consumo):
                 Texto = Texto + ' ' + lib.loc[5, 'E']
 
             Texto = Texto.replace('["PCMS"]', str(int(100-Percentil*100)))
+            Texto = Texto.replace('["PCMSF"]', str(int( Percentil * 100)))
+
+
             Texto = Texto.replace('[/n]', '<br />')
 
         # if Standby > 0:
