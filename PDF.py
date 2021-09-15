@@ -1128,26 +1128,11 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             #Consejos=analizarCTV(atac, 6.4)
             Soloequipo=Nfuga.split()
             equiposFuga.append(Soloequipo[0].lower())
-
             if fugat[13]!='X':
                 Consejos = Consejos+' '+fugat[13]+'<br />'
-            # else:
-            #
-            #     Consejos= Consejos+' '+textodeconsejos(Nfuga)
 
         if Atacable:
             Consejos= Consejos+' '+textodeconsejos(equiposFuga)
-
-            # dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
-            # Consejos=(CTV.armarTexto(voltaje, dfCTV))
-            # dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
-            # Consejos=(CTV.armarTexto(voltaje, dfCTV))
-            # if Consejo == '.' and repetido == False:
-            #     Consejos = Consejos+' ' + 'Te puedes apoyar de un timer inteligente para reducir el consumo de energía de tus dispositivos y recuperar tu inversión en el corto plazo.'
-            #     repetido=True
-            # else:
-            #     Consejos = Consejos +' '+ fugat[13]
-            # print(Consejos)
 
         if Atacable:
             if len(Consejos) < 650:

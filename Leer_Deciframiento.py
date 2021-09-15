@@ -33,14 +33,6 @@ def leer_potencial(Cliente):
     Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N']
     Exx.columns = Dic
     Ahorro=Exx.loc[5,'C']
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-    print(Ahorro)
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
-    print(Ahorro)
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     return Ahorro
 
 
@@ -54,8 +46,6 @@ def leer_solar(Cliente):
     DSolar = pd.DataFrame(index=['Produccion','MaxW','MaxkWh','Min','Medidor','ProduccionSem','ProduccionBim'],
                         columns=['F1','F2','F3','Total'])
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     DSolar.loc['Produccion','F1']= Exx.loc[1, ['J']][0]
     DSolar.loc['MaxW', 'F1']      = Exx.loc[9, ['J']][0]
     DSolar.loc['MaxkWh', 'F1']    = Exx.loc[5, ['J']][0]
@@ -73,9 +63,7 @@ def leer_solar(Cliente):
 
     DSolar.loc['Medidor', 'Total'] = Exx.loc[11, ['L']][0]
     DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[13, ['L']][0]
-=======
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+
     DSolar.loc['Produccion','F1']= Exx.loc[3, ['J']][0]
     DSolar.loc['MaxW', 'F1']      = Exx.loc[5, ['J']][0]
     DSolar.loc['MaxkWh', 'F1']    = Exx.loc[7, ['J']][0]
@@ -93,10 +81,6 @@ def leer_solar(Cliente):
 
     DSolar.loc['Medidor', 'Total'] = Exx.loc[16, ['L']][0]
     DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[12, ['L']][0]
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
 
 

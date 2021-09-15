@@ -38,14 +38,6 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     consumoTrans= consumo**0.3
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     percentil=round(percentil,2)
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-    print(percentil)
-    #print(percentil)
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     lib=leerLibreriaPlanchas()
     Addres = 'Estrategia para planchas'
     Link   = links.loc[0, 'C']
@@ -64,19 +56,9 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
         texto = texto + ' '+lib.loc[7, col]
     elif percentil>=0.66:
         texto = texto + ' '+lib.loc[8, col]
-
-<<<<<<< HEAD
-<<<<<<< HEAD
     texto =  texto.replace('[perc_cons]',str(int(percentil*100))).replace('[link_blog_planchas]', fc.ligarTextolink(Addres,Link))
-=======
     texto =  texto.replace('[1-perc_cons]',str(int(percentil*100))).replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
-
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
     texto =  texto.replace('[1-perc_cons]',str(int(percentil*100))).replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
-
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-
     texto =  texto.replace('\n','<br />')
     return texto
 

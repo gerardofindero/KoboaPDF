@@ -38,15 +38,9 @@ def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensad
 
     ## Se lee la libreria textos de luminarias con la función libreriaL() y se asigna a 'Lib'
     Lib = libreriaL()
-<<<<<<< HEAD
-<<<<<<< HEAD
     ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO).
-=======
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     print(Luminaria)
-    ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO). 
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+    ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO).
     Luminaria['Adicional'].fillna('NA', inplace=True)
 
     ## Se resetea el indice para tener la referencia bien establecida (Luminaria KOBO).
@@ -294,16 +288,8 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
     ## Se lee la base de datos
     LIB = libreriaLED() # ESTA CREO QUE ESTA DECLARADA SOLO COM 'Libreria' EN LA FUNCION QUE LA IMPORTA
     ## Para buscar por potencia equivalente se  usa un rango de +-20% en el foco orginal
-<<<<<<< HEAD
     mx=(potencia+(potencia*0.4))
     mn=(potencia-(potencia*0.2))/numero
-=======
-    mx=potencia+(potencia*0.2)
-    mn=potencia-(potencia*0.2)
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     LIB=LIB.fillna(0)
     ## Se va filtrando la base de datos con la información del excel y se elige la opción TOP choice
     Filtro1 = LIB.loc[LIB['F'] == tipo]
@@ -312,7 +298,6 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
     print(mx)
     print(mn)
 
-<<<<<<< HEAD
     # if tec=='fluorescente':
     #     Filtro3 = Filtro2[Filtro2['J'] < mx]
     #     Filtro4 = Filtro3[Filtro3['J'] > mn]
@@ -329,7 +314,7 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
 
     if not Filtro.empty:
         print(Filtro['V'].values[0])
-=======
+
     if tec=='fluorescente':
         Filtro3 = Filtro2.loc[(Filtro2['J'].astype(int)) < mx]
         Filtro4 = Filtro3.loc[Filtro3['J'] > mn]
@@ -342,12 +327,7 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
     Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
     Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
     Filtro = Filtro8.loc[Filtro2['AA'] =='Top choice']
-    print(Filtro['H'])
     if not Filtro.empty:
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
         return Filtro['H'].values[0],Filtro['W'].values[0],Filtro['V'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
 
     else:

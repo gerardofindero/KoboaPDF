@@ -69,15 +69,6 @@ def caritaCafetera(consumo,clave):
 
 def caritaEquipos(consumo,clave):
     kWh=float(consumo)
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-    print(kWh)
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
-    print(kWh)
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     if kWh>=70:
         Ca = 3
     elif 25<kWh<70:
@@ -126,8 +117,7 @@ def caritaBomba(consumo,clave):
     if 50 > kWh:
         Ca = 1
     return Ca
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 
 def caritaRefri(consumo,Claves):
     kWh = float(consumo)
@@ -148,11 +138,9 @@ def caritaRefri(consumo,Claves):
     if 0.5<=percentil<0.95:
         Ca = 2
     if 0.5 > percentil:
-=======
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+        Ca = 1
 
-def caritaRefri(consumo,clave):
+def caritaRefriY(consumo,clave):
     kWh = float(consumo)
 
     DatosTV=clave.split(',')
@@ -163,10 +151,6 @@ def caritaRefri(consumo,clave):
     if 100<kWh<170:
         Ca = 2
     if 100 > kWh:
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
         Ca = 1
     return Ca
 
@@ -184,7 +168,7 @@ def caritaPlancha(consumo,clave):
     if 0.33 > Percentil:
         Ca = 1
     return Ca
-<<<<<<< HEAD
+
 
 def caritaAires(consumo,clave):
     Ca=2
@@ -195,18 +179,9 @@ def caritaAires(consumo,clave):
     if  200 >= consumo:
         Ca = 1
     return Ca
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
 
-<<<<<<< HEAD
 def definircarita(Equipo):
-=======
 
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
-
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     print('Poniendo caritas...')
     for index,aparato in Equipo.iterrows():
         if pd.notna(aparato[16]):
@@ -225,18 +200,12 @@ def definircarita(Equipo):
                 Carita =caritaBomba(consumo,clave)
             elif equipoid == 'PL':
                 Carita =caritaPlancha(consumo,clave)
-<<<<<<< HEAD
-<<<<<<< HEAD
             elif equipoid == 'MC':
                 Carita =caritaMicroondas(consumo,clave)
             elif equipoid == 'CF':
                 Carita =caritaCafetera(consumo,clave)
             elif equipoid == 'AA':
                 Carita =caritaAires(consumo,clave)
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
             else:
                 Carita =caritaEquipos(consumo, clave)
 

@@ -195,14 +195,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         cony=cony+1
 
     workbook.save()
-<<<<<<< HEAD
     #workbook.close()
-=======
-    workbook.close()
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
 
 
 # ################### Hoja de Potencial de ahorro ####################################

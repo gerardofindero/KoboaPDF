@@ -83,44 +83,20 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
 
         if Consumo==0:
             Consumo=0.1
-<<<<<<< HEAD
-        ROI=abs(Precio/(DAC*Ahorro*Consumo))
-=======
-        ROI=Precio/(DAC*Ahorro*Consumo)
-        print(Percentil)
-<<<<<<< HEAD
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
 
+        ROI=abs(Precio/(DAC*Ahorro*Consumo))
+        #ROI=Precio/(DAC*Ahorro*Consumo)
+        print(Percentil)
         if Consumo<25:
             Texto = Texto + ' ' + lib.loc[0, 'G']
-
-<<<<<<< HEAD
-<<<<<<< HEAD
             if Percentil>0.8 and ROI<18:
-=======
-            if Percentil>0.8:
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
-            if Percentil>0.8:
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
                 Texto = Texto + ' ' + lib.loc[1, 'G']
 
 
         if 25<=Consumo<100:
             if Uso>30:
                 Texto = Texto + ' ' + lib.loc[2, 'G']
-
-<<<<<<< HEAD
-<<<<<<< HEAD
             elif Percentil<0.8:
-=======
-            if Percentil<0.8:
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
-=======
-            if Percentil<0.8:
->>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
                 Texto = Texto + ' ' + lib.loc[3, 'G']
 
             elif ROI<18:
