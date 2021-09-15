@@ -39,11 +39,17 @@ def bombas (Excel,Nocircuito):
 
     if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= InfoDeco.filter(regex='bombap')
-        Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoBomba.filter(regex='nominal')[0])
+
         Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(InfoBomba.filter(regex='standby')[0])
+
+        if not InfoDeco.filter(regex='nominal').empty and InfoDeco.filter(regex='nominal')[0]!=0:
+            Aparatos_C.loc['Bomba de Presión', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
+
+        if not InfoDeco.filter(regex='real').empty and InfoDeco.filter(regex='real')[0]!=0:
+            Aparatos_C.loc['Bomba de Presión', 'Nominal'] = InfoDeco.filter(regex='real')[0]
+
         Aparatos_C.loc['Bomba de Presión', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='real_codigofindero')[0]
-        Aparatos_C.loc['Bomba de Presión', 'Nominal'] = InfoBomba.filter(regex='nominal')[0]
         Aparatos_C.loc['Bomba de Presión', 'Notas'] = InfoBomba.filter(regex='notas')[0]
         Aparatos_C.loc['Bomba de Presiónn', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Presión', 'Marca'] = ' '
@@ -53,8 +59,13 @@ def bombas (Excel,Nocircuito):
 
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
-        Aparatos_C.loc['Bomba de Gravitación', 'Real'] = consumoEq(InfoDeco.filter(regex='real')[0])
-        Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = consumoEq(InfoDeco.filter(regex='nominal')[0])
+
+        if not InfoDeco.filter(regex='nominal').empty and InfoDeco.filter(regex='nominal')[0]!=0:
+            Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
+
+        if not InfoDeco.filter(regex='real').empty and InfoDeco.filter(regex='real')[0]!=0:
+            Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='real')[0]
+
         Aparatos_C.loc['Bomba de Gravitación', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Bomba de Gravitación', 'Marca'] = 'Bomba Gravitacional'
         Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
@@ -85,6 +96,7 @@ def bombas (Excel,Nocircuito):
 
         if Aparatos_C.loc['Bomba de Recirculación', 'Standby'] > 0:
             Aparatos_C.loc['Bomba de Recirculación', 'CodigoS'] = CodigoStandby
+
         Aparatos_C.loc['Bomba de Recirculación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
         Aparatos_C.loc['Bomba de Recirculación', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Recirculación', 'Atacable'] = 'Si'
@@ -95,10 +107,12 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Alberca', 'Zona'] = zona
         Aparatos_C.loc['Alberca', 'Nombre'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Alberca', 'Standby'] = InfoDeco.filter(regex='standby')[0]
-        if not InfoDeco.filter(regex='nominal').empty:
+
+        if not InfoDeco.filter(regex='nominal').empty and InfoDeco.filter(regex='nominal')[0]!=0:
             Aparatos_C.loc['Alberca', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
-        else:
+        if not InfoDeco.filter(regex='real').empty and InfoDeco.filter(regex='real')[0]!=0:
             Aparatos_C.loc['Alberca', 'Nominal'] = InfoDeco.filter(regex='real')[0]
+
         Aparatos_C.loc['Alberca', 'Solar'] = InfoDeco.filter(regex='solar')[0]
         Aparatos_C.loc['Alberca', 'CodigoN'] = InfoDeco.filter(regex='real_codigofindero')[0]
 
@@ -128,5 +142,5 @@ def bombas (Excel,Nocircuito):
     #Aparatos_C.loc[2, 'Presion planta baja'] = InfoDeco.filter(regex='presionpb')[0]
 
     Aparatos=Aparatos_C.dropna(1,thresh=1)
-    #print(Aparatos)
+    print(Aparatos)
     return Aparatos

@@ -33,8 +33,6 @@ def leerConsumoMicroondas(consumo, hrsUso=None):
     lib=leerLibreriaMicroondas()
     col='D'
     texto = ''
-    print(percentil)
-    print(hrsUso)
 
     if (not (hrsUso is None)) and(hrsUso!=0)and(percentil>=0.45):
         print('entre')

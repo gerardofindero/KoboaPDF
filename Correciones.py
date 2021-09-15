@@ -27,6 +27,10 @@ def Lugar(lugar):
         lugar = 'Baño de Visitas'
     if lugar == 'rec_mara_ni_o_s':
         lugar = 'Recámara niños'
+    if lugar == 'rec_mara_nino_s':
+        lugar = 'Recámara niños'
+    if lugar == 'rec_mara_ninas':
+        lugar = 'Recámara niños'
     if lugar == 'rec_mara_ni_a_s':
         lugar = 'Recámara niñas'
     if lugar == 'rec_mara_principal':
@@ -39,5 +43,9 @@ def Lugar(lugar):
         lugar='Biblioteca'
     if lugar == 'recamara_servicio':
         lugar = 'Cuarto de servicio'
+    if lugar == 'salatv_PB':
+        lugar = 'Sala de TV planta baja'
+    if lugar == 'salatv_PA':
+        lugar = 'Sala de TV planta alta'
 
     return lugar

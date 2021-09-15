@@ -209,7 +209,7 @@ class libreriaTubosFluorescentes:
         #filPla = filPla & (self.dbPanel['Lumenes Panel [Lm]']>(lmXp*0.9)) & (self.dbPanel['Lumenes Panel [Lm]']<(lmXp*1.35))
         filPla = filPla & (self.dbPanel['Lumenes Panel [Lm]'] > (lmXp * 0.5)) & (self.dbPanel['Lumenes Panel [Lm]'] < (lmXp * 2))
         opcPla = self.dbPanel.loc[filPla,:].reset_index().copy()
-        print(opcPla['Lumenes Panel [Lm]'],'\n',opcPla['Potencia Panel [W]'])
+        #print(opcPla['Lumenes Panel [Lm]'],'\n',opcPla['Potencia Panel [W]'])
         opcPla['kwhAhorroBimestral'] = (wXp-opcPla['Potencia Panel [W]'])*24*60*(self.hrsUso/7/24)*self.plnu/1000
         opcPla['ahorro'] = opcPla *self.DAC
         opcPla['roi']    = opcPla['Costo Panel LED']*self.plnu/opcPla['ahorro']/6
