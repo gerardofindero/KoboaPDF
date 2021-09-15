@@ -18,20 +18,20 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
     if isinstance(Circuito.filter(regex='comunicaciones_equipos_desconectar_c_i')[0], str):
         Nomedidos = Circuito.filter(regex='comunicaciones_equipos_desconectar_c_i')[0]
     else:
-        Nomedidos = " no_hay"
+        Nomedidos = "no_hay"
 
     indx = 0
 
     for i in Equipos:
         if i == 1:
             Circuito=Circuito.filter(regex='comunicaciones')
-
             if indx == 1:
                 InfoDeco = Circuito.filter(regex='telefono')
                 if InfoDeco.filter(regex='zona')[0] == 'otro':
                     Aparatos_C.loc['Telefono', 'Zona'] = InfoDeco.filter(regex='zona_otro')[0]
                 else:
                     Aparatos_C.loc['Telefono', 'Zona'] = InfoDeco.filter(regex='zona')[0]
+
                 Aparatos_C.loc['Telefono', 'Marca']    = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Telefono', 'Existencia'] = 1
                 Aparatos_C.loc['Telefono', 'Atacable'] = 'No'
@@ -39,11 +39,11 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Telefono', 'Clave'] = 'X'
 
 
-                # if 'telefono' in Nomedidos:
-                #     print("telefono no desconectado")
-                # else:
-                #     Aparatos_C.loc['Telefono', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                #     Aparatos_C.loc['Telefono', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
+                if 'telefono' in Nomedidos:
+                    print("telefono no desconectado")
+                else:
+                    Aparatos_C.loc['Telefono', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
+                    Aparatos_C.loc['Telefono', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
 
 
 
@@ -171,7 +171,6 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['Otro', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Otro', 'Marca'] = InfoDeco.filter(regex='comunicaciones_otro_c_i')[0]
                 Aparatos_C.loc['Otro', 'Existencia'] = 1
-                Aparatos_C.loc['Otro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Otro', 'Notas'] = InfoDeco.filter(regex='nota')[0]
                 Aparatos_C.loc['Otro', 'Clave'] = 'X'
 
@@ -180,11 +179,16 @@ def comunicaciones(Excel,Nocircuito, NomCircuito):
                 else:
                     Aparatos_C.loc['Otro', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                     Aparatos_C.loc['Otro', 'CodigoS'] = CodStandby
+                if Aparatos_C.loc['Otro', 'Marca']== 'telefono' or Aparatos_C.loc['Otro', 'Marca']=='seguridad':
+                    Aparatos_C.loc['Otro', 'Atacable'] = 'No'
+                else:
+                    Aparatos_C.loc['Otro', 'Atacable'] = 'Si'
 
         indx = indx + 1
 
     Aparatos_C.loc['Notas', 'Marca'] = Circuito.filter(regex='comunicaciones_otro_nota_c_i')[0]
     Aparatos_C.loc['Notas', 'Existencia'] = 1
+
 
     if Nomedidos!=0:
         SumaMedidos= Aparatos_C['Standby'].sum()

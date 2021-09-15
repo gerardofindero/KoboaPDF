@@ -76,36 +76,62 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         Pulgadas=float(Datos[2])
         Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
 
-        Ahorro= (Potencia - math.exp(3.189644 + 0.034468 * Pulgadas)) / Potencia
+        Ahorro= (Potencia - math.exp(3.189644 + (0.034468 * Pulgadas))) / Potencia
         XX = np.log(Potencia)
         Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
 
 
         if Consumo==0:
             Consumo=0.1
+<<<<<<< HEAD
+        ROI=abs(Precio/(DAC*Ahorro*Consumo))
+=======
         ROI=Precio/(DAC*Ahorro*Consumo)
-        print(ROI)
+        print(Percentil)
+<<<<<<< HEAD
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+=======
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
 
-        if Consumo<10:
+        if Consumo<25:
             Texto = Texto + ' ' + lib.loc[0, 'G']
 
-            if Percentil>0.9:
+<<<<<<< HEAD
+<<<<<<< HEAD
+            if Percentil>0.8 and ROI<18:
+=======
+            if Percentil>0.8:
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+=======
+            if Percentil>0.8:
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
                 Texto = Texto + ' ' + lib.loc[1, 'G']
 
 
-        if 10<=Consumo<100:
-            Texto = Texto + ' ' + lib.loc[2, 'G']
+        if 25<=Consumo<100:
+            if Uso>30:
+                Texto = Texto + ' ' + lib.loc[2, 'G']
 
-            if Percentil<0.9:
+<<<<<<< HEAD
+<<<<<<< HEAD
+            elif Percentil<0.8:
+=======
+            if Percentil<0.8:
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+=======
+            if Percentil<0.8:
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
                 Texto = Texto + ' ' + lib.loc[3, 'G']
 
-            if ROI<18:
+            elif ROI<18:
                 Texto = Texto + ' ' + lib.loc[4, 'G']
                 linkA=EncontrarRemplazo(reemplazos, Pulgadas)
                 Address = 'Link de compra'
                 LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
                 Texto = Texto + '<br /> '+ '<br /> '+LinkS
-
+            else:
+                Texto = Texto+'Tienes un uso ligeramente mayor a la mayoria de nuestros clientes, Procura apagar tu ' \
+                              'TV cuando no la estés viendo'
         if 100<=Consumo:
             Texto = Texto + ' ' + lib.loc[5, 'G']
 

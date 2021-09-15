@@ -44,6 +44,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1 = workbook.sheets['Desciframiento']
     #Deciframiento = pd.concat([Equipos, Luminarias, Fugas])
     Sheet1.range('A6').value = Equipos
+    print(Luminarias)
     Sheet1.range(len(Equipos)+9,1).value = Luminarias
     Sheet1.range(len(Equipos)+len(Luminarias)+12,1).value= Fugas
 
@@ -76,7 +77,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     for i in range(len(Equipos)):
         Sheet1.range(7+i, 9).value = '=F'+str(7+i)+'*C$2'
-        Sheet1.range(7+i, 11).value = '=IF(J'+str(7+i)+'="NM",I'+str(7+i)+',(J'+str(7+i)+' / G'+str(7+i)+') * I'+str(7+i)+')'
+        #Sheet1.range(7+i, 11).value = '=IF(J'+str(7+i)+'="NM",I'+str(7+i)+',(J'+str(7+i)+' / G'+str(7+i)+') * I'+str(7+i)+')'
+        Sheet1.range(7 + i, 11).value ='=I'+str(7+i)
         Sheet1.range(7+i, 12).value = '=K'+str(7+i)+' / C$3'
         Sheet1.range(7+i, 13).value = '=K'+str(7+i)+'*G$1'
 
@@ -153,15 +155,16 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     infoL['B']=infoL['B'].str.upper()
     cony=0
     infoL['J'].fillna('X')
-    print(infoL['J'])
+    #Equipos = Equipos[~Equipos['Codigo'].str.contains('QQ', regex=False, na=False)]
     for i in Equipos['Codigo']:
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
-        if not identificados.empty:
-            Sheet1.range(7 + cony, 6).value =infoL.loc[identificados[0],'D']
-            Sheet1.range(7 + cony, 7).value = infoL.loc[identificados[0], 'F']
-            Sheet1.range(7 + cony, 16).value = infoL.loc[identificados[0], 'H']
-            Sheet1.range(7 + cony, 8).value = infoL.loc[identificados[0], 'J']
+        if not 'QQ' in identificados:
+            if not identificados.empty:
+                Sheet1.range(7 + cony, 6).value =   infoL.loc[identificados[0], 'D']
+                Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
+                Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
+                Sheet1.range(7 + cony, 8).value =   infoL.loc[identificados[0], 'J']
 
         else:
             Sheet1.range(7 + cony, 8).value ='=K8 * 1000 / J8'
@@ -170,16 +173,15 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         cony=cony+1
     cony = 0
     inicioL = len(Equipos) + 10
-
-
-
     for i in Luminarias['Codigo']:
+        i=str(i)
         i=i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
             Sheet1.range(inicioL + cony, 6).value = infoL.loc[identificados[0], 'D']
             Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
             Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
+            Sheet1.range(7 + cony, 8).value = infoL.loc[identificados[0], 'J']
         cony = cony + 1
 
     cony = 0
@@ -193,123 +195,130 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         cony=cony+1
 
     workbook.save()
+<<<<<<< HEAD
+    #workbook.close()
+=======
     workbook.close()
+<<<<<<< HEAD
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+=======
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
 
 
-################### Hoja de Potencial de ahorro ####################################
-
-
-    Luminarias = pd.DataFrame(columns=['Claves','Tipo', 'Luces', 'Ubicacion Exacta',
-                                       'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
-                                       'Reduccion', 'kWh de ahorro', 'Pesos de ahorro',
-                                       'Costo de equipos a implementar', 'Retorno de la inversión', 'Rentable'])
-    Fugas = pd.DataFrame(columns=['Claves','Atacable', 'Fuga', 'Ubicacion Exacta',
-                                  'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
-                                  'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
-                                  'Retorno de la inversión', 'Rentable'])
-
-    Equipos = pd.DataFrame(columns=[' ',' ', 'Equipo', 'Ubicacion Exacta',
-                                    'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
-                                    'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
-                                    'Retorno de la inversión', 'Rentable'])
-
-
-############################### POTENCIAL DE AHORRO ##########################################3
-    workbook = xlwings.Book(archivo_resultados)
-    try:
-        workbook.sheets.add('Potencial de ahorro')
-    except:
-        print('Hoja ya creada')
-
-    Sheet1 = workbook.sheets['Potencial de ahorro']
-    Sheet1.range('B1').value = 'Reporte Potencial de ahorro de '
-    Sheet1.range('C3').value = 'Ahorro en kWh'
-    Sheet1.range('D3').value = 'Ahorro en Pesos'
-
-    Sheet1.range('D3').api.Font.Bold = True
-    Sheet1.range('D4').value = "=C4*G$5"
-    Sheet1.range('D5').value = "=C5*G$5"
-    Sheet1.range('D6').value = "=C6*G$5"
-    Sheet1.range('C7').value = "=SUM(C4:C6)"
-    Sheet1.range('D7').value = "=SUM(D4:D6)"
-
-    Sheet1.range('B4').value = 'Subtotal ahorro de fugas'
-    Sheet1.range('B5').value = 'Subtotal ahorro de luces'
-    Sheet1.range('B6').value = 'Subtotal ahorro de por equipos'
-    Sheet1.range('B7').value = 'Potencial ahorro Total'
-    Sheet1.range('F4').value = 'Mes'
-    Sheet1.range('F5').value = 'Precio/kWh'
-    Sheet1.range('G3').value = 'Tarifa '
-    Sheet1.range('G5').value = 5.8
-
-    Fuga = FugasC[FugasC['Atacable'].str.contains('Si', regex=False, na=False)]
-    Fugas['Claves'] = Fuga['Claves']
-    Fugas['Atacable'] = Fuga['Atacable']
-    Fugas['Fuga'] = Fuga['Equipo']
-    Fugas['Ubicacion Exacta'] = Fuga['Lugar']
-    Fugas['kWh en Recibo'] = 0
-    Fugas['Pesos en Recibo'] = 0
-    Fugas['Uso actual'] = '24 Horas'
-    Fugas['Acción considerada'] = 'Apagar cuando no se use, puede usarse un Timer inteligente'
-    Fugas['Reduccion'] = 0.8
-
-    Luminaria = LuminariasC[~LuminariasC['Tipo'].str.contains('led', regex=False, na=False)]
-    Luminarias['Claves'] = Luminaria['Claves']
-    Luminarias['Tipo'] = Luminaria['Tipo']
-    Luminarias['Luces'] = 'Luminaria tipo ' + Luminaria['Tipo']
-    Luminarias['Ubicacion Exacta'] = Luminaria['Lugar']
-    Luminarias['kWh en Recibo'] = 0
-    Luminarias['Pesos en Recibo'] = 0
-    Luminarias['Uso actual'] = ' '
-    Luminarias['Acción considerada'] = 'Cambiar a iluminación tipo LED, Apagar cuando no se use'
-    Luminarias['Reduccion'] = np.select([Luminarias['Tipo'] == 'incandecente', Luminarias['Tipo'] == 'fluorecente',
-                                         Luminarias['Tipo'] == 'halogeno'], ["0.7", "0.4", "0.6"])
-
-
-    Sheet1.range('A10').options(pd.DataFrame, index=False).value= Fugas
-    Sheet1.range(len(Fugas) + 12, 1 ).options(pd.DataFrame, index=False).value = Luminarias
-
-
-    inicioF = 11
-    for i in range(len(Fugas)):
-        Sheet1.range(inicioF + i, 10).value = '=E' + str(inicioF + i) + '*( I' + str(inicioF + i) + ')'
-        Sheet1.range(inicioF + i, 11).value = '=J' + str(inicioF + i) + ' * G$5'
-
-
-    inicioF = len(Fugas) + 13
-    for i in range(len(Luminarias)):
-        Sheet1.range(inicioF + i, 10).value = '=E' + str(inicioF + i) + '*( I' + str(inicioF + i) + ')'
-        Sheet1.range(inicioF + i, 11).value = '=J' + str(inicioF + i) + ' * G$5'
-
-    Sheet1.range('C4').value = '= SUM(J11:J' + str(len(Fugas) + 11) + ')'
-    Sheet1.range("$B$3:$D$7").api.Borders.Weight = 2
-    Sheet1.range("$F$3:$H$5").api.Borders.Weight = 2
-
-    LargoFugas = len(Fugas) + 10
-    cuadroceldas = "$A$10:$N$" + str(LargoFugas)
-    Sheet1.range(cuadroceldas).api.Borders.Weight = 2
-
-    LargoFugas = len(Fugas) + len(Luminarias) + 12
-    cuadroceldas = "$A$" + str(len(Fugas) + 12) + ":$N$" + str(LargoFugas)
-    Sheet1.range(cuadroceldas).api.Borders.Weight = 2
-
-    LargoFugas = len(Fugas) + len(Luminarias) + 15
-    cuadroceldas = "$A$" + str(len(Fugas) + len(Luminarias) + 14) + ":$N$" + str(LargoFugas)
-    Sheet1.range(cuadroceldas).api.Borders.Weight = 2
-
-    Sheet1['1:1'].api.ColumnWidth = 15
-    Sheet1.range('B1').column_width = 25
-    Sheet1.range('C1').column_width = 35
-    Sheet1.range('H1').column_width = 55
-    Sheet1.range('D1').column_width = 25
-
-    gris = (200, 200, 200)
-    for i in range(14):
-        Sheet1.range(10, i + 1).color = gris
-        Sheet1.range(len(Fugas) + 12, i + 1).color = gris
-        Sheet1.range(len(Fugas) + len(Luminarias) + 14, i + 1).color = gris
-
-    workbook.save()
+# ################### Hoja de Potencial de ahorro ####################################
+#
+#
+#     Luminarias = pd.DataFrame(columns=['Claves','Tipo', 'Luces', 'Ubicacion Exacta',
+#                                        'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
+#                                        'Reduccion', 'kWh de ahorro', 'Pesos de ahorro',
+#                                        'Costo de equipos a implementar', 'Retorno de la inversión', 'Rentable'])
+#     Fugas = pd.DataFrame(columns=['Claves','Atacable', 'Fuga', 'Ubicacion Exacta',
+#                                   'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
+#                                   'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
+#                                   'Retorno de la inversión', 'Rentable'])
+#
+#     Equipos = pd.DataFrame(columns=[' ',' ', 'Equipo', 'Ubicacion Exacta',
+#                                     'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
+#                                     'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
+#                                     'Retorno de la inversión', 'Rentable'])
+#
+#
+# ############################### POTENCIAL DE AHORRO ##########################################3
+#     workbook = xlwings.Book(archivo_resultados)
+#     try:
+#         workbook.sheets.add('Potencial de ahorro')
+#     except:
+#         print('Hoja ya creada')
+#
+#     Sheet1 = workbook.sheets['Potencial de ahorro']
+#     Sheet1.range('B1').value = 'Reporte Potencial de ahorro de '
+#     Sheet1.range('C3').value = 'Ahorro en kWh'
+#     Sheet1.range('D3').value = 'Ahorro en Pesos'
+#
+#     Sheet1.range('D3').api.Font.Bold = True
+#     Sheet1.range('D4').value = "=C4*G$5"
+#     Sheet1.range('D5').value = "=C5*G$5"
+#     Sheet1.range('D6').value = "=C6*G$5"
+#     Sheet1.range('C7').value = "=SUM(C4:C6)"
+#     Sheet1.range('D7').value = "=SUM(D4:D6)"
+#
+#     Sheet1.range('B4').value = 'Subtotal ahorro de fugas'
+#     Sheet1.range('B5').value = 'Subtotal ahorro de luces'
+#     Sheet1.range('B6').value = 'Subtotal ahorro de por equipos'
+#     Sheet1.range('B7').value = 'Potencial ahorro Total'
+#     Sheet1.range('F4').value = 'Mes'
+#     Sheet1.range('F5').value = 'Precio/kWh'
+#     Sheet1.range('G3').value = 'Tarifa '
+#     Sheet1.range('G5').value = 5.8
+#
+#     Fuga = FugasC[FugasC['Atacable'].str.contains('Si', regex=False, na=False)]
+#     Fugas['Claves'] = Fuga['Claves']
+#     Fugas['Atacable'] = Fuga['Atacable']
+#     Fugas['Fuga'] = Fuga['Equipo']
+#     Fugas['Ubicacion Exacta'] = Fuga['Lugar']
+#     Fugas['kWh en Recibo'] = 0
+#     Fugas['Pesos en Recibo'] = 0
+#     Fugas['Uso actual'] = '24 Horas'
+#     Fugas['Acción considerada'] = 'Apagar cuando no se use, puede usarse un Timer inteligente'
+#     Fugas['Reduccion'] = 0.8
+#
+#     Luminaria = LuminariasC[~LuminariasC['Tipo'].str.contains('led', regex=False, na=False)]
+#     Luminarias['Claves'] = Luminaria['Claves']
+#     Luminarias['Tipo'] = Luminaria['Tipo']
+#     Luminarias['Luces'] = 'Luminaria tipo ' + Luminaria['Tipo']
+#     Luminarias['Ubicacion Exacta'] = Luminaria['Lugar']
+#     Luminarias['kWh en Recibo'] = 0
+#     Luminarias['Pesos en Recibo'] = 0
+#     Luminarias['Uso actual'] = ' '
+#     Luminarias['Acción considerada'] = 'Cambiar a iluminación tipo LED, Apagar cuando no se use'
+#     Luminarias['Reduccion'] = np.select([Luminarias['Tipo'] == 'incandecente', Luminarias['Tipo'] == 'fluorecente',
+#                                          Luminarias['Tipo'] == 'halogeno'], ["0.7", "0.4", "0.6"])
+#
+#
+#     Sheet1.range('A10').options(pd.DataFrame, index=False).value= Fugas
+#     Sheet1.range(len(Fugas) + 12, 1 ).options(pd.DataFrame, index=False).value = Luminarias
+#
+#
+#     inicioF = 11
+#     for i in range(len(Fugas)):
+#         Sheet1.range(inicioF + i, 10).value = '=E' + str(inicioF + i) + '*( I' + str(inicioF + i) + ')'
+#         Sheet1.range(inicioF + i, 11).value = '=J' + str(inicioF + i) + ' * G$5'
+#
+#
+#     inicioF = len(Fugas) + 13
+#     for i in range(len(Luminarias)):
+#         Sheet1.range(inicioF + i, 10).value = '=E' + str(inicioF + i) + '*( I' + str(inicioF + i) + ')'
+#         Sheet1.range(inicioF + i, 11).value = '=J' + str(inicioF + i) + ' * G$5'
+#
+#     Sheet1.range('C4').value = '= SUM(J11:J' + str(len(Fugas) + 11) + ')'
+#     Sheet1.range("$B$3:$D$7").api.Borders.Weight = 2
+#     Sheet1.range("$F$3:$H$5").api.Borders.Weight = 2
+#
+#     LargoFugas = len(Fugas) + 10
+#     cuadroceldas = "$A$10:$N$" + str(LargoFugas)
+#     Sheet1.range(cuadroceldas).api.Borders.Weight = 2
+#
+#     LargoFugas = len(Fugas) + len(Luminarias) + 12
+#     cuadroceldas = "$A$" + str(len(Fugas) + 12) + ":$N$" + str(LargoFugas)
+#     Sheet1.range(cuadroceldas).api.Borders.Weight = 2
+#
+#     LargoFugas = len(Fugas) + len(Luminarias) + 15
+#     cuadroceldas = "$A$" + str(len(Fugas) + len(Luminarias) + 14) + ":$N$" + str(LargoFugas)
+#     Sheet1.range(cuadroceldas).api.Borders.Weight = 2
+#
+#     Sheet1['1:1'].api.ColumnWidth = 15
+#     Sheet1.range('B1').column_width = 25
+#     Sheet1.range('C1').column_width = 35
+#     Sheet1.range('H1').column_width = 55
+#     Sheet1.range('D1').column_width = 25
+#
+#     gris = (200, 200, 200)
+#     for i in range(14):
+#         Sheet1.range(10, i + 1).color = gris
+#         Sheet1.range(len(Fugas) + 12, i + 1).color = gris
+#         Sheet1.range(len(Fugas) + len(Luminarias) + 14, i + 1).color = gris
+#
+#     workbook.save()
 
 
     return Equipos, Luminarias, Fugas
@@ -347,7 +356,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Equipo,Fuga = separar_fugasR(Refri)
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
-        print(Equipos)
 
     if not Clust.empty:
         print("Cluster")
@@ -382,7 +390,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
     if not Cal.empty:
         print("Calefaccion")
-        print(Cal)
         Equipo, Fuga = separar_fugasCal(Cal)
         Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
         Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
@@ -413,8 +420,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
 
 
-    regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
-    print(regusDF)
+    #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
+    #print(regusDF)
 
     Luminaria.fillna(' ', inplace=True)
     Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
@@ -479,6 +486,11 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Fugas.sort_values(by='Lugar', ascending=True,inplace=True)
 
     Equipos.replace(0.01,'NM',inplace=True)
+    Equipos['Codigo']=Equipos['Codigo'].str.upper()
+    Fugas['Codigo']=Fugas['Codigo'].str.upper()
+    Luminarias['Codigo']=Luminarias['Codigo'].str.upper()
+
+    Equipos = Equipos[~Equipos['Codigo'].str.contains('FF', regex=False, na=False)]
 
     # j = 0
     # for i in Luminarias.index:

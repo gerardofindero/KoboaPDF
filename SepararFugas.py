@@ -47,6 +47,7 @@ def separar_fugas(Equip):
 
 def separar_fugasBB(Equip):
     texto="H"
+    print(Equip['Nominal'])
     try:
         texto=Equip.loc[['Notas', 'Marca']]
         Equip.drop(index='Notas',inplace=True)
@@ -72,10 +73,11 @@ def separar_fugasBB(Equip):
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
     Equipos['Claves'] = Aparatos['Clave']
-
+    print(Fuga)
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
     Fuga.reset_index(inplace=True)
+
     Fugas['Codigo'] = Fuga['CodigoS']
     Fugas['Equipo']    = 'Fuga '+Fuga['index']
     Fugas['Potencia Kobo']   = Fuga['Standby']
@@ -85,6 +87,7 @@ def separar_fugasBB(Equip):
     Fugas['Notas']     = Fuga['Notas']
     Fugas['Atacable']  = Fuga['Atacable']
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
+
 
     return Equipos,Fugas
 

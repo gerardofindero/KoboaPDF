@@ -83,7 +83,6 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Decodificador1', 'Existencia'] = 1
                 Otro = InfoDeco.filter(regex='marca_otro_c_i')
                 if pd.isna(Otro[0]):
-
                     Aparatos_C.loc['Decodificador1','Marca']   = InfoDeco.filter(regex='decodificador1_marca_c_i')[0]
                 else:
                     Aparatos_C.loc['Decodificador1', 'Marca'] = Otro[0]

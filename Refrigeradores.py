@@ -29,9 +29,6 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
     Tierra = Circuito.filter(regex='refrigeracion_tierra_c_i')[0]
     MismoReg = Circuito.filter(regex='refrigeracion_mismo_regulador_c_i')[0]
 
-
-
-
     for i in Equipos:
         if i == 1:
             if indx == 1:
@@ -50,8 +47,6 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                     Aparatos_C.loc['Refrigerador', 'Zona'] = InfoDeco.filter(regex='zona_otro_c_i')[0]
                 else:
                     Aparatos_C.loc['Refrigerador', 'Zona'] = InfoDeco.filter(regex='zona_c_i')[0]
-
-
 
                 if InfoDeco.filter(regex='marca')[0] =='otro':
                     Aparatos_C.loc['Refrigerador', 'Marca'] = InfoDeco.filter(regex='marca_otro')[0]
@@ -74,7 +69,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Refrigerador', 'Prob Descr']  = InfoDeco.filter(regex='compresor_problema_descrp')[0]
                 Aparatos_C.loc['Refrigerador', 'Empaques']    = InfoDeco.filter(regex='empaques')[0]
                 Aparatos_C.loc['Refrigerador', 'Termostato']  = InfoDeco.filter(regex='termostato')[0]
-                Aparatos_C.loc['Refrigerador', 'Ventilacion'] = InfoDeco.filter(regex='ventilacion')[0]
+                Aparatos_C.loc['Refrigerador', 'Ventilacion'] = InfoDeco.filter(regex='ventilacion_c_i')[0]
+                Aparatos_C.loc['Refrigerador', 'Tipo']        = InfoDeco.filter(regex='ventilacion')[0]
                 Aparatos_C.loc['Refrigerador', 'Cierre']      = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Refrigerador', 'Tipo']        = InfoDeco.filter(regex='tipo')[0]
                 Aparatos_C.loc['Refrigerador', 'Dispensador'] = InfoDeco.filter(regex='dispensador')[0]
@@ -107,8 +103,6 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
 
 
 #########################
-
-
             if indx == 2:
                 NomAparato = 'congelador1'
                 InfoDeco = Circuito.filter(regex=NomAparato)
@@ -129,14 +123,11 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                     Aparatos_C.loc['Congelador', 'Marca'] = InfoDeco.filter(regex='marca_c_i')[0]
 
                 Aparatos_C.loc['Congelador', 'Volumen'] = float(alto) * float(ancho) * float(profundo) / 1000
-                Aparatos_C.loc['Congelador', 'Temp Conge'] = temperatura(InfoDeco.filter(regex='congelador1_temp')
-                                                                         [0])
+                Aparatos_C.loc['Congelador', 'Temp Conge'] = temperatura(InfoDeco.filter(regex='congelador1_temp')[0])
                 Aparatos_C.loc['Congelador', 'Pot Compresor'] = InfoDeco.filter(regex='compresor_potencia_c_i')[0]
-
                 PotCompresor = InfoDeco.filter(regex='compresor_potencia_c_i')[0]
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Congelador', 'Pot Compresor'] = Watt
-
                 Aparatos_C.loc['Congelador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
                 Aparatos_C.loc['Congelador', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]
                 Aparatos_C.loc['Congelador', 'Prob Descr']  = InfoDeco.filter(regex='compresor_problema_descrp')[0]
@@ -149,18 +140,14 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Congelador', 'Dispensador'] = InfoDeco.filter(regex='dispensador')[0]
                 Aparatos_C.loc['Congelador', 'CodigoN']     = InfoDeco.filter(regex='codigofindero')[0]
                 Aparatos_C.loc['Congelador', 'Notas']       = notass
-
                 if not pd.isna(InfoDeco.filter(regex='standby_c_i')[0]) :
                     Aparatos_C.loc['Congelador', 'Standby'] = consumoEq( InfoDeco.filter(regex='standby_c_i')[0])
                     Aparatos_C.loc['Congelador', 'CodigoS'] = StandbyCod
                 else:
                     Aparatos_C.loc['Congelador', 'Standby'] = 0
                     Aparatos_C.loc['Congelador', 'CodigoS'] = ' '
-
-
                 if InfoDeco.filter(regex='regulador_c_i')[0] != 'ninguno':
                     Aparatos_C.loc['Regulador Congelador', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_consumo')[0])
-
                     if InfoDeco.filter(regex='regulador_marca')[0] != 'otro':
                         Aparatos_C.loc['Regulador Congelador', 'Marca'] =  InfoDeco.filter(regex='regulador_marca')[0]
                     else:
@@ -224,7 +211,6 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 else:
                     Aparatos_C.loc['Cava', 'Marca'] = InfoDeco.filter(regex='marca_c_i')[0]
                 Aparatos_C.loc['Cava', 'Volumen'] = float(alto) * float(ancho) * float(profundo) / 1000
-                print(InfoDeco.filter(regex='temp_c_i')[0])
                 Aparatos_C.loc['Cava', 'Temp Refri'] = temperatura( InfoDeco.filter(regex='temp_c_i')[0])
                 Aparatos_C.loc['Cava', 'CodigoN'] = InfoDeco.filter(regex='codigofindero')[0]
                 #Aparatos_C.loc['Cava', 'Pot Compresor'] = InfoDeco.filter(regex='compresor_potencia')[0]
@@ -351,7 +337,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Refrigerador2', 'Prob Descr'] = InfoDeco.filter(regex='compresor_problema_descrp')[0]
                 Aparatos_C.loc['Refrigerador2', 'Empaques'] = InfoDeco.filter(regex='empaques')[0]
                 Aparatos_C.loc['Refrigerador2', 'Termostato'] = InfoDeco.filter(regex='termostato')[0]
-                Aparatos_C.loc['Refrigerador2', 'Ventilacion'] = InfoDeco.filter(regex='ventilacion_ci')[0]
+                Aparatos_C.loc['Refrigerador2', 'Ventilacion'] = InfoDeco.filter(regex='ventilacion_c_i')[0]
                 Aparatos_C.loc['Refrigerador2', 'Tipo'] = InfoDeco.filter(regex='ventilacion')[0]
                 Aparatos_C.loc['Refrigerador2', 'Dispensador'] = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Refrigerador2', 'Cierre'] = InfoDeco.filter(regex='cierre')[0]
@@ -586,7 +572,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Adicional', 'Cierre'] = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Adicional', 'Notas'] = notass
                 Aparatos_C.loc['Adicional', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby_c_i')[0])
-                Aparatos_C.loc['Adicional', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+                # Aparatos_C.loc['Adicional', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
 
                 if not InfoDeco.filter(regex='adicional_regulador_c_i')[0] == 'ninguno':
                     Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_consumo')[0])

@@ -139,7 +139,6 @@ def computo(Excel,Nocircuito, NomCircuito):
             if indx == 10:
                 InfoDeco = Circuito.filter(regex='regulador')
                 Aparatos_C.loc['Regulador', 'Zona'] = Zona
-
                 if InfoDeco.filter(regex='regulador_apagado_c_i')[0] == 'Si':
                     Aparatos_C.loc['Regulador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                     Aparatos_C.loc['Regulador', 'CodigoS'] = stnbyCod
@@ -149,8 +148,6 @@ def computo(Excel,Nocircuito, NomCircuito):
                     else:
                         Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                         Aparatos_C.loc['Regulador', 'CodigoS'] = stnbyCod
-
-
                 Aparatos_C.loc['Regulador', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Regulador', 'Existencia'] = 1
                 Aparatos_C.loc['Regulador', 'Atacable'] = 'Si'
@@ -160,7 +157,6 @@ def computo(Excel,Nocircuito, NomCircuito):
             if indx == 11:
                 InfoDeco = Circuito.filter(regex='nobreak')
                 Aparatos_C.loc['Nobreak', 'Zona'] = Zona
-
                 Aparatos_C.loc['Nobreak', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Nobreak', 'Existencia'] = 1
                 Aparatos_C.loc['Nobreak', 'Atacable'] = 'Si'

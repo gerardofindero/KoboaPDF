@@ -45,7 +45,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Calefaccion', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Calefaccion', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Calefaccion', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
-                Aparatos_C.loc['Calefaccion', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+                Aparatos_C.loc['Calefaccion', 'CodigoS'] = CodStnby
                 Aparatos_C.loc['Calefaccion', 'Clave'] = 'X'
             if indx == 1:
                 InfoDeco = Circuito.filter(regex='boiler_luz')

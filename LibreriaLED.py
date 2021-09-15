@@ -33,13 +33,20 @@ def libreriaL():
 ## 2
 ## Esta función elige la primera sección de cada texto, en base al la información reportada en KOBO
 def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensada de Kobo.
-    ## Se hace una copia de respaldo para no alterar los datos originales. 
-    Lumi = Luminaria.copy() 
+    ## Se hace una copia de respaldo para no alterar los datos originales.
+    Lumi = Luminaria.copy()
 
     ## Se lee la libreria textos de luminarias con la función libreriaL() y se asigna a 'Lib'
     Lib = libreriaL()
-
+<<<<<<< HEAD
+<<<<<<< HEAD
+    ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO).
+=======
+=======
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+    print(Luminaria)
     ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO). 
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
     Luminaria['Adicional'].fillna('NA', inplace=True)
 
     ## Se resetea el indice para tener la referencia bien establecida (Luminaria KOBO).
@@ -56,7 +63,7 @@ def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensad
         TextoCompleto = '' # Define la variable 'TextoCompleto' para llenar el texto que debe ir en el archivo, pero no asigna texto todavía.
         Car = '' # Va a ser el conjunto de caracterísiticas adicionales de los focos. Por ejemplo, temperatura de color, si es dimeable, si es foco inteligente.
         cuantos = 0 # Conteo de caracteristicas de focos
-        
+
         ## Establece los textos a reportar cuando la luminaria no es LED.
         if Tipo != 'led':
             Adicional = Luminaria.loc[i, 'Adicional'] # Agrega todas las características adicionales de un tipo de foco (p. ej. dimeable, luz cálida, foco inteligente, etc...).
@@ -83,21 +90,21 @@ def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensad
                     Car = Car + 'foco inteligente '
                     if cuantos > 0:
                         Car = Car + ','
-                    cuantos = cuantos + 1 
+                    cuantos = cuantos + 1
                 if 'filamento' in Adicional:
                     Car = Car + 'de filamento '
                     if cuantos > 0:
                         Car = Car + ','
                     cuantos = cuantos + 1
             TextoCompleto = Car
-            
+
         else:
             TextoCompleto = 'Ya es LED'
 
 
         ##Se escribe el texto resultante en el condensado de Kobo.
         Luminaria.loc[i, 'Texto'] = TextoCompleto
-        
+
         ## Se regresan los textos correspondientes como un data frame.
     return Luminaria['Texto']
 
@@ -126,7 +133,7 @@ def libreriaLED():
     Dicc = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
             'S','T','U','V','W','X','Y','Z','AA']
     Libreria.columns = Dicc
-    return Libreria 
+    return Libreria
 
 
 
@@ -139,24 +146,20 @@ def libreriaLED():
 ## En esta funión se llevan a cabo los calculos para tener el % de ahorro y el ROI
 ## se eligen los textos correpondientes.
 
-def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI): # Variables se jalan de archivo de Excel en pestaña Desciframiento. DE DONDE SALE 'tex'
+def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
     #Se lee libreria de textos
     Lib =  libreriaL()
-    TextoCompleto = ''
-    ENTY = ['nada', 'nada']
+    TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
+    ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
     if len(EntyTip.split()) == 2:
         ENTY = EntyTip.split()
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
-    print(NumyTip)
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
-    #print('Numero de focos ' + str(Numero))
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
     Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
-    #print('Potencia ' + str(Watts))
-    
-    # Textos al reporte cuando el foco ya es LED.
 
+    # Textos al reporte cuando el foco ya es LED.
     if Tecno =='led':
         if conteoled == 1:
             TextoCompleto = TextoCompleto + Lib.loc[45, 'E']
@@ -166,22 +169,18 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             conteoled = conteoled + 1
             if conteoled==5:
                 conteoled = 2
-        print(conteoled)
     # Texto al reporte cuando los focos NO son LED.
     elif tex !='NO HAY CARS':
         Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
         # la base de datos de luminarias
         # Imprimir en pantalla características de focos
-        #print('Temperatura de color: ' + str(Car1))
-        #print('Dimeable: ' + str(Car2))
-        #print('Inteligente: ' + str(Car3))
-        #print('Filamento: ' + str(Car4))
+
         if conteoNOled == 1:
             TextoCompleto = Lib.loc[32, 'E']
             conteoNOled  = conteoNOled + 1
         else:
             TextoCompleto = Lib.loc[33, 'E']
-        
+
         # Reemplaza los 'placeholders' del texto por su valor reportado en campo (la hoja de 'Desciframiento' ya tiene estos valores.
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tecno)
         TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
@@ -195,34 +194,34 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         TextoCompleto = TextoCompleto.replace('estudio_oficina', "la oficina")
         TextoCompleto = TextoCompleto.replace('Sala', "la sala")
         TextoCompleto = TextoCompleto.replace('Baño', "el baño")
-        
+
         if Numero == 1:
             TextoCompleto = TextoCompleto.replace('1', 'única')
             TextoCompleto = TextoCompleto.replace('(s)', '')
             TextoCompleto = TextoCompleto.replace('(un)', 'un')
             TextoCompleto = TextoCompleto.replace('(n)', '')
             TextoCompleto = TextoCompleto.replace('(es)','')
-        
+
         else:
             TextoCompleto = TextoCompleto.replace('(s)','s')
             TextoCompleto = TextoCompleto.replace('(un)', '')
             TextoCompleto = TextoCompleto.replace('(n)', 'n')
             TextoCompleto = TextoCompleto.replace('(es)', 'es')
-        
+
         # TEXTOS DE RETORNO DE INVERSION (Seguimos con focos que no son LED).
         ## Para las luminarias que cuentan con entrada y tipo de entrada se busca en la base de datos de las luminarias
         ## se obtienen consumo del LED, su precio y su LINK
 
         #Se cambian las variables para adecuarlas a la base de datos
         tipo=ENTY[0]
-        tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco oara ser igual a la de la base de datos.
+        tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco para ser igual a la de la base de datos.
         #print('Tipo: ' + str(tipo))
         entrada=ENTY[1]
         entrada = DiccionarioLuz(entrada)
         #print('Entrada tipo: ' + str(entrada))
         #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
 
-        ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno )
+        ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno,Numero)
         TT=0
         if ConLED != 0:
 
@@ -230,7 +229,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             #print('Precio; '+ str(Precio))
             #print('Link: '+ Link)
             #Formulas
-            TT = (1 - (ConLED / Watts))*100
+            TT = (1 - (float(ConLED) / Watts))*100
             ROI = abs((Numero * Precio) / ((TT/100) * VV * DAC)) # Calcula retorno de inversion en bimestres.
 
             ## Se elige el texto correspondiente de la libreria de textos para el ROI correspondiente
@@ -252,10 +251,16 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             TextoCompleto = TextoCompleto.replace('[NUML]', str(round(Numero, 0)))
             TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
             TextoCompleto = TextoCompleto.replace('[...]', '')
+
+            Address = 'Link de compra'
+            LinkS = '<link href="' + str(Link) + '"color="blue">' + Address + ' </link>'
+            TextoCompleto = TextoCompleto +' '+LinkS
+            TextoCompleto = TextoCompleto + '<br /> '+  '<br /> '+LinkS
             TextoCompleto = TextoCompleto+'. ' + Link
 
+
         else:
-            print ('No se encontró el tipo de foco buscado')
+            #print ('No se encontró el tipo de foco buscado')
             #Por la falta de información se usa un estandar en consumo LED y no se pone link
             TextoCompleto = TextoCompleto + '. NO SE ENCONTRO EL TIPO DE FOCO BUSCADO'
             if Tecno == 'fluorescente':
@@ -271,7 +276,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     # Lo que pasa si el foco no está especificado en términos de tecnología.
     else:
         TextoCompleto = 'No existe información suficiente para una recomendación'
-        TextoCompleto = TextoCompleto.replace('[...]','')
+
+    TextoCompleto = TextoCompleto.replace('[...]','')
+    TextoCompleto = TextoCompleto.replace('[/n]','<br />')
 
 
 
@@ -283,32 +290,65 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
 ## 5.
 ## Función para buscar el sustituto LED
-def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec): # Esta función se jala desde PDF.py
+def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta función se jala desde PDF.py
     ## Se lee la base de datos
     LIB = libreriaLED() # ESTA CREO QUE ESTA DECLARADA SOLO COM 'Libreria' EN LA FUNCION QUE LA IMPORTA
     ## Para buscar por potencia equivalente se  usa un rango de +-20% en el foco orginal
+<<<<<<< HEAD
+    mx=(potencia+(potencia*0.4))
+    mn=(potencia-(potencia*0.2))/numero
+=======
     mx=potencia+(potencia*0.2)
     mn=potencia-(potencia*0.2)
-
+<<<<<<< HEAD
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+=======
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+    LIB=LIB.fillna(0)
     ## Se va filtrando la base de datos con la información del excel y se elige la opción TOP choice
     Filtro1 = LIB.loc[LIB['F'] == tipo]
     Filtro2 = Filtro1.loc[Filtro1['G'] == entrada]
+    print(tec)
+    print(mx)
+    print(mn)
 
+<<<<<<< HEAD
+    # if tec=='fluorescente':
+    #     Filtro3 = Filtro2[Filtro2['J'] < mx]
+    #     Filtro4 = Filtro3[Filtro3['J'] > mn]
+    # else:
+    Filtro3 = Filtro2[Filtro2['I'] < mx]# Parece estar aquí el error de que no encontraba focos porque H se refiere a la potencia en LED, no en equivalente halógeno/incandescente.
+    Filtro4 = Filtro3[Filtro3['I'] > mn] # Parece estar aquí el error de que no encontraba focos
+
+
+    # Filtro5 = Filtro4.loc[Filtro4['M'] == color]
+    # Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
+    # Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
+    # Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
+    Filtro = Filtro4.loc[Filtro2['AA'] =='Top choice']
+
+    if not Filtro.empty:
+        print(Filtro['V'].values[0])
+=======
     if tec=='fluorescente':
         Filtro3 = Filtro2.loc[(Filtro2['J'].astype(int)) < mx]
         Filtro4 = Filtro3.loc[Filtro3['J'] > mn]
     else:
-        Filtro3 = Filtro2.loc[(Filtro2['H'].astype(int)) < mx]
-        Filtro4 = Filtro3.loc[Filtro3['H'] > mn]
+        Filtro3 = Filtro2.loc[(Filtro2['I'].astype(int)) < mx]# Parece estar aquí el error de que no encontraba focos porque H se refiere a la potencia en LED, no en equivalente halógeno/incandescente.
+        Filtro4 = Filtro3.loc[Filtro3['I'] > mn] # Parece estar aquí el error de que no encontraba focos
 
     Filtro5 = Filtro4.loc[Filtro4['M'] == color]
     Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
     Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
     Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
     Filtro = Filtro8.loc[Filtro2['AA'] =='Top choice']
-
+    print(Filtro['H'])
     if not Filtro.empty:
-        return Filtro['F'].values[0],Filtro['R'].values[0],Filtro['Q'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
+<<<<<<< HEAD
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+=======
+>>>>>>> 1841a59b190271d93b6a6cf4f23aed7bf96d3989
+        return Filtro['H'].values[0],Filtro['W'].values[0],Filtro['V'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
 
     else:
         return 0, 0, ''
@@ -338,13 +378,13 @@ def Caracteristicas(tex):
         Car3 = 'Si'
     else:
         Car3 = 'No'
-   
+
     if 'filamento' in tex:
         Car4 = 'Si'
     else:
-        Car4 = 'No'    
+        Car4 = 'No'
 
-    return  Car1, Car2, Car3, Car4 
+    return  Car1, Car2, Car3, Car4
 
 
 ## 7.
