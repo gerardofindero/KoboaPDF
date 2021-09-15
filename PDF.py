@@ -1463,9 +1463,7 @@ def Clasificador(aparatos):
     Aparatos.sort_values(by=['L'], inplace=True, ascending=False)
     Aparatos = Aparatos.loc[Aparatos['M'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['M'], inplace=True, ascending=False)
-
     definircarita(Aparatos)
-
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
     AparatosC = Aparatos.loc[Aparatos['A'] == 1]
@@ -1520,7 +1518,11 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     notas(canvas)
     contraportada(canvas, width, height)
 
+
+
     try:
         canvas.save()
+        print("SE HA CREADO CON EXITO EL PDF DEL CLIENTE")
+
     except Exception as e:
-        print("No se guardó el archivo. Revisar que no esté abierto.")
+        print("NO SE GUARDO EL ARCHIVO. Revisar que no esté abierto.")
