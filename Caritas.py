@@ -139,6 +139,7 @@ def caritaRefri(consumo,Claves):
         Ca = 2
     if 0.5 > percentil:
         Ca = 1
+    return Ca
 
 def caritaRefriY(consumo,clave):
     kWh = float(consumo)
