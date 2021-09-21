@@ -5,11 +5,29 @@ import xlwings
 from Carpeta_Clientes import carpeta_clientes
 def potecial_ahorro(Cliente):
 
+    print("Creando hoja de potencial de ahorro....")
+    Aparatos, LuminariasC, FugasC, Consumo, Costo, Tarifa, ConsumoFugas, Solar, Voltaje=leer_deciframiento(Cliente)
+    archivo_resultados = carpeta_clientes(Cliente)
+    workbook = xlwings.Book(archivo_resultados)
+    gris = (200, 200, 200)
+    #Consumo_bimestral = '=Resumen!A9'
+    #Tarifa = leer_tarifa_Dac()
+    ################### Hoja de Potencial de ahorro ####################################
+
+    Luminarias = pd.DataFrame(columns=['Claves', 'Tipo', 'Luces', 'Ubicacion Exacta',
+                                       'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
+                                       'Reduccion', 'kWh de ahorro', 'Pesos de ahorro',
+                                       'Costo de equipos a implementar', 'Retorno de la inversión', 'Rentable'])
+    Fugas = pd.DataFrame(columns=['Claves', 'Atacable', 'Fuga', 'Ubicacion Exacta',
+                                  'kWh en Recibo', 'Pesos en Recibo', 'Uso actual', 'Acción considerada',
+                                  'Reduccion', 'kWh de ahorro', 'Pesos de ahorro', 'Costo de equipos a implementar',
+                                  'Retorno de la inversión', 'Rentable'])
 
     Aparatos, LuminariasC, FugasC, Consumo, Costo, Tarifa, ConsumoFugas, Solar, Voltaje=leer_deciframiento(Cliente)
 
     print(LuminariasC.columns)
-
+    Aparatos, LuminariasC, FugasC, Consumo, Costo, Tarifa, ConsumoFugas, Solar, Voltaje=leer_deciframiento(Cliente)
+    print(LuminariasC.columns)
     archivo_resultados = carpeta_clientes(Cliente)
     workbook = xlwings.Book(archivo_resultados)
     gris = (200, 200, 200)
@@ -37,14 +55,13 @@ def potecial_ahorro(Cliente):
     try:
         workbook.sheets.add('PotPrueba')
     except:
+        print('Hoja de Potencial ya creada')
         print('Hoja ya creada')
-
     Sheet1 = workbook.sheets['PotPrueba']
     Sheet1.range('B1').value = 'Reporte Potencial de ahorro de '
     Sheet1.range('C3').value = 'Ahorro en kWh'
     Sheet1.range('D3').value = 'Ahorro en Pesos'
-
-    #Sheet1.range('D3').api.Font.Bold = True
+    Sheet1.range('D3').api.Font.Bold = True
     Sheet1.range('D4').value = "=C4*G$5"
     Sheet1.range('D5').value = "=C5*G$5"
     Sheet1.range('D6').value = "=C6*G$5"
@@ -100,7 +117,6 @@ def potecial_ahorro(Cliente):
     inicioF = len(Fugas) + 13
     Luminarias.reset_index(drop=True,inplace=True)
     for i in Luminarias.index:
-        print(Luminarias.loc[i,'Tipo'])
         if 'halogena' in Luminarias.loc[i,'Tipo']:
             Sheet1.range(inicioF + i, 9).value = 0.6
         if 'fluorescente' in Luminarias.loc[i,'Tipo']:

@@ -65,7 +65,7 @@ def armarTxtCaf(kwh, hrsUso=0,dscr=''):
     diasUso = dias(dscr)
     [lib, st] = leerLibreriaCafeteras()
     media = st.at[0,'B']
-    dstd  = st.at[1,'B']
+    dstd  = st.at[3,'B']
     kwh = kwh**0.42
     percentil= norm.cdf(kwh,loc=media,scale=dstd)
     txt=''
@@ -90,7 +90,6 @@ def armarTxtCaf(kwh, hrsUso=0,dscr=''):
             if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
                 txt = txt.replace(' y acumulo un total de [totalHoras] horas de uso durante la semana', '')
         else:
-            print('aqui')
             txt = txt + lib.at[6, 'D']
             if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
                 txt = txt.replace('Este dispositivo acumuló un total de [totalHoras] horas de uso durante la semana. ','')

@@ -25,7 +25,8 @@ def ClavesRefri(EquiposRefri):
         TempC = (EquiposR['Temp Conge'][0])
         NominalComp = int(EquiposR['Pot Compresor'][0])
         TempComp = float(EquiposR['Temp Compresor'][0])
-        Codigo = 'RF,'+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp)
+        Volumen =int(EquiposR['Volumen'][0])
+        Codigo = 'RF,'+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)
 
         ## Compresor
         if NominalComp > 50:
@@ -95,6 +96,7 @@ def LeeClavesR(Claves):
         TCong = Datos[1]
         NomCom=Datos[2]
         TempCom=Datos[3]
+        Volumen=Datos[4]
 
 
         if 'EB' in Claves:

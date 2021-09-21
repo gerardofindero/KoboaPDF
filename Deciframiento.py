@@ -155,15 +155,16 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     infoL['B']=infoL['B'].str.upper()
     cony=0
     infoL['J'].fillna('X')
-    print(infoL['J'])
+    #Equipos = Equipos[~Equipos['Codigo'].str.contains('QQ', regex=False, na=False)]
     for i in Equipos['Codigo']:
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
-        if not identificados.empty:
-            Sheet1.range(7 + cony, 6).value =infoL.loc[identificados[0],'D']
-            Sheet1.range(7 + cony, 7).value = infoL.loc[identificados[0], 'F']
-            Sheet1.range(7 + cony, 16).value = infoL.loc[identificados[0], 'H']
-            Sheet1.range(7 + cony, 8).value = infoL.loc[identificados[0], 'J']
+        if not 'QQ' in identificados:
+            if not identificados.empty:
+                Sheet1.range(7 + cony, 6).value =   infoL.loc[identificados[0], 'D']
+                Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
+                Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
+                Sheet1.range(7 + cony, 8).value =   infoL.loc[identificados[0], 'J']
 
         else:
             Sheet1.range(7 + cony, 8).value ='=K8 * 1000 / J8'
@@ -172,16 +173,15 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         cony=cony+1
     cony = 0
     inicioL = len(Equipos) + 10
-
-
-
     for i in Luminarias['Codigo']:
+        i=str(i)
         i=i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
             Sheet1.range(inicioL + cony, 6).value = infoL.loc[identificados[0], 'D']
             Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
             Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
+            Sheet1.range(7 + cony, 8).value = infoL.loc[identificados[0], 'J']
         cony = cony + 1
 
     cony = 0
@@ -195,7 +195,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         cony=cony+1
 
     workbook.save()
-    workbook.close()
+    #workbook.close()
 
 
 # ################### Hoja de Potencial de ahorro ####################################
@@ -349,7 +349,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Equipo,Fuga = separar_fugasR(Refri)
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
-        print(Equipos)
 
     if not Clust.empty:
         print("Cluster")
@@ -384,7 +383,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
     if not Cal.empty:
         print("Calefaccion")
-        print(Cal)
         Equipo, Fuga = separar_fugasCal(Cal)
         Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
         Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
@@ -481,6 +479,11 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Fugas.sort_values(by='Lugar', ascending=True,inplace=True)
 
     Equipos.replace(0.01,'NM',inplace=True)
+    Equipos['Codigo']=Equipos['Codigo'].str.upper()
+    Fugas['Codigo']=Fugas['Codigo'].str.upper()
+    Luminarias['Codigo']=Luminarias['Codigo'].str.upper()
+
+    Equipos = Equipos[~Equipos['Codigo'].str.contains('FF', regex=False, na=False)]
 
     # j = 0
     # for i in Luminarias.index:

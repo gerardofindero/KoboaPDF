@@ -14,6 +14,7 @@ def analizarCTV(df,DAC):
     df = df.loc[~df.nombre1.str.contains('nobreak|no break|NoBreak|No Break|regulador|Regulador'),:]
     df.loc[:,'nombre1'] = (df.loc[:,'nombre1'] + ' '+df.loc[:,'nombre2']).str.replace('_',' ')
     tags = df.tag.unique()
+    print(df)
     for tag in tags:
         claves=df.at[(df.index[df.tag==tag])[0],'claves']
         w = df.loc[df.tag==tag,'J'].sum()
@@ -63,6 +64,7 @@ class libreriaCTV:
         self.ca  = variables.at[variables.index[variables.variables=='na' ][0],'costo']
         self.cce = variables.at[variables.index[variables.variables=='nce'][0],'costo']
         self.ccs = variables.at[variables.index[variables.variables=='ncs'][0],'costo']
+
     def validarDatos(self,w=None,la=None,clv=None,DAC=None):
         print('\n Validando variables (CTV)')
         val_w    = False
@@ -80,7 +82,7 @@ class libreriaCTV:
         else:
             val_w=True
         if pd.isnull(la):
-            print('lista de aparatos es nulla')
+            print('lista de aparatos es nula')
         elif not isinstance(la,str):
             print('lista de aparatos no es de tipo cadena')
         elif len(la)<=0:
@@ -89,7 +91,7 @@ class libreriaCTV:
             val_la = True
 
         if pd.isnull(clv):
-            print('lista de claves es nulla')
+            print('lista de claves es nula')
         elif not isinstance(clv,str):
             print('lista de claves no es de tipo cadena')
         else:
