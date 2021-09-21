@@ -44,7 +44,7 @@ class libreriaCTV:
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
             sheet_name='variables')
         except:
-            self.lib = pd.read_excel(
+            self.libCTV = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
             sheet_name='libreriaCTV')
             self.links = pd.read_excel(
