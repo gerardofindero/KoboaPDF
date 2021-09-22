@@ -30,7 +30,8 @@ class libreriaSensores:
             self.stats = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Sensores Movimiento/libreriaSensoresMovimiento.xlsx",
                 sheet_name='Calculadora')
-            self.stats = self.stats.loc[self.stats.loc[:, "f"] == "s", :].reset_index(drop=True).copy()
+        self.stats = self.stats.loc[self.stats.loc[:, "f"] == "s", :].reset_index(drop=True).copy()
+        
     def val(self, kwh, w, lugar,dac):
         val_kwh   = False
         val_w     = False
@@ -79,7 +80,6 @@ class libreriaSensores:
     def setData(self, kwh, w, lugar,dac):
         self.val(kwh,w,lugar,dac)
         if self.v:
-
             self.kwh   = kwh
             self.w     = w
             lugar = lugar.lower()
@@ -88,6 +88,7 @@ class libreriaSensores:
             lugar = lugar.decode("utf-8")
             self.lugar = lugar
             self.dac   = dac
+            
     def armarTxt(self):
         print(self.lugar)
         txt=""
@@ -116,6 +117,7 @@ class libreriaSensores:
                 txt = txt.replace(vtl,linkC).replace(vtb,linkB)
 
         return txt
+
 
 
 
