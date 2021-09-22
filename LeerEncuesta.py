@@ -125,7 +125,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1':
@@ -136,9 +136,11 @@ if __name__ == '__main__':
         Crear_Kobo(NCliente)
         #hipervinculos(NCliente)
 
-    if Opcion == '4':
-        potecial_ahorro(NCliente)
-        leer_potencial(NCliente)
+    if Opcion == '3':
+        import libreriaSenMov as lsm
+        lib=lsm.libreriaSensores()
+        lib.setData(300,50,"Baño",6.1)
+        print(lib.armarTxt())
 
     if Opcion == '4':
         print("Generando Reporte")
