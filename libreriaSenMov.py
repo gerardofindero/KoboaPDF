@@ -31,7 +31,7 @@ class libreriaSensores:
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Sensores Movimiento/libreriaSensoresMovimiento.xlsx",
                 sheet_name='Calculadora')
         self.stats = self.stats.loc[self.stats.loc[:, "f"] == "s", :].reset_index(drop=True).copy()
-        
+        self.v=False
     def val(self, kwh, w, lugar,dac):
         val_kwh   = False
         val_w     = False
@@ -77,7 +77,7 @@ class libreriaSensores:
         else:
             self.v = False
 
-    def setData(self, kwh, w, lugar,dac):
+    def setData(self, kwh = None, w=None, lugar=None,dac=None):
         self.val(kwh,w,lugar,dac)
         if self.v:
             self.kwh   = kwh
