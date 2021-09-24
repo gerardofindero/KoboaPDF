@@ -6,19 +6,19 @@ import numpy as np
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Libreria')
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Libreria')
         Precios = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Precio')
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Precio')
         Reemplazos = pd.read_excel(
-            f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
+            f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
             sheet_name='Reemplazos')
     except:
         Libreria = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
             sheet_name='Libreria')
-        Precios = pd.read_excel( f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",sheet_name='Precio')
+        Precios = pd.read_excel( f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Precio')
         Reemplazos = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV y refris/Librería_TVs.xlsx",
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
             sheet_name='Reemplazos')
 
     Dicc = ['A', 'B', 'C', 'D', 'E','F','G'] # Define los nombres de las columnas en Excel.

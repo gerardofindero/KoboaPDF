@@ -11,7 +11,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                                      'Regulador Refrigerador','Regulador Congelador','Refrigeracion','Problemas']
                               ,columns=['Marca','Volumen','Temp Refri','Temp Conge','Pot Compresor','Temp Compresor','Nominal',
                                         'Prob Comp','Prob Descr','Empaques','Termostato','Ventilacion','Cierre', 'Existencia',
-                                        'Standby','CodigoN','Notas','Claves','Zona'])
+                                        'Standby','CodigoN','Notas','Claves','Zona','Prob Refr','Tuberia','Jabon','Alarma','Tipo'])
+
     Regulador = pd.DataFrame(index=['Regulador'],columns=['Marca','Standby','Existencia'])
     Info_R    = pd.DataFrame(index=['Refrigeracion'], columns=['Notas','CodigoS','Standby'])
     # Libreria = pd.DataFrame(index=['Refrigerador','Congelador','Minibar','Cava','Hielos'], columns=['Marca', 'Codigo', 'Texto'])
@@ -64,6 +65,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                     Aparatos_C.loc['Refrigerador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
                 else:
                     Aparatos_C.loc['Refrigerador', 'Temp Compresor'] =0
+                Aparatos_C.loc['Refrigerador', 'Prob Refr']   = InfoDeco.filter(regex='problemas_c_i')[0]
 
                 Aparatos_C.loc['Refrigerador', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]
                 Aparatos_C.loc['Refrigerador', 'Prob Descr']  = InfoDeco.filter(regex='compresor_problema_descrp')[0]
@@ -74,6 +76,12 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Refrigerador', 'Cierre']      = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Refrigerador', 'Tipo']        = InfoDeco.filter(regex='tipo')[0]
                 Aparatos_C.loc['Refrigerador', 'Dispensador'] = InfoDeco.filter(regex='dispensador')[0]
+                Aparatos_C.loc['Refrigerador', 'Tuberias']    = InfoDeco.filter(regex='tuberias')[0]
+                Aparatos_C.loc['Refrigerador', 'Jabon']       = InfoDeco.filter(regex='jabon')[0]
+                Aparatos_C.loc['Refrigerador', 'Alarma']      = InfoDeco.filter(regex='alarma')[0]
+                Aparatos_C.loc['Refrigerador', 'Tipo']      = InfoDeco.filter(regex='tipo')[0]
+                Aparatos_C.loc['Refrigerador', 'Dispensador']      = InfoDeco.filter(regex='dispensador')[0]
+
                 Aparatos_C.loc['Refrigerador', 'CodigoN']     = InfoDeco.filter(regex='codigofindero')[0]
 
                 if not pd.isna(InfoDeco.filter(regex='standby_c_i')[0]) :
