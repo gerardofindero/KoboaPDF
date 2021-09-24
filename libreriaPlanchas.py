@@ -43,9 +43,14 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     Link   = links.loc[0, 'C']
 
     texto=''
+    """
     if (not (hrsUso is None)) and (not hrsUso==0 )and percentil>= 0.45:
         texto = texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso))
-
+    """
+    if (not (hrsUso is None)) and (not hrsUso==0 )and consumo> 33:
+        texto = fc.selecTxt(lib,"test04")
+    # 33 19
+    """
     if percentil <0.33:
         texto=lib.loc[4,col]
     elif 0.33<=percentil<0.45:
@@ -56,6 +61,14 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
         texto = texto + ' '+lib.loc[7, col]
     elif percentil>=0.66:
         texto = texto + ' '+lib.loc[8, col]
+    """
+    if consumo <= 19:
+        texto = fc.selecTxt(lib,"test01")
+    elif (consumo > 19) and (consumo<=33):
+        texto = fc.selecTxt(lib,"test02")
+    elif consumo>33:
+        texto = fc.selecTxt(lib,"test03")
+        
     texto =  texto.replace('[perc_cons]',str(int(percentil*100))).replace('[link_blog_planchas]', fc.ligarTextolink(Addres,Link))
     texto =  texto.replace('[1-perc_cons]',str(int(percentil*100))).replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
     texto =  texto.replace('[1-perc_cons]',str(int(percentil*100))).replace('[perc_cons]',str(int(percentil*100))).replace('{link_blog_planchas}', fc.ligarTextolink(Addres,Link))
