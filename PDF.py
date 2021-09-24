@@ -659,8 +659,9 @@ def Dicc_Aparatos(nombre):
 def Recomendaciones(Claves,consumo,DAC,Uso,nota):
     Consejos=nota
     ClavesS = Claves.split(',')
+    Notas='X'
     if ClavesS[0] == 'RF':
-        Consejos = LeeClavesR(Claves)
+        Consejos,Notas = LeeClavesR(Claves)
     if ClavesS[0] == 'TV':
         Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
@@ -675,7 +676,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
-    return Consejos
+    return Consejos,Notas
 
 
 
@@ -739,10 +740,13 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         texto(porcentaje, 25, gris, 'Montserrat-N', width - margen - largo_pct - largo_sign, height * 0.6- 10, canvas)
         texto('% de tu consumo', 25, gris, 'Montserrat-N', width - margen - largo_sign, height * 0.6 - 10, canvas)
         parrafos = []
-        if notas == '.':
-            parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
-        else:
-            parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
+
+        # Automatizacion ######################
+        Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas)
+        if not Notas=='X':
+            notas=Notas
+
+        parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
 
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
@@ -750,8 +754,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
 
-# Automatizacion ######################
-        Consejos=Recomendaciones(Claves,consumo,tarifa,Uso,notas)
+
 # Automatizacion  ######################
         parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
         #print(Consejos)
