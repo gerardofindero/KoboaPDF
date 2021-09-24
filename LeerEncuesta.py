@@ -146,8 +146,10 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3':
-        potecial_ahorro(NCliente)
-        leer_potencial(NCliente)
+        import libreriaSenMov as lsm
+        lib=lsm.libreriaSensores()
+        lib.setData(300,50,"Baño",6.1)
+        print(lib.armarTxt())
 
     if Opcion == '4':
         print("Generando Reporte")
@@ -161,7 +163,9 @@ if __name__ == '__main__':
             datosSolar = leer_solar(NCliente)
         CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro)
 
-
+    if Opcion == '5':
+        potecial_ahorro(NCliente)
+        leer_potencial(NCliente)
 
 
 
