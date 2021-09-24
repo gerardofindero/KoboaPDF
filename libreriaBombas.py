@@ -41,10 +41,12 @@ Created on Tue Aug 10 13:29:50 2021
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import funcionesComunes as fc
 
 
 class libreriaBombasGravitacionales:
     def __init__(self):
+        self.txt=''
         self.kc90 = 1   # factor de resisencia de codo de 90°
         self.g    = 9.8 # metros por segundo
         try:
@@ -53,31 +55,82 @@ class libreriaBombasGravitacionales:
             self.dbB = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/Base de datos de bombas gravitacionales.xlsx",
                 sheet_name='Base de datos')
+            self.lib = pd.read_excel(
+                f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
+                sheet_name='libreriaBombas')
         except:
             self.cur = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/curBom.xlsx")
             self.dbB  = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/Base de datos de bombas gravitacionales.xlsx",
                 sheet_name='Base de datos')
+            self.lib = pd.read_excel(
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
+                sheet_name='libreriaBombas')
 
-    def valData(self,hrsUso=None,w=None,Q=None,
-                nC90=None,Hdescarga=None,
-                material=None,longT=None,diametroInt=None):
-        self.val = True
+    #def valData(self,hrsUso=None,w=None,Q=None,
+    #            nC90=None,Hdescarga=None,
+    #            material=None,longT=None,diametroInt=None):
+    #    self.val = True
     
-    def setData(self,hrsUso=None,w=None,Z=None,Q=None,L=None,D=None,nC90=None,material=None,T=None):
+    def setData(self, hrsUso=None,w=None, kwh=None,
+                Q1   = None, Q2 = None, Q3 = None,
+                wQ_r1=None, wQ_r2=None, wQ_r3=None,
+                ac=None, control=None, elecB=None, con=None, termo=None, durCis=None, durTin=None,
+                Z=None, Q=None, L=None, D=None, nC90=None, material=None, T=None):
         """
+        :param hrsUso   : horas de uso a la semana
+        :param w        : potencia de la bomba
+        :param kwh      : kWh/bimestre
+        :param wQ_r1    : relación potencia flujo inicial
+        :param wQ_r2    : relación potencia flujo tras abrir vavulas
+        :param wQ_r3    : relación potencia flujo tras cebar bomba
+        :param ac       : acumulación de sarro
+        :param control  : tipos de control
+        :param elecB    : estado del electronivel
+        :param con      : contrapeso
+        :param termo    : termografía
+        :param durCis   : dureza cisterna
+        :param durTin   :  dureza tinaco
+        :param Z        : Cabezal estatico en metros
+        :param Q        : Caudal en litros por min
+        :param L        : longitud Tuberia en m
+        :param D        : Diamestro interno de la tuberia en m
+        :param nC90     : numero de codos
+        :param T        : temperatura en °C
+        :param material : material de tuberia
+        """
+        self.hrsUso  = hrsUso
+        self.w       = w
+        self.kwh     = kwh
+        self.wQ_r1   = wQ_r1
+        self.wQ_r2   = wQ_r2
+        self.wQ_r3   = wQ_r3
 
-        :param hrsUso:
-        :param w:
-        :param Z: Cabezal estatico en metros
-        :param Q: Caudal  en litros por min
-        :param L: longitud Tuberia en m
-        :param D: Diamestro interno de la tuberia en m
-        :param nC90: numero de codos
-        :param T:  temperatura en °C
-        :param material:   material de tuberia
-        """
+        self.Q1=Q1
+        self.Q2=Q2
+        self.Q3=Q3
+
+        self.ac      = ac
+        self.control = control
+        self.elecB   = elecB
+        self.con     = con
+        self.termo   = termo
+        self.durCis  = durCis
+        self.durTin  = durTin
+
+        self.Z    = Z
+        self.Q    = Q
+        self.L    = L
+        self.D    = D
+        self.nc90 = T
+        self.material = material
+
+        self.txt = ''
+
+        #self.Qm3s    = Q/100/60 # Qm3s (Q de la casa)=>litros/min (1m3/1000L)(1min/60s) -> m3/s
+
+
         Qc = Q/100/60 # Qc (Q de la casa)=>litros/min (1m3/1000L)(1min/60s)  -> m3/s
         D  = D/100 #convertir Diametro interno de centimetros a metros
         Qp = np.linspace(1, 200, 200)/1000/60 # Qp (Q de prueba)=>litros/min (1m3/1000L)(1min/60s)  -> m3/s
@@ -97,18 +150,59 @@ class libreriaBombasGravitacionales:
         print(ms)
 
         for m in ms:
-            idx=(self.cur.loc[:,m]-self.cur.loc[:,'Hp']).abs().idxmin()
+            idx = (self.cur.loc[:, m]-self.cur.loc[:, 'Hp']).abs().idxmin()
             self.dbB.loc[self.dbB.index[self.dbB.Modelo == m][0], 'Qp'] = self.cur.at[idx, 'Q(L/min)']
             self.dbB.loc[self.dbB.index[self.dbB.Modelo == m][0], 'Hp'] = self.cur.at[idx, 'Hp']
 
         tc   = 1000/Q
         kwhc = w*tc/60/1000
         self.dbB['t']=1000/self.dbB.Qp
-        self.dbB['kwh']=self.dbB.loc[:,'Potencia (HP)']*self.dbB.loc[:,'t']*0.7457/60
+        self.dbB['kwh']=self.dbB.loc[:, 'Potencia (HP)']*self.dbB.loc[:, 't']*0.7457/60
         self.dbB['%ahorro']=1-(self.dbB.kwh/kwhc)
         print(self.dbB.loc[:, ['Modelo','Hmin', 'Hmax', 'Qp', 'Hp','t','kwh','%ahorro']])
         print(tc, kwhc)
 
+    def armarTxt(self):
+        txt = ''
+        if self.kwh < 22:
+            txt =txt + fc.selecTxt(self.lib,'BOM01')
+        elif (self.kwh>=22) and (self.kwh<60):
+            txt = txt + fc.selecTxt(self.lib, 'BOM02')
+        elif self.kwh >= 60:
+            txt = txt + fc.selecTxt(self.lib, 'BOM03')
+        if self.ac=='Si':
+            txt = txt + fc.selecTxt(self.lib, 'BOM04')
+        if "flotador" in self.control:
+            txt = txt + fc.selecTxt(self.lib, "BOM06")
+        if ("placas" in self.control) and (self.elecB == "No"):
+            txt = txt + fc.selecTxt(self.lib, "BOM07")
+        if "contrapeso" in self.control:
+            if   (self.elecB == "") and (self.con == ""):
+                txt = txt + fc.selecTxt(self.lib, "BOM08")
+            elif (self.elecB == "") and (self.con == ""):
+                txt = txt + fc.selecTxt(self.lib, "BOM09")
+            elif (self.elecB == "") and (self.con == ""):
+                txt = txt + fc.selecTxt(self.lib, "BOM10")
+        if "bobina" in self.termo:
+            txt = txt + fc.selecTxt(self.lib, "BOM12")
+        if "rodamiento" in self.termo:
+            txt = txt + fc.selecTxt(self.lib, "BOM13")
+        if "general" in self.termo:
+            txt = txt + fc.selecTxt(self.lib, "BOM14")
+        if self.durCis == "dura":
+            txt = txt + fc.selecTxt(self.lib, "BOM15")
+        if self.durTin == "dura":
+            txt = txt + fc.selecTxt(self.lib, "BOM16")
+        if (self.wQ_r1>= 8.53):
+            if (self.wQ_r3 is not None) and self.wQ_r3 >= 8.53:
+                txt = txt + fc.selecTxt(self.lib, "BOM20")
+            if (self.wQ_r3 is not None) and self.wQ_r3 < 8.53:
+                txt = txt + fc.selecTxt(self.lib, "BOM19")
+            if (self.wQ_r2 is not None) and self.wQ_r2 < 8.53:
+                txt = txt + fc.selecTxt(self.lib, "BOM18")
+        if (self.wQ_r1 is not None) and self.wQ_r1 < 8.53:
+            txt = txt + fc.selecTxt(self.lib, "BOM17")
+        return txt
 
     def reemplazo(self):
         filtro=(self.H>self.dbB.Hmin)&(self.H<self.dbB.Hmax)
