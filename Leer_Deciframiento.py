@@ -5,7 +5,7 @@ from Carpeta_Clientes import carpeta_clientes
 def leer_deciframiento(Cliente):
     archivo_resultados =  carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados, sheet_name='Desciframiento')
-    ExL = pd.read_excel(archivo_resultados, sheet_name='Lista')
+    #ExL = pd.read_excel(archivo_resultados, sheet_name='Lista')
 
     Tarifa =Exx.columns[6]
 

@@ -133,28 +133,20 @@ def caritaRefri(consumo,Claves):
 
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-    if percentil>=0.95:
-        Ca = 3
-    if 0.5<=percentil<0.95:
-        Ca = 2
-    if 0.5 > percentil:
-        Ca = 1
-    return Ca
-
-def caritaRefriY(consumo,clave):
-    kWh = float(consumo)
-
-    DatosTV=clave.split(',')
-    DAtosTV=DatosTV[1].split('/')
-
+    # if percentil>=0.99:
+    #     Ca = 3
+    # if 0.5<=percentil<0.99:
+    #     Ca = 2
+    # if 0.5 > percentil:
+    #     Ca = 1
     if kWh>170:
         Ca = 3
     if 100<kWh<170:
         Ca = 2
     if 100 > kWh:
         Ca = 1
-    return Ca
 
+    return Ca
 
 def caritaPlancha(consumo,clave):
     media = 1.94
@@ -162,12 +154,19 @@ def caritaPlancha(consumo,clave):
     consumoTrans = consumo ** 0.3
     percentil = norm.cdf(consumoTrans, loc=float(media), scale=float(desStd))
     Percentil = round(percentil, 2)
-    if Percentil>0.66:
+    # if Percentil>0.66:
+    #     Ca = 3
+    # if 0.33<Percentil<0.66:
+    #     Ca = 2
+    # if 0.33 > Percentil:
+    #     Ca = 1
+    if consumo>33:
         Ca = 3
-    if 0.33<Percentil<0.66:
+    if 19<=consumo<33:
         Ca = 2
-    if 0.33 > Percentil:
+    if 19 > consumo:
         Ca = 1
+
     return Ca
 
 

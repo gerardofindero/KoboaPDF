@@ -35,6 +35,7 @@ def libreriaL():
 def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensada de Kobo.
     ## Se hace una copia de respaldo para no alterar los datos originales.
     Lumi = Luminaria.copy()
+    print('Luminaria')
 
     ## Se lee la libreria textos de luminarias con la función libreriaL() y se asigna a 'Lib'
     Lib = libreriaL()
@@ -294,11 +295,11 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
         Filtro3 = Filtro2[Filtro2['I'] < mx]# Parece estar aquí el error de que no encontraba focos porque H se refiere a la potencia en LED, no en equivalente halógeno/incandescente.
         Filtro4 = Filtro3[Filtro3['I'] > mn] # Parece estar aquí el error de que no encontraba focos
 
-    Filtro5 = Filtro4.loc[Filtro4['M'] == color]
-    Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
-    Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
-    Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
-    Filtro = Filtro4.loc[Filtro8['AA'] =='Top choice']
+    # Filtro5 = Filtro4.loc[Filtro4['M'] == color]
+    # Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
+    # Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
+    # Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
+    Filtro = Filtro4.loc[Filtro4['AA'] =='Top choice']
 
     if not Filtro.empty:
         return Filtro['H'].values[0],Filtro['W'].values[0],Filtro['V'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
