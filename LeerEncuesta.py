@@ -103,7 +103,7 @@ def Nombre_Cliente():
 
     #NCliente = 'Cliente Prueba'
     #NCliente = 'Marcela Autrique'
-    NCliente = 'Fernando Ponce'
+    #NCliente = 'Fernando Ponce'
     #NCliente = 'Joaquin Gamero'
     #NCliente = 'Lucero Garcia'
     #NCliente = 'Armando Mendoza'
@@ -111,6 +111,15 @@ def Nombre_Cliente():
     #NCliente = 'Mariana Botello'
     #NCliente = 'Jose Moreno'
     #NCliente = 'Ana Mae'
+    #NCliente = 'Aldonza Velez'
+    #NCliente = 'Berenice Roche'
+    #NCliente = 'Beatriz Escobedo'
+
+    NCliente = 'Mike Mizrahi'
+    #NCliente = 'Alvaro Martinez'
+    #NCliente = 'Roberto Sanchez'
+    #NCliente = 'Gabriela Avellano'
+
     return NCliente
 
 ###################### MAIN  #####################################
@@ -136,7 +145,7 @@ if __name__ == '__main__':
         Crear_Kobo(NCliente)
         #hipervinculos(NCliente)
 
-    if Opcion == '4':
+    if Opcion == '3':
         potecial_ahorro(NCliente)
         leer_potencial(NCliente)
 
