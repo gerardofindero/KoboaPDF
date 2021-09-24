@@ -25,7 +25,7 @@ from libreriaReguladores import sepRegAta
 from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
-from LibEspeciales import textodeconsejos
+from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV
 #from libreriaClusterTV import armarTexto
 import libreriaClusterTV as CTV
 import libreriaClusterTV as CTV
@@ -433,9 +433,10 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
 
     parrafo_frame("Tu ahorro tiene un impacto ambiental de:", Estilos.chica, x + 300, y - 55, .22, .2,canvas)
     parrafo_frame("<b>{:,} kg de CO<sub>2</sub>E al año</b>".format(co2), Estilos.chica, x + 300, y - 84, .25, .2,canvas)
-    parrafo_frame(
-        "Lo que equivale a <b>{:,} árboles</b> plantados que absorben esta cantidad de CO<sub>2</sub>E a lo largo de 30 años.".format(
-            round(arboles)), Estilos.chica, x + 300, y - 105, .20, .2,canvas)
+    if arboles>1:
+        parrafo_frame("Lo que equivale a <b>{:,} árboles</b> plantados que absorben esta cantidad de CO<sub>2</sub>E a lo largo de 30 años.".format(round(arboles)), Estilos.chica, x + 300, y - 105, .20, .2,canvas)
+    else:
+        parrafo_frame("Lo que equivale a 1 árbol plantado que absorben esta cantidad de CO<sub>2</sub>E a lo largo de 30 años.".format(round(arboles)), Estilos.chica, x + 300, y - 105, .20, .2,canvas)
 
     if nuevo_consumo < 500:
         parrafo_frame('&nbsp; Tu nuevo recibo en &nbsp; &nbsp; tarifa subsidiada sería de:', Estilos.centrado_chico,
@@ -500,7 +501,8 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     parrafos = []
     #notasA = 'Tu gasto en iluminación es muy alto  '
     #notasB = 'Normalmente vemos gastos alrededor de $200 pesos al bimestre(35kWh) para una casa completa'
-    notasC = 'Como parte de nuestros servicios, encontramos estas luminarias para enfocar esfuerzos en lo que vale la pena reemplazarlos'
+    notasC = 'Como parte de nuestros servicios, encontramos las luminarias “problemáticas" para enfocar ' \
+             'esfuerzos en las que vale la pena reemplazar.'
     parrafos.append(Paragraph(notasA, Estilos.cuadros_bajo))
     frame = Frame(60, hh, width * 0.35, height * 0.5)
     frame.addFromList(parrafos, canvas)
@@ -590,19 +592,19 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         frame.addFromList(parrafos, canvas)
         parrafoss=[]
         largoTx=sys.getsizeof(tex)
-        if largoTx<45:
+        if largoTx<150:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
             frame = Frame(258, altura - 15, 295, 65)
-        elif 45<=largoTx<90:
+        elif 150<=largoTx<250:
             parrafoss.append(Paragraph(tex, Estilos.Lumi2))
             frame = Frame(258, altura -15, 295, 65)
-        elif largoTx>90 and largoTx<=210:
+        elif largoTx>250 and largoTx<=350:
             parrafoss.append(Paragraph(tex, Estilos.Lumi3))
             frame = Frame(258, altura-10,295, 65)
-        elif 350>=largoTx>210:
+        elif 450>=largoTx>350:
             parrafoss.append(Paragraph(tex, Estilos.Lumi4))
             frame = Frame(258, altura-10, 295, 65)
-        elif largoTx > 350:
+        elif largoTx > 450:
             parrafoss.append(Paragraph(tex, Estilos.Lumi5))
             frame = Frame(258, altura -10, 295, 65)
 
@@ -671,7 +673,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
         Consejos = armarTxtCaf(consumo,Uso,'Ninguno')
     if ClavesS[0] == 'CTV':
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
-    # if ClavesS[0] == 'AA':
+    # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
     return Consejos
 
@@ -779,6 +781,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         consumo = round(aparato[10])
         dinero = round(aparato[12])
         nota= aparato[13]
+        nota = textodeequiposA(nombre,nota)
         Claves= aparato[16]
         Uso = aparato[7]
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
@@ -887,6 +890,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         consumo = round(aparato[10])
         dinero = round(aparato[12])
         nota = aparato[13]
+        nota = textodeequiposV(nombre,nota)
         Claves =aparato[16]
         Uso=aparato[7]
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
@@ -988,14 +992,17 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
     parrafo_frame('<b>PÉRDIDAS DE ENERGÍA</b>', Estilos.titulo_blanco, 50, 500, .8, .1,canvas)
     costo= round(float(Cfugas)*float(Tarifa))
     porcentaje_fugas=float(Cfugas)/float(ConsumoT)
-    mensaje = "A continuación te presentamos puntualmente dónde encontramos pérdidas de energía y que acciones"\
-                  " tomar para eliminarlas o reducir su consumo. <br/><br/>"\
-                 f"Durante nuestras mediciones encontramos que el <b>{round(porcentaje_fugas * 100, 1):,}%</b> de tu consumo total y con un costo de <b>${costo:,}</b>"\
-                  " al bimestre, son perdidas por algún tipo de fuga, como: <br/><br/>"\
+    mensaje = "A continuación te presentamos puntualmente dónde encontramos pérdidas de energía y " \
+              "qué acciones tomar para eliminarlas o reducir su consumo.  <br/><br/>"\
+                 f"Durante nuestras mediciones encontramos que el <b>{round(porcentaje_fugas * 100, 1):,}%</b> de " \
+              f"tu consumo total y con un costo de <b>${costo:,}</b>"\
+                  " al bimestre, son pérdidas por algún tipo de fuga, como: <br/><br/>"\
                 "1° Fuga de equipo <br/><br/>2° Fuga de circuito <br/><br/>3° Fuga de Stand-by<br/><br/>"\
-                f"Aproximadamente el <b>{round(atacables * 100, 1):,}%</b> de estas pérdidas son atacables y tienen un gran potencial de ahorro."
+                f"Aproximadamente el <b>{round(atacables * 100, 1):,}%</b> de estas pérdidas son atacables y " \
+              f"tienen un gran potencial de ahorro."
     parrafo_frame(mensaje, Estilos.negro, 49, 50, .4, .5,canvas)
-    mensaje = "Para identificar el nivel de ahorro de las diferentes pérdidas de energía que detectamos, te reforzaremos visualmente con los siguientes iconos:"
+    mensaje = "Para identificar el nivel de ahorro de las diferentes pérdidas de energía que detectamos," \
+              " te reforzaremos visualmente con los siguientes íconos:"
     canvas.drawImage(f"Imagenes/Figuras/Fugas_cuadro.png",300, 290,  width=220,height=85, mask='auto')
     parrafo_frame(mensaje, Estilos.negro, 300, 50, .4, .5, canvas)
 
@@ -1047,7 +1054,10 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
         Consejos=''
         equiposFuga=[]
         for index, fugat in atac.iterrows():
+
             if ind > 4:
+                ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos)
+                equiposFuga=[]
                 canvas.showPage()
                 consumoT = round(atac['K'].sum(), 1)
                 costoT = round(atac['M'].sum())
@@ -1125,35 +1135,35 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             Lconsumo.append(potencia)
 
             #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
-            #Consejos=analizarCTV(atac, 6.4)
             Soloequipo=Nfuga.split()
             equiposFuga.append(Soloequipo[0].lower())
             if fugat[13]!='X':
                 Consejos = Consejos+' '+fugat[13]+'<br />'
 
-        if Atacable:
-            Consejos= Consejos+' '+textodeconsejos(equiposFuga)
-
-        if Atacable:
-            if len(Consejos) < 650:
-                parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
-            else:
-                parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
-            frame = Frame(330, 40, 200, 350, showBoundary=0)
-            frame.addFromList(parrafos, canvas)
-            Lequipos=[]
-
-
-        if not Atacable:
-            Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
-                     'debido a que pueden afectar tanto tu comfort como tu seguridad'
-            parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
-            frame = Frame(330, 50, 200, 330,showBoundary = 0 )
-            frame.addFromList(parrafos, canvas)
-
-
-
+        ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos)
         canvas.showPage()
+
+def ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos):
+    if Atacable:
+        Consejos= Consejos+' '+textodeconsejos(equiposFuga)
+
+    if Atacable:
+        if len(Consejos) < 650:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+        else:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+        frame = Frame(330, 40, 200, 350, showBoundary=0)
+        frame.addFromList(parrafos, canvas)
+        Lequipos=[]
+
+
+    if not Atacable:
+        Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
+                 'debido a que pueden afectar tanto tu confort como tu seguridad'
+        parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
+        frame = Frame(330, 50, 200, 330,showBoundary = 0 )
+        frame.addFromList(parrafos, canvas)
+
 
 
 def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje):
