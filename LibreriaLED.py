@@ -445,11 +445,12 @@ def Horaszona(nombre,horas):
     return mucho
 
 def UnirLuces(df):
+
+    distporc(df)
     zonas=pd.unique(df['E'])
 
     for i in zonas:
-        vivo=0
-        datos=pd.DataFrame()
+
         dfxzona=df[df["E"] == i]
         sumaxzona=dfxzona["M"].sum()
         df.loc[df["E"] == i,"M"]=sumaxzona
@@ -459,39 +460,6 @@ def UnirLuces(df):
         df=sumariguales(dfxzona,df,'incandescente')
         df=sumariguales(dfxzona,df,'fluorescente')
         df=sumariguales(dfxzona,df,'led')
-    NH=1
-    NI=1
-    NF=0
-    NL=5
-    SumL=0
-    Por=10.0
-    if NL>0:
-        SumL= SumL+(NL)
-    if NH>0:
-        SumL= SumL+((NH)*7*NL)
-    if NI>0:
-        SumL= SumL+((NI)*8*NL)
-    if NF>0:
-        SumL= SumL+((NF)*4*NL)
-
-
-    LP=Por/SumL
-    if NL>0:
-        L=LP
-        print('Porcentaje a LED')
-        print(L)
-    if NH>0:
-        H=LP/0.3
-        print('Porcentaje a Halogena')
-        print(H)
-    if NI>0:
-        I=LP/0.2
-        print('Porcentaje a Incandescente')
-        print(I)
-    if NF>0:
-        F=LP/0.6
-        print('Porcentaje a Fluorescente')
-        print(F)
 
 
 
@@ -512,3 +480,69 @@ def sumariguales(dfxzona,df,tipo):
                 df.loc[j,'A']=nuevototal
             primero=False
     return df
+
+def distporc(df):
+    print(df['L'])
+    Codigos=pd.unique(df['B'])
+    for i in Codigos:
+        dfxCod=df[df["B"] == i]
+        if len(dfxCod) >1:
+            NI=0
+            NF=0
+            NH=0
+            NL=0
+            Por=0
+            for i in dfxCod.index:
+                dff=dfxCod.loc[i,'A'].split()
+                if 'inc' in dff[1]:
+                    NI=int(dff[0])
+                if 'led' in dff[1]:
+                    NL=int(dff[0])
+                if 'hal' in dff[1]:
+                    NH=int(dff[0])
+                if 'fluo' in dff[1]:
+                    NF=int(dff[0])
+                Por=float(dfxCod.loc[i,'L'])
+            SumL=0
+            if NL>0:
+                SumL= SumL+(NL)
+            if NH>0:
+                SumL= SumL+((NH)*7)
+            if NI>0:
+                SumL= SumL+((NI)*8)
+            if NF>0:
+                SumL= SumL+((NF)*4)
+
+            if NL>0:
+                L=NL/SumL
+                print('Porcentaje a LED')
+                L=(L*Por)
+                print(L)
+            if NH>0:
+                H=7*NH/SumL
+                print('Porcentaje a Halogena')
+                H=(H*Por)
+                print(H)
+            if NI>0:
+                I=8*NI/SumL
+                print('Porcentaje a Incandescente')
+                I=(I*Por)
+                print(I)
+            if NF>0:
+                F=4*NF/SumL
+                print('Porcentaje a Fluorescente')
+                F=(F*Por)
+                print(F)
+
+            for i in dfxCod.index:
+                dff=dfxCod.loc[i,'A'].split()
+                if 'inc' in dff[1]:
+                    df.loc[i,'L']=I
+                if 'led' in dff[1]:
+                    df.loc[i,'L']=L
+                if 'hal' in dff[1]:
+                    df.loc[i,'L']=H
+                if 'fluo' in dff[1]:
+                    df.loc[i,'L']=F
+
+    print(df['L'])
