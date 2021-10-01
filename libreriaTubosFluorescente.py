@@ -1,5 +1,35 @@
 import pandas as pd
 import numpy as np
+
+def recoTuboFluorescente():
+    """
+    claves de variables de kobo
+    tipo, t12 ....
+    entrada, g5 ...
+    disposicion, paralelo -serie ...
+    portalampara, sin-colgante- introduce ....
+    focofuncion, principal-indirecta . .. .
+    numero de tubos,
+    deterioro, s - n
+    difusor,  s - n
+    temp,     calida - fria
+    longitud,
+
+            self.tipo       = kobo['tipo'] # tipo de tubo               - str
+            self.entr       = kobo['entr'] # conector del tubo          - str
+            self.dist       = kobo['dist'] # disposición de los tubos   - str
+            self.port       = kobo['port'] # tipo de portalampara       - str
+            self.func       = kobo['func'] # funcion de la ilumincación - str
+            self.ntub       = kobo['ntub'] # númerod de tubos           - num
+            self.detr       = kobo['detr'] # deterioro                  - log
+            self.difu       = kobo['difu'] # tiene difusor              - log
+            self.temp       = kobo['temp'] # luz calida o fría          - str
+            self.lntb       = kobo['lntb'] # longitud de los tubos      - str
+            self.caji       = kobo['caji'] # cajillo                    - log
+            self.caln       = kobo['caln'] # longitud del cajillo       - num (0 por default)
+            self.plta       = kobo['plta'] # medidas de placa           - list num  [largo, ancho] ([0,0] por default)
+            self.plnu       = kobo['plnu'] # número de placas
+    """
 class libreriaTubosFluorescentes:
     def __init__(self):
         # Kobo Info de kobo en diccionario, tarifa DAC, potencia total de los tubos led, energía consumida
