@@ -1,5 +1,5 @@
 import pandas as pd
-
+import random
 ### Preguntas generales
 
 # Tareas:
@@ -16,14 +16,14 @@ def libreriaL():
     try:
         # Libreria = pd.read_excel(Path.home() / 'Desktop' /'ProtoLibreria Luminaria.xlsx')
         Libreria = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx")
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",sheet_name='Textos')
     except:
         Libreria = pd.read_excel(
-            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx")
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",sheet_name='Textos')
     # Libreria = pd.read_excel(r'C:\Users\Cesar\Desktop\libreria.xlsx')
-    Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
-    Libreria.columns = Dicc # Asigna los nombres de las columnas de Excel al data frame de Python
-
+    #Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
+    #Libreria.columns = Dicc # Asigna los nombres de las columnas de Excel al data frame de Python
+    Libreria=Libreria.set_index('Codigo')
     return Libreria
 
 
@@ -126,7 +126,7 @@ def libreriaLED():
 
     #Se renombran las columnas como se tienen en excel para facilitar referencia
     Dicc = ['A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','O','P','Q','R',
-            'S','T','U','V','W','X','Y','Z','AA']
+            'S','T','U','V','W','X','Y','Z','AA','BB']
     Libreria.columns = Dicc
     return Libreria
 
@@ -141,7 +141,8 @@ def libreriaLED():
 ## En esta funión se llevan a cabo los calculos para tener el % de ahorro y el ROI
 ## se eligen los textos correpondientes.
 
-def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
+def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI,uso): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
+    aleatorio=random.randint(1, 3)
     #Se lee libreria de textos
     Lib =  libreriaL()
     TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
@@ -156,14 +157,57 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
     # Textos al reporte cuando el foco ya es LED.
     if Tecno =='led':
+
+        if aleatorio==1:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM26', 'Texto']
+        if aleatorio==2:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM27', 'Texto']
+        if aleatorio==3:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM28', 'Texto']
+        if conteoled == 5:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM13', 'Texto']
+            conteoled = 2
+        if conteoled == 4:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
+            conteoled = conteoled + 1
+        if conteoled == 3:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
+            conteoled = conteoled + 1
+        if conteoled == 2:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM10', 'Texto']
+            conteoled = conteoled + 1
         if conteoled == 1:
-            TextoCompleto = TextoCompleto + Lib.loc[45, 'E']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM09', 'Texto']
             conteoled = conteoled + 1
-        elif conteoled <= 5:
-            TextoCompleto = TextoCompleto + Lib.loc[45+(conteoled-1), 'E']
-            conteoled = conteoled + 1
-            if conteoled==5:
-                conteoled = 2
+
+        # elif conteoled <= 5:
+        #     TextoCompleto = TextoCompleto + Lib.loc[14+(conteoled-1), 'Texto']
+        #     conteoled = conteoled + 1
+        #     if conteoled==5:
+
+        if uso>5 and Numero<10:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM23', 'Texto']
+        if Numero>10 and uso<5:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM24', 'Texto']
+        if Numero>10 and uso>5:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM25', 'Texto']
+
+        if aleatorio==1:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM31', 'Texto']
+        if aleatorio==2:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM32', 'Texto']
+        if aleatorio==3:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM33', 'Texto']
+
+        if Numero == 1:
+            TextoCompleto = TextoCompleto.replace('[s]', '')
+        else:
+            TextoCompleto = TextoCompleto.replace('[s]', 's')
+
+        TextoCompleto = TextoCompleto.replace('[NUML]', str(round(int(Numero))))
+        TextoCompleto = TextoCompleto.replace('[horasUso]', str(round(int(uso))))
+
+
     # Texto al reporte cuando los focos NO son LED.
     elif tex !='NO HAY CARS':
         Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
@@ -171,16 +215,17 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         # Imprimir en pantalla características de focos
 
         if conteoNOled == 1:
-            TextoCompleto = Lib.loc[32, 'E']
+            TextoCompleto = Lib.loc['LUM00a', 'Texto']
             conteoNOled  = conteoNOled + 1
         else:
-            TextoCompleto = Lib.loc[33, 'E']
+            TextoCompleto = Lib.loc['LUM00b', 'Texto']
 
         # Reemplaza los 'placeholders' del texto por su valor reportado en campo (la hoja de 'Desciframiento' ya tiene estos valores.
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tecno)
         TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
         TextoCompleto = TextoCompleto.replace('[CAR]', tex)
         TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
+        TextoCompleto = TextoCompleto.replace('[horasUso]', str(uso))
         TextoCompleto = TextoCompleto.replace('.0', "")
         TextoCompleto = TextoCompleto.replace('[...]', "")
         TextoCompleto = TextoCompleto.replace('Cocina', "la cocina")
@@ -229,16 +274,16 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
             ## Se elige el texto correspondiente de la libreria de textos para el ROI correspondiente
             if ROI <= 18: # Cuando el ROI es en un periodo corto.
-                TextoROI = Lib.loc[34, 'E']
+                TextoROI = Lib.loc['LUM02', 'Texto']
             else: # Cuando el ROI no se alcanza en menos de 3 años.
                 if conteoROI == 1:
-                    TextoROI = Lib.loc[35, 'E']
+                    TextoROI = Lib.loc['LUM03a', 'Texto']
                     conteoROI = conteoROI + 1
                 elif conteoROI == 2:
-                    TextoROI = Lib.loc[36, 'E']
+                    TextoROI = Lib.loc['LUM03b', 'Texto']
                     conteoROI = conteoROI + 1
                 elif conteoROI > 2:
-                    TextoROI = Lib.loc[37, 'E']
+                    TextoROI = Lib.loc['LUM03c', 'Texto']
 
             ## Se sustituye la variable ROI por el texto correspondiente
             TextoCompleto = TextoCompleto  + TextoROI
@@ -364,3 +409,106 @@ def DiccionarioLuz(entrada):
     if entrada == 'e10':
         salida = 'E10'
     return salida
+
+def Horaszona(nombre,horas):
+    mucho=False
+    if 'rec' in nombre:
+        if horas> 5.5:
+            mucho='true'
+    if 'sala' in nombre:
+        if horas> 4:
+            mucho='true'
+
+    if 'cocina' in nombre:
+        if horas> 6:
+            mucho='true'
+
+    if 'cocina' in nombre:
+        if horas> 6:
+            mucho='true'
+
+    if 'rec' in nombre:
+        if horas> 5.5:
+            mucho='true'
+
+    if 'sala' in nombre:
+        if horas> 4:
+            mucho='true'
+
+    if 'cocina' in nombre:
+        if horas> 6:
+            mucho='true'
+
+    if 'cocina' in nombre:
+        if horas> 6:
+            mucho='true'
+    return mucho
+
+def UnirLuces(df):
+    zonas=pd.unique(df['E'])
+
+    for i in zonas:
+        vivo=0
+        datos=pd.DataFrame()
+        dfxzona=df[df["E"] == i]
+        sumaxzona=dfxzona["M"].sum()
+        df.loc[df["E"] == i,"M"]=sumaxzona
+        sumaxzona=dfxzona["L"].sum()
+        df.loc[df["E"] == i,"L"]=sumaxzona
+        df=sumariguales(dfxzona,df,'halogena')
+        df=sumariguales(dfxzona,df,'incandescente')
+        df=sumariguales(dfxzona,df,'fluorescente')
+        df=sumariguales(dfxzona,df,'led')
+    NH=1
+    NI=1
+    NF=0
+    NL=5
+    SumL=0
+    Por=10.0
+    if NL>0:
+        SumL= SumL+(NL)
+    if NH>0:
+        SumL= SumL+((NH)*7*NL)
+    if NI>0:
+        SumL= SumL+((NI)*8*NL)
+    if NF>0:
+        SumL= SumL+((NF)*4*NL)
+
+
+    LP=Por/SumL
+    if NL>0:
+        L=LP
+        print('Porcentaje a LED')
+        print(L)
+    if NH>0:
+        H=LP/0.3
+        print('Porcentaje a Halogena')
+        print(H)
+    if NI>0:
+        I=LP/0.2
+        print('Porcentaje a Incandescente')
+        print(I)
+    if NF>0:
+        F=LP/0.6
+        print('Porcentaje a Fluorescente')
+        print(F)
+
+
+
+    return df
+
+def sumariguales(dfxzona,df,tipo):
+    tipoxzona=dfxzona[dfxzona['A'].str.contains(tipo)]
+    if len(tipoxzona) >1:
+        dff=tipoxzona.A.str.split(expand=True)
+        dff[0] = dff[0].astype(int)
+        suma=dff[0].sum()
+        nuevototal= str(suma) +' '+  'led'
+        primero=True
+        for j in tipoxzona['A'].index:
+            if primero==False:
+                df.drop(index=j,inplace=True)
+            else:
+                df.loc[j,'A']=nuevototal
+            primero=False
+    return df

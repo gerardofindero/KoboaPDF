@@ -8,7 +8,7 @@ from PDF             import CrearPDF
 from Deciframiento   import Archivo
 from Hipervinculos   import hipervinculos
 from Ahorro          import potencial_ahorro2
-from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial
+from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial,leer_resumen
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
@@ -101,7 +101,7 @@ def Crear_Kobo(NCliente):
 ##################################################################
 def Nombre_Cliente():
 
-    #NCliente = 'Cliente Prueba'
+    NCliente = 'Cliente Prueba'
     #NCliente = 'Marcela Autrique'
     #NCliente = 'Fernando Ponce'
     #NCliente = 'Joaquin Gamero'
@@ -118,8 +118,10 @@ def Nombre_Cliente():
     #NCliente = 'Mike Mizrahi'
     #NCliente = 'Alvaro Martinez'
     #NCliente = 'Roberto Sanchez'
-    NCliente = 'Claudia Giordano'
-
+    #NCliente = 'Claudia Giordano'
+    #NCliente = 'Gabriela Avellano'
+    #NCliente = 'Manuel Gutierrez'
+    #NCliente = 'Alejandra Vega'
     return NCliente
 
 ###################### MAIN  #####################################
@@ -127,14 +129,14 @@ if __name__ == '__main__':
 
     NCliente=Nombre_Cliente()
 
-    print("Que quieres hacer? ")
-    print("1.- Crear Excel")
-    print("2.- Leer Kobo y Crear Deciframiento ")
-    print("4.- Crear Reporte")
+    # print("Que quieres hacer? ")
+    # print("1.- Crear Excel")
+    # print("2.- Leer Kobo y Crear Deciframiento ")
+    # print("4.- Crear Reporte")
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='3'
+    Opcion='4'
 
 
     if Opcion == '1':
@@ -146,14 +148,17 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3':
-        import libreriaSenMov as lsm
-        lib=lsm.libreriaSensores()
-        lib.setData(300,50,"Baño",6.1)
-        print(lib.armarTxt())
+        leer_resumen(NCliente)
+        # import libreriaSenMov as lsm
+        # lib=lsm.libreriaSensores()
+        # lib.setData(300,50,"Baño",6.1)
+        # print(lib.armarTxt())
 
     if Opcion == '4':
-        print("Generando Reporte")
+        print("________________________________")
+        print(f"Generando Reporte de {NCliente}")
         datosSolar=pd.DataFrame()
+        Ndatos=leer_resumen(NCliente)
         #Excel, Cliente = abrirexcel()
         ahorro=leer_potencial(NCliente)
         #ahorro=140
@@ -161,7 +166,7 @@ if __name__ == '__main__':
         solar='No'
         if solar =='Si':
             datosSolar = leer_solar(NCliente)
-        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro)
+        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)
 
     if Opcion == '5':
         potecial_ahorro(NCliente)

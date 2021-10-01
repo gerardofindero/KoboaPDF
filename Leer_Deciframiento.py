@@ -35,6 +35,13 @@ def leer_potencial(Cliente):
     Ahorro=Exx.loc[5,'C']
     return Ahorro
 
+def leer_resumen(Cliente):
+    archivo_resultados = carpeta_clientes(Cliente)
+    Exx = pd.read_excel(archivo_resultados, sheet_name='Resumen')
+    Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q']
+    Exx.columns = Dic
+    Datos = Exx.loc[0, ['G']][0]
+    return Datos
 
 
 def leer_solar(Cliente):

@@ -81,30 +81,18 @@ def caritaEquipos(consumo,clave):
 
 def caritaTV(consumo,clave):
     kWh = float(consumo)
-
     DatosTV=clave.split(',')
     DAtosTV=DatosTV[2].split('/')
     pulgadas=float(DAtosTV[2])
+    potencia = float(DAtosTV[0])
 
-    CC= kWh - (2.989644 + 0.034468 * 40)/0.2606
-    XX=np.log(abs(CC))
-    Percentil=(1-stats.norm.sf(x=(XX), loc=3.7, scale=1.23))
-    Ahorro=(kWh - math.exp(2.989644 + 0.034468 * pulgadas)) / kWh
-    nueva=(1.849608 + 0.034 * pulgadas) ** (1 / 0.13)
-    retorno=nueva/(Ahorro*kWh*5.5)
-    # if Percentil>0.7:
-    #     Ca = 3
-    # if 0.33<Percentil<0.7:
-    #     Ca = 2
-    # if 0.33 > Percentil:
-    #     Ca = 1
-    if kWh>=100:
+    uso=(kWh*1000)/(potencia*60)
+    if uso >= 5.0:
         Ca = 3
-    if 25<=kWh<100:
+    if 2.5 <= uso < 5.0:
         Ca = 2
-    if 25 > kWh:
+    if uso < 2.5:
         Ca = 1
-
     return Ca
 
 def caritaBomba(consumo,clave):
@@ -181,8 +169,6 @@ def caritaAires(consumo,clave):
     return Ca
 
 def definircarita(Equipo):
-
-    print('Poniendo caritas...')
     for index,aparato in Equipo.iterrows():
         if pd.notna(aparato[16]):
             clave = aparato[16]

@@ -14,7 +14,7 @@ import Estilos
 import logging
 import pandas as pd
 import numpy as np
-from LibreriaLED import variablesLuces
+from LibreriaLED import variablesLuces,UnirLuces
 from LibreriaRefris import LeeClavesR,Clasifica
 from LibreriaTV import LeeClavesTV,Clasifica
 from LibreriaLavaSeca import  LeeClavesLavaSeca
@@ -25,7 +25,7 @@ from libreriaReguladores import sepRegAta
 from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
-from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV
+from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
 #from libreriaClusterTV import armarTexto
 import libreriaClusterTV as CTV
 import libreriaClusterTV as CTV
@@ -295,7 +295,7 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     canvas.showPage()
 
 
-def intro(canvas, width, height, datos=5287899):
+def intro(canvas, width, height, datos):
     """ Pagina de color azul antes de presentar los resultados."""
 
     canvas.setFillColorRGB(96 / 255, 192 / 255, 215 / 255)
@@ -314,7 +314,7 @@ def intro(canvas, width, height, datos=5287899):
         parrafo_2 = file.read()
     factor_w = .3
     factor_h = .1
-    parrafo(parrafo_1.format(datos), Estilos.base, factor_w, factor_h, .1, .48, canvas)
+    parrafo(parrafo_1.format(int(datos)), Estilos.base, factor_w, factor_h, .1, .48, canvas)
     parrafo(parrafo_2, Estilos.base, factor_w, factor_h, .1, .14, canvas)
     mensajes = {1: 'Consumo óptimo', 2: 'Consumo promedio', 3: 'Consumo innecesario'}
     for i in range(3):
@@ -462,6 +462,7 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
 def iluminacion(canvas, width, height, luces,Tarifa):
     """ Se crean las páginas en donde se muestra el consumo de luz a detalle """
     Luces = luces.copy()
+    Luces=UnirLuces(Luces)
     Luces = Luces.loc[Luces['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Luces.sort_values(by=['L'], inplace=True, ascending=False)
     TotalC=Luces['K'].sum() # Suma de consumos de lueces en el consumo total de casa (KWh)
@@ -492,7 +493,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     gristabla = colors.Color(red=(65 / 255), green=(65 / 255), blue=(65 / 255))
     azul2tabla = colors.Color(red=(2 / 255), green=(142 / 255), blue=(200 / 255))
     largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 'Montserrat-B', 12)
-    canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
+    #canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
     texto('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
     texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
     canvas.drawImage(f"Imagenes/icono_luces.png", 60, height - 295, width=115, height=115)
@@ -546,18 +547,32 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     altura=266
     i=0
     Luces['D']=Luces['D'].str.replace('Luces ','')
+
+    luzz=''
     for index, luz in Luces.iterrows():
         i=i+1
-        luzz=luz[3]
-        porc=str(round(luz[11]*100,1))+' %'
-        cost='$ '+str(round(luz[12]))
+        if luzz != luz[4]:
+            luzz=luz[4]
+            porc=str(round(luz[11]*100,1))+' %'
+            cost='$ '+str(round(luz[12]))
+            lineacorta=False
+        else:
+            luzz=''
+            porc=''
+            cost=''
+            lineacorta=True
+
         tex= str(luz[13])
+        uso= luz[7]
 
         #largoTx=len(tex)
         tex,conteoled,conteoNOled,conteoROI = \
-            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI) # Está usando columnas, no renglones para los índices
+            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso) # Está usando columnas, no renglones para los índices
         largoTx=sys.getsizeof(tex)
-        tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI) # Está usando columnas, no renglones para los índices
+        tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso) # Está usando columnas, no renglones para los índices
+
+
+        ## Se colocan los nombres de las zonas de las luminarias.
 
         if len(luzz) < 15:
             parrafos.append(Paragraph(luzz, Estilos.Lumi))
@@ -590,6 +605,8 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         parrafos.append(Paragraph(cost, Estilos.cuadros_bajo))
         frame = Frame(210, altura, 90, 50)
         frame.addFromList(parrafos, canvas)
+
+
         parrafoss=[]
         largoTx=sys.getsizeof(tex)
         if largoTx<150:
@@ -609,8 +626,14 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             frame = Frame(258, altura -10, 295, 65)
 
         frame.addFromList(parrafoss, canvas)
-        canvas.line(70, altura + 51, 548, altura + 51)
-        altura=altura-50
+
+        ## LArgo de la linea horizontal
+        if lineacorta==False:
+            canvas.line(70, altura + 51, 548, altura + 51)
+            altura=altura-50
+        else:
+            canvas.line(255, altura + 51, 548, altura + 51)
+            altura=altura-50
         cont=0
         if i==4 or i==16 or i==25:
 
@@ -629,7 +652,6 @@ def iluminacion(canvas, width, height, luces,Tarifa):
                 canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, (largo*50))
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
             else:
-
                 canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, ((altura+15) - ((largo-1) * 60)), 480, ((largo) * 60))
                 canvas.line(254, altura-((largo-4)*40), 254, altura-((largo-4)*40))
                 canvas.line(154, altura-((largo-4)*40), 154, altura-((largo-4)*33))
@@ -672,7 +694,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
         Consejos = leerConsumoMicroondas(consumo)
     if Claves == 'CF':
         Consejos = armarTxtCaf(consumo,Uso,'Ninguno')
-    if ClavesS[0] == 'CTV':
+    if Claves == 'CTV':
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
@@ -848,7 +870,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         parrafos = []
         # Automatizacion ######################
         if not pd.isna(Claves):
-            nota = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
         # Automatizacion  ######################
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
@@ -942,14 +964,10 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura+80, canvas)
         # Automatizacion ######################
-
         if not pd.isna(Claves):
-            nota = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
         # Automatizacion  ######################
         parrafos = []
-
-
-
 
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
@@ -1161,8 +1179,9 @@ def ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos):
 
 
     if not Atacable:
-        Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
-                 'debido a que pueden afectar tanto tu confort como tu seguridad'
+        Consejos=noatac(equiposFuga)
+        # Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
+        #          'debido a que pueden afectar tanto tu confort como tu seguridad'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
         frame = Frame(330, 50, 200, 330,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
@@ -1491,7 +1510,8 @@ def Clasificador(aparatos):
 
 
 
-def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,Voltaje,Ahorro):
+def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,Voltaje,Ahorro,Ndatos):
+    print("...")
 
     if SolarS.empty:
         solar=False
@@ -1510,17 +1530,21 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     color_voltaje = int(Voltaje)
     fonts()
     portada(canvas, width, height)
-    intro(canvas, width, height)
+    intro(canvas, width, height,Ndatos)
     potencial_ahorro(canvas, width, height,consumo_bimestral, tarifa,costo,ahorro_bimestral, tipo_tarifa)
     if solar:
+        print("Creando hojas solar")
         Solar(canvas,tarifa,costo,consumo,SolarS)
     porF=por_A_fugas(fugas)
+    print("Generando hojas de Aparatos...")
     aparatosG,aparatosM, aparatosC, aparatos= Clasificador(aparatos)
     aparatos_grandes(canvas, width, height,aparatosG,Tarifa)
     aparatos_bajos(canvas, width, height,aparatosM,aparatosC,Tarifa)
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)
+    print("Generando hojas de Fuga...")
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)
     hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje)
+    print("Generando hoja de Resumen...")
     cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL)
     robo='no'
     revisar='no'
@@ -1535,7 +1559,10 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
 
     try:
         canvas.save()
+        print(" ")
         print("SE HA CREADO CON EXITO EL PDF DEL CLIENTE")
 
     except Exception as e:
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
         print("NO SE GUARDO EL ARCHIVO. Revisar que no esté abierto.")
+        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
