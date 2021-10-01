@@ -3,7 +3,34 @@ import pandas as pd
 from scipy.stats import norm
 import funcionesComunes as fc
 import unicodedata
-
+def recoSensores (kwh = None,w = None, lugar = None ,dac = None):
+    """
+    Lista de lugares y claves:
+    recamara
+    sala
+    cocina
+    bano
+    pasillo
+    comedor
+    cuarto
+    entrada
+    escaleras
+    estacionamiento
+    estudio
+    lavanderia
+    terraza
+    barra
+    jardineras
+    patio
+    camino
+    estancia
+    vestidor
+    alacena
+    """
+    ls=libreriaSensores()
+    ls.setData(kwh,w,lugar, dac)
+    txt=ls.armarTxt()
+    return txt
 
 class libreriaSensores:
 

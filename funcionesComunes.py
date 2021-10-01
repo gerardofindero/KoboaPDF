@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy  as np
-
+import unicodedata
 
 def ligarTextolink(texto, link):
     """
@@ -86,3 +86,13 @@ def checarROI(df):
     else:
         return [False,
                 df.reset_index(drop=True).loc[:5, :].copy()]
+def formStrig(txt):
+    txt = txt.lower()
+    nfkd = unicodedata.normalize("NFKD", txt)
+    lugar = nfkd.encode("ASCII", 'ignore')
+    lugar = lugar.decode("utf-8")
+    return txt
+
+def formDFstring(df):
+    df= df.str.lower().str.normalize('NFKD').str.encode('ascii', errors='ignore').str.decode('utf-8')
+    return df
