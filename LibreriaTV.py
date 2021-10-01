@@ -21,8 +21,9 @@ def libreria2():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
             sheet_name='Reemplazos')
 
-    Dicc = ['A', 'B', 'C', 'D', 'E','F','G'] # Define los nombres de las columnas en Excel.
-    Libreria.columns = Dicc
+    # Dicc = ['A', 'B', 'C', 'D', 'E','F','G'] # Define los nombres de las columnas en Excel.
+    # Libreria.columns = Dicc
+    Libreria=Libreria.set_index('Codigo')
     Dicc = ['A', 'B', 'C', 'D', 'E', 'F', 'G','H','I','J','K','L','M','N','O','P','Q','R']  # Define los nombres de las columnas en Excel.
     Reemplazos.columns = Dicc
 
@@ -75,60 +76,44 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         Standby = float(Datos[1])
         Pulgadas=float(Datos[2])
         Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
-
         Ahorro= (Potencia - math.exp(3.189644 + (0.034468 * Pulgadas))) / Potencia
-        XX = np.log(Potencia)
-        Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606)
-
 
         if Consumo==0:
             Consumo=0.1
 
-        ROI=abs(Precio/(DAC*Ahorro*Consumo))
-        #ROI=Precio/(DAC*Ahorro*Consumo)
-        print(Percentil)
-        if Consumo<25:
-            Texto = Texto + ' ' + lib.loc[0, 'G']
-            # if Percentil>0.8 and ROI<18:
-            #     Texto = Texto + ' ' + lib.loc[1, 'G']
+        WTV=25.57* math.exp(0.035*Pulgadas)
+        WTV2=31.17* math.exp(0.035*Pulgadas)
+
+        if Potencia>=WTV2:
+            Texto = Texto +' '+ lib.loc['TV03B','Texto']
+            linkA=EncontrarRemplazo(reemplazos, Pulgadas)
+            Texto = Texto + ' ' + lib.loc['TV04', 'Texto']
+            Address = 'Link de compra'
+            LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+            Texto = Texto + '<br /> '+  '<br /> '+LinkS
+        if WTV<=Potencia<WTV2:
+            Texto = Texto +' '+ lib.loc['TV02B','Texto']
+        if WTV > Potencia:
+            Texto = Texto +' '+ lib.loc['TV01B','Texto']
+
+        uso=(Consumo*1000)/(Potencia*60)
+        if uso>=5.0:
+            Texto = Texto +' '+ lib.loc['TV03A','Texto']
+        if 2.5<=uso<5.0:
+            Texto = Texto +' '+ lib.loc['TV02A','Texto']
+        if uso < 2.5:
+            Texto = Texto +' '+ lib.loc['TV01A','Texto']
 
 
-        if 25<=Consumo<100:
-            if Uso>30:
-                Texto = Texto + ' ' + lib.loc[2, 'G']
-            elif Percentil<0.8:
-                Texto = Texto + ' ' + lib.loc[3, 'G']
-
-            elif ROI<18:
-                Texto = Texto + ' ' + lib.loc[4, 'G']
-                linkA=EncontrarRemplazo(reemplazos, Pulgadas)
-                Address = 'Link de compra'
-                LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-                Texto = Texto + '<br /> '+ '<br /> '+LinkS
-            else:
-                Texto = Texto+'Tienes un uso ligeramente mayor a la mayoria de nuestros clientes, Procura apagar tu ' \
-                              'TV cuando no la estés viendo'
-        if 100<=Consumo:
-            Texto = Texto + ' ' + lib.loc[5, 'G']
-
-            if Percentil<0.9:
-                Texto = Texto + ' ' + lib.loc[6, 'G']
-
-            if ROI<18:
-                linkA=EncontrarRemplazo(reemplazos, Pulgadas)
-                Texto = Texto + ' ' + lib.loc[7, 'G']
-                Address = 'Link de compra'
-                LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-                Texto = Texto + '<br /> '+  '<br /> '+LinkS
 
 
         if Standby>1:
-            Texto = Texto + ' ' + lib.loc[8, 'G']
+            Texto = Texto + ' ' + lib.loc['TV05', 'Texto']
 
     Texto = Texto.replace('[/n]','<br />')
     Texto = Texto.replace('[...]', ' ')
     Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
-    Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
+    #Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
     Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
 
     return Texto

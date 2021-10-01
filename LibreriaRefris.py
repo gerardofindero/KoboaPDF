@@ -227,8 +227,7 @@ def LeeClavesR(Claves):
         Texto = Texto.replace('[...]', ' ')
         TextoF = TextoF.replace('[/n]', '<br />')
         TextoF = TextoF.replace('[...]', ' ')
-        print(TextoF)
-        print(Texto)
+
 
 
 

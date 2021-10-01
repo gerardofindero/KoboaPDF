@@ -9,8 +9,8 @@ def leerLibreriaPlanchas():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
             sheet_name='libreriaPlanchas')
 
-    Dicc = ['A','B', 'C','D'] # Define los nombres de las columnas en Excel.
-    Libreria.columns = Dicc
+    #Dicc = ['A','B', 'C','D'] # Define los nombres de las columnas en Excel.
+    #Libreria.columns = Dicc
     return Libreria
 
 def leerConsumoPlanchas(consumo, hrsUso=None):

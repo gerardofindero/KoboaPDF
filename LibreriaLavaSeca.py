@@ -50,6 +50,16 @@ def LeeClavesLavaSeca(Claves,consumo):
             if 0.3 > Percentil:
                 Texto = Texto + ' ' + lib.loc[0, 'E']
 
+            linkA='https://amzn.to/2TTkeRI'
+            Address = 'Link de compra'
+            LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+            linkA='https://amzn.to/2TTkeRI'
+            Address = 'Link de compra'
+            LinkS2 = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+
+            Texto = Texto.replace('[LINK1]', LinkS)
+            Texto = Texto.replace('[LINK2]', LinkS2)
+
 
             Texto = Texto.replace('["PCML"]', str(int(100-Percentil*100)))
             Texto = Texto.replace('["PCMLF"]', str(int(Percentil * 100)))
@@ -68,7 +78,19 @@ def LeeClavesLavaSeca(Claves,consumo):
                 Texto = Texto + ' ' + lib.loc[6, 'E']
             if 0.3 > Percentil:
                 Texto = Texto + ' ' + lib.loc[5, 'E']
+            #https://amzn.to/2TTkeRI
+            #https://amzn.to/3gT53Bc
 
+
+            linkA='https://amzn.to/2TTkeRI'
+            Address = 'Link de compra'
+            LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+            linkA='https://amzn.to/2TTkeRI'
+            Address = 'Link de compra'
+            LinkS2 = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+
+            Texto = Texto.replace('[LINK1]', LinkS)
+            Texto = Texto.replace('[LINK2]', LinkS2)
             Texto = Texto.replace('["PCMS"]', str(int(100-Percentil*100)))
             Texto = Texto.replace('["PCMSF"]', str(int( Percentil * 100)))
 
