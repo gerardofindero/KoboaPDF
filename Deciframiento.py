@@ -28,9 +28,6 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Luminarias.drop(['Numero'], axis=1, inplace=True)
     Luminarias.drop(['Tipo'], axis=1, inplace=True)
     Luminarias.reset_index(inplace=True, drop=True)
-
-
-
     workbook = xlwings.Book(archivo_resultados)
     gris = (200, 200, 200)
     Consumo_bimestral = '=Resumen!A9'
@@ -87,12 +84,14 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range(len(Equipos) + 9, 16).value = 'Descripcion de Señal'
     Sheet1.range(len(Equipos) + 9, 17).value = 'Entrada y Tipo'
 
+    #=K38*1000/(G38*60)
     for i in range(len(Luminarias)):
         inicioL=len(Equipos)+10
-        Sheet1.range(inicioL+i, 9).value = '=F'+str(i+inicioL)+'*C$2'
-        Sheet1.range(inicioL+i, 11).value = '=IF(J'+str(i+inicioL)+'="NM",G'+str(i+inicioL)+',(J'+str(i+inicioL)+' / G'+str(i+inicioL)+') * I'+str(i+inicioL)+')'
+        Sheet1.range(inicioL+i,  9).value = '=F'+str(i+inicioL)+'*C$2'
+        Sheet1.range(inicioL+i, 11).value = '=I'+str(i+inicioL)
         Sheet1.range(inicioL+i, 12).value = '=K'+str(i+inicioL)+' / C$3'
         Sheet1.range(inicioL+i, 13).value = '=K'+str(i+inicioL)+'*G$1'
+        Sheet1.range(inicioL+i,  8).value = '=K'+str(i+inicioL)+'*1000/(G'+str(i+inicioL) +'*60)'
 
     Sheet1.range(len(Equipos) + len(Luminarias)+12, 4).value = 'Perdidas'
     Sheet1.range(len(Equipos) + len(Luminarias) + 12, 16).value = 'Descripcion'
@@ -123,9 +122,6 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     for atac in Atacable:
         Sheet1.range(inicioL + i, 1).value = atac
         i=i+1
-
-
-
 
 
 ####### Color y Bordes ##################
@@ -161,7 +157,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not 'QQ' in identificados:
             if not identificados.empty:
-                Sheet1.range(7 + cony, 6).value =   infoL.loc[identificados[0], 'D']
+                #Sheet1.range(7 + cony, 6).value =   infoL.loc[identificados[0], 'D']
+                Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
                 Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
                 Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
                 Sheet1.range(7 + cony, 8).value =   infoL.loc[identificados[0], 'J']
@@ -178,10 +175,12 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
         i=i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not identificados.empty:
-            Sheet1.range(inicioL + cony, 6).value = infoL.loc[identificados[0], 'D']
+            #Sheet1.range(inicioL + cony, 6).value = infoL.loc[identificados[0], 'D']
+            Sheet1.range(inicioL + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
             Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
             Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
             Sheet1.range(7 + cony, 8).value = infoL.loc[identificados[0], 'J']
+
         cony = cony + 1
 
     cony = 0
