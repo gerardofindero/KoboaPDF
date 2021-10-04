@@ -1,5 +1,6 @@
 import pandas as pd
 import random
+from libreriaLucesSolares import recoSolares
 ### Preguntas generales
 
 # Tareas:
@@ -145,11 +146,25 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     aleatorio=random.randint(1, 3)
     #Se lee libreria de textos
     Lib =  libreriaL()
+    Clav=''
     TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
     ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
+    ENTY = EntyTip.split()
+    tipo=''
+    entrada=''
+    print(ENTY)
+    if 'NOC' in ENTY:
+
+        TextoCompleto = recoSolares('nocturna','No',10,30,6.58)
+
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
-    if len(EntyTip.split()) == 2:
-        ENTY = EntyTip.split()
+    # if len(EntyTip.split()) == 3:
+    #     Clav = EntyTip.split()
+    # Clave=Clav[2]
+    # print(Clave)
+    # if len(EntyTip.split()) == 2:
+    #     ENTY = EntyTip.split()
+
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
@@ -253,13 +268,16 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         ## se obtienen consumo del LED, su precio y su LINK
 
         #Se cambian las variables para adecuarlas a la base de datos
-        tipo=ENTY[0]
-        tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco para ser igual a la de la base de datos.
-        #print('Tipo: ' + str(tipo))
-        entrada=ENTY[1]
-        entrada = DiccionarioLuz(entrada)
-        #print('Entrada tipo: ' + str(entrada))
-        #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
+        if len(ENTY)>=2:
+            tipo=ENTY[0]
+            tipo = DiccionarioLuz(tipo) # Función definida abajo. Cambia la sintaxis de la entrada del foco para ser igual a la de la base de datos.
+            #print('Tipo: ' + str(tipo))
+            entrada=ENTY[1]
+            entrada = DiccionarioLuz(entrada)
+            #print('Entrada tipo: ' + str(entrada))
+            #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
+
+
 
         ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno,Numero)
         TT=0
@@ -319,7 +337,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
     TextoCompleto = TextoCompleto.replace('[...]','')
     TextoCompleto = TextoCompleto.replace('[/n]','<br />')
-
+    print(TextoCompleto)
     return TextoCompleto, conteoled, conteoNOled, conteoROI
 ## 5.
 ## Función para buscar el sustituto LED
