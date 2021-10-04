@@ -51,9 +51,9 @@ def ClavesRefri(EquiposRefri):
             Codigo +=',PT'
         if 'dehielo' in str(EquiposR['Prob Refr']):
             Codigo +=',DH'
-        if EquiposR['Tuberias'][0] != 'si':
+        if  'si' in EquiposR['Tuberias']:
             Codigo += ",TB"
-        if EquiposR['Jabon'][0] != 'si':
+        if  'si' in EquiposR['Jabon']:
             Codigo += ",JB"
         if 'inexistente' in str(EquiposR['Prob Refr']) or 'descompuesto' in str(EquiposR['Prob Refr']):
             Codigo +=',AM'
