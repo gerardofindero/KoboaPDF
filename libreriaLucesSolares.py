@@ -1,5 +1,43 @@
 import pandas as pd
 import funcionesComunes as fc
+
+def recoSolares(claves, kwh =None,w =None,dac =None):
+    seg, som = claves.split(",")
+    """
+    seg (kobo foco función) valores:
+        nocturna
+        * cualquier otra cosa
+    som (sombreados variable nueva kobo) valores:
+        Si
+        No
+    Lista de lugares:
+        recamara
+        sala
+        cocina
+        bano
+        pasillo
+        comedor
+        cuarto
+        entrada
+        escaleras
+        estacionamiento
+        estudio
+        lavanderia
+        terraza
+        barra
+        jardineras
+        patio
+        camino
+        estancia
+        vestidor
+        alacena
+    """
+    ls=libreriaLucesSolares()
+    ls.setData(kwh,w,seg,som,dac)
+    txt = ls.armarTxt()
+    return txt
+
+
 class libreriaLucesSolares():
     def __init__(self):
         try:
