@@ -698,6 +698,14 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
+
+    """
+    funciones a integrar
+    recoSensores en libreriaSenMov
+    recoSolares en libreriaLuces Solares
+    recoTubosFluorescentes en libreriaTubosFluorecente
+    recoTirasLed en libreriaTirasLED
+    """
     return Consejos,Notas
 
 

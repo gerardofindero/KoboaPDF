@@ -1,39 +1,19 @@
 import pandas as pd
 import funcionesComunes as fc
 
-def recoSolares(claves, kwh =None,w =None,dac =None):
-    seg, som = claves.split(",")
+def recoSolares(focoFuncion = None, som = None, kwh =None,w =None,dac =None):
     """
-    seg (kobo foco función) valores:
-        nocturna
-        * cualquier otra cosa
-    som (sombreados variable nueva kobo) valores:
-        Si
-        No
-    Lista de lugares:
-        recamara
-        sala
-        cocina
-        bano
-        pasillo
-        comedor
-        cuarto
-        entrada
-        escaleras
-        estacionamiento
-        estudio
-        lavanderia
-        terraza
-        barra
-        jardineras
-        patio
-        camino
-        estancia
-        vestidor
-        alacena
+
+    :param seg: Funcióndel foco si es nocturna buscara una recomendación de luz solar
+    :param som: Sombreados, valore "Si" y "No". Viene de kobo y hace referencia a si hay occlusiones de luz
+    :param kwh:
+    :param w:
+    :param dac:
+    :return: texto con recomendacion
     """
+
     ls=libreriaLucesSolares()
-    ls.setData(kwh,w,seg,som,dac)
+    ls.setData(kwh,w,focoFuncion,som,dac)
     txt = ls.armarTxt()
     return txt
 

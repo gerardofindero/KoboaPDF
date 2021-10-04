@@ -1,6 +1,19 @@
 import pandas as pd
 import numpy as np
+def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr):
+    """
 
+    :param longitud: longitud de tira led - int o float
+    :param caracteristicas: strinc con caracteristicas (fría, calida, color) - str
+    :param DAC:
+    :param wt:
+    :param kwh:
+    :param dscr: descripcción con días de la semana que se uso
+    :return: recomendación tiras led
+    """
+
+
+    return ""
 class libreriaTirasLED:
     def __init__(self):
         self.txt = ''  # inicia variable del texto para el reporte al cliente
