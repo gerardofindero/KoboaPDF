@@ -101,7 +101,7 @@ def Crear_Kobo(NCliente):
 ##################################################################
 def Nombre_Cliente():
 
-    #NCliente = 'Cliente Prueba'
+    NCliente = 'Cliente Prueba'
     #NCliente = 'Marcela Autrique'
     #NCliente = 'Fernando Ponce'
     #NCliente = 'Joaquin Gamero'
@@ -123,7 +123,7 @@ def Nombre_Cliente():
     #NCliente = 'Manuel Gutierrez'
     #NCliente = 'Alejandra Vega'
     #NCliente = 'Ricardo Martins'
-    NCliente = 'Valeria Arriaga'
+    #NCliente = 'Valeria Arriaga'
 
     return NCliente
 
@@ -139,7 +139,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='2'
+    Opcion='4'
 
 
     if Opcion == '1':

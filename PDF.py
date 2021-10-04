@@ -26,6 +26,7 @@ from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
+from libreriaLucesSolares import recoSolares
 #from libreriaClusterTV import armarTexto
 import libreriaClusterTV as CTV
 import libreriaClusterTV as CTV
@@ -677,7 +678,7 @@ def Dicc_Aparatos(nombre):
     return nombre_
 
 
-
+###################RECOMENDACIONES #######################################
 def Recomendaciones(Claves,consumo,DAC,Uso,nota):
     Consejos=nota
     ClavesS = Claves.split(',')
@@ -696,6 +697,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
         Consejos = armarTxtCaf(consumo,Uso,'Ninguno')
     if Claves == 'CTV':
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
+
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
@@ -707,7 +709,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
     recoTirasLed en libreriaTirasLED
     """
     return Consejos,Notas
-
+###################RECOMENDACIONES #######################################
 
 
 

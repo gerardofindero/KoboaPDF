@@ -1,7 +1,7 @@
 import pandas as pd
 import funcionesComunes as fc
 
-def recoSolares(focoFuncion = None, som = None, kwh =None,w =None,dac =None):
+def recoSolares(focoFuncion, som, kwh,w,dac):
     """
 
     :param seg: Funcióndel foco si es nocturna buscara una recomendación de luz solar
