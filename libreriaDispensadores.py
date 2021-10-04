@@ -21,4 +21,4 @@ def recoDispensadore(kwh):
     if kwh<=20:
         txt = fc.selecTxt(lib, "DIS01")
     else:
-        txt = fc.selecTxt(lib,"DIS02")
+        txt = fc.selecTxt(lib,"DIS02").replace()
