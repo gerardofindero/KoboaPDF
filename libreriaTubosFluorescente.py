@@ -1,35 +1,32 @@
 import pandas as pd
 import numpy as np
 
-def recoTuboFluorescente():
+def recoTuboFluorescente(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr):
     """
-    claves de variables de kobo
-    tipo, t12 ....
-    entrada, g5 ...
-    disposicion, paralelo -serie ...
-    portalampara, sin-colgante- introduce ....
-    focofuncion, principal-indirecta . .. .
-    numero de tubos,
-    deterioro, s - n
-    difusor,  s - n
-    temp,     calida - fria
-    longitud,
-
-            self.tipo       = kobo['tipo'] # tipo de tubo               - str
-            self.entr       = kobo['entr'] # conector del tubo          - str
-            self.dist       = kobo['dist'] # disposición de los tubos   - str
-            self.port       = kobo['port'] # tipo de portalampara       - str
-            self.func       = kobo['func'] # funcion de la ilumincación - str
-            self.ntub       = kobo['ntub'] # númerod de tubos           - num
-            self.detr       = kobo['detr'] # deterioro                  - log
-            self.difu       = kobo['difu'] # tiene difusor              - log
-            self.temp       = kobo['temp'] # luz calida o fría          - str
-            self.lntb       = kobo['lntb'] # longitud de los tubos      - str
-            self.caji       = kobo['caji'] # cajillo                    - log
-            self.caln       = kobo['caln'] # longitud del cajillo       - num (0 por default)
-            self.plta       = kobo['plta'] # medidas de placa           - list num  [largo, ancho] ([0,0] por default)
-            self.plnu       = kobo['plnu'] # número de placas
+    :param tipo: tipo de tubo (t2, t5, t12, etc) - str
+    :param entr: entrada del tubo (g5, etc) - str
+    :param disp: disposición de los tubo (aislado, serie, parealelo) - str
+    :param port: tipo de portalampara (sobresale, introduce, sin, etc) - str
+    :param func: funcion de la iluminación (principal, nocturna, espejos etc) - str
+    :param ntub: número de tuobos fluorescente - int o float
+    :param detr: Señales de deterioro en los tubos (True, False) - bool
+    :param difu: Si los tubos fluorescentes tienen difusor (True, False) - bool
+    :param temp: Tipo de iluminación (calida o fria) - str
+    :param lntb: longitud del tubo (largo_30, largo_61, etc) -  str
+    :param caji: True si es cajillo (True, False) - bool
+    :param caln: longitud del cajillo - int o float
+    :param plta: lista con largo y ancho de placa ([largo, ancho]) - list de int o float
+    :param plnu: numero de placas - int o float
+    :param DAC:
+    :param wt:
+    :param kwh:
+    :param dscr: descripcion del deciframiento. Se utiliza para extraer dias de la semana que se ocupo la luminaria
+    :return:
     """
+    lf=libreriaTubosFluorescentes()
+    lf.setData(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
+    reco = lf.buildText()
+    return reco
 class libreriaTubosFluorescentes:
     def __init__(self):
         # Kobo Info de kobo en diccionario, tarifa DAC, potencia total de los tubos led, energía consumida
@@ -121,21 +118,21 @@ class libreriaTubosFluorescentes:
             texto = '<br />' + '<link href="' + link + '"color="blue">' + texto + ' </link>'
             return texto
 
-    def setData(self,kobo,DAC,wt,kwh,dscr):
-            self.tipo       = kobo['tipo'] # tipo de tubo               - str
-            self.entr       = kobo['entr'] # conector del tubo          - str
-            self.dist       = kobo['dist'] # disposición de los tubos   - str
-            self.port       = kobo['port'] # tipo de portalampara       - str
-            self.func       = kobo['func'] # funcion de la ilumincación - str
-            self.ntub       = kobo['ntub'] # númerod de tubos           - num
-            self.detr       = kobo['detr'] # deterioro                  - log
-            self.difu       = kobo['difu'] # tiene difusor              - log
-            self.temp       = kobo['temp'] # luz calida o fría          - str
-            self.lntb       = kobo['lntb'] # longitud de los tubos      - str
-            self.caji       = kobo['caji'] # cajillo                    - log
-            self.caln       = kobo['caln'] # longitud del cajillo       - num (0 por default)
-            self.plta       = kobo['plta'] # medidas de placa           - list num  [largo, ancho] ([0,0] por default)
-            self.plnu       = kobo['plnu'] # número de placas
+    def setData(self,tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr):
+            self.tipo       = tipo
+            self.entr       = entr
+            self.dist       = disp
+            self.port       = port
+            self.func       = func
+            self.ntub       = ntub
+            self.detr       = detr
+            self.difu       = difu
+            self.temp       = temp
+            self.lntb       = lntb
+            self.caji       = caji
+            self.caln       = caln
+            self.plta       = plta
+            self.plnu       = plnu
 
             self.w_t        = wt                           # Potencia de la luminaria
             self.DAC        = DAC                          # Tarifa Dac vigente
@@ -348,6 +345,6 @@ class libreriaTubosFluorescentes:
                         txt = txt + self.recRem(['RTbL'])
                     elif self.port == 'sin':
                         txt = txt + self.recRem(['RTbL'])
-        #txt= txt.replace('\n','<br />')
-        self.txt = txt
+        txt= txt.replace('\n','<br />')
+        return txt
 
