@@ -11,9 +11,12 @@ def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr):
     :param dscr: descripcción con días de la semana que se uso
     :return: recomendación tiras led
     """
+    ll=libreriaTirasLED()
+    ll.setData(longitud,caracteristicas,DAC,wt,kwh,dscr)
+    txt = ll.buildText()
+    return txt
 
 
-    return ""
 class libreriaTirasLED:
     def __init__(self):
         self.txt = ''  # inicia variable del texto para el reporte al cliente
@@ -195,5 +198,5 @@ class libreriaTirasLED:
         else:
             txt = txt + '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
 
-        #txt= txt.replace('\n','<br />')
-        self.txt = txt
+        txt= txt.replace('\n','<br />')
+        return = txt
