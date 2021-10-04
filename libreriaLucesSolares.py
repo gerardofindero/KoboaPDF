@@ -115,7 +115,7 @@ class libreriaLucesSolares():
             op0 = fc.ligarTextolink(self.db.at[idx[0],"nombre"],self.db.at[idx[0],"links"])
             op1 = fc.ligarTextolink(self.db.at[idx[1], "nombre"], self.db.at[idx[1], "links"])
 
-            txt = txt.replace("[recomendacion]", op0+", "+op1).replace("\n","<br />").replace("<br />","")
+            txt = txt.replace("[recomendacion]", op0+" y "+op1).replace("\n","<br />").replace("<br />","")
         self.txt=txt
         return txt
 
