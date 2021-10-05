@@ -95,7 +95,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     Sheet1.range(len(Equipos) + len(Luminarias)+12, 4).value = 'Perdidas'
     Sheet1.range(len(Equipos) + len(Luminarias) + 12, 16).value = 'Descripcion'
-
+    Fugas=Fugas.sort_values(by=['Ubicacion'])
     for i in range(len(Fugas)):
         inicioF=len(Equipos)+len(Luminarias)+13
         #Sheet1.range(inicioL+i, 8).value = '=E'+str(inicioL+i)+'*C$2'
@@ -451,9 +451,10 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     #    'Lugar Especifico'] + ') que consta de ' + Luminaria['Numero'].apply(str) + ' '+Luminaria['Tipytam']+'. Notas: ' + Luminaria['Notas']
 
     Luminarias['Texto']=Tluz #+' '+ Luminaria['TipoyTam']+'  '+ Luminaria['Entrada']
-    Luminarias['Claves'] = Luminaria['TipoyTam'] + ' ' + Luminaria['Entrada']
+    Luminarias['Claves'] = Luminaria['TipoyTam'] + ' ' + Luminaria['Entrada']+Luminaria['Funcion']
 
     cont=0
+
     Luminarias=Luminarias.reset_index(drop=True)
 
     # for i in Luminaria['Numero']:
@@ -496,6 +497,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Fugas.loc[i, 'Claves'] = num
 
 
-    ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
+    #ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
 
 

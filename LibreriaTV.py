@@ -115,5 +115,6 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
     Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
     #Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
     Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
+    Texto = Texto.replace('[Uso]', str(round(uso)))
 
     return Texto

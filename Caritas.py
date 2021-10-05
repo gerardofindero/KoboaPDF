@@ -42,10 +42,10 @@ def caritaMicroondas(consumo,clave):
     Percentil=round(percentil,2)
     if Percentil>0.66:
         Ca=3
-    if 0.45<Percentil<0.66:
+    if 0.45<Percentil<=0.66:
         Ca=2
 
-    if 0.45 > Percentil:
+    if 0.45 >= Percentil:
         Ca=1
 
     return Ca

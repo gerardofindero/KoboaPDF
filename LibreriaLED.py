@@ -152,10 +152,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     ENTY = EntyTip.split()
     tipo=''
     entrada=''
-    print(ENTY)
     Solar=False
     if 'NOC' in ENTY:
-        TextoCompleto = recoSolares('nocturna','No',10,30,6.58)
+        TextoCompleto = recoSolares('nocturna','Si',VV,Watts,DAC)
         Solar=True
 
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
@@ -338,7 +337,6 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
     TextoCompleto = TextoCompleto.replace('[...]','')
     TextoCompleto = TextoCompleto.replace('[/n]','<br />')
-    print(TextoCompleto)
     return TextoCompleto, conteoled, conteoNOled, conteoROI
 ## 5.
 ## Función para buscar el sustituto LED
@@ -501,7 +499,6 @@ def sumariguales(dfxzona,df,tipo):
     return df
 
 def distporc(df):
-    print(df['L'])
     Codigos=pd.unique(df['B'])
     for i in Codigos:
         dfxCod=df[df["B"] == i]
