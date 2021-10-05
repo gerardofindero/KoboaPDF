@@ -191,7 +191,7 @@ Lumi4 = ParagraphStyle(name='Cuadros',
                                 )
 Lumi5 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=4,
+                                fontSize=5,
                                 leading=8,
                                 textColor=gris
                                 )

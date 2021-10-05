@@ -152,10 +152,10 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     ENTY = EntyTip.split()
     tipo=''
     entrada=''
-    print(ENTY)
+    Solar=False
     if 'NOC' in ENTY:
-
-        TextoCompleto = recoSolares('nocturna','No',10,30,6.58)
+        TextoCompleto = recoSolares('nocturna','Si',VV,Watts,DAC)
+        Solar=True
 
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
     # if len(EntyTip.split()) == 3:
@@ -207,11 +207,11 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         if Numero>10 and uso>5:
             TextoCompleto = TextoCompleto + Lib.loc['LUM25', 'Texto']
 
-        if aleatorio==1:
+        if aleatorio==1 and Solar==False:
             TextoCompleto = TextoCompleto + Lib.loc['LUM31', 'Texto']
-        if aleatorio==2:
+        if aleatorio==2 and Solar==False:
             TextoCompleto = TextoCompleto + Lib.loc['LUM32', 'Texto']
-        if aleatorio==3:
+        if aleatorio==3 and Solar==False:
             TextoCompleto = TextoCompleto + Lib.loc['LUM33', 'Texto']
 
         if Numero == 1:
@@ -337,7 +337,6 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
     TextoCompleto = TextoCompleto.replace('[...]','')
     TextoCompleto = TextoCompleto.replace('[/n]','<br />')
-    print(TextoCompleto)
     return TextoCompleto, conteoled, conteoNOled, conteoROI
 ## 5.
 ## Función para buscar el sustituto LED
@@ -500,7 +499,6 @@ def sumariguales(dfxzona,df,tipo):
     return df
 
 def distporc(df):
-    print(df['L'])
     Codigos=pd.unique(df['B'])
     for i in Codigos:
         dfxCod=df[df["B"] == i]

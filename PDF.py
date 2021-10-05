@@ -883,7 +883,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota)
         # Automatizacion  ######################
         if nota == '.':
-            parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
+            parrafos.append(Paragraph('El consumo de tu equipo es bastante bueno, continua con su buen uso', Estilos.cuadros_bajo))
         else:
             if len(nota) < 400:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))

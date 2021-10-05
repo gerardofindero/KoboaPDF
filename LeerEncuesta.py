@@ -101,7 +101,7 @@ def Crear_Kobo(NCliente):
 ##################################################################
 def Nombre_Cliente():
 
-    NCliente = 'Cliente Prueba'
+    #NCliente = 'Cliente Prueba'
     #NCliente = 'Marcela Autrique'
     #NCliente = 'Fernando Ponce'
     #NCliente = 'Joaquin Gamero'
@@ -120,7 +120,7 @@ def Nombre_Cliente():
     #NCliente = 'Roberto Sanchez'
     #NCliente = 'Claudia Giordano'
     #NCliente = 'Gabriela Avellano'
-    #NCliente = 'Manuel Gutierrez'
+    NCliente = 'Manuel Gutierrez'
     #NCliente = 'Alejandra Vega'
     #NCliente = 'Ricardo Martins'
     #NCliente = 'Valeria Arriaga'
@@ -151,11 +151,9 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3':
-        leer_resumen(NCliente)
-        # import libreriaSenMov as lsm
-        # lib=lsm.libreriaSensores()
-        # lib.setData(300,50,"Baño",6.1)
-        # print(lib.armarTxt())
+        potecial_ahorro(NCliente)
+        #leer_potencial(NCliente)
+
 
     if Opcion == '4':
         print("________________________________")
@@ -171,11 +169,14 @@ if __name__ == '__main__':
             datosSolar = leer_solar(NCliente)
         CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)
 
+
+###########Para hacer pruebas################
     if Opcion == '5':
-        potecial_ahorro(NCliente)
-        #leer_potencial(NCliente)
-
-
+        leer_resumen(NCliente)
+        # import libreriaSenMov as lsm
+        # lib=lsm.libreriaSensores()
+        # lib.setData(300,50,"Baño",6.1)
+        # print(lib.armarTxt())
 
 
 
