@@ -702,11 +702,16 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
     """
-    funciones a integrar
+    funciones a integrar 
     recoSensores en libreriaSenMov
     recoSolares en libreriaLuces Solares
     recoTubosFluorescentes en libreriaTubosFluorecente
     recoTirasLed en libreriaTirasLED
+    
+    ################### 10/06/2021
+    funciones a integrar
+    recoMaqHie en libreriaHielo, solo ocupa el kwh
+    recoDispensadores en libreriaDispensadores, solo ocupa el kwh
     """
     return Consejos,Notas
 ###################RECOMENDACIONES #######################################

@@ -17,7 +17,7 @@ def leerLibreria():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Maquinas de hielo/libreriaMaquinasHielo.xlsx",
             sheet_name='links')
     return lib, links
-def recoDispensadores(kwh):
+def recoMaqHie(kwh):
     lib, links = leerLibreria()
 
     if kwh<=20:
