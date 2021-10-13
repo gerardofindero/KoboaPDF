@@ -139,7 +139,7 @@ if __name__ == '__main__':
     #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='3'
 
 
     if Opcion == '1':
@@ -151,9 +151,11 @@ if __name__ == '__main__':
         #hipervinculos(NCliente)
 
     if Opcion == '3':
-        potecial_ahorro(NCliente)
-        #leer_potencial(NCliente)
-
+        import libreriaBombasPresurizadoras as lbp
+        txt = lbp.recoPresu(w=370,kwh=456,tinaco="si",pastilla="si",pb="bien",pa="bien", ver="",
+                            val="",jar="",fug1="no",fug1l="concina",fug2="no",fug2l="baño",
+                            pru="")
+        print(txt)
 
     if Opcion == '4':
         print("________________________________")
