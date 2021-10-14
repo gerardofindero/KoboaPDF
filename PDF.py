@@ -452,7 +452,7 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
                       "**La tarifa doméstica de alto consumo considera el promedio de consumo de los últimos 12 meses"
                       " así que el cambio de tarifa sería menos inmediato.", Estilos.mini, 60, 0, .8, .05,canvas)
     else:
-        parrafo_frame("<b>No es posible bajar de tarifa</b>", Estilos.centrado_chico, x + 145, y - 125, .18, .33,canvas)
+        parrafo_frame("<b>Será difícil bajar de tarifa</b>", Estilos.centrado_chico, x + 145, y - 125, .18, .33,canvas)
         parrafo_frame(
             "A pesar de implementar nuestras recomendaciones, tu consumo sigue estando por encima del límite de tarifa Doméstica de Alto Consumo."
             " Sin embargo, <b>te estarías ahorrando ${:,} en paneles solares</b>".format(ahorro_paneles), Estilos.chica,
@@ -465,7 +465,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     Luces = luces.copy()
     Luces=UnirLuces(Luces)
     Luces = Luces.loc[Luces['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
-    Luces.sort_values(by=['L'], inplace=True, ascending=False)
+    Luces.sort_values(by=['Z'], inplace=True, ascending=False)
     TotalC=Luces['K'].sum() # Suma de consumos de lueces en el consumo total de casa (KWh)
     TotalP=Luces['L'].sum() # Suma de porcentaje total de luces en el consumo total de casa (%)
     TotalD = Luces['M'].sum() # Suma de costo de luces en el costo total de casa ($)
@@ -550,18 +550,21 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     Luces['D']=Luces['D'].str.replace('Luces ','')
 
     luzz=''
+    repetido=''
     for index, luz in Luces.iterrows():
         i=i+1
-        if luzz != luz[4]:
+        if repetido != luz[4]:
+            repetido=luz[4]
             luzz=luz[4]
-            porc=str(round(luz[11]*100,1))+' %'
-            cost='$ '+str(round(luz[12]))
+            porc=str(round(luz[18]*100,1))+' %'
+            cost='$ '+str(round(luz[17]))
             lineacorta=False
         else:
             luzz=''
             porc=''
             cost=''
             lineacorta=True
+
 
         tex= str(luz[13])
         uso= luz[7]
@@ -671,7 +674,8 @@ def Dicc_Aparatos(nombre):
     abreviados = ['aspiradora','tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora', 'secadora de cabello',
                   'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno',
                   'cocina', 'pelo', 'laptop', 'monitor', 'congelador', 'minibar', 'campana', 'microondas', 'triturador', 'cava',
-                  'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor']
+                  'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor','entretenimiento','cargador','karcher','belleza',
+                  'lampara','jardin','ventilador','impresora','tostadora']
     for a in abreviados:
         if a in nombre_:
             nombre_ = a
@@ -684,7 +688,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
     ClavesS = Claves.split(',')
     Notas='X'
     if ClavesS[0] == 'RF':
-        Consejos,Notas = LeeClavesR(Claves)
+        Consejos,Notas = LeeClavesR(Claves,nota)
     if ClavesS[0] == 'TV':
         Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
@@ -722,7 +726,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     gris = [65 / 255, 65 / 255, 65 / 255]
     blanco = [1, 1, 1]
     for index,aparato in aparatosG.iterrows():
-        nombre = aparato[3]
+        nombre = aparato[3]+' en '+aparato[4]
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
@@ -810,7 +814,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     altura = 650
 
     for index,aparato in aparatosM.iterrows():
-        nombre = aparato[3]
+        nombre = aparato[3]+' en '+aparato[4]
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
@@ -919,7 +923,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
 
 
     for index, aparato in aparatosC.iterrows():
-        nombre = aparato[3]
+        nombre = aparato[3] +' en '+aparato[4]
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
@@ -1084,10 +1088,11 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
         repetido=False
         Consejos=''
         equiposFuga=[]
+        equiposFuga1=[]
         for index, fugat in atac.iterrows():
 
             if ind > 4:
-                ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos)
+                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos)
                 equiposFuga=[]
                 canvas.showPage()
                 consumoT = round(atac['K'].sum(), 1)
@@ -1168,15 +1173,17 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
             Soloequipo=Nfuga.split()
             equiposFuga.append(Soloequipo[0].lower())
+            equiposFuga1.append(Soloequipo[1].lower())
+
             if fugat[13]!='X':
                 Consejos = Consejos+' '+fugat[13]+'<br />'
 
-        ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos)
+        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos)
         canvas.showPage()
 
-def ponerRecom(Atacable,Consejos,equiposFuga,canvas,parrafos):
+def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos):
     if Atacable:
-        Consejos= Consejos+' '+textodeconsejos(equiposFuga)
+        Consejos= Consejos+' '+textodeconsejos(equiposFuga,equiposFuga1)
 
     if Atacable:
         if len(Consejos) < 650:
