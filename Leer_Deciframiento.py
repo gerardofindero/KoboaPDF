@@ -53,41 +53,24 @@ def leer_solar(Cliente):
     DSolar = pd.DataFrame(index=['Produccion','MaxW','MaxkWh','Min','Medidor','ProduccionSem','ProduccionBim'],
                         columns=['F1','F2','F3','Total'])
 
-    DSolar.loc['Produccion','F1']= Exx.loc[1, ['J']][0]
-    DSolar.loc['MaxW', 'F1']      = Exx.loc[9, ['J']][0]
-    DSolar.loc['MaxkWh', 'F1']    = Exx.loc[5, ['J']][0]
-    DSolar.loc['Min', 'F1']       = Exx.loc[7, ['J']][0]
+    DSolar.loc['Produccion','F1'] = Exx.loc[1, ['J']][0]
+    DSolar.loc['MaxW', 'F1']      = Exx.loc[7, ['J']][0]
+    DSolar.loc['MaxkWh', 'F1']    = Exx.loc[3, ['J']][0]
+    DSolar.loc['Min', 'F1']       = Exx.loc[5, ['J']][0]
 
     DSolar.loc['Produccion', 'F2']= Exx.loc[1, ['K']][0]
-    DSolar.loc['MaxW', 'F2'] =      Exx.loc[9, ['K']][0]
-    DSolar.loc['MaxkWh', 'F2'] =    Exx.loc[5, ['K']][0]
-    DSolar.loc['Min', 'F2'] =       Exx.loc[7, ['K']][0]
+    DSolar.loc['MaxW', 'F2']      = Exx.loc[7, ['K']][0]
+    DSolar.loc['MaxkWh', 'F2']    = Exx.loc[3, ['K']][0]
+    DSolar.loc['Min', 'F2']       = Exx.loc[5, ['K']][0]
 
     DSolar.loc['Produccion', 'F3']  = Exx.loc[1, ['L']][0]
-    DSolar.loc['MaxW', 'F3']        = Exx.loc[9, ['L']][0]
-    DSolar.loc['MaxkWh', 'F3']      = Exx.loc[5, ['L']][0]
-    DSolar.loc['Min', 'F3']         = Exx.loc[7, ['L']][0]
+    DSolar.loc['MaxW', 'F3']        = Exx.loc[7, ['L']][0]
+    DSolar.loc['MaxkWh', 'F3']      = Exx.loc[3, ['L']][0]
+    DSolar.loc['Min', 'F3']         = Exx.loc[5, ['L']][0]
 
-    DSolar.loc['Medidor', 'Total'] = Exx.loc[11, ['L']][0]
-    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[13, ['L']][0]
+    DSolar.loc['Medidor', 'Total'] = Exx.loc[14, ['L']][0]
+    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[11, ['L']][0]
 
-    DSolar.loc['Produccion','F1']= Exx.loc[3, ['J']][0]
-    DSolar.loc['MaxW', 'F1']      = Exx.loc[5, ['J']][0]
-    DSolar.loc['MaxkWh', 'F1']    = Exx.loc[7, ['J']][0]
-    DSolar.loc['Min', 'F1']       = Exx.loc[9, ['J']][0]
-
-    DSolar.loc['Produccion', 'F2']=Exx.loc[3, ['K']][0]
-    DSolar.loc['MaxW', 'F2'] = Exx.loc[5, ['K']][0]
-    DSolar.loc['MaxkWh', 'F2'] = Exx.loc[7, ['K']][0]
-    DSolar.loc['Min', 'F2'] = Exx.loc[9, ['K']][0]
-
-    DSolar.loc['Produccion', 'F3']=Exx.loc[3, ['L']][0]
-    DSolar.loc['MaxW', 'F3'] = Exx.loc[5, ['L']][0]
-    DSolar.loc['MaxkWh', 'F3'] = Exx.loc[7, ['L']][0]
-    DSolar.loc['Min', 'F3'] = Exx.loc[9, ['L']][0]
-
-    DSolar.loc['Medidor', 'Total'] = Exx.loc[16, ['L']][0]
-    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[12, ['L']][0]
     DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
 
 

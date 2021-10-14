@@ -101,30 +101,15 @@ def Crear_Kobo(NCliente):
 ##################################################################
 def Nombre_Cliente():
 
-    #NCliente = 'Cliente Prueba'
-    #NCliente = 'Marcela Autrique'
-    #NCliente = 'Fernando Ponce'
-    #NCliente = 'Joaquin Gamero'
-    #NCliente = 'Lucero Garcia'
-    #NCliente = 'Armando Mendoza'
-    #NCliente = 'Patricio Garcia'
-    #NCliente = 'Mariana Botello'
-    #NCliente = 'Jose Moreno'
-    #NCliente = 'Ana Mae'
-    #NCliente = 'Aldonza Velez'
-    #NCliente = 'Berenice Roche'
-    #NCliente = 'Beatriz Escobedo'
-
-    #NCliente = 'Mike Mizrahi'
-    #NCliente = 'Alvaro Martinez'
-    #NCliente = 'Roberto Sanchez'
-    #NCliente = 'Claudia Giordano'
-    #NCliente = 'Gabriela Avellano'
-    NCliente = 'Manuel Gutierrez'
-    #NCliente = 'Alejandra Vega'
+    NCliente = 'Cliente Prueba'
     #NCliente = 'Ricardo Martins'
     #NCliente = 'Valeria Arriaga'
-
+    #NCliente = 'Alex Soto'
+    #NCliente = 'Josefa Rivero'
+    NCliente  = 'Manuel Gutierrez'
+    #NCliente = 'Miguel Lascurain'
+    #NCliente = 'David Mekler'
+    #NCliente = 'Jaime Massieu'
     return NCliente
 
 ###################### MAIN  #####################################
@@ -144,6 +129,7 @@ if __name__ == '__main__':
 
     if Opcion == '1':
         print("Creando Lista")
+
     if Opcion == '2':
         print("Deciframiento y Kobo")
         #VE = leer_volts(NCliente)

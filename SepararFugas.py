@@ -59,25 +59,22 @@ def separar_fugasBB(Equip):
     Fuga = Equip.copy()
     Aparatos.fillna({'Nominal': 0}, inplace=True)
     Fuga.fillna({'Standby': 0}, inplace=True)
-    #Aparatos.fillna('x', inplace=True)
-    #Fuga.fillna('x', inplace=True)
     Aparatos.dropna(subset=['Nominal'], inplace=True)
     Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
-    Equipos['Codigo'] = Aparatos['CodigoN']
-    Equipos['Equipo'] = Aparatos['index']
+    Equipos['Codigo'] =  Aparatos['CodigoN']
+    Equipos['Equipo'] =  Aparatos['index']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
-    Equipos['Lugar']  = Aparatos['Zona']
+    Equipos['Lugar']  =  Aparatos['Zona']
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
-    Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
+    Equipos['Texto']  =  Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
     Equipos['Notas']  =  Aparatos['Notas']
-    Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
-    Equipos['Claves'] = Aparatos['Clave']
-    print(Fuga)
+    Equipos['Equipo'] =  Equipos['Equipo'].str.replace('Otro', "", regex=True)
+    Equipos['Claves'] =  Aparatos['Clave']
+
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
     Fuga.reset_index(inplace=True)
-
     Fugas['Codigo'] = Fuga['CodigoS']
     Fugas['Equipo']    = 'Fuga '+Fuga['index']
     Fugas['Potencia Kobo']   = Fuga['Standby']

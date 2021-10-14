@@ -1,5 +1,6 @@
 import pandas as pd
 from Consumo    import consumoEq
+from Consumo    import calc_consumo , consumoEq, temperatura
 
 def bombas (Excel,Nocircuito):
     Aparatos_C = pd.DataFrame(
@@ -15,7 +16,7 @@ def bombas (Excel,Nocircuito):
     CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     InfoDeco = Equipos.filter(regex='bomba1')
     Bomba = InfoDeco.filter(regex='tipo')[0]
-    zona = InfoDeco.filter(regex='zona')[0]
+    zona = InfoDeco.filter(regex='zona_c_i')[0]
     if zona=='otro':
         zona = InfoDeco.filter(regex='zona_otro')[0]
 
@@ -40,22 +41,23 @@ def bombas (Excel,Nocircuito):
     if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= InfoDeco.filter(regex='bombap')
 
-        Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(InfoBomba.filter(regex='standby')[0])
+        Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(consumoEq(InfoBomba.filter(regex='standby')[0]))
 
         if not InfoDeco.filter(regex='nominal').empty and InfoDeco.filter(regex='nominal')[0]!=0:
-            Aparatos_C.loc['Bomba de Presión', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
+            Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoDeco.filter(regex='nominal')[0])
 
         if not InfoDeco.filter(regex='real').empty and InfoDeco.filter(regex='real')[0]!=0:
-            Aparatos_C.loc['Bomba de Presión', 'Nominal'] = InfoDeco.filter(regex='real')[0]
+            Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoDeco.filter(regex='real')[0])
 
         Aparatos_C.loc['Bomba de Presión', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='real_codigofindero')[0]
         Aparatos_C.loc['Bomba de Presión', 'Notas'] = InfoBomba.filter(regex='notas')[0]
-        Aparatos_C.loc['Bomba de Presiónn', 'Zona'] = zona
+        Aparatos_C.loc['Bomba de Presión', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Presión', 'Marca'] = ' '
         Aparatos_C.loc['Bomba de Presión', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Presión', 'Encendido +35min'] = Equipos.filter(regex='hidro_tiempo_c_i')[0]
         Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'X'
+        print(Aparatos_C.loc['Bomba de Presión', 'Nominal'])
 
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
@@ -140,7 +142,5 @@ def bombas (Excel,Nocircuito):
     # Aparatos_C.loc[2, 'Hay jarros de aire'] = InfoDeco.filter(regex='jarrosaire')[0]
     # Aparatos_C.loc[2, 'Diametro tuberia'] = InfoDeco.filter(regex='diametro')[0]
     #Aparatos_C.loc[2, 'Presion planta baja'] = InfoDeco.filter(regex='presionpb')[0]
-
     Aparatos=Aparatos_C.dropna(1,thresh=1)
-    print(Aparatos)
     return Aparatos

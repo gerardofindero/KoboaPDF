@@ -246,7 +246,8 @@ def computo(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Otro', 'Zona'] = Zona
 
                 Aparatos_C.loc['Otro', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                Aparatos_C.loc['Otro', 'Marca'] = InfoDeco.filter(regex='otro_marca_c_i')[0]
+                Aparatos_C.loc['Otro', 'Marca'] = InfoDeco.filter(regex='equipos_otro_c_i')[0]+' '+\
+                                                  InfoDeco.filter(regex='otro_marca_c_i')[0]
                 Aparatos_C.loc['Otro', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Otro', 'Existencia'] = 1
                 Aparatos_C.loc['Otro', 'Atacable'] = 'Si'
