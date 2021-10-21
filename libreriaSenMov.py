@@ -3,9 +3,9 @@ import pandas as pd
 from scipy.stats import norm
 import funcionesComunes as fc
 import unicodedata
-def recoSensores (kwh = None,w = None, lugar = None ,dac = None):
+def recoSensores (kwh = None,w = None, lugar = None ,dac = None,hrsUso=None):
     ls=libreriaSensores()
-    ls.setData(kwh,w,lugar, dac)
+    ls.setData(kwh,w,lugar, dac,hrsUso)
     txt=ls.armarTxt()
     return txt
 
@@ -81,7 +81,7 @@ class libreriaSensores:
         else:
             self.v = False
 
-    def setData(self, kwh = None, w=None, lugar=None,dac=None):
+    def setData(self, kwh = None, w=None, lugar=None,dac=None,hrsUso=None):
         self.val(kwh,w,lugar,dac)
         if self.v:
             self.kwh   = kwh
@@ -92,6 +92,7 @@ class libreriaSensores:
             lugar = lugar.decode("utf-8")
             self.lugar = lugar
             self.dac   = dac
+            self.hrsUso = hrsUso
             
     def armarTxt(self):
         print(self.lugar)
@@ -102,7 +103,8 @@ class libreriaSensores:
             std  = self.stats.at[idx, "std" ]
             lam  = self.stats.at[idx, "lambdas"]
             perU = self.stats.at[idx,"percentil umbral"]
-            hrsUso = self.kwh*1000/self.w/60
+            #hrsUso = self.kwh*1000/self.w/60
+            hrsUso = self.hrsUso/7
             hrsUsoT = ((hrsUso**lam)-1)/lam
             percentil= norm.cdf(hrsUsoT,mean,std)
             print(percentil,perU)
