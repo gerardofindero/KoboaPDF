@@ -5,7 +5,8 @@ from LibreriaLavaSeca import ClavesLavaSeca
 def lavanderia(Excel,Nocircuito, NomCircuito):
     Aparatos_C = pd.DataFrame(
         index=['Lavadora', 'Secadora', 'Lavasecadora', 'Plancha', 'PlanchaV','Regulador'],
-        columns=[ 'Marca','Standby', 'Nominal','Existencia','Atacable','Zona','Notas','CodigoN','CodigoS','ReguladorL','ReguladorS','Regulador','Clave'])
+        columns=[ 'Marca','Standby', 'Nominal','Existencia','Atacable','Zona','Notas','CodigoN'
+            ,'CodigoS','Regulador Lavadora','Regulador Secadora','Regulador Lavado','Clave'])
 
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
@@ -118,29 +119,35 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
 
         if Equipos.filter(regex='lavadora_reguladorSN')[0]=='si':
             InfoDeco = Circuito.filter(regex='lavadora')
-            Aparatos_C.loc['ReguladorL', 'CodigoS'] = CodStandby
-            Aparatos_C.loc['ReguladorL', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_standby')[0])
-            Aparatos_C.loc['ReguladorL', 'Marca'] = InfoDeco.filter(regex='marca')[0]
-            Aparatos_C.loc['ReguladorL', 'Existencia'] = 1
-            Aparatos_C.loc['ReguladorL', 'Notas'] = Notass
-            Aparatos_C.loc['ReguladorL', 'Clave'] = 'X'
+            Aparatos_C.loc['Regulador Lavadora', 'CodigoS'] = CodStandby
+            Aparatos_C.loc['Regulador Lavadora', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_standby')[0])
+            Aparatos_C.loc['Regulador Lavadora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
+            Aparatos_C.loc['Regulador Lavadora', 'Existencia'] = 1
+            Aparatos_C.loc['Regulador Lavadora ', 'Notas'] = Notass
+            Aparatos_C.loc['Regulador Lavadora', 'Clave'] = 'X'
+            Aparatos_C.loc['Regulador Lavadora', 'Zona'] = 'Cuarto de lavado'
+            Aparatos_C.loc['Regulador Lavadora', 'Atacable'] = 'Si'
 
         if Equipos.filter(regex='secadora_reguladorSN')[0]=='si':
             InfoDeco = Circuito.filter(regex='secadora')
-            Aparatos_C.loc['ReguladorS', 'CodigoS'] = CodStandby
-            Aparatos_C.loc['ReguladorS', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_standby')[0])
-            Aparatos_C.loc['ReguladorS', 'Marca'] = InfoDeco.filter(regex='marca')[0]
-            Aparatos_C.loc['ReguladorS', 'Existencia'] = 1
-            Aparatos_C.loc['ReguladorS', 'Notas'] = Notass
-            Aparatos_C.loc['ReguladorS', 'Clave'] = 'LV'
+            Aparatos_C.loc['Regulador Secadora', 'CodigoS'] = CodStandby
+            Aparatos_C.loc['Regulador Secadora', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_standby')[0])
+            Aparatos_C.loc['Regulador Secadora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
+            Aparatos_C.loc['Regulador Secadora', 'Existencia'] = 1
+            Aparatos_C.loc['Regulador Secadora', 'Notas'] = Notass
+            Aparatos_C.loc['Regulador Secadora', 'Clave'] = 'LV'
+            Aparatos_C.loc['Regulador Secadora', 'Zona'] = 'Cuarto de lavado'
+            Aparatos_C.loc['Regulador Secadora', 'Atacable'] = 'Si'
 
     if Equipos.filter(regex='mismo_regulador_c_i')[0] == 'si':
-        Aparatos_C.loc['Regulador', 'CodigoS'] = CodStandby
-        Aparatos_C.loc['Regulador', 'Standby'] = consumoEq(Equipos.filter(regex='mismo_regulador_standby_c_i')[0])
-        Aparatos_C.loc['Regulador', 'Marca']   = Equipos.filter(regex='mismo_regulador_marca_c_i')[0]
-        Aparatos_C.loc['Regulador', 'Existencia'] = 1
-        Aparatos_C.loc['Regulador', 'Notas'] = Notass
-        Aparatos_C.loc['Regulador', 'Clave'] = 'X'
+        Aparatos_C.loc['Regulador Lavado', 'CodigoS'] = CodStandby
+        Aparatos_C.loc['Regulador Lavado', 'Standby'] = consumoEq(Equipos.filter(regex='mismo_regulador_standby_c_i')[0])
+        Aparatos_C.loc['Regulador Lavado', 'Marca']   = Equipos.filter(regex='mismo_regulador_marca_c_i')[0]
+        Aparatos_C.loc['Regulador Lavado', 'Existencia'] = 1
+        Aparatos_C.loc['Regulador Lavado', 'Notas'] = Notass
+        Aparatos_C.loc['Regulador Lavado', 'Clave'] = 'X'
+        Aparatos_C.loc['Regulador Lavado', 'Zona'] = 'Cuarto de lavado'
+        Aparatos_C.loc['Regulador Lavado', 'Atacable'] = 'Si'
 
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()

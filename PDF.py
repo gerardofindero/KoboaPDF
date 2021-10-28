@@ -26,6 +26,7 @@ from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
+from libreriaTubosFluorescente import recoTuboFluorescente
 from libreriaLucesSolares import recoSolares
 #from libreriaClusterTV import armarTexto
 import libreriaClusterTV as CTV
@@ -499,18 +500,12 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
     canvas.drawImage(f"Imagenes/icono_luces.png", 60, height - 295, width=115, height=115)
     canvas.drawImage(f"Imagenes/cara_{carita}.png", 490, 590, width=60, height=60)
-    #parrafos='Tu gasto en uluminación es muy alto'
     parrafos = []
-    #notasA = 'Tu gasto en iluminación es muy alto  '
-    #notasB = 'Normalmente vemos gastos alrededor de $200 pesos al bimestre(35kWh) para una casa completa'
     notasC = 'Como parte de nuestros servicios, encontramos las luminarias “problemáticas" para enfocar ' \
              'esfuerzos en las que vale la pena reemplazar.'
     parrafos.append(Paragraph(notasA, Estilos.cuadros_bajo))
     frame = Frame(60, hh, width * 0.35, height * 0.5)
     frame.addFromList(parrafos, canvas)
-    # parrafos.append(Paragraph(notasB, Estilos.cuadros_bajo))
-    # frame = Frame(60, 90, width * 0.35, height * 0.5)
-    # frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasC, Estilos.cuadros_bajo))
     frame = Frame(60, 60, width * 0.35, height * 0.5)
     frame.addFromList(parrafos, canvas)
@@ -604,33 +599,31 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             frame.addFromList(parrafos, canvas)
 
         parrafos.append(Paragraph(porc, Estilos.cuadros_bajo))
-        frame = Frame(160, altura, 90, 50)
+        frame = Frame(150, altura, 70, 50)
         frame.addFromList(parrafos, canvas)
         parrafos.append(Paragraph(cost, Estilos.cuadros_bajo))
-        frame = Frame(210, altura, 90, 50)
+        frame = Frame(210, altura, 78, 50)
         frame.addFromList(parrafos, canvas)
-
 
         parrafoss=[]
         largoTx=sys.getsizeof(tex)
         if largoTx<150:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
-            frame = Frame(258, altura - 15, 295, 65)
+            frame = Frame(258, altura - 15, 290, 65)
         elif 150<=largoTx<250:
             parrafoss.append(Paragraph(tex, Estilos.Lumi2))
-            frame = Frame(258, altura -15, 295, 65)
+            frame = Frame(258, altura -12, 290, 65)
         elif largoTx>250 and largoTx<=350:
             parrafoss.append(Paragraph(tex, Estilos.Lumi3))
-            frame = Frame(258, altura-10,295, 65)
+            frame = Frame(258, altura-10,290, 65)
         elif 450>=largoTx>350:
             parrafoss.append(Paragraph(tex, Estilos.Lumi4))
-            frame = Frame(258, altura-10, 295, 65)
+            frame = Frame(258, altura-10, 290, 65)
         elif largoTx > 450:
             parrafoss.append(Paragraph(tex, Estilos.Lumi5))
-            frame = Frame(258, altura -10, 295, 65)
+            frame = Frame(258, altura -10, 290, 65)
 
         frame.addFromList(parrafoss, canvas)
-
         ## LArgo de la linea horizontal
         if lineacorta==False:
             canvas.line(70, altura + 51, 548, altura + 51)
@@ -639,10 +632,10 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             canvas.line(255, altura + 51, 548, altura + 51)
             altura=altura-50
         cont=0
-        if i==4 or i==16 or i==25:
 
+        if i==4 or i==14 or i==24:
             largo= len(luces)-4
-            if i==16:
+            if i==14:
                 largo = len(luces) - 15
             if i==24:
                 largo = len(luces) - 24
@@ -652,14 +645,18 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
             canvas.setLineWidth(.3)
             texto('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
-            if largo > 4:
-                canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, (largo*50))
+            if (largo) > 10:
+
+                canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 50, 480,520 )
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
             else:
-                canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, ((altura+15) - ((largo-1) * 60)), 480, ((largo) * 60))
-                canvas.line(254, altura-((largo-4)*40), 254, altura-((largo-4)*40))
-                canvas.line(154, altura-((largo-4)*40), 154, altura-((largo-4)*33))
-                canvas.line(205, altura-((largo-4)*40), 205, altura-((largo-4)*33))
+                print(largo)
+                canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, (largo)*50)
+                canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
+                # canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, ((altura+15) - ((largo-1) * 60)), 480, ((largo) * 60))
+                # canvas.line(254, altura-((largo-4)*40), 254, altura-((largo-4)*40))
+                # canvas.line(154, altura-((largo-4)*40), 154, altura-((largo-4)*33))
+                # canvas.line(205, altura-((largo-4)*40), 205, altura-((largo-4)*33))
 
             texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
             texto('Continuación...', 12, gris, 'Montserrat-B', 60, height - 240, canvas)
@@ -676,9 +673,19 @@ def Dicc_Aparatos(nombre):
                   'cocina', 'pelo', 'laptop', 'monitor', 'congelador', 'minibar', 'campana', 'microondas', 'triturador', 'cava',
                   'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor','entretenimiento','cargador','karcher','belleza',
                   'lampara','jardin','ventilador','impresora','tostadora']
+
     for a in abreviados:
         if a in nombre_:
             nombre_ = a
+
+
+    if 'cabello' in nombre_ or 'pelo' in nombre_:
+        if 'secador' in nombre_:
+            nombre_= 'pelo'
+        if 'plancha' in nombre_:
+            nombre_= 'planchacabello'
+
+
     return nombre_
 
 
@@ -734,7 +741,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Uso = aparato[7]
         notas = aparato[13]
         Claves=aparato[16]
-        nombre_=Dicc_Aparatos(nombre)
+        nombre_=Dicc_Aparatos(aparato[3])
         parrafos = []
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
@@ -827,7 +834,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
         costado(canvas)
-        nombre_ = Dicc_Aparatos(nombre)
+        nombre_ = Dicc_Aparatos(aparato[3])
         ##Imagen y nombre
         parrafos=[]
         if len(nombre)< 35:
@@ -937,7 +944,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
         # cuatro_lineas(canvas)
         costado(canvas)
-        nombre_ = Dicc_Aparatos(nombre)
+        nombre_ = Dicc_Aparatos(aparato[3])
         ##Imagen y nombre
         if len(nombre)<35:
             texto(nombre.upper(), 23, azul_1, 'Montserrat-B', 60,altura+190, canvas)
@@ -1341,7 +1348,12 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
             parrafo_frame("Costo", Estilos.negroB, 500, altura + 5, .2, .1, canvas)
             altura=550
         cont = cont + 1
-
+    parrafos.append(Paragraph('Cargo fijo', Estilos.cuadros_bajo2))
+    frame = Frame(50, altura, 240, 50)
+    frame.addFromList(parrafos, canvas)
+    parrafos.append(Paragraph('$ ' + str(263), Estilos.cuadros_bajo2))
+    frame = Frame(500, altura , 80, 50)
+    frame.addFromList(parrafos, canvas)
     canvas.showPage()
 
 
@@ -1548,7 +1560,8 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     fonts()
     portada(canvas, width, height)
     intro(canvas, width, height,Ndatos)
-    potencial_ahorro(canvas, width, height,consumo_bimestral, tarifa,costo,ahorro_bimestral, tipo_tarifa)
+    if (consumo_bimestral-ahorro_bimestral)<500:
+        potencial_ahorro(canvas, width, height,consumo_bimestral, tarifa,costo,ahorro_bimestral, tipo_tarifa)
     if solar:
         print("Creando hojas solar")
         Solar(canvas,tarifa,costo,consumo,SolarS)

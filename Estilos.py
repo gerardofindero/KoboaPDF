@@ -178,20 +178,20 @@ Lumi2 = ParagraphStyle(name='Cuadros',
 
 Lumi3 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=7,
+                                fontSize=8,
                                 leading=9,
                                 textColor=gris
                                 )
 
 Lumi4 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=6,
+                                fontSize=7,
                                 leading=9,
                                 textColor=gris
                                 )
 Lumi5 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=5,
+                                fontSize=6,
                                 leading=8,
                                 textColor=gris
                                 )

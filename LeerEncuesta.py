@@ -1,27 +1,12 @@
 import pandas as pd
-import math
-import numpy as np
-from scipy import stats
 from pandas import ExcelWriter
 from pathlib         import Path
 from PDF             import CrearPDF
 from Deciframiento   import Archivo
-from Hipervinculos   import hipervinculos
-from Ahorro          import potencial_ahorro2
 from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial,leer_resumen
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
-from LibreriaLED import BuscarLED
-import libreriaClusterTV as CTV
-import libreriaReguladores as lg
-import libreriaUPS as lups
-import libreriaCafeteras as lc
-from libreriaTubosFluorescente import libreriaTubosFluorescentes
-from libreriaTirasLED import libreriaTirasLED
-import libreriaPlanchas as lp
-from leerVoltaje import leer_volts
-import libreriaBombas as lb
 
 
 
@@ -102,14 +87,20 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
     NCliente = 'Cliente Prueba'
+    #NCliente = 'Eduardo Carredano'
     #NCliente = 'Ricardo Martins'
     #NCliente = 'Valeria Arriaga'
     #NCliente = 'Alex Soto'
     #NCliente = 'Josefa Rivero'
-    NCliente  = 'Manuel Gutierrez'
+    #NCliente  = 'Manuel Gutierrez'
     #NCliente = 'Miguel Lascurain'
     #NCliente = 'David Mekler'
     #NCliente = 'Jaime Massieu'
+    #NCliente = 'Cesar Canizales'
+    #NCliente = 'Paulina LLamas'
+    NCliente = 'Gerardo Trujillo'
+    #NCliente = 'Alejandro Septien'
+    #NCliente = 'Paulina Torrado'
     return NCliente
 
 ###################### MAIN  #####################################

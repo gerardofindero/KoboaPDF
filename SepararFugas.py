@@ -47,7 +47,7 @@ def separar_fugas(Equip):
 
 def separar_fugasBB(Equip):
     texto="H"
-    print(Equip['Nominal'])
+
     try:
         texto=Equip.loc[['Notas', 'Marca']]
         Equip.drop(index='Notas',inplace=True)
@@ -187,7 +187,6 @@ def separar_fugasE(Equip):
     Fugas['Notas'] = Fuga['Notas']
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('!', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Otro', "", regex=True)
-
     return Equipos,Fugas
 
 
@@ -213,7 +212,7 @@ def separar_fugasTV(Equipo):
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
 
-    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' en '+Aparatos['Zona']
+    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)

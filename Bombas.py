@@ -56,7 +56,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Presión', 'Marca'] = ' '
         Aparatos_C.loc['Bomba de Presión', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Presión', 'Encendido +35min'] = Equipos.filter(regex='hidro_tiempo_c_i')[0]
-        Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'X'
+        Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'BP'
         print(Aparatos_C.loc['Bomba de Presión', 'Nominal'])
 
     if Bomba == 'gravitacional':
@@ -85,7 +85,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
-        Aparatos_C.loc['Bomba de Gravitación', 'Clave'] = 'X'
+        Aparatos_C.loc['Bomba de Gravitación', 'Clave'] = 'BG'
 
     if Bomba == 'recirculacion':
         ##Ahorro 40%
@@ -102,7 +102,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Recirculación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
         Aparatos_C.loc['Bomba de Recirculación', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Recirculación', 'Atacable'] = 'Si'
-        Aparatos_C.loc['Bomba de Recirculación', 'Clave'] = 'X'
+        Aparatos_C.loc['Bomba de Recirculación', 'Clave'] = 'BR'
 
     if Bomba == 'filtro_de_alberca':
         InfoDeco = Equipos.filter(regex='alberca')
