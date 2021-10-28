@@ -12,7 +12,7 @@ def ligarTextolink(texto, link):
     if pd.isna(link) or (link == ''):# or np.isnan(link):
         return texto
     else:
-        texto = '<br />' + '<link href="' + link + '"color="blue">' + texto + ' </link>'
+        texto = '<link href="' + link + '"color="blue">' + texto + ' </link>'
         return texto
 def dias(dscr):
     """

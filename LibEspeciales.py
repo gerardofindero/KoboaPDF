@@ -11,10 +11,10 @@ def textodeconsejos(equipo,equipo1):
 
     for i in range(len(equipo)):
         equipo[i]=unidecode(equipo[i])
-        print(equipo[i])
+
     for i in range(len(equipo1)):
         equipo1[i]=unidecode(equipo1[i])
-    print(equipo1[i])
+
 
     if 'sensor' in equipo:
         texto = texto+' ' +  'Sigue usando tu sensor de movimiento para seguir ahorrando dinero. <br />'

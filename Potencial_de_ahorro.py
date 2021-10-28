@@ -24,10 +24,7 @@ def potecial_ahorro(Cliente):
                                   'Retorno de la inversión', 'Rentable'])
 
     Aparatos, LuminariasC, FugasC, Consumo, Costo, Tarifa, ConsumoFugas, Solar, Voltaje=leer_deciframiento(Cliente)
-
-    print(LuminariasC.columns)
     Aparatos, LuminariasC, FugasC, Consumo, Costo, Tarifa, ConsumoFugas, Solar, Voltaje=leer_deciframiento(Cliente)
-    print(LuminariasC.columns)
     archivo_resultados = carpeta_clientes(Cliente)
     workbook = xlwings.Book(archivo_resultados)
     gris = (200, 200, 200)
@@ -119,6 +116,7 @@ def potecial_ahorro(Cliente):
     for i in Luminarias.index:
         if 'halogena' in Luminarias.loc[i,'Tipo']:
             Sheet1.range(inicioF + i, 9).value = 0.6
+
         if 'fluorescente' in Luminarias.loc[i,'Tipo']:
             Sheet1.range(inicioF + i, 9).value = 0.4
         if 'incandescente' in Luminarias.loc[i,'Tipo']:

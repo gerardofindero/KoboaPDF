@@ -17,7 +17,6 @@ def seguridad(Excel,Nocircuito, NomCircuito):
 
     indx = 0
     for i in Equipos:
-        print(i)
         if i == 1:
             Circuito = Equipos.filter(regex='seguridad')
             #Zona = Circuito.filter(regex='zona')[0]

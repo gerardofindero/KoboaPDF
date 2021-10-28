@@ -66,12 +66,19 @@ def iluminacion (Excel,Nocircuito):
             Aparatos_C.loc['Incandecentes E1', 'Combinacion']  = InfoLum.filter(regex='cobinacion')[0]
             Aparatos_C.loc['Incandecentes E1', 'Consumo']      = consumoEq(InfoLum.filter(regex='consumo')[0])
             Aparatos_C.loc['Incandecentes E1', 'DobCodigo']    = InfoLum.filter(regex='doblecodigo')[0]
+            #Aparatos_C.loc['Incandecentes E1', 'Pendientes']    = InfoLum.filter(regex='otrospendientes_c_i')[0]
+
 
             if InfoLum.filter(regex='doblecodigo')[0]=='no':
                 Aparatos_C.loc['Incandecentes E1', 'CodigoN']      = InfoLum.filter(regex='codigofindero_')[0]
             else:
                 Aparatos_C.loc['Incandecentes E1', 'CodigoN']     = InfoLum.filter(regex='codigofindero2_')[0]
 
+            if InfoLum.filter(regex='otrospendientes')[0]=='si':
+                Aparatos_C.loc['Incandecentes E1', 'CodigoN']     = Aparatos_C.loc['Incandecentes E1', 'CodigoN']+\
+                                                                    ', '+InfoLum.filter(regex='otroscodigos')[0]
+                Aparatos_C.loc['Incandecentes E1', 'Notas'] =Aparatos_C.loc['Incandecentes E1', 'Notas']+\
+                                                             '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
 
             Aparatos_C.loc['Incandecentes E1', 'Gasto']        = InfoLum.filter(regex='gasto')[0]
             Aparatos_C.loc['Incandecentes E1', 'Donde']        = InfoLum.filter(regex='donde_c_i')[0]
@@ -130,10 +137,18 @@ def iluminacion (Excel,Nocircuito):
             Aparatos_C.loc['Halogenos E1', 'Combinacion']      = InfoLum.filter(regex='cobinacion')[0]
             Aparatos_C.loc['Halogenos E1', 'Consumo']          = consumoEq(InfoLum.filter(regex='consumo')[0])
             Aparatos_C.loc['Halogenos E1', 'DobCodigo']        = InfoLum.filter(regex='doblecodigo')[0]
+
             if InfoLum.filter(regex='doblecodigo')[0] == 'no':
                 Aparatos_C.loc['Halogenos E1', 'CodigoN']          = InfoLum.filter(regex='codigofindero_')[0]
             else:
                 Aparatos_C.loc['Halogenos E1', 'CodigoN']         = InfoLum.filter(regex='codigofindero2_')[0]
+
+            if InfoLum.filter(regex='otrospendientes')[0]=='si':
+                Aparatos_C.loc['Halogenos E1', 'CodigoN']     = Aparatos_C.loc['Halogenos E1', 'CodigoN']+ \
+                                                                    ', '+InfoLum.filter(regex='otroscodigos')[0]
+                Aparatos_C.loc['Halogenos E1', 'Notas'] =Aparatos_C.loc['Halogenos E1', 'Notas']+ \
+                                                             '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
+
             Aparatos_C.loc['Halogenos E1', 'Gasto']            = InfoLum.filter(regex='gasto')[0]
 
             Aparatos_C.loc['Halogenos E1', 'Donde']            = InfoLum.filter(regex='donde_c_i')[0]
@@ -148,6 +163,29 @@ def iluminacion (Excel,Nocircuito):
             Aparatos_C.loc['Halogenos E1', 'Acceso']           = InfoLum.filter(regex='acceso')[0]
             Aparatos_C.loc['Halogenos E1', 'Adecuaciones']     = InfoLum.filter(regex='adecuaciones')[0]
             Aparatos_C.loc['Halogenos E1', 'Apagador']         = InfoLum.filter(regex='apagador')[0]
+
+            Aparatos_C.loc['Halogenos E1', 'Cantidad1']      = InfoLum.filter(regex='cantidad1')[0]
+            Aparatos_C.loc['Halogenos E1', 'Funcion1']      = InfoLum.filter(regex='funcion1')[0]
+            Aparatos_C.loc['Halogenos E1', 'Adicional1']    = InfoLum.filter(regex='adicional1')[0]
+            Aparatos_C.loc['Halogenos E1', 'TipoyTam1']     = InfoLum.filter(regex='tipoytam1')[0]
+            Aparatos_C.loc['Halogenos E1', 'Entrada1']      = InfoLum.filter(regex='entrada1')[0]
+
+            Aparatos_C.loc['Halogenos E1', 'Adicional2']    = InfoLum.filter(regex='adicional2')[0]
+            Aparatos_C.loc['Halogenos E1', 'Funcion2']      = InfoLum.filter(regex='funcion2')[0]
+            Aparatos_C.loc['Halogenos E1', 'Cantidad2']      = InfoLum.filter(regex='cantidad2')[0]
+            Aparatos_C.loc['Halogenos E1', 'TipoyTam2']     = InfoLum.filter(regex='tipoytam2')[0]
+            Aparatos_C.loc['Halogenos E1', 'Entrada2']      = InfoLum.filter(regex='entrada2')[0]
+
+            Aparatos_C.loc['Halogenos E1', 'Adicional3']    = InfoLum.filter(regex='adicional3')[0]
+            Aparatos_C.loc['Halogenos E1', 'Funcion3']      = InfoLum.filter(regex='funcion3')[0]
+            Aparatos_C.loc['Halogenos E1', 'Cantidad3']      = InfoLum.filter(regex='cantidad3')[0]
+            Aparatos_C.loc['Halogenos E1', 'TipoyTam3']     = InfoLum.filter(regex='tipoytam3')[0]
+            Aparatos_C.loc['Halogenos E1', 'Entrada3']      = InfoLum.filter(regex='entrada3')[0]
+
+            Aparatos_C.loc['Halogenos E1', 'Funcion4']      = InfoLum.filter(regex='funcion4')[0]
+            Aparatos_C.loc['Halogenos E1', 'Cantidad4']      = InfoLum.filter(regex='cantidad4')[0]
+            Aparatos_C.loc['Halogenos E1', 'TipoyTam4']     = InfoLum.filter(regex='tipoytam4')[0]
+            Aparatos_C.loc['Halogenos E1', 'Entrada4']      = InfoLum.filter(regex='entrada4')[0]
 
 
         if i == 'fluorescente':
@@ -171,6 +209,14 @@ def iluminacion (Excel,Nocircuito):
                 Aparatos_C.loc['Fluorecentes E1', 'CodigoN']          = InfoLum.filter(regex='codigofindero_')[0]
             else:
                 Aparatos_C.loc['Fluorecentes E1', 'CodigoN']         = InfoLum.filter(regex='codigofindero2_')[0]
+
+            if InfoLum.filter(regex='otrospendientes')[0]=='si':
+                Aparatos_C.loc['Fluorecentes E1', 'CodigoN']     = Aparatos_C.loc['Fluorecentes E1', 'CodigoN']+ \
+                                                                ', '+InfoLum.filter(regex='otroscodigos')[0]
+                Aparatos_C.loc['Fluorecentes E1', 'Notas'] =Aparatos_C.loc['Fluorecentes E1', 'Notas']+ \
+                                                         '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
+
+
             Aparatos_C.loc['Fluorecentes E1', 'Gasto']            = InfoLum.filter(regex='gasto')[0]
 
             Aparatos_C.loc['Fluorecentes E1', 'Donde']            = InfoLum.filter(regex='donde_c_i')[0]
@@ -185,6 +231,14 @@ def iluminacion (Excel,Nocircuito):
             Aparatos_C.loc['Fluorecentes E1', 'Acceso']            = InfoLum.filter(regex='acceso')[0]
             Aparatos_C.loc['Fluorecentes E1', 'Adecuaciones']      = InfoLum.filter(regex='adecuaciones')[0]
             Aparatos_C.loc['Fluorecentes E1', 'Apagador']          = InfoLum.filter(regex='apagador')[0]
+            Aparatos_C.loc['Fluorecentes E1', 'Disposicion']          = InfoLum.filter(regex='disposicion1')[0]
+
+            Aparatos_C.loc['Fluorecentes E1', 'Portalamp']          = InfoLum.filter(regex='portalamp1_c_i')[0]
+            Aparatos_C.loc['Fluorecentes E1', 'PortalampC']          = InfoLum.filter(regex='portalamp1_cantidad')[0]
+            Aparatos_C.loc['Fluorecentes E1', 'PortalampL']          = InfoLum.filter(regex='portalamp1_largo')[0]
+            Aparatos_C.loc['Fluorecentes E1', 'PortalampA']          = InfoLum.filter(regex='portalamp1_ancho')[0]
+            Aparatos_C.loc['Fluorecentes E1', 'PortalampA']          = InfoLum.filter(regex='cajillo_c_i')[0]
+
 
 
 
@@ -210,6 +264,12 @@ def iluminacion (Excel,Nocircuito):
                 Aparatos_C.loc['Tira E1', 'CodigoN']           = InfoLum.filter(regex='codigofindero_')[0]
             else:
                 Aparatos_C.loc['Tira E1', 'CodigoN']          = InfoLum.filter(regex='codigofindero2_')[0]
+
+            if InfoLum.filter(regex='otrospendientes')[0]=='si':
+                Aparatos_C.loc['Tira E1', 'CodigoN']     = Aparatos_C.loc['Tira E1', 'CodigoN']+ \
+                                                                   ', '+InfoLum.filter(regex='otroscodigos')[0]
+                Aparatos_C.loc['Tira E1', 'Notas'] =Aparatos_C.loc['Tira E1', 'Notas']+ \
+                                                            '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
             Aparatos_C.loc['Tira E1', 'Gasto']               = InfoLum.filter(regex='gasto')[0]
             Aparatos_C.loc['Tira E1', 'TipoyTam']            = 'Led'
             # Aparatos_C.loc['Tira E1', 'Acceso']            = InfoLum.filter(regex='acceso')[0]
@@ -240,6 +300,14 @@ def iluminacion (Excel,Nocircuito):
                 Aparatos_C.loc['LED E1', 'CodigoN']        = InfoLum.filter(regex='codigofindero_')[0]
             else:
                 Aparatos_C.loc['LED E1', 'CodigoN']       = InfoLum.filter(regex='codigofindero2_')[0]
+
+            if InfoLum.filter(regex='otrospendientes')[0]=='si':
+                Aparatos_C.loc['LED E1', 'CodigoN']     = Aparatos_C.loc['LED E1', 'CodigoN']+ \
+                                                           ', '+InfoLum.filter(regex='otroscodigos')[0]
+                Aparatos_C.loc['LED E1', 'Notas'] =Aparatos_C.loc['LED E1', 'Notas']+ \
+                                                    '. Otros codigos: '+ InfoLum.filter(regex='otroscodigos')[0]
+
+
             Aparatos_C.loc['LED E1', 'Gasto']          = InfoLum.filter(regex='gasto')[0]
             Aparatos_C.loc['LED E1', 'TipoyTam'] = 'Led'
             # Aparatos_C.loc['LED', 'Acceso']         = InfoLum.filter(regex='acceso')[0]
