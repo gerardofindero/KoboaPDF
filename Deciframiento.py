@@ -359,9 +359,13 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Tdos.to_excel(writer2, index=True,startrow=2)
     writer2.save()
 
+
     Luminaria['LugarEs'].fillna('_',inplace=True)
-    Luminarias['Texto']=Tluz #+' '+ Luminaria['TipoyTam']+'  '+ Luminaria['Entrada']
-    Luminarias['Claves'] = Luminaria['TipoyTam'] + '/' + Luminaria['Entrada']+'/'+Luminaria['Funcion']+'/'+Luminaria['Cantidad']
+    #Luminarias['Texto']=Tluz #+' '+ Luminaria['TipoyTam']+'  '+ Luminaria['Entrada']
+    Luminarias['Texto']=Luminaria['Datos']
+    Luminaria['Datos']=Luminaria['Datos'].replace(',X','')
+    Luminaria['Datos']=Luminaria['Datos'].str.replace('////,','')
+    Luminarias['Claves'] = Luminaria['Datos']
     Luminarias=Luminarias.reset_index(drop=True)
 
     Equipos.reset_index(inplace=True, drop=True)

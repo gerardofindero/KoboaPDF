@@ -631,6 +631,5 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
 
     Codigos=condicionesRefrigeracion(Aparatos)
     Aparatos['Claves']=Codigos
-    print(Aparatos)
 
     return Aparatos,TotalCons, Codigos
