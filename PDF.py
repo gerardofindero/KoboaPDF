@@ -1180,7 +1180,11 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
             Soloequipo=Nfuga.split()
             equiposFuga.append(Soloequipo[0].lower())
-            equiposFuga1.append(Soloequipo[1].lower())
+
+            try:
+                equiposFuga1.append(Soloequipo[1].lower())
+            except:
+                equiposFuga1.append(' ')
 
             if fugat[13]!='X':
                 Consejos = Consejos+' '+fugat[13]+'<br />'

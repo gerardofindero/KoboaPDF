@@ -87,20 +87,12 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
     NCliente = 'Cliente Prueba'
-    #NCliente = 'Eduardo Carredano'
-    #NCliente = 'Ricardo Martins'
-    #NCliente = 'Valeria Arriaga'
-    #NCliente = 'Alex Soto'
-    #NCliente = 'Josefa Rivero'
-    #NCliente  = 'Manuel Gutierrez'
-    #NCliente = 'Miguel Lascurain'
-    #NCliente = 'David Mekler'
-    #NCliente = 'Jaime Massieu'
-    #NCliente = 'Cesar Canizales'
     #NCliente = 'Paulina LLamas'
-    NCliente = 'Gerardo Trujillo'
+    #NCliente = 'Gerardo Trujillo'
     #NCliente = 'Alejandro Septien'
     #NCliente = 'Paulina Torrado'
+    #NCliente = 'Monica Cardenas'
+    #NCliente = 'Felipe Diaz'
     return NCliente
 
 ###################### MAIN  #####################################
@@ -108,14 +100,9 @@ if __name__ == '__main__':
 
     NCliente=Nombre_Cliente()
 
-    # print("Que quieres hacer? ")
-    # print("1.- Crear Excel")
-    # print("2.- Leer Kobo y Crear Deciframiento ")
-    # print("4.- Crear Reporte")
-    #Opcion= input("Elija una opción: \n")
 
 
-    Opcion='4'
+    Opcion='2'
 
 
     if Opcion == '1':

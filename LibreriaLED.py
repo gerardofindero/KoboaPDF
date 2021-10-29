@@ -2,6 +2,7 @@ import pandas as pd
 import random
 from libreriaLucesSolares import recoSolares
 from libreriaSenMov import recoSensores
+from libreriaTubosFluorescente import recoTuboFluorescente
 ### Preguntas generales
 
 # Tareas:
@@ -233,10 +234,20 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
         TextoCompleto = TextoCompleto.replace('[NUML]', str(round(int(Numero))))
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(round(int(uso))))
+    #separadodiag=
+    separadotex= tex.split(',')
+    if len(separadotex)>1:
+        for jj in separadotex:
+            if 'largo_' in jj:
+                largoT=jj.replace('largo_','')
+                print(largoT)
+
+    #recoTuboFluorescente(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
+
 
 
     # Texto al reporte cuando los focos NO son LED.
-    elif tex !='NO HAY CARS':
+    elif 'NO HAY CARS' in tex:
         Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
         # la base de datos de luminarias
         # Imprimir en pantalla características de focos
@@ -533,7 +544,7 @@ def UnirLuces(df):
                 df=separatecno(df,dfxpepes,dfx,'incandescente')
                 df=separatecno(df,dfxpepes,dfx,'fluorescente')
                 df=separatecno(df,dfxpepes,dfx,'led')
-    print(df)
+
 
     zonas=pd.unique(df['E'])
     for i in zonas:
@@ -556,7 +567,7 @@ def UnirLuces(df):
 def separatecno(df,dfxpepes,dfx,tipo):
     tipoxpepes=dfxpepes[dfxpepes['A'].str.contains(tipo)]
     tipox=dfx[dfx['A'].str.contains(tipo)]
-    print(tipo)
+
 
     if len(tipoxpepes)>1:
         separado1=tipox.A.str.split(expand=True)
