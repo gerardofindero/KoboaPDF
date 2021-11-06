@@ -144,14 +144,14 @@ def libreriaLED():
 ## En esta funión se llevan a cabo los calculos para tener el % de ahorro y el ROI
 ## se eligen los textos correpondientes.
 
-def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI,uso): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
+def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI,uso,texto): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
     aleatorio=random.randint(1, 3)
     #Se lee libreria de textos
     Lib =  libreriaL()
     Clav=''
     TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
     ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
-    ENTY = EntyTip.split()
+    #ENTY = EntyTip.split()
     tipo=''
     entrada=''
     Solar=False
@@ -168,6 +168,12 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
+
+
+
+
+    if Numero==0:
+        Numero=0.001
     Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
 
     TextoSolar=''
@@ -235,20 +241,13 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         TextoCompleto = TextoCompleto.replace('[NUML]', str(round(int(Numero))))
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(round(int(uso))))
     #separadodiag=
-    separadotex= tex.split(',')
-    if len(separadotex)>1:
-        for jj in separadotex:
-            if 'largo_' in jj:
-                largoT=jj.replace('largo_','')
-                print(largoT)
-
-    #recoTuboFluorescente(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
 
 
-
-    # Texto al reporte cuando los focos NO son LED.
-    elif 'NO HAY CARS' in tex:
-        Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
+    elif  Tecno!= 'led':
+        if not 'NO HAY CARS' in tex:
+            Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
+        else:
+            Car1=''
         # la base de datos de luminarias
         # Imprimir en pantalla características de focos
 
@@ -369,13 +368,13 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
                 TT = 60
             TextoCompleto = TextoCompleto.replace('del [T]%', 'alrededor del [T]%')
             TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
+    #
+    #
+    # # Lo que pasa si el foco no está especificado en términos de tecnología.
+    # else:
+    #     TextoCompleto = TextoCompleto+'. No existe información suficiente para una recomendación'
 
-
-    # Lo que pasa si el foco no está especificado en términos de tecnología.
-    else:
-        TextoCompleto = 'No existe información suficiente para una recomendación'
-
-
+    TextoCompleto=recoTuboFluorescente(tex,Numero,DAC,Watts,VV,texto,TextoCompleto)
     TextoSensor=TextoSensor.replace('X','')
     TextoCompleto = TextoCompleto + '' +TextoSolar
     TextoCompleto = TextoCompleto + '' +TextoSensor

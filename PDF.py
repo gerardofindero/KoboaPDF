@@ -566,9 +566,8 @@ def iluminacion(canvas, width, height, luces,Tarifa):
 
         #largoTx=len(tex)
         tex,conteoled,conteoNOled,conteoROI = \
-            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso) # Está usando columnas, no renglones para los índices
+            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso,luz[15]) # Está usando columnas, no renglones para los índices
         largoTx=sys.getsizeof(tex)
-        tex,conteoled,conteoNOled,conteoROI = variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso) # Está usando columnas, no renglones para los índices
 
 
         ## Se colocan los nombres de las zonas de las luminarias.
@@ -668,11 +667,11 @@ def iluminacion(canvas, width, height, luces,Tarifa):
 
 def Dicc_Aparatos(nombre):
     nombre_ = unidecode(nombre.lower())
-    abreviados = ['aspiradora','tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora', 'secadora de cabello',
+    abreviados = ['aspiradora','tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora',
                   'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno',
                   'cocina', 'pelo', 'laptop', 'monitor', 'congelador', 'minibar', 'campana', 'microondas', 'triturador', 'cava',
                   'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor','entretenimiento','cargador','karcher','belleza',
-                  'lampara','jardin','ventilador','impresora','tostadora']
+                  'lampara','jardin','ventilador','impresora','tostadora','tetera','licuadora','freidora','tostador','computo','alimentos']
 
     for a in abreviados:
         if a in nombre_:
@@ -713,16 +712,9 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota):
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
     """
-    funciones a integrar 
-    recoSensores en libreriaSenMov
-    recoSolares en libreriaLuces Solares
+    funciones a integrar
     recoTubosFluorescentes en libreriaTubosFluorecente
     recoTirasLed en libreriaTirasLED
-    
-    ################### 10/06/2021
-    funciones a integrar
-    recoMaqHie en libreriaHielo, solo ocupa el kwh
-    recoDispensadores en libreriaDispensadores, solo ocupa el kwh
     """
     return Consejos,Notas
 ###################RECOMENDACIONES #######################################
@@ -794,7 +786,10 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         if not Notas=='X':
             notas=Notas
 
-        parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
+        if len(notas)<700:
+            parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
+        else:
+            parrafos.append(Paragraph(str(notas), Estilos.aparatos4))
 
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
@@ -804,8 +799,10 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
 
 # Automatizacion  ######################
-        parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-        #print(Consejos)
+        if len(Consejos)<700:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+        else:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
 
@@ -1101,10 +1098,11 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
         Consejos=''
         equiposFuga=[]
         equiposFuga1=[]
+        todo=[]
         for index, fugat in atac.iterrows():
 
             if ind > 4:
-                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos)
+                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos)
                 equiposFuga=[]
                 canvas.showPage()
                 consumoT = round(atac['K'].sum(), 1)
@@ -1185,6 +1183,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
             Soloequipo=Nfuga.split()
             equiposFuga.append(Soloequipo[0].lower())
+            todo.append(Nfuga.lower())
 
             try:
                 equiposFuga1.append(Soloequipo[1].lower())
@@ -1194,10 +1193,10 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             if fugat[13]!='X':
                 Consejos = Consejos+' '+fugat[13]+'<br />'
 
-        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos)
+        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos)
         canvas.showPage()
 
-def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos):
+def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos):
     if Atacable:
         Consejos= Consejos+' '+textodeconsejos(equiposFuga,equiposFuga1)
 
@@ -1212,7 +1211,7 @@ def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,canvas,parrafos):
 
 
     if not Atacable:
-        Consejos=noatac(equiposFuga)
+        Consejos=noatac(equiposFuga,todo)
         # Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
         #          'debido a que pueden afectar tanto tu confort como tu seguridad'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos3))

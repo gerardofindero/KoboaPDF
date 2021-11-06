@@ -154,6 +154,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     for i in Equipos['Codigo']:
 
+
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not 'QQ' in identificados:

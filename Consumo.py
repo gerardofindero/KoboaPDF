@@ -14,7 +14,7 @@ def consumoEq(consumo):
         consumo=0
 
     try:
-        watts = round(float(consumo))
+        watts = round(float(consumo),1)
         #print('El consumo se tomó en watts al no venir especificado')
 
     except:

@@ -13,7 +13,7 @@ def solar(Excel,Nocircuito, Nomcircuito):
     Aparatos_C.loc['Modulos', 'Tipo'] = Equipos.filter(regex='tipo_c_i')[0]
     Aparatos_C.loc['Modulos', 'Inclinacion'] = Equipos.filter(regex='inclinacion_c_i')[0]
     Aparatos_C.loc['Modulos', 'Mes'] = Equipos.filter(regex='mes_c_i')[0]
-    Aparatos_C.loc['Modulos', 'Sombreado'] = Equipos.filter(regex='sombreado_c_i')[0]
+    Aparatos_C.loc['Modulos', 'Sombreado'] = Equipos.filter(regex='sombreados_c_i')[0]
     Aparatos_C.loc['Modulos', 'Separados'] = Equipos.filter(regex='modulos_separados')[0]
     Aparatos_C.loc['Modulos', 'Potencia'] = Equipos.filter(regex='modulos_potencia_W')[0]
     Aparatos_C.loc['Modulos', 'Cantidad'] = Equipos.filter(regex='modulos_cantidad')[0]
