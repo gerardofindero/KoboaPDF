@@ -117,6 +117,7 @@ def textodeequiposV(equipo,nota):
         texto = texto+' ' + 'La aspiradora se usó varios días a la semana, tienes buenos hábitos de uso, ' \
                             'recuerda desconectarla cuando no la estés usando. <br /> '
 
+
     elif 'cabello' in equipo.lower():
         texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
@@ -144,12 +145,23 @@ def textodeequiposV(equipo,nota):
         texto=nota
     return texto
 
-def noatac(equipo):
+def noatac(equipo,todo):
+    equipo=str(equipo)
+    todo=str(todo)
+    print(todo)
     if 'refrigerador' in equipo:
         Consejos='Lamentablemente es difícil reducir el consumo de standby de un refrigerador sin reemplazarlo'
     elif 'calentador' in equipo:
         Consejos='Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo '
-
+    elif 'alexa' in todo:
+        Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
+                            'Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
+    elif 'lutron' in todo:
+        Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
+                            'Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
+    elif 'modem' in todo:
+        Consejos='En los equipos de comunicación no recomendamos tomar acción o desconectarlos, ' \
+                 'debido a que interfieren con tu confort'
     else:
         Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
                  'debido a que pueden afectar tanto tu confort como tu seguridad'

@@ -92,7 +92,9 @@ def Nombre_Cliente():
     #NCliente = 'Alejandro Septien'
     #NCliente = 'Paulina Torrado'
     #NCliente = 'Monica Cardenas'
-    #NCliente = 'Felipe Diaz'
+    NCliente = 'Felipe Diaz'
+    #NCliente= 'Renata Chain'
+    #NCliente ='Hector Cabello'
     return NCliente
 
 ###################### MAIN  #####################################
@@ -102,7 +104,7 @@ if __name__ == '__main__':
 
 
 
-    Opcion='2'
+    Opcion='4'
 
 
     if Opcion == '1':

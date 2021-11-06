@@ -94,7 +94,9 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 if 'decodificador1' in Nomedidos:
                     print("decodificador 1 no desconectado")
                 else:
-                    Aparatos_C.loc['Decodificador1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                    Aparatos_C.loc['Decodificador1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby_c_i')[0])
+                    print("Deco")
+                    print(Aparatos_C.loc['Decodificador1', 'Standby'] )
 
             if indx == 3:
             ##Modem

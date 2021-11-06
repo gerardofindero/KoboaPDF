@@ -87,17 +87,17 @@ def caritaTV(consumo,clave):
     potencia = float(DAtosTV[0])
 
     uso=(kWh*1000)/(potencia*60)
-    if uso >= 5.0:
+    if uso >= 4.0:
         if kWh>50:
             Ca = 3
         else:
             Ca=2
-    if 2.5 <= uso < 5.0:
+    if 2 <= uso < 4.0:
         if kWh>=15:
             Ca = 2
         else:
             Ca=1
-    if uso < 2.5 or kWh<15:
+    if uso < 2 or kWh<15:
         Ca = 1
 
     return Ca

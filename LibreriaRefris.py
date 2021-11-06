@@ -136,7 +136,7 @@ def LeeClavesR(Claves,notas):
 
         # Empaques mal
         if 'EM' in Claves:
-            Texto= Texto+' '+lib.loc['REF13','E']
+            Texto= Texto+' '+lib.loc['REF13','Texto']
             TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
         # Temperatura congelador mal

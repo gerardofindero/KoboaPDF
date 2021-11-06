@@ -11,12 +11,14 @@ def seguridad(Excel,Nocircuito, NomCircuito):
     Circuito = Excel.loc[Nocircuito]
     Columnas = Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("seguridad", case=False)]
+    CodStandby = Circuito.filter(regex='seguridad_standby_total_codigofindero_c_i')[0]
     Equipos = Circuito[InfoEquipos]
-    codigoS=1
+    Equipos2 = Columnas[Columnas.str.contains("seguridad_equipos_c_i", case=False)]
+    Equipos3 = Equipos[Equipos2]
 
 
     indx = 0
-    for i in Equipos:
+    for i in Equipos3:
         if i == 1:
             Circuito = Equipos.filter(regex='seguridad')
             #Zona = Circuito.filter(regex='zona')[0]
@@ -33,7 +35,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['CCTV Camara', 'Existencia'] = 1
                     Aparatos_C.loc['CCTV Camara', 'Atacable'] = 'No'
                     Aparatos_C.loc['CCTV Camara', 'Zona'] = InfoDeco.filter(regex='zona')[0]
-                    Aparatos_C.loc['CCTV Camara', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+                    Aparatos_C.loc['CCTV Camara', 'CodigoS'] = CodStandby
+                    Aparatos_C.loc['CCTV Camara', 'Clave'] = 'CAM'
 
                 if EquipoCCTV[2] == 1:
                     print("Grabador")
@@ -43,7 +46,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['CCTV Grabador', 'Existencia'] = 1
                     Aparatos_C.loc['CCTV Grabador', 'Atacable'] = 'No'
                     Aparatos_C.loc['CCTV Grabador', 'Zona'] = InfoDeco.filter(regex='zona')[0]
-                    Aparatos_C.loc['CCTV Grabador', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+                    Aparatos_C.loc['CCTV Grabador', 'CodigoS'] = CodStandby
+                    Aparatos_C.loc['CCTV Grabador', 'Clave'] = 'GRB'
 
                 if EquipoCCTV[3]==1:
                     print("Respaldo")
@@ -53,7 +57,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['CCTV Respaldo', 'Existencia'] = 1
                     Aparatos_C.loc['CCTV Respaldo', 'Atacable'] = 'No'
                     Aparatos_C.loc['CCTV Respaldo', 'Zona'] = InfoDeco.filter(regex='zona')[0]
-                    Aparatos_C.loc['CCTV Respaldo', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+                    Aparatos_C.loc['CCTV Respaldo', 'CodigoS'] = CodStandby
+                    Aparatos_C.loc['CCTV Respaldo', 'Clave'] = 'RSP'
 
 
             if i == 2:
@@ -64,7 +69,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Cerca Electrica', 'Existencia'] = 1
                 Aparatos_C.loc['Cerca Electrica', 'Atacable'] = 'No'
                 Aparatos_C.loc['Cerca Electrica', 'Zona'] = 'Exterior'
-                Aparatos_C.loc['Cerca Electrica', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
+                Aparatos_C.loc['Cerca Electrica', 'CodigoS'] =CodStandby
+                Aparatos_C.loc['Cerca Electrica', 'Clave'] = 'CRC'
 
             if i == 3:
 
@@ -74,7 +80,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Electroiman', 'Existencia'] = 1
                 Aparatos_C.loc['Electroiman', 'Atacable'] = 'No'
                 Aparatos_C.loc['Electroiman', 'Zona'] = 'Exterior'
-                Aparatos_C.loc['Electroiman', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
+                Aparatos_C.loc['Electroiman', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['Electroiman', 'Clave'] = 'ELT'
 
             if i == 4:
                 InfoDeco = Circuito.filter(regex='sensor')
@@ -83,7 +90,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Sensor Puertas', 'Existencia'] = 1
                 Aparatos_C.loc['Sensor Puertas', 'Atacable'] = 'No'
                 Aparatos_C.loc['Sensor Puertas', 'Zona'] = 'Exterior'
-                Aparatos_C.loc['Sensor Puertas', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
+                Aparatos_C.loc['Sensor Puertas', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['Sensor Puertas', 'Clave'] = 'SEP'
 
             if i == 5:
                 print("Regulador")
@@ -94,7 +102,8 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['CCTV Regulador', 'Existencia'] = 1
                 Aparatos_C.loc['CCTV Regulador', 'Atacable'] = 'No'
                 Aparatos_C.loc['CCTV Regulador', 'Zona'] = InfoDeco.filter(regex='zona')[0]
-                Aparatos_C.loc['CCTV Regulador', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+                Aparatos_C.loc['CCTV Regulador', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['CCTV Regulador', 'Clave'] = 'RG'
 
             if i == 6:
                 print("Nobreak")
@@ -105,17 +114,19 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['CCTV Nobreak', 'Existencia'] = 1
                 Aparatos_C.loc['CCTV Nobreak', 'Atacable'] = 'No'
                 Aparatos_C.loc['CCTV Nobreak', 'Zona'] = InfoDeco.filter(regex='zona')[0]
-                Aparatos_C.loc['CCTV Nobreak', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
+                Aparatos_C.loc['CCTV Nobreak', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['CCTV NoBreak', 'Clave'] = 'NB'
 
             if i == 7:
                 InfoDeco = Circuito.filter(regex='camara')
 
-                Aparatos_C.loc['Cerca Electrica', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]
-                Aparatos_C.loc['Cerca Electrica', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
-                Aparatos_C.loc['Cerca Electrica', 'Zona'] = InfoDeco.filter(regex='zona_c_i')[0]
-                Aparatos_C.loc['Cerca Electrica', 'Existencia'] = 1
-                Aparatos_C.loc['Cerca Electrica', 'Atacable'] = 'No'
-                Aparatos_C.loc['Cerca Electrica', 'CodigoS'] = codigoS
+                Aparatos_C.loc['Camara', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]
+                Aparatos_C.loc['Camara', 'Notas'] = InfoDeco.filter(regex='notas_c_i')[0]
+                Aparatos_C.loc['Camara', 'Zona'] = InfoDeco.filter(regex='zona_c_i')[0]
+                Aparatos_C.loc['Camara', 'Existencia'] = 1
+                Aparatos_C.loc['Camara', 'Atacable'] = 'No'
+                Aparatos_C.loc['Camara', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['Camara', 'Clave'] = 'CAM'
 
 
 
