@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr):
+def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr,TextoCompleto):
     """
 
     :param longitud: longitud de tira led - int o float
@@ -11,9 +11,11 @@ def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr):
     :param dscr: descripcción con días de la semana que se uso
     :return: recomendación tiras led
     """
+    txt=TextoCompleto
     ll=libreriaTirasLED()
     ll.setData(longitud,caracteristicas,DAC,wt,kwh,dscr)
     txt = ll.buildText()
+    print(txt)
     return txt
 
 
@@ -25,7 +27,7 @@ class libreriaTirasLED:
         try:
             self.libTxt = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
-                sheet_name='Sheet1')
+                sheet_name='Textos')
             self.dbTiras = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
                 sheet_name='Tira LED')
@@ -33,13 +35,13 @@ class libreriaTirasLED:
         except:
             self.libTxt = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
-                sheet_name='Sheet1')
+                sheet_name='Textos')
             self.dbTiras = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
                 sheet_name='Tira LED')
 
-        self.libTxt.columns=['A','B','C','D','E']
-
+        #self.libTxt.columns=['A','B','C','D','E']
+        self.libTxt=self.libTxt.set_index('Codigo')
         columns = self.dbTiras.loc[1, :]
         self.dbTiras = self.dbTiras.iloc[2:, :].reset_index(drop=True).copy()
         self.dbTiras.columns = columns
@@ -88,12 +90,16 @@ class libreriaTirasLED:
 
     def setData(self, longitud ,caracteristicas, DAC, wt, kwh, dscr):
         carac      = caracteristicas.split(',')
+        print(longitud,wt,kwh)
         if 'fria' in carac:
+            print('fria')
             filtro = self.dbTiras['Color Tira LED']=='Frio'
         elif 'calida' in carac:
             filtro = self.dbTiras['Color Tira LED']=='Calido'
         elif 'color' in carac:
             filtro = (self.dbTiras['Color Tira LED']=='RGB') | (self.dbTiras['Color Tira LED']=='Multicolor')
+        # else:
+        #     filtro=self.dbTiras
         #if 'atenuable' in carac:
         #    filtro = filtro & (self.dbTiras['']=='')
         #if 'sensor_movimiento' in carac:
@@ -110,6 +116,7 @@ class libreriaTirasLED:
 
     def roi(self):
         opcTir = self.dbTiras.loc[self.filtro,:].reset_index().copy()
+        #opcTir=self.dbTiras.reset_index().copy()
         cortes = ~pd.isnull(opcTir.loc[:, 'Intervalos de Corte [cm]'])
         opcTir.loc[cortes, 'residuo'] = \
             self.lon % opcTir.loc[cortes, 'Intervalos de Corte [cm]']
@@ -168,19 +175,20 @@ class libreriaTirasLED:
     def buildText(self):
         self.roi()
         txt=''
-        if len(self.diasUso)!=0:
-            # LUMN15
-            txt = txt + self.libTxt.loc[51,'E'].replace('[diasUso]',self.diasUso ).replace('[horasUso]',str(int(self.hrsUso)))
-        else:
-            # LUM16
-            txt = txt + self.libTxt.loc[52,'E'].replace('[horasUso]',str(int(self.hrsUso)))
+        # if len(self.diasUso)!=0:
+        #     # LUMN15
+        txt = txt + self.libTxt.loc['LUM35','Texto']
+        # else:
+        #     # LUM16
+        #     txt = txt + self.libTxt.loc['LUM16','Texto'].replace('[horasUso]',str(int(self.hrsUso)))
 
         if len(self.sustitutos)>0:
             if (self.sustitutos['roi']<3).any():
                 #print(txt,'\n',self.libTxt.loc[57,'E'])
-                txt = txt+ ' ' + self.libTxt.loc[57,'E']
+                txt = txt+ ' ' + self.libTxt.loc['LUM37','Texto']
             else:
-                txt = txt+ ' ' + self.libTxt.loc[58,'E']
+                txt = txt+ ' ' + self.libTxt.loc['LUM30','Texto']
+                txt = txt+ ' ' + self.libTxt.loc['LUM31','Texto']
 
             if len(self.sustitutos)==1:
                 recomendacion = 'Te dejamos esta opción de reemplazo:\n'

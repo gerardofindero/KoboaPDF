@@ -200,7 +200,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
             Sheet1.range(inicioL + cony, 6).value  ='='+ PorcentajesTotales+'0'
             Sheet1.range(inicioL + cony, 7).value  = PotenciasTotales[:-1]
             Sheet1.range(inicioL + cony, 16).value = NotasTotales
-            Sheet1.range(inicioL + cony, 8).value = str(round(HorasT/cont,1))
+            #Sheet1.range(inicioL + cony, 8).value = str(round(HorasT/cont,1))
 
         cony = cony + 1
 
