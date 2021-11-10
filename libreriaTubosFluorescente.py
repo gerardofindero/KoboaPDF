@@ -402,10 +402,10 @@ class libreriaTubosFluorescentes:
         txt=''
         if len(self.diasUso)!=0:
             # LUMN15
-            txt = txt + self.libTxt.loc['LUM15','Texto'].replace('[diasUso]',self.diasUso ).replace('[horasUso]',str(int(self.hrsUso)))
-        else:
-            # LUM16
-            txt = txt + self.libTxt.loc['LUM16','Texto'].replace('[horasUso]',str(int(self.hrsUso)))
+            txt = txt + self.libTxt.loc['LUM36','Texto']
+        # else:
+        #     # LUM16
+        #     txt = txt + self.libTxt.loc['LUM16','Texto'].replace('[horasUso]',str(int(self.hrsUso)))
         if self.detr:
             # LUM17
             txt = txt +'\n' +self.libTxt.loc['LUM17','Texto']

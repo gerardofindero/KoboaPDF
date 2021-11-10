@@ -3,6 +3,7 @@ import random
 from libreriaLucesSolares import recoSolares
 from libreriaSenMov import recoSensores
 from libreriaTubosFluorescente import recoTuboFluorescente
+from libreriaTirasLED import recoTirasLed
 ### Preguntas generales
 
 # Tareas:
@@ -233,6 +234,12 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             if aleatorio==3:
                 TextoCompleto = TextoCompleto + Lib.loc['LUM33', 'Texto']
 
+        print(tex)
+        if 'tira' in tex:
+            largoLED= tex.split(',')[1]
+            largoLED=largoLED.replace('cm','')
+            TextoCompleto=recoTirasLed(float(largoLED), tex, DAC, Watts, VV, texto,TextoCompleto)
+
         if Numero == 1:
             TextoCompleto = TextoCompleto.replace('[s]', '')
         else:
@@ -284,12 +291,14 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             TextoCompleto = TextoCompleto.replace('(un)', 'un')
             TextoCompleto = TextoCompleto.replace('(n)', '')
             TextoCompleto = TextoCompleto.replace('(es)','')
+            TextoCompleto = TextoCompleto.replace('halogenos','halogeno')
 
         else:
             TextoCompleto = TextoCompleto.replace('(s)','s')
             TextoCompleto = TextoCompleto.replace('(un)', '')
             TextoCompleto = TextoCompleto.replace('(n)', 'n')
             TextoCompleto = TextoCompleto.replace('(es)', 'es')
+            TextoCompleto = TextoCompleto.replace('halogenoss', 'halogenos')
 
         # TEXTOS DE RETORNO DE INVERSION (Seguimos con focos que no son LED).
         ## Para las luminarias que cuentan con entrada y tipo de entrada se busca en la base de datos de las luminarias
@@ -365,6 +374,8 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             if Tecno == 'incandescente':
                 TT = 70
             if Tecno == 'halogena':
+                TT = 60
+            if Tecno == 'halogenos':
                 TT = 60
             TextoCompleto = TextoCompleto.replace('del [T]%', 'alrededor del [T]%')
             TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
