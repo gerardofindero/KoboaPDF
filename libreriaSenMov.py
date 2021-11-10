@@ -7,7 +7,7 @@ def recoSensores (kwh = None,w = None, lugar = None ,dac = None,hrsUso=None):
     ls=libreriaSensores()
     ls.setData(kwh,w,lugar, dac,hrsUso)
     txt=ls.armarTxt()
-    return txt
+    return txt.replace("<br />","")
 
 class libreriaSensores:
 
@@ -95,8 +95,7 @@ class libreriaSensores:
             self.hrsUso = hrsUso
             
     def armarTxt(self):
-        print(self.lugar)
-        txt=""
+        txt='X'
         if self.stats.tags.str.contains(self.lugar).any():
             idx=self.stats.index[self.stats.tags.str.contains(self.lugar)][0]
             mean = self.stats.at[idx, "mean"]
@@ -107,7 +106,6 @@ class libreriaSensores:
             hrsUso = self.hrsUso/7
             hrsUsoT = ((hrsUso**lam)-1)/lam
             percentil= norm.cdf(hrsUsoT,mean,std)
-            print(percentil,perU)
             if percentil >= perU:
                 roi = 200/(self.kwh*0.35*self.dac)/6
                 if roi <= 3:

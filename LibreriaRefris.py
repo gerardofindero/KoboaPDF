@@ -136,12 +136,12 @@ def LeeClavesR(Claves,notas):
 
         # Empaques mal
         if 'EM' in Claves:
-            Texto= Texto+' '+lib.loc['REF13','E']
+            Texto= Texto+' '+lib.loc['REF13','Texto']
             TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
         # Temperatura congelador mal
         if 'TCM' in Claves:
-            Texto= Texto+' '+lib.loc['REF14','E']+' '+lib.loc['REF15','E']+' '+lib.loc['REF17','E']
+            Texto= Texto+' '+lib.loc['REF14','Texto']+' '+lib.loc['REF15','Texto']+' '+lib.loc['REF17','Texto']
             Texto = Texto.replace('[EQQ]', 'congelador')
             #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
@@ -205,20 +205,19 @@ def LeeClavesR(Claves,notas):
         ## Sucio
         if 'SU' in Claves:
             Texto = Texto + ' ' + lib.loc['REF08', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF14','Texto']
+            TextoF= TextoF +' ' + lib2.loc['REFF14','Texto']
 
 
         ## Ventilador Encerrado
         if 'VN' in Claves:
             Texto = Texto + ' ' + lib.loc['REF12', 'Texto']
-            #TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
-
-        #if 'PR' in Claves:
-            #Texto= Texto+' '+lib.loc[6,'E']
-            #TextoF= TextoF+' '+lib2.loc['REFF01','Texto']
-        if 'PT' in Claves:
-            #Texto= Texto+' '+lib.loc[6,'E']
+            TextoF= TextoF+' '+lib2.loc['REFF15','Texto']
+        if 'PR' in Claves:
+            Texto= Texto+' '+ lib.loc['REF10', 'Texto']
             TextoF= TextoF+' '+lib2.loc['REFF02','Texto']
+        if 'PT' in Claves:
+            Texto= Texto+' '+ lib.loc['REF11', 'Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
         if 'DH' in Claves:
             #Texto= Texto+' '+lib.loc[6,'E']
             TextoF= TextoF+' '+lib2.loc['REFF03','Texto']

@@ -1,32 +1,113 @@
 import pandas as pd
 import numpy as np
 
-def recoTuboFluorescente(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr):
-    """
-    :param tipo: tipo de tubo (t2, t5, t12, etc) - str
-    :param entr: entrada del tubo (g5, etc) - str
-    :param disp: disposición de los tubo (aislado, serie, parealelo) - str
-    :param port: tipo de portalampara (sobresale, introduce, sin, etc) - str
-    :param func: funcion de la iluminación (principal, nocturna, espejos etc) - str
-    :param ntub: número de tuobos fluorescente - int o float
-    :param detr: Señales de deterioro en los tubos (True, False) - bool
-    :param difu: Si los tubos fluorescentes tienen difusor (True, False) - bool
-    :param temp: Tipo de iluminación (calida o fria) - str
-    :param lntb: longitud del tubo (largo_30, largo_61, etc) -  str
-    :param caji: True si es cajillo (True, False) - bool
-    :param caln: longitud del cajillo - int o float
-    :param plta: lista con largo y ancho de placa ([largo, ancho]) - list de int o float
-    :param plnu: numero de placas - int o float
-    :param DAC:
-    :param wt:
-    :param kwh:
-    :param dscr: descripcion del deciframiento. Se utiliza para extraer dias de la semana que se ocupo la luminaria
-    :return:
-    """
-    lf=libreriaTubosFluorescentes()
-    lf.setData(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
-    reco = lf.buildText()
+#def recoTuboFluorescente(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr):
+def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
+
+    # :param tipo: tipo de tubo (t2, t5, t12, etc) - str
+    tipo=''
+    # :param entr: entrada del tubo (g5, etc) - str
+    entr=''
+    # :param disp: disposición de los tubo (aislado, serie, parealelo) - str
+    disp=''
+    # :param port: tipo de portalampara (sobresale, introduce, sin, etc) - str
+    port=''
+    # :param func: funcion de la iluminación (principal, nocturna, espejos etc) - str
+    func=''
+    # :param ntub: número de tuobos fluorescente - int o float
+    ntub=0.0001
+    # :param detr: Señales de deterioro en los tubos (True, False) - bool
+    detr=False
+    # :param difu: Si los tubos fluorescentes tienen difusor (True, False) - bool
+    difu=False
+    # :param temp: Tipo de iluminación (calida o fria) - str
+    temp=''
+    # :param lntb: longitud del tubo (largo_30, largo_61, etc) -  str
+    lntb=''
+    # :param caji: True si es cajillo (True, False) - bool
+    caji=False
+    # :param caln: longitud del cajillo - int o float
+    caln=0.01
+    # :param plta: lista con largo y ancho de placa ([largo, ancho]) - list de int o float
+    plta=[0,0]
+    # :param plnu: numero de placas - int o float
+    plnu=0
+    # :param DAC:
+    # :param wt:
+    # :param kwh:
+    # :param dscr: descripcion del deciframiento. Se utiliza para extraer dias de la semana que se ocupo la luminaria
+    # :return:
+    # """
+
+    dscr=texto2
+    dispo=['aislado', 'serie', 'parealelo']
+    funcion=['principal','indirecta','nocturna','espejos','estudio','arte','mesas','bodegas']
+    temperatura=['calida','fria']
+    tubo=False
+
+    separadodiag=texto.split('/')
+    for i in separadodiag:
+        separarcoma=i.split(',')
+        if separarcoma[0]=="T":
+            tubo=True
+            tipo=separarcoma[1]
+            entr=separarcoma[2]
+
+            for j in separarcoma:
+                if 'largo_' in j:
+                    largoT=j.replace('largo_','')
+                    lntb=j
+                if j in dispo:
+                    disp=j
+
+                if 'PL_' in j:
+                    largoT=j.replace('PL_','')
+                    port=j
+
+                if j in funcion:
+                    func=j
+
+                if j in temperatura:
+                    temp=j
+
+
+
+        if 'DET_' in i:
+            soloD=i.replace('DET_','')
+            if soloD=='si':
+                detr=True
+            else:
+                detr=False
+
+        if 'DIF_' in i:
+            soloD=i.replace('DIF_','')
+            if soloD=='si':
+                difu=True
+            else:
+                difu=False
+
+        if 'CAJ_' in i:
+            soloD=i.replace('CAJ_','')
+            cajillo= soloD.split('_')
+            cajill = cajillo[0]
+            if cajill=='si':
+                caji=True
+            else:
+                caji=False
+            caln = cajillo[1]
+
+
+    if tubo==True:
+        lf=libreriaTubosFluorescentes()
+        lf.setData(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
+        reco = lf.buildText()
+
+    else:
+        reco=Completo
     return reco
+
+
+
 class libreriaTubosFluorescentes:
     def __init__(self):
         # Kobo Info de kobo en diccionario, tarifa DAC, potencia total de los tubos led, energía consumida
@@ -39,7 +120,7 @@ class libreriaTubosFluorescentes:
         try:
             self.libTxt = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
-                sheet_name='Sheet1')
+                sheet_name='Textos')
             self.dbTubos=pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
                 sheet_name='Tubo LED')
@@ -52,7 +133,7 @@ class libreriaTubosFluorescentes:
         except:
             self.libTxt = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
-                sheet_name='Sheet1')
+                sheet_name='Textos')
             self.dbTubos=pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
                 sheet_name='Tubo LED')
@@ -62,7 +143,8 @@ class libreriaTubosFluorescentes:
             self.dbPanel = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
                 sheet_name='Panel LED')
-        self.libTxt.columns=['A','B','C','D','E']
+        self.libTxt=self.libTxt.set_index('Codigo')
+
 
         columns              = self.dbTubos.loc[1,:]
         self.dbTubos         = self.dbTubos.iloc[2:,:].reset_index(drop=True).copy()
@@ -115,10 +197,10 @@ class libreriaTubosFluorescentes:
         if (link == 'nan') or (link=='') :
             return texto
         else:
-            texto = '<br />' + '<link href="' + link + '"color="blue">' + texto + ' </link>'
+            texto = '<br />' + '<link href="' + str(link) + '"color="blue">' + str(texto) + ' </link>'
             return texto
 
-    def setData(self,tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr):
+    def setData(self,tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu,DAC,wt,kwh,dscr):
             self.tipo       = tipo
             self.entr       = entr
             self.dist       = disp
@@ -137,8 +219,8 @@ class libreriaTubosFluorescentes:
             self.w_t        = wt                           # Potencia de la luminaria
             self.DAC        = DAC                          # Tarifa Dac vigente
             self.kwh_t      = kwh                          # kWh de la luminaria
-            self.hrsUso     = kwh * 1000 / wt              # horas que estuvo en uso la luminaría asumiento que unicamente son tubos fluorescentes
-            self.w_ff       = wt/kobo['ntub']              # watts por tubo
+            self.hrsUso     = kwh * 1000 / wt*60            # horas que estuvo en uso la luminaría asumiento que unicamente son tubos fluorescentes
+            self.w_ff       = wt/ntub              # watts por tubo
             #self.lm_ff      = self.w_ff * self.ganLumiPro # lumenes por tubo
             #self.lm_t       = wt*self.ganLumiDes          # lumenes totales
             self.dias(dscr)                                # Detecta que dias seutilizarón degun la descripcción del deciframiento
@@ -147,7 +229,7 @@ class libreriaTubosFluorescentes:
     def RTL(self):
         # LUMENES POR METRO CON BASE EN LONGITUD DEL CAJILLO O LONGITUD DE LOS TUBOS
         if self.caji:
-            lmXm = self.lumT/self.caln
+            lmXm = self.lumT/float(self.caln)
             lng  = self.caln
         else:
             lmXm = self.lumT/ (self.ntub*self.tubL)
@@ -158,54 +240,57 @@ class libreriaTubosFluorescentes:
         opcTir = self.dbTiras.loc[selc,:].reset_index(drop=True).copy()
         # ESTIMACIÓN DE ESPACIO FALTANTE PARA CUBRIR LA LONGITUD
         cortes=~pd.isnull(opcTir.loc[:, 'Intervalos de Corte [cm]'])
-        opcTir.loc[cortes,'residuo']=\
-                lng % opcTir.loc[cortes,'Intervalos de Corte [cm]']
-        opcTir.loc[~cortes,'residuo']=\
-                lng % opcTir.loc[~cortes,'Longitud Tira LED [cm]']
-        # ESTIMACIÓN DE LA LONGITUD DE TIRA NECESARIA PARA OBTENER LOS W QUE USARA LA TIRA LED
-        opcTir.loc[cortes, 'lonTiras'] = \
-                lng / opcTir.loc[cortes, 'Longitud Tira LED [cm]']
-        opcTir.loc[~cortes, 'lonTiras'] = \
-                lng / opcTir.loc[~cortes, 'Longitud Tira LED [cm]']
-        # ESTIMACION DEL NÚMERO DE TIRAS QUE DEBEN COMPRARSE
-        opcTir['nTiras']=opcTir.lonTiras.apply(np.ceil)
-        # AHORRO BIMESTRAL
-        opcTir.loc[:,'kwhAhorroBimestral'] = (self.w_t-(opcTir.loc[:,'lonTiras']*opcTir.loc[:,'Potencia Tira LED [W]']))*24*60*self.DAC*(self.hrsUso/24/7)/1000
-        opcTir.loc[:,'ahorroBimestral'   ] = opcTir.loc[:,'kwhAhorroBimestral']*self.DAC
-        # ROI
-        opcTir.loc[:,'roi']=(opcTir.nTiras*opcTir.loc[:,'Costo Tira LED'])/opcTir.loc[:,'ahorroBimestral']/6
+        try:
+            opcTir.loc[cortes,'residuo']=\
+                    lng % opcTir.loc[cortes,'Intervalos de Corte [cm]']
+            opcTir.loc[~cortes,'residuo']=\
+                    lng % opcTir.loc[~cortes,'Longitud Tira LED [cm]']
+            # ESTIMACIÓN DE LA LONGITUD DE TIRA NECESARIA PARA OBTENER LOS W QUE USARA LA TIRA LED
+            opcTir.loc[cortes, 'lonTiras'] = \
+                    lng / opcTir.loc[cortes, 'Longitud Tira LED [cm]']
+            opcTir.loc[~cortes, 'lonTiras'] = \
+                    lng / opcTir.loc[~cortes, 'Longitud Tira LED [cm]']
+            # ESTIMACION DEL NÚMERO DE TIRAS QUE DEBEN COMPRARSE
+            opcTir['nTiras']=opcTir.lonTiras.apply(np.ceil)
+            # AHORRO BIMESTRAL
+            opcTir.loc[:,'kwhAhorroBimestral'] = (self.w_t-(opcTir.loc[:,'lonTiras']*opcTir.loc[:,'Potencia Tira LED [W]']))*24*60*self.DAC*(self.hrsUso/24/7)/1000
+            opcTir.loc[:,'ahorroBimestral'   ] = opcTir.loc[:,'kwhAhorroBimestral']*self.DAC
+            # ROI
+            opcTir.loc[:,'roi']=(opcTir.nTiras*opcTir.loc[:,'Costo Tira LED'])/opcTir.loc[:,'ahorroBimestral']/6
 
-        # SE PRIORIZA LA SELECCION DE AQUELLAS TIRAS CON ROI MENOR A 3 AÑOS
-        if (opcTir.roi<=3).any():
-            opcTir=opcTir.loc[opcTir.roi<=3,:].sort_values(by=['roi','residuo'])
-        else:
-            opcTir=opcTir.sort_values(by=['roi','residuo'])
-        # FILTRO DE TIRAS QUE LES FALTARA MAS DE 10 CENTIMETROS PARA CUBRIR LA LONGITUD TOTAL
-        opcTir = opcTir.loc[opcTir.residuo < 10, :].reset_index(drop=True).copy()
-        # SELECCIÓN DE LAS 5 MEJORES OPCIONES CONSIDERANDO PRIMERO ROI Y LUEGO LA EXACTITUD CON LA QUE CUBRIRAN LA ZONA
-        if len(opcTir)<5:
-            nSugerencias=len(opcTir)
-            df = pd.DataFrame({'tipo'           : (['Tira LED'] *nSugerencias ),
-                               'cantidad'       : opcTir['nTiras'][:nSugerencias],
-                               'costo'          : opcTir['Costo Tira LED'][:nSugerencias],
-                               'link'           : opcTir['Link Tira LED'][:nSugerencias],
-                               'kwhAhorroBimestral': opcTir['kwhAhorroBimestral'][:nSugerencias],
-                               'ahorroBimestral': opcTir['ahorroBimestral'][:nSugerencias],
-                               'roi'            : opcTir['roi'][:nSugerencias],
-                               'accion'         : (['compra']*nSugerencias)})
-            # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
-            self.sustitutos = self.sustitutos.append(df, ignore_index=True)
-        else:
-            df=pd.DataFrame({'tipo'           : (['Tira LED']*5),
-                             'cantidad'       : opcTir['nTiras'][:5],
-                             'costo'          : opcTir['Costo Tira LED'][:5],
-                             'link'           : opcTir['Link Tira LED'][:5],
-                             'kwhAhorroBimestral':opcTir['kwhAhorroBimestral'][:5],
-                             'ahorroBimestral': opcTir['ahorroBimestral'][:5],
-                             'roi'            : opcTir['roi'][:5],
-                             'accion'         : (['compra']*5)})
-            # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
-            self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+            # SE PRIORIZA LA SELECCION DE AQUELLAS TIRAS CON ROI MENOR A 3 AÑOS
+            if (opcTir.roi<=3).any():
+                opcTir=opcTir.loc[opcTir.roi<=3,:].sort_values(by=['roi','residuo'])
+            else:
+                opcTir=opcTir.sort_values(by=['roi','residuo'])
+            # FILTRO DE TIRAS QUE LES FALTARA MAS DE 10 CENTIMETROS PARA CUBRIR LA LONGITUD TOTAL
+            opcTir = opcTir.loc[opcTir.residuo < 10, :].reset_index(drop=True).copy()
+            # SELECCIÓN DE LAS 5 MEJORES OPCIONES CONSIDERANDO PRIMERO ROI Y LUEGO LA EXACTITUD CON LA QUE CUBRIRAN LA ZONA
+            if len(opcTir)<5:
+                nSugerencias=len(opcTir)
+                df = pd.DataFrame({'tipo'           : (['Tira LED'] *nSugerencias ),
+                                   'cantidad'       : opcTir['nTiras'][:nSugerencias],
+                                   'costo'          : opcTir['Costo Tira LED'][:nSugerencias],
+                                   'link'           : opcTir['Link Tira LED'][:nSugerencias],
+                                   'kwhAhorroBimestral': opcTir['kwhAhorroBimestral'][:nSugerencias],
+                                   'ahorroBimestral': opcTir['ahorroBimestral'][:nSugerencias],
+                                   'roi'            : opcTir['roi'][:nSugerencias],
+                                   'accion'         : (['compra']*nSugerencias)})
+                # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
+                self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+            else:
+                df=pd.DataFrame({'tipo'           : (['Tira LED']*5),
+                                 'cantidad'       : opcTir['nTiras'][:5],
+                                 'costo'          : opcTir['Costo Tira LED'][:5],
+                                 'link'           : opcTir['Link Tira LED'][:5],
+                                 'kwhAhorroBimestral':opcTir['kwhAhorroBimestral'][:5],
+                                 'ahorroBimestral': opcTir['ahorroBimestral'][:5],
+                                 'roi'            : opcTir['roi'][:5],
+                                 'accion'         : (['compra']*5)})
+                # CONCATENADO DE LOS SUSTITUTOS MAS VIABLES AL DF SE SALIDA
+                self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+        except:
+            print('No hay recomendacion')
 
     def RTbL(self):
         self.rec=self.dbTubos.loc[self.filtro,:].reset_index(drop=True).copy()
@@ -286,14 +371,16 @@ class libreriaTubosFluorescentes:
         if 'RPL'  in tipRem:
            self.RPL()
         reco=self.sustitutos.sort_values(by=['roi']).reset_index(drop=True).copy().iloc[:2]
+        txt=''
         if len(reco)>0 :
             if (reco['roi']<=3).any():
                 reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
-                txt = '\n'+self.libTxt.loc[54,'E']
+                txt = '\n'+self.libTxt.loc['LUM18','Texto']
             elif (self.sustitutos['roi']<3).any() and self.detr:
-                txt = '\n'+self.libTxt.loc[55, 'E']
+                txt = '\n'+self.libTxt.loc['LUM19', 'Texto']
             elif (self.sustitutos['roi']<3).any() and (not self.detr):
-                txt = '\n'+self.libTxt.loc[56, 'E']
+                txt = '\n'+self.libTxt.loc['LUM20', 'Texto']
+
             if len(reco)==1:
                 recomendacion='Te dejamos esta opción de reemplazo:\n'
                 recomendacion = recomendacion + self.ligarTextolink(
@@ -315,13 +402,13 @@ class libreriaTubosFluorescentes:
         txt=''
         if len(self.diasUso)!=0:
             # LUMN15
-            txt = txt + self.libTxt.loc[51,'E'].replace('[diasUso]',self.diasUso ).replace('[horasUso]',str(int(self.hrsUso)))
+            txt = txt + self.libTxt.loc['LUM15','Texto'].replace('[diasUso]',self.diasUso ).replace('[horasUso]',str(int(self.hrsUso)))
         else:
             # LUM16
-            txt = txt + self.libTxt.loc[52,'E'].replace('[horasUso]',str(int(self.hrsUso)))
+            txt = txt + self.libTxt.loc['LUM16','Texto'].replace('[horasUso]',str(int(self.hrsUso)))
         if self.detr:
             # LUM17
-            txt = txt +'\n' +self.libTxt.loc[53,'E']
+            txt = txt +'\n' +self.libTxt.loc['LUM17','Texto']
         if self.caji:
             # cajillo  True
             txt = txt + self.recRem(['RTL'])
@@ -330,6 +417,7 @@ class libreriaTubosFluorescentes:
             if self.func == 'arte':
                 txt = txt + 'FUNCIÓN PRINCIMAL ES ARTE\n SOLICITO APOYO DE UN HUMANO'
             elif self.func in ['indirecta', 'espejos', 'bodegas', 'peceras']:
+
                 txt = txt + self.recRem(['RTL','RTbL'])
             else:
                 # Dispoisicion
@@ -346,5 +434,6 @@ class libreriaTubosFluorescentes:
                     elif self.port == 'sin':
                         txt = txt + self.recRem(['RTbL'])
         txt= txt.replace('\n','<br />')
+
         return txt
 

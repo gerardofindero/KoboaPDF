@@ -26,10 +26,9 @@ def especiales(Excel,Nocircuito, NomCircuito):
     Aparatos_C.loc['Especial1', 'Marca']       = InfoDeco.filter(regex='marca')[0]
     Aparatos_C.loc['Especial1', 'Notas']       = InfoDeco.filter(regex='notas')[0]
     Aparatos_C.loc['Especial1', 'CodigoN']     = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
-    Aparatos_C.loc['Especial1', 'Standby']     = InfoDeco.filter(regex='standby_c_i')[0]
+    Aparatos_C.loc['Especial1', 'Standby']     = consumoEq(InfoDeco.filter(regex='standby_c_i')[0])
     Aparatos_C.loc['Especial1', 'Maniobras']   = InfoDeco.filter(regex='maniobras_c_i')[0]
     Aparatos_C.loc['Especial1', 'ManiobrasD']  = InfoDeco.filter(regex='maniobras_detalles_c_i')[0]
-    Aparatos_C.loc['Especial1', 'Standby']     = InfoDeco.filter(regex='standby_c_i')[0]
     Aparatos_C.loc['Especial1', 'CodigoS']     = CodStandby
     Aparatos_C.loc['Especial1', 'Clave'] = 'X'
     if Aparatos_C.loc['Especial1','Standby'] !=0:
@@ -56,7 +55,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial2', 'ManiobrasD'] = InfoDeco.filter(regex='maniobras_detalles_c_i')[0]
         Aparatos_C.loc['Especial2', 'CodigoN']    = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
         Aparatos_C.loc['Especial2', 'CodigoS']    = CodStandby
-        Aparatos_C.loc['Especial2', 'Standby']    = InfoDeco.filter(regex='standby_c_i')[0]
+        Aparatos_C.loc['Especial2', 'Standby']    = consumoEq(InfoDeco.filter(regex='standby_c_i')[0])
         Aparatos_C.loc['Especial2', 'Clave'] = 'X'
         if Aparatos_C.loc['Especial2', 'Standby'] != 0:
             Aparatos_C.loc['Especial2', 'Atacable'] = 'Si'
@@ -78,7 +77,7 @@ def especiales(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Especial3', 'Maniobras']  = InfoDeco.filter(regex='maniobras_c_i')[0]
         Aparatos_C.loc['Especial3', 'ManiobrasD'] = InfoDeco.filter(regex='maniobras_detalles_c_i')[0]
         Aparatos_C.loc['Especial3', 'CodigoN']    = InfoDeco.filter(regex='nominal_codigofindero_c_i')[0]
-        Aparatos_C.loc['Especial3', 'Standby']    = InfoDeco.filter(regex='standby_c_i')[0]
+        Aparatos_C.loc['Especial3', 'Standby']    = consumoEq(InfoDeco.filter(regex='standby_c_i')[0])
         Aparatos_C.loc['Especial3','CodigoS']     = CodStandby
         Aparatos_C.loc['Especial3', 'Clave'] = 'X'
         if Aparatos_C.loc['Especial3','Standby'] !=0:

@@ -6,7 +6,7 @@ from Refrigeradores  import refrigerador
 from Cluster         import clustertv
 from Especiales      import especiales
 #from Iluminacion     import iluminacion
-from Luminaria2     import iluminacion
+from Luminaria     import iluminacion
 from Bombas          import bombas
 from Lavanderia      import lavanderia
 from Cocina          import cocina

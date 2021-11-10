@@ -87,32 +87,20 @@ def caritaTV(consumo,clave):
     potencia = float(DAtosTV[0])
 
     uso=(kWh*1000)/(potencia*60)
-    if uso >= 5.0:
+    if uso >= 4.0:
         if kWh>50:
             Ca = 3
         else:
             Ca=2
-    if 2.5 <= uso < 5.0:
+    if 2 <= uso < 4.0:
         if kWh>=15:
             Ca = 2
         else:
             Ca=1
-    if uso < 2.5 or kWh<15:
+    if uso < 2 or kWh<15:
         Ca = 1
 
     return Ca
-
-def caritaBomba(consumo,clave):
-    kWh=70
-    pulgadas=40
-    if kWh>100:
-        Ca = 3
-    if 50<kWh<100:
-        Ca = 2
-    if 50 > kWh:
-        Ca = 1
-    return Ca
-
 
 def caritaRefri(consumo,Claves):
     kWh = float(consumo)
@@ -139,12 +127,10 @@ def caritaRefri(consumo,Claves):
 
     if kWh>150:
         Ca = 3
-    if 100<kWh<=150:
+    if 95<kWh<=150:
         Ca = 2
-    if 100 >= kWh:
+    if 95 >= kWh:
         Ca = 1
-    print(kWh)
-    print(Ca)
 
     return Ca
 
@@ -194,17 +180,6 @@ def caritaCava(consumo,Claves):
 
 
 def caritaPlancha(consumo,clave):
-    media = 1.94
-    desStd = 0.6
-    consumoTrans = consumo ** 0.3
-    percentil = norm.cdf(consumoTrans, loc=float(media), scale=float(desStd))
-    Percentil = round(percentil, 2)
-    # if Percentil>0.66:
-    #     Ca = 3
-    # if 0.33<Percentil<0.66:
-    #     Ca = 2
-    # if 0.33 > Percentil:
-    #     Ca = 1
     if consumo>33:
         Ca = 3
     if 19<=consumo<33:
@@ -216,7 +191,6 @@ def caritaPlancha(consumo,clave):
 
 
 def caritaAires(consumo,clave):
-    Ca=2
     if consumo>=500:
         Ca = 3
     if 200<consumo<300:
@@ -224,6 +198,35 @@ def caritaAires(consumo,clave):
     if  200 >= consumo:
         Ca = 1
     return Ca
+
+def caritaBombaP(consumo,clave):
+    if consumo>=90:
+        Ca = 3
+    if 35<consumo<90:
+        Ca = 2
+    if  35 >= consumo:
+        Ca = 1
+    return Ca
+
+def caritaBombaG(consumo,clave):
+    if consumo>=90:
+        Ca = 3
+    if 35<consumo<90:
+        Ca = 2
+    if  35 >= consumo:
+        Ca = 1
+    return Ca
+
+def caritaBombaR(consumo,clave):
+    if consumo>=90:
+        Ca = 3
+    if 35<consumo<90:
+        Ca = 2
+    if  35 >= consumo:
+        Ca = 1
+    return Ca
+
+
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
@@ -247,8 +250,12 @@ def definircarita(Equipo):
                 Carita =caritaLava(consumo,clave)
             elif equipoid == 'SC':
                 Carita =caritaSeca(consumo,clave)
-            elif equipoid == 'BG' or equipoid == 'BP':
-                Carita =caritaBomba(consumo,clave)
+            elif equipoid == 'BP':
+                Carita =caritaBombaP(consumo,clave)
+            elif equipoid == 'BR':
+                Carita =caritaBombaG(consumo,clave)
+            elif equipoid == 'BG':
+                Carita =caritaBombaG(consumo,clave)
             elif equipoid == 'PL':
                 Carita =caritaPlancha(consumo,clave)
             elif equipoid == 'MC':

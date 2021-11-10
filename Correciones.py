@@ -47,5 +47,7 @@ def Lugar(lugar):
         lugar = 'Sala de TV planta baja'
     if lugar == 'salatv_PA':
         lugar = 'Sala de TV planta alta'
+    if lugar == 'cuarto_servicio':
+        lugar = 'Cuarto de servicio'
 
     return lugar
