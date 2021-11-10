@@ -320,7 +320,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         else:
             #print ('No se encontró el tipo de foco buscado')
             #Por la falta de información se usa un estandar en consumo LED y no se pone link
-            TextoCompleto = TextoCompleto + '. NO SE ENCONTRO EL TIPO DE FOCO BUSCADO'
+            TextoCompleto = TextoCompleto #+ '. Foco tipo '+ENTY[0]+' con entrada '+ENTY[0]
             if Tecno == 'fluorescente':
                 TT = 40
             if Tecno == 'incandescente':
@@ -462,44 +462,133 @@ def Horaszona(nombre,horas):
     return mucho
 
 def UnirLuces(df):
-
-    distporc(df)
+    pd.set_option("display.max_rows", None, "display.max_columns", None)
     zonas=pd.unique(df['E'])
-
+    df1=df.copy
+    #df=distporc(df)
+    #df=distporc(df)
     for i in zonas:
+        dfxzona=df[df["E"] == i]
+    ## Separamos por PP
+        # Codigos=pd.unique(dfxzona['B'])
+        # for j in Codigos:
+        #     dfxCod=df[df["B"] == j]
+        #     #Sumamos los focos de las misma tecnología con los mismos PPS
+        #     df,dfxCod=sumarigualesPP(dfxCod,df,'halogena')
+        #     df,dfxCod=sumarigualesPP(dfxCod,df,'incandescente')
+        #     df,dfxCod=sumarigualesPP(dfxCod,df,'fluorescente')
+        #     df,dfxCod=sumarigualesPP(dfxCod,df,'led')
+        #     #Asigamos el porcentaje de cada tecnología
+        #     df=distporc1(dfxCod,df)
+        #     dfxCod=df[df["B"] == j]
 
         dfxzona=df[df["E"] == i]
-        sumaxzona=dfxzona["M"].sum()
-        df.loc[df["E"] == i,"M"]=sumaxzona
-        sumaxzona=dfxzona["L"].sum()
-        df.loc[df["E"] == i,"L"]=sumaxzona
-        df=sumariguales(dfxzona,df,'halogena')
-        df=sumariguales(dfxzona,df,'incandescente')
-        df=sumariguales(dfxzona,df,'fluorescente')
-        df=sumariguales(dfxzona,df,'led')
+        df,dfxzona=sumariguales(dfxzona,df,'halogena')
+        df,dfxzona=sumariguales(dfxzona,df,'incandescente')
+        df,dfxzona=sumariguales(dfxzona,df,'fluorescente')
+        df,dfxzona=sumariguales(dfxzona,df,'led')
+        #Asigamos el porcentaje de cada tecnología
+        #df=distporc1(dfxzona,df)
 
+        dfxzona=df[df["E"] == i]
+        sumazona=dfxzona['L'].sum()
+        sumaDzona=dfxzona['M'].sum()
 
+        for j in dfxzona['A'].index:
+            df.loc[j,"Y"] =sumaDzona
+            df.loc[j,"Z"] =sumazona
 
     return df
 
 def sumariguales(dfxzona,df,tipo):
     tipoxzona=dfxzona[dfxzona['A'].str.contains(tipo)]
+
     if len(tipoxzona) >1:
         dff=tipoxzona.A.str.split(expand=True)
         dff[0] = dff[0].astype(int)
-        suma=dff[0].sum()
-        nuevototal= str(suma) +' '+  'led'
+        sumaFocos=dff[0].sum()
+        sumaPor=tipoxzona['L'].sum()
+        sumakWh=tipoxzona['K'].sum()
+        sumaDin=tipoxzona['M'].sum()
+        nuevototal= str(sumaFocos) +' '+  str(tipo)
         primero=True
         for j in tipoxzona['A'].index:
             if primero==False:
                 df.drop(index=j,inplace=True)
+                dfxzona.drop(index=j,inplace=True)
             else:
                 df.loc[j,'A']=nuevototal
+                df.loc[j,'L']=sumaPor
+                df.loc[j,'K']=sumakWh
+                df.loc[j,'M']=sumaDin
+
+            primero=False
+
+
+
+    return df, dfxzona
+
+
+
+
+def sumarigualesPP(dfxzona,df,tipo):
+    tipoxzona=dfxzona[dfxzona['A'].str.contains(tipo)]
+
+    if len(tipoxzona) >1:
+        dff=tipoxzona.A.str.split(expand=True)
+        dff[0] = dff[0].astype(int)
+        sumaFocos=dff[0].sum()
+        nuevototal= str(sumaFocos) +' '+  str(tipo)
+        primero=True
+        for j in tipoxzona['A'].index:
+            if primero==False:
+                df.drop(index=j,inplace=True)
+                dfxzona.drop(index=j,inplace=True)
+            else:
+                df.loc[j,'A']=nuevototal
+                # df.loc[j,'L']=sumaPor
+                # df.loc[j,'K']=sumakWh
+                # df.loc[j,'M']=sumaDin
+
+            primero=False
+
+
+    return df, dfxzona
+
+
+
+
+
+
+def sumarigualesT(df,tipo):
+    tipoxzona=df[df['A'].str.contains(tipo)]
+    if len(tipoxzona) >1:
+        dff=tipoxzona.A.str.split(expand=True)
+        dff[0] = dff[0].astype(int)
+        sumaFocos=dff[0].sum()
+        # sumaPor=tipoxzona['L'].sum()
+        # sumakWh=tipoxzona['K'].sum()
+        # sumaDin=tipoxzona['M'].sum()
+        nuevototal= str(sumaFocos) +' '+  str(tipo)
+        primero=True
+        for j in tipoxzona['A'].index:
+            if primero==False:
+                df.drop(index=j,inplace=True)
+                #dfxzona.drop(index=j,inplace=True)
+            else:
+                df.loc[j,'A']=nuevototal
+                # df.loc[j,'L']=sumaPor
+                # df.loc[j,'K']=sumakWh
+                # df.loc[j,'M']=sumaDin
             primero=False
     return df
 
+
+
+
 def distporc(df):
     Codigos=pd.unique(df['B'])
+    ### Aquí se suman
     for i in Codigos:
         dfxCod=df[df["B"] == i]
         if len(dfxCod) >1:
@@ -508,8 +597,14 @@ def distporc(df):
             NH=0
             NL=0
             Por=0
-            for i in dfxCod.index:
-                dff=dfxCod.loc[i,'A'].split()
+            dfxCod=sumarigualesT(dfxCod,'halogena')
+            dfxCod=sumarigualesT(dfxCod,'incandescente')
+            dfxCod=sumarigualesT(dfxCod,'fluorescente')
+            dfxCod=sumarigualesT(dfxCod,'led')
+
+
+            for j in dfxCod.index:
+                dff=dfxCod.loc[j,'A'].split()
                 if 'inc' in dff[1]:
                     NI=int(dff[0])
                 if 'led' in dff[1]:
@@ -518,7 +613,9 @@ def distporc(df):
                     NH=int(dff[0])
                 if 'fluo' in dff[1]:
                     NF=int(dff[0])
-                Por=float(dfxCod.loc[i,'L'])
+                Por=float(dfxCod.loc[j,'L'])
+                kWh=float(dfxCod.loc[j,'K'])
+                Din=float(dfxCod.loc[j,'M'])
             SumL=0
             if NL>0:
                 SumL= SumL+(NL)
@@ -531,34 +628,114 @@ def distporc(df):
 
             if NL>0:
                 L=NL/SumL
-                print('Porcentaje a LED')
+                KL=(kWh*L)
+                ML=(Din*L)
                 L=(L*Por)
-                print(L)
+
             if NH>0:
                 H=7*NH/SumL
-                print('Porcentaje a Halogena')
+                KH=(kWh*H)
+                MH=(Din*H)
                 H=(H*Por)
-                print(H)
             if NI>0:
                 I=8*NI/SumL
-                print('Porcentaje a Incandescente')
+                KI=(kWh*I)
+                MI=(Din*I)
                 I=(I*Por)
-                print(I)
             if NF>0:
                 F=4*NF/SumL
-                print('Porcentaje a Fluorescente')
+                KF=(kWh*F)
+                MF=(Din*F)
                 F=(F*Por)
-                print(F)
 
-            for i in dfxCod.index:
-                dff=dfxCod.loc[i,'A'].split()
+            for j in dfxCod.index:
+                dff=dfxCod.loc[j,'A'].split()
                 if 'inc' in dff[1]:
-                    df.loc[i,'L']=I
+                    df.loc[j,'L']=I
+                    df.loc[j,'K']=KI
+                    df.loc[j,'M']=MI
                 if 'led' in dff[1]:
-                    df.loc[i,'L']=L
+                    df.loc[j,'L']=L
+                    df.loc[j,'K']=KL
+                    df.loc[j,'M']=ML
                 if 'hal' in dff[1]:
-                    df.loc[i,'L']=H
-                if 'fluo' in dff[1]:
-                    df.loc[i,'L']=F
+                    df.loc[j,'L']=H
+                    df.loc[j,'K']=KH
+                    df.loc[j,'M']=MH
+                if 'fl' in dff[1]:
+                    df.loc[j,'L']=F
+                    df.loc[j,'K']=KF
+                    df.loc[j,'M']=MF
+    return(df)
 
-    print(df['L'])
+def distporc1(dfx,df):
+    if len(dfx) >1:
+        NI=0
+        NF=0
+        NH=0
+        NL=0
+        Por=0
+        for i in dfx.index:
+            dff=dfx.loc[i,'A'].split()
+            if 'inc' in dff[1]:
+                NI=int(dff[0])
+            if 'led' in dff[1]:
+                NL=int(dff[0])
+            if 'hal' in dff[1]:
+                NH=int(dff[0])
+            if 'fluo' in dff[1]:
+                NF=int(dff[0])
+            Por=float(dfx.loc[i,'L'])
+            kWh=float(dfx.loc[i,'K'])
+            Din=float(dfx.loc[i,'M'])
+        SumL=0
+        if NL>0:
+            SumL= SumL+(NL)
+        if NH>0:
+            SumL= SumL+((NH)*7)
+        if NI>0:
+            SumL= SumL+((NI)*8)
+        if NF>0:
+            SumL= SumL+((NF)*4)
+
+        if NL>0:
+            L=NL/SumL
+            KL=(kWh*L)
+            ML=(Din*L)
+            L=(L*Por)
+        if NH>0:
+            H=7*NH/SumL
+            KH=(kWh*H)
+            MH=(Din*H)
+            H=(H*Por)
+        if NI>0:
+            I=8*NI/SumL
+            KI=(kWh*I)
+            MI=(Din*I)
+            I=(I*Por)
+        if NF>0:
+            F=4*NF/SumL
+            KF=(kWh*F)
+            MF=(Din*F)
+            F=(F*Por)
+
+
+        for i in dfx.index:
+            dff=dfx.loc[i,'A'].split()
+            if 'inc' in dff[1]:
+                df.loc[i,'L']=I
+                df.loc[i,'K']=KI
+                df.loc[i,'M']=MI
+            if 'led' in dff[1]:
+                df.loc[i,'L']=L
+                df.loc[i,'K']=KL
+                df.loc[i,'M']=ML
+            if 'hal' in dff[1]:
+                df.loc[i,'L']=H
+                df.loc[i,'K']=KH
+                df.loc[i,'M']=MH
+            if 'fl' in dff[1]:
+                df.loc[i,'L']=F
+                df.loc[i,'K']=KF
+                df.loc[i,'M']=MF
+    return(df)

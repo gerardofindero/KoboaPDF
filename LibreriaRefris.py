@@ -13,11 +13,12 @@ def libreria2():
                                  f"Libreria_Refrigeradores.xlsx",sheet_name='Libreria')
         Libreria2 = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/"
                                  f"Libreria_Refrigeradores.xlsx",sheet_name='LibreriaF')
-    Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
+    #Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
     #Dicc2 = ['A', 'B', 'C', 'D', 'F','E'] # Define los nombres de las columnas en Excel.
-    Libreria.columns = Dicc
+    #Libreria.columns = Dicc
     #Libreria2.columns = Dicc2
     Libreria2=Libreria2.set_index('Codigo')
+    Libreria=Libreria.set_index('Codigo')
     return Libreria, Libreria2
 
 
@@ -35,7 +36,8 @@ def ClavesRefri(EquiposRefri):
         NominalComp = int(EquiposR['Pot Compresor'][0])
         TempComp = float(EquiposR['Temp Compresor'][0])
         Volumen =int(EquiposR['Volumen'][0])
-        Codigo = 'RF,'+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)
+        Codigo=EquiposR['Clave'][0]
+        Codigo = Codigo+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)
 
         ## Compresor Nominal
         if NominalComp > 120:
@@ -88,7 +90,8 @@ def ClavesRefri(EquiposRefri):
         #Empaques
         if EquiposR['Empaques'][0] != 'si':
             Codigo += ",EB"
-
+        else:
+            Codigo += ",EM"
 
         #Temperatura interior
         if -10 > EquiposR['Temp Conge'][0] >-14:
@@ -112,11 +115,10 @@ def Clasifica(Claves):
     return ClavesSep[0]
 
 
-def LeeClavesR(Claves):
+def LeeClavesR(Claves,notas):
     Texto=''
-    TextoF=''
+    TextoF=notas
     lib,lib2 = libreria2()
-
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
         Datos= ClavesSep[1].split("/")
@@ -129,80 +131,91 @@ def LeeClavesR(Claves):
 #### Dentro del cuadro
         # Empaques bien
         if 'EB' in Claves:
-            Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[12,'E']
+            #Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[12,'E']
             TextoF= TextoF+' '+lib2.loc['REFF06','Texto']
 
         # Empaques mal
-        else:
-            Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[11,'E']
+        if 'EM' in Claves:
+            Texto= Texto+' '+lib.loc['REF13','E']
             TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
         # Temperatura congelador mal
         if 'TCM' in Claves:
-            Texto= Texto+' '+lib.loc[13,'E']+' '+lib.loc[14,'E']
+            Texto= Texto+' '+lib.loc['REF14','E']+' '+lib.loc['REF15','E']+' '+lib.loc['REF17','E']
             Texto = Texto.replace('[EQQ]', 'congelador')
             #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
         #Temperatura congelador bien
-        if 'TCB' in Claves:
-            Texto = Texto + ' ' + lib.loc[17, 'E']
-            #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
+        # if 'TCB' in Claves:
+        #     #Texto = Texto + ' ' + lib.loc[17, 'E']
+        #     TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
         #Temperatura refrigerador mal
         if 'TRM' in Claves:
-            Texto= Texto+' '+lib.loc[13,'E']+' '+lib.loc[15,'E']
-            Texto = Texto.replace('[EQQ]', 'refrigerador')
-            #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
+            Texto= Texto+' '+lib.loc['REF14','E']+' '+lib.loc['REF16','E']+' '+lib.loc['REF18','E']
+            #Texto = Texto.replace('[EQQ]', 'refrigerador')
+            TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
 
         #Temperatura refrigerador bien
-        if 'TRB' in Claves:
-            Texto = Texto + ' ' + lib.loc[18, 'E']
-            #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-
+        # if 'TRB' in Claves:
+        #     #Texto = Texto + ' ' + lib.loc[18, 'E']
+        #     TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
+###
         ## Compresor Nominal
         if 'CN' in Claves:
-            Texto= Texto+' '+lib.loc[6,'E']
+            Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF02','Texto']
             Texto= Texto.replace(' [Y]',str(NomCom))
-            #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF04','Texto']
+            if 'TM' in Claves:
+                Texto= Texto+' y una'
 
         ## Temp Compresor
-        if 'TM' in Claves:
-            Texto = Texto + ' ' + lib.loc[1, 'E']
-            Texto = Texto.replace('[TC]', str(TempCom))
-            TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
-            TextoF = TextoF.replace('[TC]', str(TempCom))
-        else:
-            TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
-            TextoF = TextoF.replace('[TC]', str(TempCom))
+        if float(TempCom) > 10:
+            if 'TM' in Claves:
+                Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF01','Texto']
+                Texto = Texto.replace('[TC]', str(TempCom))
+                TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
+                TextoF = TextoF.replace('[TC]', str(TempCom))
+            else:
+                TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
+                TextoF = TextoF.replace('[TC]', str(TempCom))
 
+        if 'TM' in Claves or 'CN' in Claves:
+            Texto= Texto+' '+ lib.loc['REF03','Texto']
+
+###
+        if 'RU' in Claves or 'VI' in Claves:
+            Texto= Texto+' '+ lib.loc['REF04','Texto']
         ## Ruido
         if 'RU' in Claves:
-            Texto = Texto + ' ' + lib.loc[2, 'E']
+            Texto = Texto + ' ' + lib.loc['REF05', 'Texto']
             TextoF= TextoF+' '+lib2.loc['REFF12','Texto']
+        ## Viejo
+        if 'VI' in Claves:
+            Texto = Texto + ' ' + lib.loc['REF06', 'Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF13','Texto']
+        if 'RU' in Claves or 'VI' in Claves:
+            Texto= Texto+' '+ lib.loc['REF07','Texto']
 
         ## VEntilador
         if 'VE' in Claves:
-            Texto = Texto + ' ' + lib.loc[3, 'E']
-            #TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
+            Texto = Texto + ' ' + lib.loc['REF09', 'Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
 
         ## Sucio
         if 'SU' in Claves:
-            Texto = Texto + ' ' + lib.loc[4, 'E']
+            Texto = Texto + ' ' + lib.loc['REF08', 'Texto']
             TextoF= TextoF+' '+lib2.loc['REFF14','Texto']
 
-        ## Viejo
-        if 'VI' in Claves:
-            Texto = Texto + ' ' + lib.loc[5, 'E']
-            TextoF= TextoF+' '+lib2.loc['REFF13','Texto']
 
         ## Ventilador Encerrado
         if 'VN' in Claves:
-            Texto = Texto + ' ' + lib.loc[9, 'E']
+            Texto = Texto + ' ' + lib.loc['REF12', 'Texto']
             #TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
 
-        if 'PR' in Claves:
+        #if 'PR' in Claves:
             #Texto= Texto+' '+lib.loc[6,'E']
-            TextoF= TextoF+' '+lib2.loc['REFF01','Texto']
+            #TextoF= TextoF+' '+lib2.loc['REFF01','Texto']
         if 'PT' in Claves:
             #Texto= Texto+' '+lib.loc[6,'E']
             TextoF= TextoF+' '+lib2.loc['REFF02','Texto']
@@ -221,11 +234,13 @@ def LeeClavesR(Claves):
 
 
 
+        Texto = Texto.replace('[P]', NomCom)
+        TextoF = TextoF.replace('[P]', NomCom)
+        TextoF = TextoF.replace('[R]', 'Refrigerador')
 
-
-        Texto = Texto.replace('[/n]', '<br />')
+        Texto = Texto.replace('[/n]', '<br /><br />')
         Texto = Texto.replace('[...]', ' ')
-        TextoF = TextoF.replace('[/n]', '<br />')
+        TextoF = TextoF.replace('[/n]', '<br /><br />')
         TextoF = TextoF.replace('[...]', ' ')
 
 

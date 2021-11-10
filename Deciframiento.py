@@ -497,6 +497,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Fugas.loc[i, 'Claves'] = num
 
 
-    #ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
+    ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
 
 

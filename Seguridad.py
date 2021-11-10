@@ -17,6 +17,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
 
     indx = 0
     for i in Equipos:
+        print(i)
         if i == 1:
             Circuito = Equipos.filter(regex='seguridad')
             #Zona = Circuito.filter(regex='zona')[0]
@@ -56,7 +57,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['CCTV Respaldo', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
 
 
-            if indx == 2:
+            if i == 2:
                 InfoDeco = Circuito.filter(regex='cerca')
                 # Aparatos_C.loc['Laptop', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Cerca Electrica', 'Nominal'] = InfoDeco.filter(regex='cerca')[0]
@@ -66,7 +67,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Cerca Electrica', 'Zona'] = 'Exterior'
                 Aparatos_C.loc['Cerca Electrica', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
 
-            if indx == 3:
+            if i == 3:
 
                 InfoDeco = Circuito.filter(regex='electroiman')
                 Aparatos_C.loc['Electroiman', 'Standby'] = InfoDeco.filter(regex='standby')[0]
@@ -76,7 +77,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Electroiman', 'Zona'] = 'Exterior'
                 Aparatos_C.loc['Electroiman', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
 
-            if indx == 4:
+            if i == 4:
                 InfoDeco = Circuito.filter(regex='sensor')
                 Aparatos_C.loc['Sensor Puertas', 'Standby'] = InfoDeco.filter(regex='standby')[0]
                 Aparatos_C.loc['Sensor Puertas', 'Notas'] = InfoDeco.filter(regex='notas')[0]
@@ -85,7 +86,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Sensor Puertas', 'Zona'] = 'Exterior'
                 Aparatos_C.loc['Sensor Puertas', 'CodigoS'] = InfoDeco.filter(regex='codigofindero')[0]
 
-            if indx == 5:
+            if i == 5:
                 print("Regulador")
                 InfoDeco = Circuito.filter(regex='regulador')
                 Aparatos_C.loc['CCTV Regulador', 'Standby'] = consumoEq(InfoDeco.filter(regex='grabador_standby_c_i')[0])
@@ -96,7 +97,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['CCTV Regulador', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['CCTV Regulador', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
 
-            if indx == 6:
+            if i == 6:
                 print("Nobreak")
                 InfoDeco = Circuito.filter(regex='nobreak')
                 Aparatos_C.loc['CCTV Nobreak', 'Standby'] = consumoEq(InfoDeco.filter(regex='respaldo_standby_c_i')[0])
@@ -107,7 +108,7 @@ def seguridad(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['CCTV Nobreak', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['CCTV Nobreak', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero')[0]
 
-            if indx == 7:
+            if i == 7:
                 InfoDeco = Circuito.filter(regex='camara')
 
                 Aparatos_C.loc['Cerca Electrica', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]

@@ -87,6 +87,31 @@ def iluminacion (Excel,Nocircuito):
             Aparatos_C.loc['Incandecentes E1', 'Adecuaciones'] = InfoLum.filter(regex='adecuaciones')[0]
             Aparatos_C.loc['Incandecentes E1', 'Apagador']     = InfoLum.filter(regex='apagador')[0]
 
+            Aparatos_C.loc['Incandecentes E1', 'Cantidad1']      = InfoLum.filter(regex='cantidad1')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Funcion1']      = InfoLum.filter(regex='funcion1')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Adicional1']    = InfoLum.filter(regex='adicional1')[0]
+            Aparatos_C.loc['Incandecentes E1', 'TipoyTam1']     = InfoLum.filter(regex='tipoytam1')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Entrada1']      = InfoLum.filter(regex='entrada1')[0]
+
+            Aparatos_C.loc['Incandecentes E1', 'Adicional2']    = InfoLum.filter(regex='adicional2')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Funcion2']      = InfoLum.filter(regex='funcion2')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Cantidad2']      = InfoLum.filter(regex='cantidad2')[0]
+            Aparatos_C.loc['Incandecentes E1', 'TipoyTam2']     = InfoLum.filter(regex='tipoytam2')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Entrada2']      = InfoLum.filter(regex='entrada2')[0]
+
+            Aparatos_C.loc['Incandecentes E1', 'Adicional3']    = InfoLum.filter(regex='adicional3')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Funcion3']      = InfoLum.filter(regex='funcion3')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Cantidad3']      = InfoLum.filter(regex='cantidad3')[0]
+            Aparatos_C.loc['Incandecentes E1', 'TipoyTam3']     = InfoLum.filter(regex='tipoytam3')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Entrada3']      = InfoLum.filter(regex='entrada3')[0]
+
+            Aparatos_C.loc['Incandecentes E1', 'Funcion4']      = InfoLum.filter(regex='funcion4')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Cantidad4']      = InfoLum.filter(regex='cantidad4')[0]
+            Aparatos_C.loc['Incandecentes E1', 'TipoyTam4']     = InfoLum.filter(regex='tipoytam4')[0]
+            Aparatos_C.loc['Incandecentes E1', 'Entrada4']      = InfoLum.filter(regex='entrada4')[0]
+
+
+
 
         if i == 'hal_geno':
             InfoLum = InfoEquipos.filter(regex='halogenos')

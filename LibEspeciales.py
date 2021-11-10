@@ -1,11 +1,21 @@
 import pandas as pd
+from unidecode import unidecode
 
-def textodeconsejos(equipo):
+def textodeconsejos(equipo,equipo1):
+
     texto=''
     refris=['refrigerador','congelador','bar','hielos']
     oficina=['impresora','fax']
     conteo =1
     checa =  any(item in equipo for item in oficina)
+
+    for i in range(len(equipo)):
+        equipo[i]=unidecode(equipo[i])
+        print(equipo[i])
+    for i in range(len(equipo1)):
+        equipo1[i]=unidecode(equipo1[i])
+    print(equipo1[i])
+
     if 'sensor' in equipo:
         texto = texto+' ' +  'Sigue usando tu sensor de movimiento para seguir ahorrando dinero. <br />'
     elif checa is True:
@@ -21,7 +31,9 @@ def textodeconsejos(equipo):
         if 'consola' in equipo:
             texto = texto+' ' + 'Lo mejor es mantener completamente apagada la consola, muchas veces se queda en modo espera. <br />'
 
-        if 'bifásico' or 'bifasico' in equipo:
+        if 'bifasico' in equipo:
+            texto = texto+' ' + 'Para recudir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br />'
+        if 'bifasico' in equipo1:
             texto = texto+' ' + 'Para recudir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br />'
 
         if 'regulador' in equipo:
