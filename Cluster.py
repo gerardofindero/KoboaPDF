@@ -109,6 +109,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Modem', 'CodigoS'] = CodStandby
                 if 'modem' in Nomedidos:
                     print("modem no desconectado")
+                    Aparatos_C.loc['Modem', 'Standby'] = 0.001
                 else:
                     Aparatos_C.loc['Modem', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -126,6 +127,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Repetidor', 'Lugar'] = Zona
                 if 'repetidor' in Nomedidos:
                     print("repetidor no desconectado")
+                    Aparatos_C.loc['Repetidor', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Repetidor', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -142,6 +144,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
 
                 if 'consola1' in Nomedidos:
                     print("consola1 no desconectado")
+                    Aparatos_C.loc['Consola1', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Consola1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -156,6 +159,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Antena', 'Lugar'] = Zona
                 if 'antena' in Nomedidos:
                     print("antena no desconectado")
+                    Aparatos_C.loc['Antena', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Antena', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
             # Sonido
@@ -173,6 +177,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
 
                 if 'sonido' in Nomedidos:
                     print("sonido no desconectado")
+                    Aparatos_C.loc['Sonido', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Sonido', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
             ##Bocinas
@@ -187,6 +192,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Bocinas', 'Lugar'] = Zona
                 if 'bocina' in Nomedidos:
                     print("bocinas no desconectado")
+                    Aparatos_C.loc['Bocinas', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Bocinas', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -206,6 +212,8 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Blueray', 'Lugar'] = Zona
                 if 'bluray' in Nomedidos:
                     print("blueray no desconectado")
+                    Aparatos_C.loc['Bluray', 'Standby'] =0.001
+
                 else:
 
                     Aparatos_C.loc['Bluray', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
@@ -265,6 +273,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Decodificador2', 'Lugar'] = Zona
                 if 'decodificador2' in Nomedidos:
                     print("decodificador2 no desconectado")
+                    Aparatos_C.loc['Decodificador2', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Decodificador2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -298,6 +307,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Consola2', 'Lugar'] = Zona
                 if 'consola2' in Nomedidos:
                     print("consola2 no desconectado")
+                    Aparatos_C.loc['Consola2', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Consola2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -316,6 +326,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Equipoextra', 'CodigoS'] = CodStandby
                 if 'eqextra' in Nomedidos:
                     print("eqextra no desconectado no desconectado")
+                    Aparatos_C.loc['Equipoextra', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Equipoextra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -333,6 +344,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Equipoextra2', 'CodigoS'] = CodStandby
                 if 'eqextra2' in Nomedidos:
                     print("eqextra no desconectado no desconectado")
+                    Aparatos_C.loc['Equipoextra2', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Equipoextra2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
@@ -350,6 +362,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Equipoextra3', 'CodigoS'] = CodStandby
                 if 'eqextra3' in Nomedidos:
                     print("eqextra no desconectado no desconectado")
+                    Aparatos_C.loc['Equipoextra3', 'Standby'] =0.001
                 else:
                     Aparatos_C.loc['Equipoextra3', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
