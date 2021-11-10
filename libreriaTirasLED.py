@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import math as m
 def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr,TextoCompleto):
     """
 
@@ -15,7 +16,7 @@ def recoTirasLed(longitud, caracteristicas, DAC, wt, kwh, dscr,TextoCompleto):
     ll=libreriaTirasLED()
     ll.setData(longitud,caracteristicas,DAC,wt,kwh,dscr)
     txt = ll.buildText()
-    print(txt)
+    print('aqui',txt)
     return txt
 
 
@@ -90,7 +91,6 @@ class libreriaTirasLED:
 
     def setData(self, longitud ,caracteristicas, DAC, wt, kwh, dscr):
         carac      = caracteristicas.split(',')
-        print(longitud,wt,kwh)
         if 'fria' in carac:
             print('fria')
             filtro = self.dbTiras['Color Tira LED']=='Frio'
@@ -130,8 +130,7 @@ class libreriaTirasLED:
 
         opcTir.loc[cortes, 'lonTiras'] = \
             self.lon / opcTir['Longitud Tira LED [cm]']
-
-        opcTir['nTiras'] = opcTir.lonTiras.apply(np.ceil)
+        opcTir['nTiras'] = opcTir['lonTiras'].apply(m.ceil)
 
         opcTir.loc[:, 'kwhAhorroBimestral'] =\
             (self.wt - (opcTir.loc[:, 'lonTiras'] * opcTir.loc[:, 'Potencia Tira LED [W]'])) * 24 * 60  * (self.hrsUso / 24 / 7) / 1000
@@ -160,6 +159,7 @@ class libreriaTirasLED:
 
             #columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
             self.sustitutos = self.sustitutos.append(df, ignore_index=True)
+
         else:
             df = pd.DataFrame({'tipo': (['Tira LED'] * 5),
                                'cantidad': opcTir['nTiras'][:5],
@@ -189,7 +189,7 @@ class libreriaTirasLED:
             else:
                 txt = txt+ ' ' + self.libTxt.loc['LUM30','Texto']
                 txt = txt+ ' ' + self.libTxt.loc['LUM31','Texto']
-
+            print(self.sustitutos)
             if len(self.sustitutos)==1:
                 recomendacion = 'Te dejamos esta opción de reemplazo:\n'
                 recomendacion = recomendacion + self.ligarTextolink(
