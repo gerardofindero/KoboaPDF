@@ -238,8 +238,6 @@ def computo(Excel,Nocircuito, NomCircuito):
                     print("Router no desconectado")
                 else:
                     Aparatos_C.loc['HDD', 'Standby'] = consumoEq(stnby)
-                    Aparatos_C.loc['HDD', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
-
                     Aparatos_C.loc['HDD', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                     Aparatos_C.loc['HDD', 'CodigoS'] = stnbyCod
 

@@ -785,7 +785,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas)
         if not Notas=='X':
             notas=Notas
-
+        print(notas)
         if len(notas)<700:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
         else:
@@ -799,13 +799,14 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
 
 # Automatizacion  ######################
+
         if len(Consejos)<700:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
         else:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
-
+        print(Consejos)
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)

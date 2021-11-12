@@ -103,7 +103,8 @@ class libreriaSensores:
             lam  = self.stats.at[idx, "lambdas"]
             perU = self.stats.at[idx,"percentil umbral"]
             #hrsUso = self.kwh*1000/self.w/60
-            hrsUso = self.hrsUso/7
+            #hrsUso = self.hrsUso/7
+            hrsUso=5
             hrsUsoT = ((hrsUso**lam)-1)/lam
             percentil= norm.cdf(hrsUsoT,mean,std)
             if percentil >= perU:

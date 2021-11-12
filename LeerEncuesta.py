@@ -89,12 +89,14 @@ def Nombre_Cliente():
     NCliente = 'Cliente Prueba'
     #NCliente = 'Paulina LLamas'
     #NCliente = 'Gerardo Trujillo'
-    #NCliente = 'Alejandro Septien'
-    #NCliente = 'Paulina Torrado'
+    #NCliente = 'Alvaro Cepeda'
+    #NCliente = 'Paula Flores'
     #NCliente = 'Monica Cardenas'
-    NCliente = 'Felipe Diaz'
-    #NCliente= 'Renata Chain'
-    #NCliente ='Hector Cabello'
+    #NCliente = 'Felipe Diaz'
+    #NCliente=  'Renata Chain'
+    #NCliente = 'Hector Cabello'
+    #NCliente = 'Felipe Mendez'
+    #NCliente = 'Alexa Lewinson'
     return NCliente
 
 ###################### MAIN  #####################################
