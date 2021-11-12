@@ -90,7 +90,11 @@ class libreriaTirasLED:
 
     def setData(self, longitud ,caracteristicas, DAC, wt, kwh, dscr):
         carac      = caracteristicas.split(',')
+<<<<<<< HEAD
         print(carac)
+=======
+        print(longitud,wt,kwh)
+>>>>>>> cbdc5433feac55abc1502c45646a1eb4d2c71c36
         if 'fria' in carac:
             print('fria')
             filtro = self.dbTiras['Color Tira LED']=='Frio'
@@ -206,5 +210,5 @@ class libreriaTirasLED:
         else:
             txt = txt + '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
 
-        txt= txt.replace('\n','<br />')
+        txt= txt.replace('\n','')
         return txt

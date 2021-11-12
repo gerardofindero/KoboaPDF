@@ -178,9 +178,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
 
     TextoSolar=''
-    if 'NOC' in ENTY:
-        TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
-        Solar=True
+    # if 'NOC' in texto:
+    #     TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
+    #     Solar=True
     TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC)
     if TextoSensor!='X':
         Sensor=True

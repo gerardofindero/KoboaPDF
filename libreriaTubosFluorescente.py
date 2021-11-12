@@ -375,21 +375,21 @@ class libreriaTubosFluorescentes:
         if len(reco)>0 :
             if (reco['roi']<=3).any():
                 reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
-                txt = '\n'+self.libTxt.loc['LUM18','Texto']
+                txt = self.libTxt.loc['LUM18','Texto']
             elif (self.sustitutos['roi']<3).any() and self.detr:
-                txt = '\n'+self.libTxt.loc['LUM19', 'Texto']
+                txt = self.libTxt.loc['LUM19', 'Texto']
             elif (self.sustitutos['roi']<3).any() and (not self.detr):
-                txt = '\n'+self.libTxt.loc['LUM20', 'Texto']
+                txt = self.libTxt.loc['LUM20', 'Texto']
 
             if len(reco)==1:
-                recomendacion='Te dejamos esta opción de reemplazo:\n'
+                recomendacion='Te dejamos esta opción de reemplazo:'
                 recomendacion = recomendacion + self.ligarTextolink(
                     reco.at[0,'tipo'],reco.at[0,'link']) + ' c/u $' + str(reco.at[0,'costo'])
                 txt = txt.replace('[recomendacion]',recomendacion)
             else:
-                recomendacion = 'Te dejamos estas opciones de reemplazo:\n'
+                recomendacion = 'Te dejamos estas opciones de reemplazo:'
                 recomendacion = recomendacion + self.ligarTextolink(
-                    reco.at[0, 'tipo'] + ' opción 1' ,reco.at[0, 'link']) + ' c/u $' + str(reco.at[0, 'costo'])+'\n'
+                    reco.at[0, 'tipo'] + ' opción 1' ,reco.at[0, 'link']) + ' c/u $' + str(reco.at[0, 'costo'])
                 recomendacion = recomendacion + self.ligarTextolink(
                     reco.at[1, 'tipo'] + ' opción 2' ,reco.at[1, 'link']) + ' c/u $' + str(reco.at[1, 'costo'])
                 txt = txt.replace('[recomendacion]',recomendacion)
@@ -408,7 +408,7 @@ class libreriaTubosFluorescentes:
         #     txt = txt + self.libTxt.loc['LUM16','Texto'].replace('[horasUso]',str(int(self.hrsUso)))
         if self.detr:
             # LUM17
-            txt = txt +'\n' +self.libTxt.loc['LUM17','Texto']
+            txt = txt +self.libTxt.loc['LUM17','Texto']
         if self.caji:
             # cajillo  True
             txt = txt + self.recRem(['RTL'])
@@ -433,7 +433,7 @@ class libreriaTubosFluorescentes:
                         txt = txt + self.recRem(['RTbL'])
                     elif self.port == 'sin':
                         txt = txt + self.recRem(['RTbL'])
-        txt= txt.replace('\n','<br />')
+        txt= txt.replace('\n','')
 
         return txt
 
