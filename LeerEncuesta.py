@@ -94,7 +94,11 @@ def Nombre_Cliente():
     #NCliente = 'Monica Cardenas'
     #NCliente = 'Felipe Diaz'
     #NCliente=  'Renata Chain'
+<<<<<<< HEAD
     #NCliente = 'Hector Cabello'
+=======
+    NCliente = 'Laura Zacharias'
+>>>>>>> cbdc5433feac55abc1502c45646a1eb4d2c71c36
     #NCliente = 'Felipe Mendez'
     #NCliente = 'Alexa Lewinson'
     return NCliente
