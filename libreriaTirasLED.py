@@ -206,5 +206,5 @@ class libreriaTirasLED:
         else:
             txt = txt + '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
 
-        txt= txt.replace('\n','<br />')
+        txt= txt.replace('\n','')
         return txt
