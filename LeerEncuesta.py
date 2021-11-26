@@ -87,20 +87,7 @@ def Crear_Kobo(NCliente):
 def Nombre_Cliente():
 
     NCliente = 'Cliente Prueba'
-    #NCliente = 'Paulina LLamas'
-    #NCliente = 'Gerardo Trujillo'
-    #NCliente = 'Alvaro Cepeda'
-    #NCliente = 'Paula Flores'
-    #NCliente = 'Monica Cardenas'
-    #NCliente = 'Felipe Diaz'
-    #NCliente=  'Renata Chain'
-<<<<<<< HEAD
-    #NCliente = 'Hector Cabello'
-=======
-    NCliente = 'Laura Zacharias'
->>>>>>> cbdc5433feac55abc1502c45646a1eb4d2c71c36
-    #NCliente = 'Felipe Mendez'
-    #NCliente = 'Alexa Lewinson'
+
     return NCliente
 
 ###################### MAIN  #####################################
@@ -110,7 +97,7 @@ if __name__ == '__main__':
 
 
 
-    Opcion='4'
+    Opcion='2'
 
 
     if Opcion == '1':
