@@ -50,7 +50,9 @@ def leerConsumoMicroondas(consumo, hrsUso=None):
     elif 0.55<=percentil<0.66:
         texto = texto +lib.loc[7, col]
 
-    elif percentil>=0.66:
+    elif 0.66<=percentil<0.97:
         texto = texto +lib.loc[8, col]
+    elif percentil>=0.97:
+        texto = texto +lib.loc[9, col]
     texto = texto.replace('[1-perc_cons]',str(int((1-percentil)*100))).replace('[perc_cons]',str(int(percentil*100)))
     return texto
