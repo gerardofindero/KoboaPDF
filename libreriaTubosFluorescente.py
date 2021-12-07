@@ -57,6 +57,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
                 if 'largo_' in j:
                     largoT=j.replace('largo_','')
                     lntb=j
+                    print(j)
                 if j in dispo:
                     disp=j
 
@@ -362,42 +363,44 @@ class libreriaTubosFluorescentes:
             self.lumT = self.w_t * self.lmXwt8
         elif (self.tipo == 't5') or (self.tipo=='t2'):
             self.lumT = self.w_t * self.lmXwt5
-        self.tubL = float(self.dbTubos.loc[self.filtro, 'Longitud'].iat[0].replace('largo_',''))
+        try:
+            self.tubL = float(self.dbTubos.loc[self.filtro, 'Longitud'].iat[0].replace('largo_',''))
 
-        # if 'RTbL' in tipRem:
-        self.RTbL()
-        if 'RTL'  in tipRem:
-           self.RTL()
-        if 'RPL'  in tipRem:
-           self.RPL()
-        reco=self.sustitutos.sort_values(by=['roi']).reset_index(drop=True).copy().iloc[:2]
-        txt=''
-        if len(reco)>0 :
-            if (reco['roi']<=3).any():
-                reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
-                txt = self.libTxt.loc['LUM18','Texto']
-            elif (self.sustitutos['roi']<3).any() and self.detr:
-                txt = self.libTxt.loc['LUM19', 'Texto']
-            elif (self.sustitutos['roi']<3).any() and (not self.detr):
-                txt = self.libTxt.loc['LUM20', 'Texto']
+            # if 'RTbL' in tipRem:
+            self.RTbL()
+            if 'RTL'  in tipRem:
+               self.RTL()
+            if 'RPL'  in tipRem:
+               self.RPL()
+            reco=self.sustitutos.sort_values(by=['roi']).reset_index(drop=True).copy().iloc[:2]
+            txt=''
+            if len(reco)>0 :
+                if (reco['roi']<=3).any():
+                    reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
+                    txt = self.libTxt.loc['LUM18','Texto']
+                elif (self.sustitutos['roi']<3).any() and self.detr:
+                    txt = self.libTxt.loc['LUM19', 'Texto']
+                elif (self.sustitutos['roi']<3).any() and (not self.detr):
+                    txt = self.libTxt.loc['LUM20', 'Texto']
 
-            if len(reco)==1:
-                recomendacion='Te dejamos esta opción de reemplazo:'
-                recomendacion = recomendacion + self.ligarTextolink(
-                    reco.at[0,'tipo'],reco.at[0,'link']) + ' c/u $' + str(reco.at[0,'costo'])
-                txt = txt.replace('[recomendacion]',recomendacion)
+                if len(reco)==1:
+                    recomendacion='Te dejamos esta opción de reemplazo:'
+                    recomendacion = recomendacion + self.ligarTextolink(
+                        reco.at[0,'tipo'],reco.at[0,'link']) + ' c/u $' + str(reco.at[0,'costo'])
+                    txt = txt.replace('[recomendacion]',recomendacion)
+                else:
+                    recomendacion = 'Te dejamos estas opciones de reemplazo:'
+                    recomendacion = recomendacion + self.ligarTextolink(
+                        reco.at[0, 'tipo'] + ' opción 1' ,reco.at[0, 'link']) + ' c/u $' + str(reco.at[0, 'costo'])
+                    recomendacion = recomendacion + self.ligarTextolink(
+                        reco.at[1, 'tipo'] + ' opción 2' ,reco.at[1, 'link']) + ' c/u $' + str(reco.at[1, 'costo'])
+                    txt = txt.replace('[recomendacion]',recomendacion)
+
+                return txt
             else:
-                recomendacion = 'Te dejamos estas opciones de reemplazo:'
-                recomendacion = recomendacion + self.ligarTextolink(
-                    reco.at[0, 'tipo'] + ' opción 1' ,reco.at[0, 'link']) + ' c/u $' + str(reco.at[0, 'costo'])
-                recomendacion = recomendacion + self.ligarTextolink(
-                    reco.at[1, 'tipo'] + ' opción 2' ,reco.at[1, 'link']) + ' c/u $' + str(reco.at[1, 'costo'])
-                txt = txt.replace('[recomendacion]',recomendacion)
-
-            return txt
-        else:
+                return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
+        except:
             return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
-
     def buildText(self):
         txt=''
         if len(self.diasUso)!=0:

@@ -1,7 +1,6 @@
 import pandas as pd
-from Consumo    import calc_consumo
 from Condiciones import condicionesRefrigeracion
-from Consumo    import calc_consumo , consumoEq, temperatura
+import Consumo
 import math
 
 

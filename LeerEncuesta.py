@@ -80,13 +80,26 @@ def Crear_Kobo(NCliente):
     Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
 
 
+def Cliente_Prueba():
+    #equipo='Microcomponentes_Cocina'
+    equipo='TVs'
+    #equipo='Refri'
+    #equipo='Regulador'
+    #equipo='Maquinas_de_Hielo_y_Dispensadores'
+    #equipo='Lavadoras_y_Secadoras'
+    #equipo='Bombas_Presurizadoras'
 
+    Cliente = 'Bot_'+equipo
 
-
+    return Cliente
 ##################################################################
 def Nombre_Cliente():
 
-    NCliente = 'Cliente Prueba'
+    #NCliente = Cliente_Prueba()
+    #NCliente = 'Gabriela Vazquez'
+    #NCliente = 'Nuria Bacardit'
+    NCliente = 'Celia_Hamui'
+
 
     return NCliente
 
@@ -103,17 +116,19 @@ if __name__ == '__main__':
     if Opcion == '1':
         print("Creando Lista")
 
+    ##Crear Excel de deciframiento
     if Opcion == '2':
         print("Deciframiento y Kobo")
         #VE = leer_volts(NCliente)
         Crear_Kobo(NCliente)
         #hipervinculos(NCliente)
 
+    ##Crear hoja de potencial de ahorro
     if Opcion == '3':
         potecial_ahorro(NCliente)
         #leer_potencial(NCliente)
 
-
+    ##Se crea PDF
     if Opcion == '4':
         print("________________________________")
         print(f"Generando Reporte de {NCliente}")

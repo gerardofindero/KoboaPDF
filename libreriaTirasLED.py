@@ -90,9 +90,6 @@ class libreriaTirasLED:
 
     def setData(self, longitud ,caracteristicas, DAC, wt, kwh, dscr):
         carac      = caracteristicas.split(',')
-
-        print(carac)
-
         print(longitud,wt,kwh)
         if 'fria' in carac:
             print('fria')
