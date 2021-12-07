@@ -165,7 +165,6 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     # print(Clave)
     # if len(EntyTip.split()) == 2:
     #     ENTY = EntyTip.split()
-
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)

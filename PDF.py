@@ -1288,7 +1288,7 @@ def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje):
     canvas.showPage()
     return color
 
-def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
+def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,Total):
 
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     gris = [65 / 255, 65 / 255, 65 / 255]
@@ -1360,9 +1360,19 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL):
     parrafos.append(Paragraph('Cargo fijo', Estilos.cuadros_bajo2))
     frame = Frame(50, altura, 240, 50)
     frame.addFromList(parrafos, canvas)
+
+    canvas.line(50, altura, 550, altura)
+    parrafos.append(Paragraph('Costo final', Estilos.cuadros_bajo2))
+    frame = Frame(50, altura-55, 240, 50)
+    frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph('$ ' + str(263), Estilos.cuadros_bajo2))
     frame = Frame(500, altura , 80, 50)
     frame.addFromList(parrafos, canvas)
+    print(Total)
+    parrafos.append(Paragraph( '$'+str(int(Total)), Estilos.cuadros_bajoN))
+    frame = Frame(500, altura-55 , 80, 50)
+    frame.addFromList(parrafos, canvas)
+
     canvas.showPage()
 
 
@@ -1584,7 +1594,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)
     hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje)
     print("Generando hoja de Resumen...")
-    cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL)
+    cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,costo)
     robo='no'
     revisar='no'
     nivel=1

@@ -241,7 +241,7 @@ def separar_fugasTV(Equipo):
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra2', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra3', "", regex=True)
 
-    Fugas['Potencia Kobo'] = Fugas['Potencia Kobo'].str.replace('0.001', "NM", regex=True)
+    #Fugas['Potencia Kobo'] = Fugas['Potencia Kobo'].str.replace('0.001', "NM", regex=True)
     #Aparatos.drop(Aparatos[Aparatos.Equipos.str.contains('Nota')].index, inplace=True)
 
     Equipos.dropna(subset=['Equipo'],inplace=True)

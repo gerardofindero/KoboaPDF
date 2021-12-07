@@ -5,14 +5,7 @@ import pandas as pd
 import xlwings
 from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
-import numpy as np
 from Carpeta_Clientes import carpeta_clientes
-
-def tipoluces(tipo):
-    tipoGen='focos'
-    tipoGen='tubos'
-    tipoGen='tiras'
-
 
 #### Excel
 def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
@@ -154,16 +147,28 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 
     for i in Equipos['Codigo']:
 
+        separado=i.split(',')
+        if len(separado)>1:
+            for jj in separado:
+                print(jj)
+                jj = jj.upper()
+                identificadosPP= infoL[infoL['B'].str.contains(jj)].index
+                if not 'QQ' in identificados:
+                    if not identificados.empty:
+                        Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
+                        Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
+
 
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if not 'QQ' in identificados:
             if not identificados.empty:
                 Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
-                Sheet1.range(7 + cony, 8).value =   '=Lista!J'+str(identificados[0]+2)
+                Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
                 Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
                 Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
                 Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
+
         cony=cony+1
 
 
@@ -193,8 +198,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
                 if not identificados.empty:
                     PorcentajesTotales =  PorcentajesTotales + 'Lista!D'+ str(identificados[0]+2)+'+'
                     PotenciasTotales =  PotenciasTotales + str(infoL.loc[identificados[0], 'F'])+','
-                    NotasTotales =  NotasTotales+ infoL.loc[identificados[0], 'H']
-                    HorasT= HorasT+infoL.loc[identificados[0], 'J']
+                    NotasTotales =  str(NotasTotales)+ str(infoL.loc[identificados[0], 'H'])
+                    HorasT= str(HorasT)+str(infoL.loc[identificados[0], 'J'])
                     cont=cont+1
 
             Sheet1.range(inicioL + cony, 6).value  ='='+ PorcentajesTotales+'0'
@@ -209,17 +214,14 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     inicioF = len(Equipos) + len(Luminarias) + 13
     FugasC['Codigo'].fillna('FFX',inplace=True)
     #Fugas['Watts Circuito']=np.where(Fugas['Codigo']!= 'FFX', infoL.loc[identificados[0], 'D'], '')
-
-
-    print(FugasC)
     for i in FugasC['Codigo']:
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
         if 'QQ'in i or 'FFX' in i or i=='FF':
             Sheet1.range(inicioF + cony, 9).value = 'X'
-        else:
-            Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
-            Sheet1.range(inicioF + cony, 9).value = '=Lista!G'+str(identificados[0]+2)
+        # else:
+        #     Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
+        #     Sheet1.range(inicioF + cony, 9).value = '=Lista!G'+str(identificados[0]+2)
 
         cony=cony+1
 
@@ -251,6 +253,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     print(f"Comenzó el reporte de {Cliente}")
 
     archivo_resultados = carpeta_clientes(Cliente)
+
     Exx = pd.read_excel(archivo_resultados,sheet_name='Resumen')
     Exx.columns=Dic
 

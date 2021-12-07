@@ -85,19 +85,19 @@ def caritaTV(consumo,clave):
     DAtosTV=DatosTV[2].split('/')
     pulgadas=float(DAtosTV[2])
     potencia = float(DAtosTV[0])
+    PotTeorica = math.exp(2.958131 + 0.039028 * Pulgadas)
+    XX = np.log(Potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
+    Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * Pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
 
     uso=(kWh*1000)/(potencia*60)
-    if uso >= 4.0:
-        if kWh>50:
+    if uso >= 3.5:
+        if kWh>45:
             Ca = 3
         else:
             Ca=2
-    if 2 <= uso < 4.0:
-        if kWh>=15:
+    if (1 <= uso < 3.5) or (Percentil >= 0.9) or (KWh>=15):
             Ca = 2
-        else:
-            Ca=1
-    if uso < 2 or kWh<15:
+    if (uso < 1 or kWh<15) and (Percentil < 0.9):
         Ca = 1
 
     return Ca
