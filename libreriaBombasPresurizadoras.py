@@ -16,7 +16,32 @@ def leerLibreria():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas Presurizadoras/libreriaBombPre.xlsx",
             sheet_name='link')
     return lib, link
-def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
+#def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
+def recoPresu(Claves,kwh):
+    w, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru = Claves.split(sep=",")
+    w= float(w)
+    """
+    Parameters
+    ----------
+    w        potencia numerico
+    kwh      consumo numerico
+    tinaco   kobo-> plomeria_tinaco_existencia_c_i          valores(str) si, no
+    pastilla kobo-> plomeria_tuberia_pastilla_c_i           valores(str) si, no
+    pb       kobo-> plomeria_tuberia_presion_off_pa_c_i     valores(str) bien, insuficiente, nada
+    pa       kobo-> plomeria_tuberia_presion_off_pa_c_i     valores(str) bien, insuficiente, nada, no_hay_pa
+    ver      kobo-> plomeria_tuberia_valvulas_verificar_c_i valores(str) bien, insuficiente, nada
+    val      kobo-> plomeria_tuberia_valvulas_abiertas_c_i  valore(str) abiertas, algo_cerradas
+    jar      kobo-> plomeria_tinaco_jarrosdeaire_c_i,       valores(str) bien, valvula, no_hay
+    fug1     kobo-> plomeria_tuberia_fuga_c_i               valores(str) si, no
+    fug1l    kobo-> plomeria_tuberia_fuga_lugar_c_i         valores(str) TEXTO LIBRE
+    fug2     kobo-> plomeria_tuberia_inspeccion_c_i         valores(str) si, no
+    fug2l    kobo-> plomeria_tuberia_inspeccion_lugar_c_i   valores(str) TEXTO LIBRE
+    pru      kobo-> plomeria_tuberia_pruebafugas            valores(str) apaga, prendido, no_se_pudo_ver
+
+    Returns
+    -------
+    texto con recomendacion
+    """
     lib, link = leerLibreria()
     tpro = kwh*1000/w/(24*60)
 
