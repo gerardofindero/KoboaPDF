@@ -1,5 +1,5 @@
 import pandas as pd
-from Consumo import consumoEq
+import Consumo
 from LibreriaLED import CondicionesLuces
 from LibreriaRefris import ClavesRefri
 from LibreriaTV import ClavesClusterTV
