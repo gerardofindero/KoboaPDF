@@ -25,5 +25,7 @@ def recoMaqHie(kwh):
     if kwh<=20:
         txt = fc.selecTxt(lib, "HIEL01")
     else:
-        txt = fc.selecTxt(lib, "HIEL02").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Timer inteligente",links.at[0,"Link"]))
+        txt = fc.selecTxt(lib, "HIEL02").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link",links.at[0,"Link"]))
+
+    txt = txt.replace('[/n]','<br />')
     return txt

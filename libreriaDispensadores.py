@@ -24,5 +24,6 @@ def recoDispensadores(kwh):
     if kwh<=20:
         txt = fc.selecTxt(lib, "DIS01")
     else:
-        txt = fc.selecTxt(lib,"DIS02").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Timer inteligente",links.at[0,"Link"]))
+        txt = fc.selecTxt(lib,"DIS02").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link de compra",links.at[0,"Link"]))
+    txt = txt.replace('[/n]','<br />')
     return txt

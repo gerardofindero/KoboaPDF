@@ -241,6 +241,15 @@ def caritaDispensador(consumo,clave):
         Ca = 1
     return Ca
 
+def caritaHielos(consumo,clave):
+    if consumo>=40:
+        Ca = 3
+    if 20<consumo<40:
+        Ca = 2
+    if  20 >= consumo:
+        Ca = 1
+    return Ca
+
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
         if pd.notna(aparato[16]):
@@ -256,7 +265,7 @@ def definircarita(Equipo):
             elif equipoid == 'CV':
                 Carita = caritaCava(consumo,clave)
             elif equipoid == 'HL':
-                Carita = caritaRefri(consumo,clave)
+                Carita = caritaHielos(consumo,clave)
             elif equipoid == 'TV':
                 Carita = caritaTV(consumo,clave)
             elif equipoid == 'LV':

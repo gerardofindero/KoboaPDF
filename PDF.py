@@ -30,6 +30,7 @@ from LibClusterTV import analizarCTV
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
 from libreriaTubosFluorescente import recoTuboFluorescente
 from libreriaLucesSolares import recoSolares
+from libreriaBombasPresurizadoras import recoPresu
 #from libreriaClusterTV import armarTexto
 import libreriaClusterTV as CTV
 import libreriaClusterTV as CTV
@@ -715,6 +716,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos = recoDispensadores(consumo)
     if ClavesS[0] == 'HL':
         Consejos = recoMaqHie(consumo)
+    if ClavesS[0] == 'BP':
+        Consejos = recoPresu(Claves,consumo)
 
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
@@ -907,12 +910,21 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if nota == '.':
             parrafos.append(Paragraph('El consumo de tu equipo es bastante bueno, continua con su buen uso', Estilos.cuadros_bajo))
         else:
-            if len(nota) < 400:
-                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-            elif 400 <= len(nota) < 700:
-                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
+            print(len(nota))
+            if 'link' in nota:
+                if len(nota) < 800:
+                    parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
+                elif 800 <= len(nota) < 1000:
+                    parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
+                else:
+                    parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
             else:
-                parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
+                if len(nota) < 400:
+                    parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
+                elif 400 <= len(nota) < 700:
+                    parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
+                else:
+                    parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
         frame = Frame(120, altura-270, width * 0.7, height * 0.2)
         frame.addFromList(parrafos, canvas)
         ##LogoRayo
@@ -1555,7 +1567,7 @@ def Clasificador(aparatos):
     AparatosG = Aparatos.loc[Aparatos['A'] == 3]
     AparatosM = Aparatos.loc[Aparatos['A'] == 2]
     AparatosC = Aparatos.loc[Aparatos['A'] == 1]
-    deMaG=['Refrigerador','Congelador','Minibar','Cava','Hielos','Dispensador']
+    deMaG=['Refrigerador','Congelador','Minibar','Cava']
 
     for i in deMaG:
         AparatosMaG= AparatosM.loc[AparatosM['D'].str.contains(i)]

@@ -14,9 +14,7 @@ from Potencial_de_ahorro import potecial_ahorro
 def abrirexcel(Cliente):
     ClientEx=Cliente.replace(' ','_')
     ClientEx=ClientEx +'.xlsx'
-
     Excel = pd.read_excel(Path.home() / 'Desktop' /ClientEx )
-
     return Excel,Cliente
 
 def Crear_Kobo(NCliente):
@@ -34,7 +32,6 @@ def Crear_Kobo(NCliente):
     Aire   = pd.DataFrame()
     Segu = pd.DataFrame()
     Nota = pd.DataFrame()
-
     pd.set_option('display.max_columns', 15)
     Datosa= pd.DataFrame(columns=['Circuito','Tablero'])
     FugasT = pd.DataFrame()
@@ -42,7 +39,6 @@ def Crear_Kobo(NCliente):
     Nombre='Kobo_'+ Cliente +'.xlsx'
     print(Nombre)
     writer = ExcelWriter(Path.home() / 'Desktop' / Nombre , engine='xlsxwriter')
-
     fila=3 #
     filaLib=0 #
     for i in range(TotRenglones):
@@ -57,7 +53,6 @@ def Crear_Kobo(NCliente):
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
         Datos, fila, filaLib, Fugas, ilum, clust, coci, comu,esp,lava,refri,\
         bomba,pcs,cal,segu,aires,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
-
         Ilum  =  Ilum.append(ilum)
         Clust =  Clust.append(clust)
         Coci  =  Coci.append(coci)
@@ -80,72 +75,73 @@ def Crear_Kobo(NCliente):
     Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
 
 
+
+
+
+##################          PRUEBAS        ########################################
+##############    Elige el cliente prueba que desees correr  #####################
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
     # equipo='Refris'
     # equipo='Regulador'
-    equipo='Maquinas_de_Hielo_y_Dispensadores'
+    # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
-    # quipo='Bombas_Presurizadoras'
+    equipo='Bombas_Presurizadoras'
 
     Cliente = 'Bot_'+equipo
-
     return Cliente
-##################################################################
+
+
+
+################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
     NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
 
     return NCliente
+####################################################################################
 
-###################### MAIN  #####################################
+###################### PROGRAMA PRINCIPAL  #####################################
 if __name__ == '__main__':
-
     NCliente=Nombre_Cliente()
 
-
-
+## Se elige la opción del programa que se quiere correr
     Opcion='4'
 
-
+### Se crea la lista (Esta opción no sirve, el programa es independiente)
     if Opcion == '1':
         print("Creando Lista")
-
+### Se lee el Excel de KOBO y se crea la pestaña de deciframiento
     if Opcion == '2':
         print("Deciframiento y Kobo")
-        #VE = leer_volts(NCliente)
         Crear_Kobo(NCliente)
         #hipervinculos(NCliente)
 
+### Se crea la pestaña de potencial de ahorro
     if Opcion == '3':
         potecial_ahorro(NCliente)
-        #leer_potencial(NCliente)
 
-
+### Apartir del Excel de resultados se crea el reporte automático en PDF
     if Opcion == '4':
         print("________________________________")
         print(f"Generando Reporte de {NCliente}")
         datosSolar=pd.DataFrame()
         Ndatos=leer_resumen(NCliente)
-        #Excel, Cliente = abrirexcel()
         ahorro=leer_potencial(NCliente)
-        #ahorro=140
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
         solar='No'
         if solar =='Si':
             datosSolar = leer_solar(NCliente)
+
         CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)
 
 
 ###########Para hacer pruebas################
     if Opcion == '5':
         leer_resumen(NCliente)
-        # import libreriaSenMov as lsm
-        # lib=lsm.libreriaSensores()
-        # lib.setData(300,50,"Baño",6.1)
-        # print(lib.armarTxt())
+
 
 
 
