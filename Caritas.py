@@ -232,6 +232,14 @@ def caritaBombaR(consumo,clave):
     return Ca
 
 
+def caritaDispensador(consumo,clave):
+    if consumo>=40:
+        Ca = 3
+    if 20<consumo<40:
+        Ca = 2
+    if  20 >= consumo:
+        Ca = 1
+    return Ca
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
@@ -269,6 +277,8 @@ def definircarita(Equipo):
                 Carita =caritaCafetera(consumo,clave)
             elif equipoid == 'AA':
                 Carita =caritaAires(consumo,clave)
+            elif equipoid == 'DA':
+                Carita =caritaDispensador(consumo,clave)
             else:
                 Carita =caritaEquipos(consumo, clave)
 
