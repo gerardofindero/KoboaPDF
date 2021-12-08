@@ -1,5 +1,5 @@
 import pandas as pd
-
+from libreriaHielo import recoMaqHie
 
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
@@ -115,7 +115,7 @@ def Clasifica(Claves):
     return ClavesSep[0]
 
 
-def LeeClavesR(Claves,notas):
+def LeeClavesR(Claves,notas,nombre,consumo):
     Texto=''
     TextoF=notas
     lib,lib2 = libreria2()
@@ -230,6 +230,9 @@ def LeeClavesR(Claves,notas):
         if 'AM' in Claves:
             #Texto= Texto+' '+lib.loc[6,'E']
             TextoF= TextoF+' '+lib2.loc['REFF018','Texto']
+        if 'hielo' in nombre:
+            TextoF = recoMaqHie(consumo)
+
 
 
 

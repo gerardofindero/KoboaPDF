@@ -211,8 +211,10 @@ def separar_fugasTV(Equipo):
     Aparatos['Pulgadas']=Aparatos['Pulgadas']
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
-
-    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
+    try:
+        Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' '+Aparatos['Pulgadas'].apply(int).apply(str)+"''"
+    except:
+        Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)

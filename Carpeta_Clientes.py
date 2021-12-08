@@ -20,12 +20,7 @@ def carpeta_clientes(Cliente):
 
 
     except:
-        try:
-            carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
-         # la linea de abajo se habilito para que funcione en la computadora de Andres, PONER TRY EXCEPT, DUDESSSS!!!! Atte Hercules.
-        except:
-            carpeta_resultados = f"C:/Users/finde/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
-        # carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
+        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
         #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/10-octubre/"
         clientes = os.listdir(carpeta_resultados)
         Cl=''
