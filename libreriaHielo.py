@@ -10,13 +10,15 @@ def leerLibreria():
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Maquinas de hielo/libreriaMaquinasHielo.xlsx",
             sheet_name='links')
     except:
-        lib = pd.read_excel(
+        lib   = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Maquinas de hielo/libreriaMaquinasHielo.xlsx",
             sheet_name='libreriaHielo')
         links = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Maquinas de hielo/libreriaMaquinasHielo.xlsx",
             sheet_name='links')
     return lib, links
+
+
 def recoMaqHie(kwh):
     lib, links = leerLibreria()
 
