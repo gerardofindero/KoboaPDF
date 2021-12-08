@@ -40,13 +40,13 @@ def caritaMicroondas(consumo,clave):
     consumoTrans= consumo**0.4
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     Percentil=round(percentil,2)
-    if Percentil>0.66:
+    if Percentil>0.90:
         Ca=3
-    if 0.45<Percentil<=0.66:
+    elif 0.90 >= Percentil>=0.50:
         Ca=2
-
-    if 0.45 >= Percentil:
+    else:
         Ca=1
+
 
     return Ca
 
@@ -56,12 +56,13 @@ def caritaCafetera(consumo,clave):
     dstd  = 2.39
     kwh = kWh**0.42
     Percentil= norm.cdf(kwh,loc=media,scale=dstd)
-    if Percentil>0.66:
-        Ca=3
-    if 0.33<Percentil<0.66:
+
+    if Percentil>0.55:
         Ca=2
-    if 0.33 > Percentil:
+    if 0.55 >= Percentil:
         Ca=1
+    if kWh >35:
+        Ca=3
 
     return Ca
 
@@ -85,20 +86,24 @@ def caritaTV(consumo,clave):
     DAtosTV=DatosTV[2].split('/')
     pulgadas=float(DAtosTV[2])
     potencia = float(DAtosTV[0])
-
+    PotTeorica = math.exp(2.958131 + 0.039028 * pulgadas)
+    XX = np.log(potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
+    Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
     uso=(kWh*1000)/(potencia*60)
-    if uso >= 4.0:
-        if kWh>50:
-            Ca = 3
-        else:
-            Ca=2
-    if 2 <= uso < 4.0:
-        if kWh>=15:
-            Ca = 2
-        else:
-            Ca=1
-    if uso < 2 or kWh<15:
-        Ca = 1
+
+    if uso >= 3.5:
+        Ca=3
+    else:
+        Ca=1
+    if Percentil >= 0.9:
+        Ca=2
+    if kWh>45:
+        Ca = 3
+
+    # elif (1 <= uso < 3.5) or (Percentil >= 0.9):
+    #         Ca = 2
+    # elif (uso < 1 or kWh<15) and (Percentil < 0.9):
+    #     Ca = 1
 
     return Ca
 

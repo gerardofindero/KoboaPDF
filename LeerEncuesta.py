@@ -80,23 +80,24 @@ def Crear_Kobo(NCliente):
     Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
 
 
+def Cliente_Prueba():
+    # equipo='Microcomponentes_Cocina'
+    # equipo='TVs'
+    # equipo='Refris'
+    # equipo='Regulador'
+    equipo='Maquinas_de_Hielo_y_Dispensadores'
+    # equipo='Lavadoras_y_Secadoras'
+    # quipo='Bombas_Presurizadoras'
 
+    Cliente = 'Bot_'+equipo
 
-
+    return Cliente
 ##################################################################
 def Nombre_Cliente():
 
-    NCliente = 'Cliente Prueba'
-    #NCliente = 'Paulina LLamas'
-    #NCliente = 'Gerardo Trujillo'
-    #NCliente = 'Alvaro Cepeda'
-    #NCliente = 'Paula Flores'
-    #NCliente = 'Monica Cardenas'
-    #NCliente = 'Felipe Diaz'
-    #NCliente=  'Renata Chain'
-    NCliente = 'Laura Zacharias'
-    #NCliente = 'Felipe Mendez'
-    #NCliente = 'Alexa Lewinson'
+    NCliente = Cliente_Prueba()
+    #NCliente = "Celia Hamui"
+
     return NCliente
 
 ###################### MAIN  #####################################

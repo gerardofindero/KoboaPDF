@@ -11,12 +11,16 @@ import numpy as np
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Libreria')
-        Precios = pd.read_excel(
-            f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Precio')
-        Reemplazos = pd.read_excel(
-            f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
+        print(f"../../..")
+        Libreria =    pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Libreria')
+        Precios =     pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Precio')
+        Reemplazos =  pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
             sheet_name='Reemplazos')
+
+        # Libreria =    pd.read_excel(f"C:/Users/carme/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Libreria')
+        # Precios =     pd.read_excel(f"C:/Users/carme/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Precio')
+        # Reemplazos =  pd.read_excel(f"C:/Users/carme/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
+        #     sheet_name='Reemplazos')
     except:
         Libreria = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
@@ -83,7 +87,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         #Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
         #Ahorro= (Potencia - math.exp(3.189644 + (0.034468 * Pulgadas))) / Potencia
         Precio     = (1.873320 + 0.030815*(Pulgadas))**(1/0.13) # Precio de una nueva TV
-        PotTeorica = math.exp(3.189644 + 0.034468 * Pulgadas) # Potencia teórica de una TV LED
+        PotTeorica = math.exp(2.958131 + 0.039028 * Pulgadas) # Potencia teórica de una TV LED
         Ahorro     = 1 - PotTeorica / Potencia # Ahorro (fracción) con una TV LED
         uso = Consumo*1000/(Potencia*60) # Calcula las horas diarias de consumo promedio para los 60 días del bimestre
 
@@ -103,63 +107,40 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         if Consumo==0:
             Consumo=0.1
 
-        WTV=25.57* math.exp(0.035*Pulgadas)
-        WTV2=31.17* math.exp(0.035*Pulgadas)
         XX         = np.log(Potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
-        Percentil = stats.norm.sf((XX-(3.189644 + 0.034468 * Pulgadas))/0.2606) # Percentil de potencia de la TV en cuestión
+        Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * Pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
+        # print("_________________")
+        # print(Percentil)
+        # print(uso)
+        if Percentil < 0.9:
+            Texto = Texto + ' ' + lib.loc['TV01A', 'Texto'] # Tu TV es de tecnología eficiente.
 
-
-        if uso>=4.0:
-            Texto = Texto +' '+ lib.loc['TV03B','Texto']
-            bien=False
-        if 2<=uso<4.0:
-            Texto = Texto +' '+ lib.loc['TV03A','Texto']
-            bien=True
-        if uso < 2 or Consumo<15:
-            bien=True
-            Texto = Texto +' '+ lib.loc['TV01A','Texto']
         else:
-            #if Potencia>=WTV2:
-            if Percentil>0.9:
-                print(ROI)
-                if ROI<18:
-                    Texto = Texto +' '+ lib.loc['TV02A','Texto']
-                    Texto = Texto +' '+ lib.loc['TV02C','Texto']
-                    linkA=EncontrarRemplazo(reemplazos, Pulgadas)
-                    Texto = Texto + ' ' + lib.loc['TV04B', 'Texto']
-                    Address = 'Link de compra'
-                    LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-                    Texto = Texto + '<br /> '+  '<br /> '+LinkS
-                else:
-                    Texto = Texto +' '+ lib.loc['TV02A','Texto']
-                    Texto = Texto + ' ' + lib.loc['TV04A', 'Texto']
+            Texto = Texto + 'TV02A ' + lib.loc['TV02A', 'Texto'] #  TV es de baja eficiencia.
+            if ROI>18:
+                Texto = Texto + 'TV04A' + lib.loc['TV04A', 'Texto'] #  Sin embargo, reemplazar esta TV tendría un retorno en el largo plazo ...
             else:
-                Texto = Texto +' '+ lib.loc['TV02B','Texto']
+                Texto = Texto + 'TV02C' + lib.loc['TV02C', 'Texto'] + 'TV04B' + lib.loc['TV04B', 'Texto']
 
+        if uso>=3.5:
+            Texto = Texto +'TV03B'+ lib.loc['TV03B','Texto']
 
-        # if WTV<=Potencia<WTV2:
-        #     Texto = Texto +' '+ lib.loc['TV02B','Texto']
-        # if WTV > Potencia:
+        if 1<=uso<3.5:
+            Texto = Texto +'TV03A'+ lib.loc['TV03A','Texto']
 
-
-
+        if uso < 1:
+            Texto = Texto +'TV03C'+ lib.loc['TV03C','Texto']
 
         if Standby>1:
             Texto = Texto + ' ' + lib.loc['TV05A', 'Texto']
+    
+    Ahorro = Ahorro*100
 
-    if bien==True:
-        Texto = Texto.replace('[PRON]','El problema es que tu')
-    if bien==False:
-        Texto = Texto.replace('[PRON]','[/n]Otro problema es que tu')
     Texto = Texto.replace('[/n]','<br />')
     Texto = Texto.replace('[...]', ' ')
     Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
     Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
-    Texto = Texto.replace('[ConsumoStandBy]', str(round(Standby)))
-    Texto = Texto.replace('[USO]', str(round(uso)))
-
-
-
+    #print(Texto)
     return Texto
 
 

@@ -96,6 +96,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Cafetera2', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Cafetera2', 'CodigoS'] = stnbyCod
                 Aparatos_C.loc['Cafetera2', 'Clave'] = 'CF'
+
             if indx == 8:
                 InfoDeco = Circuito.filter(regex='dispensador')
                 Aparatos_C.loc['Dispensador', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
@@ -106,6 +107,7 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Dispensador', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
                 Aparatos_C.loc['Dispensador', 'CodigoS'] = stnbyCod
                 Aparatos_C.loc['Dispensador', 'Clave'] = 'DA'
+
             if indx == 9:
                 InfoDeco = Circuito.filter(regex='filtro')
                 Aparatos_C.loc['Filtro', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])

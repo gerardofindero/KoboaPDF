@@ -211,8 +211,10 @@ def separar_fugasTV(Equipo):
     Aparatos['Pulgadas']=Aparatos['Pulgadas']
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
-
-    Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
+    try:
+        Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' '+Aparatos['Pulgadas'].apply(int).apply(str)+"''"
+    except:
+        Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
@@ -241,7 +243,7 @@ def separar_fugasTV(Equipo):
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra2', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra3', "", regex=True)
 
-    Fugas['Potencia Kobo'] = Fugas['Potencia Kobo'].str.replace('0.001', "NM", regex=True)
+    #Fugas['Potencia Kobo'] = Fugas['Potencia Kobo'].str.replace('0.001', "NM", regex=True)
     #Aparatos.drop(Aparatos[Aparatos.Equipos.str.contains('Nota')].index, inplace=True)
 
     Equipos.dropna(subset=['Equipo'],inplace=True)
