@@ -18,7 +18,7 @@ def leerLibreria():
     return lib, link
 #def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
 def recoPresu(Claves,kwh):
-    w, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru = Claves.split(sep=",")
+    trsh, w, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru = Claves.split(sep=",")
     w= float(w)
     """
     Parameters
@@ -59,7 +59,10 @@ def recoPresu(Claves,kwh):
         txt = txt + fc.selecTxt(lib, "PRE16")
     if fug2=="no":
         txt = txt + fc.selecTxt(lib, "PRE17")
-    return txt
+    if kwh>35:
+        return txt.replace("\n","<br/>")
+    else:
+        return fc.selecTxt(lib,"PRE00")
 
 
 def prezuNece(txt, lib, pb, pa, ver, val, jar, fug1, fug2, pru, tpro):
@@ -93,7 +96,9 @@ def fugas(txt, lib, fug1, fug2, pru, tpro):
     print(tpro)
     hrsUso = int(tpro*24)
     minUso = int(tpro*24*60)
-    if hrsUso>=1:
+    if hrsUso==1:
+        txt = txt + fc.selecTxt(lib, "PRE08").replace("[horasUso]", str(hrsUso)).replace("horas","hora")
+    elif hrsUso>1:
         txt = txt +fc.selecTxt(lib,"PRE08").replace("[horasUso]",str(hrsUso))
     else:
         txt = txt +fc.selecTxt(lib,"PRE08").replace("[horasUso]",str(minUso)).replace("horas","minutos")
