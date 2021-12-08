@@ -2,7 +2,7 @@ import pandas as pd
 import math
 from scipy import stats
 import numpy as np
-
+import funcionesComunes as fc
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
@@ -89,8 +89,8 @@ def LeeClavesLavaSeca(Claves,consumo):
             Address = 'Link de compra'
             LinkS2 = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
 
-            Texto = Texto.replace('[LINK1]', LinkS)
-            Texto = Texto.replace('[LINK2]', LinkS2)
+            Texto = Texto.replace('[LINK1]', fc.ligarTextolink("Tendedero 1","https://amzn.to/2TTkeRI"))
+            Texto = Texto.replace('[LINK2]', fc.ligarTextolink("Tendedero 2", "https://www.amazon.com.mx/FANTASY-Tendedero-Vertical-Plegable-Niveles/dp/B0899JT1SC/ref=sr_1_3?__mk_es_MX=ÅMÅŽÕÑ&keywords=tendedero+plegable&qid=1638984624&sr=8-3"))
             Texto = Texto.replace('["PCMS"]', str(int(100-Percentil*100)))
             Texto = Texto.replace('["PCMSF"]', str(int( Percentil * 100)))
 
