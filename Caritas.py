@@ -117,24 +117,14 @@ def caritaRefri(consumo,Claves):
     TCong = Datos[1]
     NomCom=Datos[2]
     TempCom=Datos[3]
-    Volumen=13
-    #Volumen=float(Datos[4])
-
+    Volumen=float(Datos[4])*0.000025
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-    # if percentil>=0.99:
-    #     Ca = 3
-    # if 0.5<=percentil<0.99:
-    #     Ca = 2
-    # if 0.5 > percentil:
-    #     Ca = 1
-
-
-    if kWh>150:
+    if percentil>=0.99:
         Ca = 3
-    if 95<kWh<=150:
+    if 0.5<=percentil<0.99:
         Ca = 2
-    if 95 >= kWh:
+    if 0.5 > percentil:
         Ca = 1
 
     return Ca
@@ -151,14 +141,26 @@ def caritaMiniB(consumo,Claves):
     TCong = Datos[1]
     NomCom=Datos[2]
     TempCom=Datos[3]
-    Volumen=13
-    #Volumen=float(Datos[4])
-    if kWh>150:
+    #Volumen=13
+    Volumen=float(Datos[4])
+
+    #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
+    percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+    if percentil>=0.99:
         Ca = 3
-    if 100<kWh<=150:
+    if 0.5<=percentil<0.99:
         Ca = 2
-    if 100 >= kWh:
+    if 0.5 > percentil:
         Ca = 1
+
+
+    # if kWh>150:
+    #     Ca = 3
+    # if 95<kWh<=150:
+    #     Ca = 2
+    # if 95 >= kWh:
+    #     Ca = 1
+
 
     return Ca
 
@@ -167,22 +169,49 @@ def caritaCava(consumo,Claves):
     kWh = float(consumo)
     ClavesSep=Claves.split(",")
     Datos= ClavesSep[1].split("/")
-    TRef=Datos[0]
-    TCong = Datos[1]
-    NomCom=Datos[2]
-    TempCom=Datos[3]
-    Volumen=13
-    #Volumen=float(Datos[4])
+    Volumen=float(Datos[4])
+    formulaV=(Volumen/1300.8)+21.4
+    formulaR=(Volumen/1300.8)+51.6
 
-    if kWh>150:
-        Ca = 3
-    if 100<kWh<=150:
-        Ca = 2
-    if 100 >= kWh:
-        Ca = 1
-
+    if formulaV>kWh:
+        Ca=1
+    if formulaV<kWh<formulaR:
+        Ca=2
+    if formulaR<kWh:
+        Ca=3
     return Ca
 
+
+def caritaCongeV(consumo,Claves):
+    kWh = float(consumo)
+    ClavesSep=Claves.split(",")
+    Datos= ClavesSep[1].split("/")
+    Volumen=float(Datos[4])
+    formulaV=(Volumen/6863.63)-8.83
+    formulaR=(Volumen/3432.19)-17.67
+
+    if formulaV>kWh:
+        Ca=1
+    if formulaV<kWh<formulaR:
+        Ca=2
+    if formulaR<kWh:
+        Ca=3
+    return Ca
+
+def caritaCongeH(consumo,Claves):
+    kWh = float(consumo)
+    ClavesSep=Claves.split(",")
+    Datos= ClavesSep[1].split("/")
+    Volumen=float(Datos[4])
+    formulaV=(Volumen/8000.35)-7.58
+    formulaR=(Volumen/3955.11)-15.33
+
+    if formulaV>kWh:
+        Ca=1
+    if formulaV<kWh<formulaR:
+        Ca=2
+    if formulaR<kWh:
+        Ca=3
 
 def caritaPlancha(consumo,clave):
     if consumo>33:
@@ -259,7 +288,7 @@ def definircarita(Equipo):
             if equipoid == 'RF':
                 Carita = caritaRefri(consumo,clave)
             elif equipoid == 'CN':
-                Carita = caritaRefri(consumo,clave)
+                Carita = caritaCongeV(consumo,clave)
             elif equipoid == 'MB':
                 Carita = caritaMiniB(consumo,clave)
             elif equipoid == 'CV':

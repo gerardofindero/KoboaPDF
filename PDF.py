@@ -718,6 +718,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos = recoMaqHie(consumo)
     if ClavesS[0] == 'BP':
         Consejos = recoPresu(Claves,consumo)
+    if ClavesS[0] == 'CV':
+        Consejos,Notas = LeeClavesR(Claves,nota,nombre,consumo)
 
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
