@@ -20,12 +20,15 @@ def leerLibreria():
 
 
 def recoMaqHie(kwh):
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib, links = leerLibreria()
 
     if kwh<=20:
         txt = fc.selecTxt(lib, "HIEL01")
     else:
         txt = fc.selecTxt(lib, "HIEL02").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link",links.at[0,"Link"]))
-
+        PotAhorro["%Ahorro"] = 0.30
+        PotAhorro["kwhAhorrado"] = kwh * 0.30
+        PotAhorro["Accion"] = fc.selecTxt(lib, "HIELpa01").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link",links.at[0,"Link"]))
     txt = txt.replace('[/n]','<br />')
-    return txt
+    return [txt, PotAhorro]
