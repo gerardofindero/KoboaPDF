@@ -719,7 +719,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos, PotAhorro = recoMaqHie(consumo)
         #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'BP':
-        Consejos = recoPresu(Claves,consumo)
+        Consejos, PotAhorro = recoPresu(Claves,consumo)
     if ClavesS[0] == 'CV':
         Consejos,Notas = LeeClavesR(Claves,nota,nombre,consumo)
 
