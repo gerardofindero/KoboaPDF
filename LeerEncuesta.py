@@ -83,11 +83,11 @@ def Crear_Kobo(NCliente):
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
-    # equipo='Refris'
+    equipo='Refris'
     # equipo='Regulador'
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
-    equipo='Bombas_Presurizadoras'
+    # equipo='Bombas_Presurizadoras'
 
     Cliente = 'Bot_'+equipo
     return Cliente
