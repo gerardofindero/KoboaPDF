@@ -713,9 +713,11 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     if Claves == 'BP':
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
-        Consejos = recoDispensadores(consumo)
+        Consejos, PotAhorro = recoDispensadores(consumo)
+        #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'HL':
-        Consejos = recoMaqHie(consumo)
+        Consejos, PotAhorro = recoMaqHie(consumo)
+        #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'BP':
         Consejos = recoPresu(Claves,consumo)
 
