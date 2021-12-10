@@ -37,7 +37,7 @@ def ClavesRefri(EquiposRefri):
         TempComp = float(EquiposR['Temp Compresor'][0])
         Volumen =int(EquiposR['Volumen'][0])
         Codigo=EquiposR['Clave'][0]
-        Codigo = Codigo+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)
+        Codigo = str(Codigo)+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)
 
         ## Compresor Nominal
         if NominalComp > 120:
