@@ -83,7 +83,7 @@ def Crear_Kobo(NCliente):
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
-    equipo='Refris'
+    # equipo='Refris'
     # equipo='Regulador'
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
@@ -99,6 +99,9 @@ def Nombre_Cliente():
 
     NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
+    #NCliente = "Alvaro Cepeda"
+    #NCliente = "Laura Gomez"
+    #NCliente = "Victor Topete"
 
     return NCliente
 ####################################################################################
@@ -107,8 +110,16 @@ def Nombre_Cliente():
 if __name__ == '__main__':
     NCliente=Nombre_Cliente()
 
+
+
+
+
+########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='4'
+    Opcion='2'
+#######################
+
+
 
 ### Se crea la lista (Esta opción no sirve, el programa es independiente)
     if Opcion == '1':
@@ -131,7 +142,7 @@ if __name__ == '__main__':
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
-        solar='No'
+        solar='Si'
         if solar =='Si':
             datosSolar = leer_solar(NCliente)
 
