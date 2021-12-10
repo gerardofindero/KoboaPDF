@@ -18,7 +18,8 @@ def leerLibreria():
     return lib, link
 #def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
 def recoPresu(Claves,kwh):
-    w, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru = Claves.split(sep=",")
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+    trsh, w, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru = Claves.split(sep=",")
     w= float(w)
     """
     Parameters
@@ -59,7 +60,29 @@ def recoPresu(Claves,kwh):
         txt = txt + fc.selecTxt(lib, "PRE16")
     if fug2=="no":
         txt = txt + fc.selecTxt(lib, "PRE17")
-    return txt
+    # Potencual de ahorro
+    PotAhorro["Accion"] = ""
+    if ("el caudal de agua es adecuado" in txt):
+        PotAhorro["%Ahorro"] = 1
+        PotAhorro["kwhAhorrado"] = kwh
+        PotAhorro["Accion"] = fc.selecTxt(lib, "PREpa03")
+    elif (fug1 == "si") or (fug2=="si"):
+        PotAhorro["%Ahorro"]     =  1-(0.5/tpro)
+        PotAhorro["kwhAhorrado"] = PotAhorro.at[0,"%Ahorro"]*kwh
+        PotAhorro["Accion"]      = fc.selecTxt(lib,"PREpa01")
+    elif (tinaco=="no", ):
+        PotAhorro["%Ahorro"] = 1
+        PotAhorro["kwhAhorrado"] = kwh
+        PotAhorro["Accion"] = fc.selecTxt(lib, "PREpa02")
+    elif ("[timer]" in txt):
+        PotAhorro["%Ahorro"] = 1 - (0.5 / tpro)
+        PotAhorro["kwhAhorrado"] = PotAhorro.at[0, "%Ahorro"] * kwh
+        PotAhorro["Accion"] = fc.selecTxt(lib, "PREpa04")
+
+    if kwh>35:
+        return [txt.replace("\n","<br/>"), PotAhorro]
+    else:
+        return [fc.selecTxt(lib,"PRE00"),  PotAhorro]
 
 
 def prezuNece(txt, lib, pb, pa, ver, val, jar, fug1, fug2, pru, tpro):
@@ -93,7 +116,9 @@ def fugas(txt, lib, fug1, fug2, pru, tpro):
     print(tpro)
     hrsUso = int(tpro*24)
     minUso = int(tpro*24*60)
-    if hrsUso>=1:
+    if hrsUso==1:
+        txt = txt + fc.selecTxt(lib, "PRE08").replace("[horasUso]", str(hrsUso)).replace("horas","hora")
+    elif hrsUso>1:
         txt = txt +fc.selecTxt(lib,"PRE08").replace("[horasUso]",str(hrsUso))
     else:
         txt = txt +fc.selecTxt(lib,"PRE08").replace("[horasUso]",str(minUso)).replace("horas","minutos")

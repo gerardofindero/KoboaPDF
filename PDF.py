@@ -698,7 +698,6 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     Notas='X'
     if ClavesS[0] == 'RF':
         Consejos,Notas = LeeClavesR(Claves,nota,nombre,consumo)
-        print(Notas)
     if ClavesS[0] == 'TV':
         Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
@@ -711,12 +710,16 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos = armarTxtCaf(nombre,consumo,Uso,'Ninguno')
     if Claves == 'CTV':
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
+    if Claves == 'BP':
+        Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
-        Consejos = recoDispensadores(consumo)
+        Consejos, PotAhorro = recoDispensadores(consumo)
+        #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'HL':
-        Consejos = recoMaqHie(consumo)
-    # if ClavesS[0] == 'BP':
-    #     Consejos = recoPresu(Claves,consumo)
+        Consejos, PotAhorro = recoMaqHie(consumo)
+        #print(PotAhorro.at[0,"Accion"])
+    if ClavesS[0] == 'BP':
+        Consejos, PotAhorro = recoPresu(Claves,consumo)
     if ClavesS[0] == 'CV':
         Consejos,Notas = LeeClavesR(Claves,nota,nombre,consumo)
 
