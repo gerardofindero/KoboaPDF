@@ -1,6 +1,6 @@
 import pandas as pd
 from libreriaHielo import recoMaqHie
-
+from scipy.stats import norm
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
@@ -116,17 +116,23 @@ def Clasifica(Claves):
 
 
 def LeeClavesR(Claves,notas,nombre,consumo):
+    kWh = float(consumo)
     Texto=''
     TextoF=notas
+    PotencialAhorro=0
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib,lib2 = libreria2()
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
+        equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
         TRef=Datos[0]
         TCong = Datos[1]
         NomCom=Datos[2]
         TempCom=Datos[3]
         Volumen=Datos[4]
+
+
 
 #### Dentro del cuadro
         # Empaques bien
@@ -170,12 +176,14 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                 Texto= Texto+' y una'
 
         ## Temp Compresor
-        if float(TempCom) > 10:
+        if float(TempCom) > 10.0:
             if 'TM' in Claves:
                 Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF01','Texto']
-                Texto = Texto.replace('[TC]', str(TempCom))
+                #Texto = Texto.replace('[TC]', str(TempCom))
                 TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
+
                 TextoF = TextoF.replace('[TC]', str(TempCom))
+
             else:
                 TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
                 TextoF = TextoF.replace('[TC]', str(TempCom))
@@ -200,7 +208,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         ## VEntilador
         if 'VE' in Claves:
             Texto = Texto + ' ' + lib.loc['REF09', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF19','Texto']
 
         ## Sucio
         if 'SU' in Claves:
@@ -214,10 +222,10 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             TextoF= TextoF+' '+lib2.loc['REFF15','Texto']
         if 'PR' in Claves:
             Texto= Texto+' '+ lib.loc['REF10', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF02','Texto']
+            #TextoF= TextoF+' '+lib2.loc['REFF02','Texto']
         if 'PT' in Claves:
             Texto= Texto+' '+ lib.loc['REF11', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF21','Texto']
         if 'DH' in Claves:
             #Texto= Texto+' '+lib.loc[6,'E']
             TextoF= TextoF+' '+lib2.loc['REFF03','Texto']
@@ -234,19 +242,69 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             TextoF = recoMaqHie(consumo)
 
 
+        if equipoR=='RF':
+            EQR='refrigerador'
+            Volumen=float(Datos[4])*0.000022
+            percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+            if 0.5 > percentil:
+                Texto = notas+lib2.loc['REFF20','Texto']
+            if percentil>0.90:
+                PotencialAhorro=1-(90/kWh)
+            else:
+                PotencialAhorro=0
+
+
+        if equipoR=='CN':
+            EQR='congelador'
+            formulaV=(float(Volumen)/6863.63)-8.83
+            if formulaV>kWh:
+                Texto = notas+lib2.loc['REFF20','Texto']
+            Texto = Texto.replace('Refrigerador', 'Congelador')
+            TextoF = TextoF.replace('Refrigerador', 'Congelador')
+            if kWh>250:
+                PotencialAhorro=1-(120/kWh)
+            else:
+                PotencialAhorro=0
+
+
+
+
+        if equipoR=='MB':
+            EQR='minibar'
+            Volumen=float(Datos[4])*0.000022
+            percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+            if 0.5 > percentil:
+                Texto = notas+lib2.loc['REFF20','Texto']
+            Texto = Texto.replace('Refrigerador', 'Minibar')
+            TextoF = TextoF.replace('Refrigerador', 'Minibar')
+
+
+        if equipoR=='CV':
+            EQR='cava'
+            formulaV=(float(Volumen)/1300.8)+21.4
+            if formulaV>kWh:
+                Texto = notas+lib2.loc['REFF20','Texto']
+            Texto = Texto.replace('Refrigerador', 'Cava')
+            TextoF = TextoF.replace('Refrigerador', 'Cava')
+
+
+
+
 
 
         Texto = Texto.replace('[P]', NomCom)
         TextoF = TextoF.replace('[P]', NomCom)
-        TextoF = TextoF.replace('[R]', 'Refrigerador')
+        TextoF = TextoF.replace('[R]', EQR)
 
         Texto = Texto.replace('[/n]', '<br /><br />')
         Texto = Texto.replace('[...]', ' ')
         TextoF = TextoF.replace('[/n]', '<br /><br />')
         TextoF = TextoF.replace('[...]', ' ')
 
+    PotAhorro['%Ahorro']=PotencialAhorro
+    PotAhorro['kWhAhorrado']=kWh*PotencialAhorro
+    PotAhorro['Accion']='Reemplazar el equipo por uno nuevo'
 
 
 
-
-    return Texto,TextoF
+    return Texto,TextoF,PotAhorro

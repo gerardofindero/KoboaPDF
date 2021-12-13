@@ -117,7 +117,7 @@ def caritaRefri(consumo,Claves):
     TCong = Datos[1]
     NomCom=Datos[2]
     TempCom=Datos[3]
-    Volumen=float(Datos[4])*0.000025
+    Volumen=float(Datos[4])*0.000022
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
     if percentil>=0.99:
@@ -141,10 +141,7 @@ def caritaMiniB(consumo,Claves):
     TCong = Datos[1]
     NomCom=Datos[2]
     TempCom=Datos[3]
-    #Volumen=13
     Volumen=float(Datos[4])
-
-    #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
     if percentil>=0.99:
         Ca = 3

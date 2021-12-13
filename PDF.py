@@ -694,10 +694,17 @@ def Dicc_Aparatos(nombre):
 ###################RECOMENDACIONES #######################################
 def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     Consejos=nota
+    PotAhorro='X'
     ClavesS = Claves.split(',')
     Notas='X'
     if ClavesS[0] == 'RF':
-        Consejos,Notas = LeeClavesR(Claves,nota,nombre,consumo)
+        Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
+    if ClavesS[0] == 'CV':
+        Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
+    if ClavesS[0] == 'CN':
+        Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
+    if ClavesS[0] == 'MB':
+        Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
     if ClavesS[0] == 'TV':
         Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
@@ -710,8 +717,6 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos = armarTxtCaf(nombre,consumo,Uso,'Ninguno')
     if Claves == 'CTV':
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
-    if Claves == 'BP':
-        Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
         Consejos, PotAhorro = recoDispensadores(consumo)
         #print(PotAhorro.at[0,"Accion"])
@@ -720,9 +725,9 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'BP':
         Consejos, PotAhorro = recoPresu(Claves,consumo)
-    if ClavesS[0] == 'CV':
-        Consejos,Notas = LeeClavesR(Claves,nota,nombre,consumo)
 
+
+    print(PotAhorro)
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
@@ -800,11 +805,12 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_)
         if not Notas=='X':
             notas=Notas
-        print(notas)
         if len(notas)<700:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
-        else:
+        elif 1000>=len(notas)>=700:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos4))
+        else:
+            parrafos.append(Paragraph(str(notas), Estilos.aparatos5))
 
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
@@ -817,11 +823,12 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
         if len(Consejos)<700:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-        else:
+        elif 1100>=len(Consejos)>=700:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+        else:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
-        print(Consejos)
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)
@@ -914,7 +921,6 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if nota == '.':
             parrafos.append(Paragraph('El consumo de tu equipo es bastante bueno, continua con su buen uso', Estilos.cuadros_bajo))
         else:
-            print(len(nota))
             if 'link' in nota:
                 if len(nota) < 800:
                     parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
@@ -1392,7 +1398,6 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,Total):
     parrafos.append(Paragraph('$ ' + str(263), Estilos.cuadros_bajo2))
     frame = Frame(500, altura , 80, 50)
     frame.addFromList(parrafos, canvas)
-    print(Total)
     parrafos.append(Paragraph( '$'+str(int(Total)), Estilos.cuadros_bajoN))
     frame = Frame(500, altura-55 , 80, 50)
     frame.addFromList(parrafos, canvas)
