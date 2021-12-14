@@ -83,11 +83,12 @@ def Crear_Kobo(NCliente):
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
-    equipo='Refris'
+    # equipo='Refris'
     # equipo='Regulador'
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
+    equipo='Reguladores_y_No-Breaks'
 
     Cliente = 'Bot_'+equipo
     return Cliente
@@ -97,10 +98,10 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
-    #NCliente = Cliente_Prueba()
+    NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
     #NCliente = "Alvaro Cepeda"
-    NCliente = "Laura Gomez"
+    #NCliente = "Laura Gomez"
     #NCliente = "Victor Topete"
 
     return NCliente
@@ -121,7 +122,7 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='4'
+    Opcion='2'
 #######################
 
 
