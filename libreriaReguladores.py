@@ -15,6 +15,10 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
             elif nReg > 1:
                 dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
             dfDes.loc[indexReg,'A'] = 'Si'
+            print(indexReg)
+            for i in indexReg:
+                dfDes.loc[i,'N'] = dfDes.loc[i,'N']+",1,"+str(dfDes.at[i,"K"])+","+fc.selecTxt(libRegObj.libReg,"REGpa01")
+                print(dfDes.loc[i,'N'])
             return dfDes
 
         else:
@@ -29,6 +33,8 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nReg > 1:
                         dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
                     dfDes.loc[indexReg, 'A'] = 'Si'
+                    for i in indexReg:
+                        dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
                     return dfDes.loc[:,'A':'Q'].copy()
 
 
@@ -39,6 +45,8 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nReg > 1:
                         dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
                     dfDes.loc[indexReg, 'A'] = 'Si'
+                    for i in indexReg:
+                        dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
                     return dfDes.loc[:,'A':'Q'].copy()
             else:
                 indexElec  = dfDes.loc[indexReg,:].index[dfDes.loc[indexReg,'uso']=='elec']
@@ -55,9 +63,10 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     if nElec == 1:
                         dfDes.loc[indexElec, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{s} regulador{es}', nomsRegs)
                     elif nElec > 1:
-
                         dfDes.loc[indexElec, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{s} regulador{es}', nomsRegs)
                     dfDes.loc[indexElec, 'A'] = 'Si'
+                    for i in indexElec:
+                        dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
                 else:
                     for i in  indexElec:
                         nombre = dfDes.at[i,'nombre']
@@ -73,7 +82,18 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                             tol=tol, vEstEle=vEstEle, vEstMec=vEstMec,
                             DAC=DAC,nSob=nSob,nSub=nSub,tSob=tSob,tSub=tSub)
                         libRegObj.armarTxt()
-                        dfDes.loc[i,'N'] = libRegObj.txt
+                        # dfDes.loc[i, 'N'] = libRegObj.txt
+                        porAhorro = libRegObj.sustitutos.at[0, 'kwhAhorroBimestral'] / wC
+                        if libRegObj.sustitutos.accion == "retirar":
+                            dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + fc.selecTxt(libRegObj.libReg,"REGpa01")
+                        elif libRegObj.sustitutos.accion == "compra":
+                            if libRegObj.sustitutos.tipo == "Protector":
+                                potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa02").replace("[recomendacion]", fc.ligarTextolink("Protector de voltaje",libRegObj.sustitutos.at[0, "link"]))
+                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
+                            elif libRegObj.sustitutos.tipo == "Regulador":
+                                potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa03").replace("[recomendacion]",fc.ligarTextolink("Regulador", libRegObj.sustitutos.at[ 0, "link"]))
+                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
+
                         dfDes.loc[i,'A'] = libRegObj.atacable
 
 
@@ -84,6 +104,8 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nMeca > 1:
                         dfDes.loc[indexMeca, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{s} regulador{es}', nomsRegs)
                     dfDes.loc[indexElec, 'A'] = 'Si'
+                    for i in indexMeca:
+                        dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
                 else:
                     for i in indexMeca:
                         nombre = dfDes.at[i, 'nombre']
@@ -99,7 +121,17 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                         tol=tol, vEstEle=vEstEle, vEstMec=vEstMec,
                         DAC=DAC,nSob=nSob,nSub=nSub,tSob=tSob,tSub=tSub)
                         libRegObj.armarTxt()
-                        dfDes.loc[i, 'N'] = libRegObj.txt
+                        # dfDes.loc[i, 'N'] = libRegObj.txt
+                        porAhorro = libRegObj.sustitutos.at[0, 'kwhAhorroBimestral'] / wC
+                        if libRegObj.sustitutos.accion == "retirar":
+                            dfDes.loc[i, 'N'] = libRegObj.txt+","+str(porAhorro)+","+str(libRegObj.sustitutos.at[0,'kwhAhorroBimestral'])+","+fc.selecTxt(libRegObj.libReg, "REGpa01")
+                        elif libRegObj.sustitutos.accion == "compra":
+                            if libRegObj.sustitutos.tipo == "Protector":
+                                potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa02").replace("[recomendacion]",fc.ligarTextolink("Protector de voltaje",libRegObj.sustitutos.at[0,"link"]))
+                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
+                            elif libRegObj.sustitutos.tipo == "Regulador":
+                                potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa03").replace("[recomendacion]",fc.ligarTextolink("Regulador",libRegObj.sustitutos.at[0, "link"]))
+                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
                         dfDes.loc[i, 'A'] = libRegObj.atacable
 
                 return dfDes.loc[:, 'A':'Q'].copy()

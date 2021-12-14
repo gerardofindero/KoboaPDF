@@ -16,7 +16,7 @@ def sepNobAta(dfDes,DAC):
     for i in indexNB:
         libUPSObj = libreriaUPS()
         libUPSObj.setData(nomNB        = dfDes.at[i,'nombre'],
-                          VA            = dfDes.at[i,'nombre'],
+                          VA            = dfDes.at[i,'VA'],
                           wC            = dfDes.at[i,'wC'],
                           w             = dfDes.at[i, 'J'],
                           dispPrincipal = dfDes.at[i,'dispPrincipal'],
@@ -25,6 +25,7 @@ def sepNobAta(dfDes,DAC):
         dfDes.loc[i, 'N'] = libUPSObj.txt
         dfDes.loc[i, 'A'] = libUPSObj.atacable
     return dfDes.iloc[:,'A':'Q'].copy()
+
 class libreriaUPS:
     def __init__(self):
         self.txt = ''
@@ -226,7 +227,16 @@ class libreriaUPS:
                 txt = txt + fc.selecTxt(self.lib, 'UPS06')
                 self.atacable = 'No'
         self.txt = txt.replace('[nomNB]', self.nomNB).replace('\n','<br />')
-
+        ### potencial de ahorro
+        if not indispensable:
+            self.txt = self.txt+",1,"+str(self.w)+","+fc.selecTxt(self.lib,"UPSpa01")
+        if indispensable:
+            if self.w<3:
+                self.txt = self.txt+",0,0,"+fc.selecTxt(self.lib,"UPSpa03")
+            else:
+                porAhorro= self.sustitutos.at[0,"ahorroBimestral"]/self.w
+                nbsus=fc.ligarTextolink("No break",self.sustitutos.at[0,"link"])
+                self.txt = self.txt + ","+str(porAhorro)+","+str(self.sustitutos.at[0,"ahorroBimestral"]) +","+ fc.selecTxt(self.lib, "UPSpa03").replace("[recomendacion]",nbsus)
 
 
 
