@@ -25,6 +25,7 @@ def textodeconsejos(equipo,equipo1):
     else:
         if 'microondas' in equipo:
             texto = texto+' ' + 'Desconecta el microondas cuando no se use para ahorrar energía. <br /> '
+
         if 'decodificador' in equipo:
             texto = texto + ' ' + 'Puedes apagar los decodificadores en los horarios en que no usas tu TV. ' \
                                   'Solo te recomendamos prenderlos la madrugada del domingo para recibir actualizaciones. <br />'
