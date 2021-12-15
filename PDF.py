@@ -716,6 +716,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     if Claves == 'CF':
         Consejos = armarTxtCaf(nombre,consumo,Uso,'Ninguno')
     if Claves == 'CTV':
+        #from LibClusterTV import recoCTV
+        #[Consejos, PotAhorro] = recoCTV(standby,DAC)
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
         Consejos, PotAhorro = recoDispensadores(consumo)
