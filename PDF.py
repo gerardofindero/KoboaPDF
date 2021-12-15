@@ -1095,12 +1095,12 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     LFugas.sort_values(by=['L'], inplace=True, ascending=False)
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares= LFugas['E'].tolist()
-    vEstEle=True
-    vEstMec=True
-    nSob=0
-    nSub=0
-    tSob=0
-    tSub=0
+    vEstEle=False
+    vEstMec=False
+    nSob=500
+    nSub=500
+    tSob=10000
+    tSub=10000
     sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
 
     for lista in Lugares:

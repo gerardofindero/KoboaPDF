@@ -15,17 +15,20 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
             elif nReg > 1:
                 dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
             dfDes.loc[indexReg,'A'] = 'Si'
-            print(indexReg)
             for i in indexReg:
                 dfDes.loc[i,'N'] = dfDes.loc[i,'N']+",1,"+str(dfDes.at[i,"K"])+","+fc.selecTxt(libRegObj.libReg,"REGpa01")
-                print(dfDes.loc[i,'N'])
             return dfDes
 
         else:
-            dfDes.loc[indexReg,['VA','wC','uso','tol']] = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
-            dfDes.loc[indexReg,'VA'] = pd.to_numeric(dfDes.loc[indexReg,'VA'] )
-            dfDes.loc[indexReg, 'wC'] = pd.to_numeric(dfDes.loc[indexReg, 'wC'])
+            Claves = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
+            dfDes.loc[indexReg,'VA'] = Claves[0].astype(int)
+            dfDes.loc[indexReg, 'wC'] = Claves[1].astype(int)
+            dfDes.loc[indexReg, 'uso'] = Claves[2]
+            dfDes.loc[indexReg, 'tol'] = Claves[3]
             dfDes.loc[indexReg, 'tol'] = dfDes.loc[indexReg, 'tol'] == 'T'
+            print(dfDes.loc[indexReg, 'uso'])
+
+
             if (dfDes.uso=='elec').all():
                 if vEstEle:
                     if nReg == 1:
@@ -55,8 +58,9 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                 indexMeca  = dfDes.loc[indexReg,:].index[dfDes.loc[indexReg,'uso']=='Meca']
                 nMeca = len(indexMeca)
 
-                dfDes[['fuga','nombre','dispPrincipal','trash']] = dfDes.loc[indexReg,'D'].str.split(' ',n=3,expand=True)
-                dfDes.loc[indexReg,'nombre'] = dfDes.at[indexReg,'nombre']+' '+ dfDes.at[indexReg,'dispPrincipal']
+                #dfDes[['fuga','nombre','dispPrincipal','trash']] = dfDes.loc[indexReg,'D'].str.split(' ',n=3,expand=True)
+                dfDes[['nombre','dispPrincipal','trash']] = dfDes.loc[indexReg,'D'].str.split(' ',n=2,expand=True)
+                dfDes.loc[indexReg,'nombre'] = dfDes.loc[indexReg,'nombre']+' '+ dfDes.loc[indexReg,'dispPrincipal']
 
                 if vEstEle:
                     nomsRegs = fc.listarComas(dfDes.loc[indexElec,'nombre'].tolist())
@@ -71,28 +75,30 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     for i in  indexElec:
                         nombre = dfDes.at[i,'nombre']
                         dispPrincipal = dfDes.at[i,'dispPrincipal']
-                        w = dfDes.at[i, 'J']
-                        VA = dfDes.at[i,'VA']
+                        w   = dfDes.at[i, 'J']
+                        VA  = dfDes.at[i,'VA']
                         uso = dfDes.at[i,'uso']
                         tol = dfDes.at[i,'tol']
-                        wC =  dfDes.at[i,'wC']
+                        wC  =  dfDes.at[i,'wC']
                         libRegObj.setData(
                             nomReg=nombre, VA=VA, wC=wC , w=w, uso=uso,
                             dispPrincipal=dispPrincipal,
                             tol=tol, vEstEle=vEstEle, vEstMec=vEstMec,
                             DAC=DAC,nSob=nSob,nSub=nSub,tSob=tSob,tSub=tSub)
                         libRegObj.armarTxt()
+                        print(libRegObj.armarTxt())
                         # dfDes.loc[i, 'N'] = libRegObj.txt
-                        porAhorro = libRegObj.sustitutos.at[0, 'kwhAhorroBimestral'] / wC
-                        if libRegObj.sustitutos.accion == "retirar":
-                            dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + fc.selecTxt(libRegObj.libReg,"REGpa01")
-                        elif libRegObj.sustitutos.accion == "compra":
-                            if libRegObj.sustitutos.tipo == "Protector":
-                                potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa02").replace("[recomendacion]", fc.ligarTextolink("Protector de voltaje",libRegObj.sustitutos.at[0, "link"]))
-                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
-                            elif libRegObj.sustitutos.tipo == "Regulador":
-                                potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa03").replace("[recomendacion]",fc.ligarTextolink("Regulador", libRegObj.sustitutos.at[ 0, "link"]))
-                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
+                        if not libRegObj.sustitutos.empty:
+                            porAhorro = libRegObj.sustitutos.at[0, 'kwhAhorroBimestral'] / wC
+                            if libRegObj.sustitutos.accion == "retirar":
+                                dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + fc.selecTxt(libRegObj.libReg,"REGpa01")
+                            elif libRegObj.sustitutos.accion == "compra":
+                                if libRegObj.sustitutos.tipo == "Protector":
+                                    potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa02").replace("[recomendacion]", fc.ligarTextolink("Protector de voltaje",libRegObj.sustitutos.at[0, "link"]))
+                                    dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
+                                elif libRegObj.sustitutos.tipo == "Regulador":
+                                    potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa03").replace("[recomendacion]",fc.ligarTextolink("Regulador", libRegObj.sustitutos.at[ 0, "link"]))
+                                    dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
 
                         dfDes.loc[i,'A'] = libRegObj.atacable
 
@@ -136,7 +142,9 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
 
                 return dfDes.loc[:, 'A':'Q'].copy()
 
+
     else:
+
         return dfDes
 
 class libreriaReguladores:
@@ -290,8 +298,8 @@ class libreriaReguladores:
             print('dispositivo principal vacio')
         elif not isinstance(dispPrincipal,str):
             print('dispositivo principal no es una cadena')
-        elif dispPrincipal not in ['Refrigerador','TV','Congelador','Lavadora','Vala']:
-            print('dispositivo principal no esta en la lista reconocida')
+        # elif dispPrincipal not in ['Refrigerador','TV','Congelador','Lavadora','Vala']:
+        #     print('dispositivo principal no esta en la lista reconocida')
         else:
             val_dispPrincipal=True
         if DAC is None:
@@ -358,7 +366,12 @@ class libreriaReguladores:
                 'ahorroBimestral': reco.ahorroBimestral,
                 'roi': reco.roi,
                 'accion':(['compra']*len(reco))})
+        else:
+            df= pd.DataFrame()
+
         self.sustitutos = self.sustitutos.append(df,ignore_index=True)
+
+
     def checkProtector(self):
         if self.uso == 'elec':
             if (self.nSob<7) and (self.tSob<0.17):
@@ -437,4 +450,4 @@ class libreriaReguladores:
                                 txt = txt + fc.selecTxt(self.libReg, 'REG06').replace('[recomendación]', reemplazo).replace('[nomReg]',self.nomReg)
         txt = txt.replace('\n','<br />')
         self.txt = txt
-
+        print("AQUI3!",txt)
