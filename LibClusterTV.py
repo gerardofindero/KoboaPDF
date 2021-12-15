@@ -51,13 +51,15 @@ def recoCTV(standby,DAC):
         txt = txt+' El decodificador puede mantenerse apagado y prenderse el domingo en la madrugada para actualizarse. <br />'
     if 'consola' or 'nintendo' in listaDispositivos:
         txt = txt+' Lo mejor es mantener completamente apagada la consola, muchas veces se queda en modo espera. <br />'
-    """
+    
     txt=txt.replace("[recomendacion]",fc.ligarTextolink("Timer inteligente",links.iat[0,2]))
     if len(listaDispositivos)>1:
         txt = txt.replace('{el/los}','los').replace("{s}",'s').replace("{n}","n")
     else:
         txt = txt.replace('{el/los}', 'el').replace("{s}", '').replace("{n}", "")
-        PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+    """
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+
     if "timer" in txt:
         PotAhorro.loc[0,'%Ahorro']   = 0.33
         PotAhorro.loc[0,"kwhAhorro"] = ahorroBimestral
