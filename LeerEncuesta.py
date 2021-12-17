@@ -122,7 +122,7 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='4'
+    Opcion='6'
 #######################
 
 
@@ -159,6 +159,12 @@ if __name__ == '__main__':
     if Opcion == '5':
         leer_resumen(NCliente)
 
+###########################################
+    if Opcion == '6':
+        from libBomGrav import armarTxt
+        Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
+        txt, PotAhorro = armarTxt(100,20,Claves)
+        print(txt)
 
 
 
