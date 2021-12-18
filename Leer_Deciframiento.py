@@ -5,15 +5,16 @@ from Carpeta_Clientes import carpeta_clientes
 def leer_deciframiento(Cliente):
     archivo_resultados =  carpeta_clientes(Cliente)
     Exx = pd.read_excel(archivo_resultados, sheet_name='Desciframiento')
-    #ExL = pd.read_excel(archivo_resultados, sheet_name='Lista')
+    ExL = pd.read_excel(archivo_resultados, sheet_name='Resumen')
 
     Tarifa =Exx.columns[6]
 
     Dic = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L','M','N','O','P','Q']
     Exx.columns = Dic
+    ExL.columns = Dic
     Consumo=Exx.loc[1,['C']]
     Costo=Exx.loc[1,['D']]
-    Solar =Exx.loc[2, ['G']]
+    Solar =ExL.loc[14, ['L']]
     Voltaje = Exx.loc[1, ['G']]
     Exx.dropna(subset=['C'],inplace=True)
     #Exx.fillna(0,inplace=True)
@@ -24,8 +25,12 @@ def leer_deciframiento(Cliente):
     Aparatos = Aparatos[~Aparatos['B'].str.contains('Codigo', regex=False, na=False)]
     Aparatos.drop([0,1],inplace=True)
     ConsumoFugas=Fugas['K'].sum()
+    SolarB=False
+    print(Solar)
+    if float(Solar)>0:
+        SolarB=True
 
-    return Aparatos,Luces,Fugas,Consumo,Costo,Tarifa, ConsumoFugas, Solar,Voltaje
+    return Aparatos,Luces,Fugas,Consumo,Costo,Tarifa, ConsumoFugas, SolarB,Voltaje
 
 def leer_potencial(Cliente):
     archivo_resultados = carpeta_clientes(Cliente)
@@ -54,14 +59,14 @@ def leer_solar(Cliente):
                         columns=['F1','F2','F3','Total'])
 
     DSolar.loc['Produccion','F1'] = Exx.loc[1, ['J']][0]
-    DSolar.loc['MaxW', 'F1']      = Exx.loc[7, ['J']][0]
-    DSolar.loc['MaxkWh', 'F1']    = Exx.loc[3, ['J']][0]
-    DSolar.loc['Min', 'F1']       = Exx.loc[5, ['J']][0]
+    DSolar.loc['MaxW', 'F1']      = Exx.loc[9, ['J']][0]
+    DSolar.loc['MaxkWh', 'F1']    = Exx.loc[5, ['J']][0]
+    DSolar.loc['Min', 'F1']       = Exx.loc[7, ['J']][0]
 
     DSolar.loc['Produccion', 'F2']= Exx.loc[1, ['K']][0]
-    DSolar.loc['MaxW', 'F2']      = Exx.loc[7, ['K']][0]
-    DSolar.loc['MaxkWh', 'F2']    = Exx.loc[3, ['K']][0]
-    DSolar.loc['Min', 'F2']       = Exx.loc[5, ['K']][0]
+    DSolar.loc['MaxW', 'F2']      = Exx.loc[9, ['K']][0]
+    DSolar.loc['MaxkWh', 'F2']    = Exx.loc[5, ['K']][0]
+    DSolar.loc['Min', 'F2']       = Exx.loc[7, ['K']][0]
 
     DSolar.loc['Produccion', 'F3']  = Exx.loc[1, ['L']][0]
     DSolar.loc['MaxW', 'F3']        = Exx.loc[7, ['L']][0]

@@ -151,36 +151,26 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     Lib =  libreriaL()
     Clav=''
     TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
-    ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
-    #ENTY = EntyTip.split()
+    #ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
+    ENTY = EntyTip.split()
     tipo=''
     entrada=''
     Solar=False
     Sensor=False
 
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
-    # if len(EntyTip.split()) == 3:
-    #     Clav = EntyTip.split()
-    # Clave=Clav[2]
-    # print(Clave)
-    # if len(EntyTip.split()) == 2:
-    #     ENTY = EntyTip.split()
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
-
-
-
-
     if Numero==0:
         Numero=0.001
     Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
 
     TextoSolar=''
-    # if 'NOC' in texto:
-    #     TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
-    #     Solar=True
-    TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC)
+    if 'NOC' in texto:
+        TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
+        Solar=True
+    TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC,hrsUso=uso)
     if TextoSensor!='X':
         Sensor=True
 

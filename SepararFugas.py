@@ -68,6 +68,7 @@ def separar_fugasBB(Equip):
     Equipos['Lugar']  =  Aparatos['Zona']
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
     Equipos['Texto']  =  Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
+
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] =  Equipos['Equipo'].str.replace('Otro', "", regex=True)
     Equipos['Claves'] =  Aparatos['Clave']
