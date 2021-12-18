@@ -31,6 +31,7 @@ def Crear_Kobo(NCliente):
     Cal    = pd.DataFrame()
     Aire   = pd.DataFrame()
     Segu = pd.DataFrame()
+    Solar= pd.DataFrame()
     Nota = pd.DataFrame()
     pd.set_option('display.max_columns', 15)
     Datosa= pd.DataFrame(columns=['Circuito','Tablero'])
@@ -52,7 +53,7 @@ def Crear_Kobo(NCliente):
             Tablero = Excel.loc[i, ['tablero_otro_c_i']]
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
         Datos, fila, filaLib, Fugas, ilum, clust, coci, comu,esp,lava,refri,\
-        bomba,pcs,cal,segu,aires,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
+        bomba,pcs,cal,segu,aires,solar,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
         Ilum  =  Ilum.append(ilum)
         Clust =  Clust.append(clust)
         Coci  =  Coci.append(coci)
@@ -65,6 +66,7 @@ def Crear_Kobo(NCliente):
         Cal = Cal.append(cal)
         Segu = Segu.append(segu)
         Aire = Aire.append(aires)
+        Solar =Solar.append(solar)
         Nota=Nota.append(notass)
         Datosa =Datosa.append(Datos, ignore_index=True)
         Circuito = Excel.loc[i, ['circuito_c_i']]
@@ -72,7 +74,7 @@ def Crear_Kobo(NCliente):
         FugasT = FugasT.append(Fugas, ignore_index=True)
     writer.save()
     Tluz=condicionesLuces(Ilum)
-    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
+    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz,Solar)
 
 
 
@@ -98,11 +100,12 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
-    NCliente = Cliente_Prueba()
-    #NCliente = "Celia Hamui"
+    #NCliente = Cliente_Prueba()
+    NCliente = "Sixto Rafael"
     #NCliente = "Alvaro Cepeda"
     #NCliente = "Laura Gomez"
     #NCliente = "Victor Topete"
+    #NCliente  = "Cecilia Arenas"
 
     return NCliente
 ####################################################################################
@@ -122,7 +125,7 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='4'
+    Opcion='2'
 #######################
 
 
@@ -148,8 +151,7 @@ if __name__ == '__main__':
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
-        solar='No'
-        if solar =='Si':
+        if solar:
             datosSolar = leer_solar(NCliente)
 
         CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)

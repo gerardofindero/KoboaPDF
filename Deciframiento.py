@@ -5,10 +5,11 @@ import pandas as pd
 import xlwings
 from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
+from Leer_Deciframiento import leer_solar
 from Carpeta_Clientes import carpeta_clientes
 
 #### Excel
-def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
+def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
 
     FugasC=Fugas.copy()
     LuminariasC=Luminarias.copy()
@@ -25,6 +26,53 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     gris = (200, 200, 200)
     Consumo_bimestral = '=Resumen!A9'
     Tarifa = leer_tarifa_Dac()
+###################SOLAR
+    if not Solar.empty:
+        try:
+            workbook.sheets.add('Solar')
+        except:
+            print('Hoja ya creada')
+        print(Solar)
+        Sheet1 = workbook.sheets['Solar']
+        Sheet1.range('A1').color = gris
+        Sheet1.range('A1').value = 'Solar'
+        Sheet1.range('A4').color = gris
+        Sheet1.range('A4').value = 'No. Modulos'
+        Sheet1.range('B4').value = Solar.loc['Modulos','Cantidad']
+        Sheet1.range('A5').color = gris
+        Sheet1.range('A5').value = 'Potencia'
+        Sheet1.range('B5').value = Solar.loc['Modulos','Potencia']
+        Sheet1.range('A6').color = gris
+        Sheet1.range('A6').value = 'Sombreados'
+        Sheet1.range('B6').value = str(Solar.loc['Modulos','Sombreado'])
+        Sheet1.range('A7').color = gris
+        Sheet1.range('A7').value = 'Inclinacion'
+        Sheet1.range('B7').value = str(Solar.loc['Modulos','Inclinacion'])
+        Sheet1.range('A8').color = gris
+        Sheet1.range('A8').value = 'Orientacion'
+        Sheet1.range('B8').value = str(Solar.loc['Modulos','Orientacion'])
+        Sheet1.range('A9').color = gris
+        Sheet1.range('A9').value = 'Hot Spot'
+        Sheet1.range('B9').value = str(Solar.loc['Modulos','Hotspot'])
+        Sheet1.range('D4').color = gris
+        Sheet1.range('D4').value = 'Arreglo Notas'
+        Sheet1.range('E4').value = str(Solar.loc['Modulos','Arreglo'])
+        Sheet1.range('D5').color = gris
+        Sheet1.range('D5').value = 'Sombreado Notas'
+        Sheet1.range('E5').value = str(Solar.loc['Modulos','Sombreado_Notas'])
+        Sheet1.range('D6').color = gris
+        Sheet1.range('D6').value = 'Interconexion Notas'
+        Sheet1.range('E6').value = str(Solar.loc['Modulos','Inter_Notas'])
+        Sheet1.range('D7').color = gris
+        Sheet1.range('D7').value = 'Hotspot Notas'
+        Sheet1.range('E7').value = str(Solar.loc['Modulos','Hotspot_Notas'])
+        Sheet1.range("$D$4:$E$9").api.Borders.Weight = 2
+        Sheet1.range("$A$4:$B$9").api.Borders.Weight = 2
+        Sheet1.range('E1').column_width = 100
+        Sheet1.range('A1').column_width = 30
+        Sheet1.range('D1').column_width = 30
+        Sheet1.range('$E$4:$E$9').api.WrapText = True
+
     try:
         workbook.sheets.add('Desciframiento')
     except:
@@ -58,6 +106,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
     Sheet1.range('F3').color = gris
     Sheet1.range('G2').value = '1'
     Sheet1.range('G3').value = '1'
+
 
 
     Sheet1.range(6, 16).value = 'Descripcion de Señal'
@@ -235,7 +284,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente)    :
 ##################################################################################################################
 # FUNCION QUE CREA PESTANA DE EXCEL 'DESCIFRAMIENTO'
 
-def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz):
+def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz,Solar):
 
     Luminaria=Luz.copy()
     Luminarias = pd.DataFrame(
@@ -401,6 +450,6 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
 
 
-    ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente)
+    ExcelDes(Equipos, Luminarias, Fugas, archivo_resultados, Cliente,Solar)
 
 

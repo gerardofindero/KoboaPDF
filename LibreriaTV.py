@@ -112,30 +112,54 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         # print("_________________")
         # print(Percentil)
         # print(uso)
+        uniones=0
         if Percentil < 0.9:
             Texto = Texto + ' ' + lib.loc['TV01A', 'Texto'] # Tu TV es de tecnología eficiente.
+            uniones=1
 
         else:
-            Texto = Texto + 'TV02A ' + lib.loc['TV02A', 'Texto'] #  TV es de baja eficiencia.
+            #ClaveLib='TV02A'
+            ClaveLib=''
+            Texto = Texto +ClaveLib + lib.loc['TV02A', 'Texto'] #  TV es de baja eficiencia.
+            uniones=2
             if ROI>18:
-                Texto = Texto + 'TV04A' + lib.loc['TV04A', 'Texto'] #  Sin embargo, reemplazar esta TV tendría un retorno en el largo plazo ...
+                #ClaveLib='TV04A'
+                ClaveLib=''
+                Texto = Texto + ClaveLib+ lib.loc['TV04A', 'Texto'] #  Sin embargo, reemplazar esta TV tendría un retorno en el largo plazo ...
             else:
-                Texto = Texto + 'TV02C' + lib.loc['TV02C', 'Texto'] + 'TV04B' + lib.loc['TV04B', 'Texto']
+                #ClaveLib='TV02C'
+                ClaveLib=''
+                Texto = Texto + ClaveLib + lib.loc['TV02C', 'Texto'] + 'TV04B' + lib.loc['TV04B', 'Texto']
 
         if uso>=3.5:
-            Texto = Texto +'TV03B'+ lib.loc['TV03B','Texto']
+            #ClaveLib='TV03B'
+            ClaveLib=''
+            Texto = Texto +ClaveLib+ lib.loc['TV03B','Texto']
 
         if 1<=uso<3.5:
-            Texto = Texto +'TV03A'+ lib.loc['TV03A','Texto']
+            #ClaveLib='TV03A'
+            ClaveLib=''
+            Texto = Texto +ClaveLib+ lib.loc['TV03A','Texto']
 
         if uso < 1:
-            Texto = Texto +'TV03C'+ lib.loc['TV03C','Texto']
+            #ClaveLib='TV03C'
+            ClaveLib=''
+            Texto = Texto +ClaveLib+ lib.loc['TV03C','Texto']
 
         if Standby>1:
-            Texto = Texto + ' ' + lib.loc['TV05A', 'Texto']
+            #ClaveLib='TV05A'
+            ClaveLib=''
+            Texto = Texto + ClaveLib + lib.loc['TV05A', 'Texto']
     
     Ahorro = Ahorro*100
+    if uniones==0:
+        Texto = Texto.replace('[INTRO]', 'Tu TV ')
+    if uniones==1:
+        Texto = Texto.replace('[INTRO]', ', pero ')
+    if uniones==2:
+        Texto = Texto.replace('[INTRO]', ', además ')
 
+    Texto = Texto.replace('[POT]',str(int(Potencia)))
     Texto = Texto.replace('[/n]','<br />')
     Texto = Texto.replace('[...]', ' ')
     Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
