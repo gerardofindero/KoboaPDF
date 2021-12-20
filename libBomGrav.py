@@ -186,7 +186,36 @@ def armarTxt(kwh,hrsUso,Claves):
             txt = txt.replace("[ahorro]",str(ahorro))
             txt = txt.replace("[recomendacion]",recomendacion)
 
-
+########################### potencial de ahorro #######################################################################
+    medidas=""
+    if termografia!="":
+        medidas = medidas + "\n- Mantenimeinto de la bomba (cebado, capacitor, bobinas y rodamiento)"
+    if (sarro == "si") or (dureza=="alto"):
+        medidas = medidas + "\n- Liempeiza de y destapado de tuberías"
+    if valvulas == "":
+        medidas = medidas + "\n- Mantener las valvulas de paso abiertas"
+    if (fugasTer == "si") or (fugasSup== "si"):
+        medidas = medidas + "\n- Reparar las fugas existentes"
+    if control != "":
+        if cierra == "no":
+            medidas = medidas +"\n- Cambiar el empaque de la valvula"
+        if pegados == "si":
+            medidas == medidas +"\n- Adecuar electroniveles para evitar que hagan corto"
+        if contrapeso == "no":
+            medidas = medidas + "\n- Conseguir el contrapeso para el electronivel"
+        if control == "ninguno":
+            medidas = medidas + "\n- Instalar un electronivel para regular los siclos de encendido"
+    try:
+        ahorro
+    except:
+        print("no hubo bomba viable")
+    else:
+        medidas = medidas +"\n- Cambiando por la bomba de la amrca"+ dbB.at[idxMaxAhorro,"Marca"]+" modelo "+ dbB.at[idxMaxAhorro,"Modelo"]
+    if medidas != "":
+        PotAhorro.loc[0,"%Ahorro"]     = 1-((w*60/1000)/kwh)
+        PotAhorro.loc[0,"kwhAhorrado"] = PotAhorro.at[0,"%Ahorro"] * kwh
+        PotAhorro.loc[0,"Accion"]      = fc.selecTxt(lib,"BOMpa01").replace("[%ahorro]",str(PotAhorro.at[0,"%Ahorro"])).replace("[medidas]",medidas)
+    #print(PotAhorro)
     return [txt,PotAhorro]
 
 """
