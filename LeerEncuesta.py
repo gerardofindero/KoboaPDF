@@ -7,7 +7,7 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial,lee
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
-
+import funcionesComunes as fc
 
 
 ####################  FUNCIONES ###################################
@@ -168,7 +168,8 @@ if __name__ == '__main__':
         print(txt)
         print(PotAhorro.at[0,"Accion"])
         """
-
+        df = fc.dataClima(CP=str(25740))
+        print(df.feelslike)
 
 
 
