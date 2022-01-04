@@ -38,6 +38,7 @@ from reportlab import platypus
 from  reportlab.lib.styles import ParagraphStyle as PS
 from reportlab.platypus import SimpleDocTemplate
 import libreriaAiresAcondicionados as laa
+
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
                     datefmt='%Y-%m-%d %H:%M:%S')
@@ -570,7 +571,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
 
         #largoTx=len(tex)
         tex,conteoled,conteoNOled,conteoROI = \
-            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso,luz[15]) # Está usando columnas, no renglones para los índices
+            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso,luz[16]) # Está usando columnas, no renglones para los índices
         largoTx=sys.getsizeof(tex)
 
 
@@ -653,7 +654,6 @@ def iluminacion(canvas, width, height, luces,Tarifa):
                 canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 50, 480,520 )
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
             else:
-                print(largo)
                 canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, (largo)*50)
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
                 # canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, ((altura+15) - ((largo-1) * 60)), 480, ((largo) * 60))
@@ -682,11 +682,11 @@ def Dicc_Aparatos(nombre):
             nombre_ = a
 
 
-    if 'cabello' in nombre_ or 'pelo' in nombre_:
-        if 'secador' in nombre_:
-            nombre_= 'pelo'
-        if 'plancha' in nombre_:
-            nombre_= 'planchacabello'
+        if 'cabello' in nombre_ or 'pelo' in nombre_:
+            if 'secador' in nombre_:
+                nombre_= 'pelo'
+            if 'plancha' in nombre_:
+                nombre_= 'planchacabello'
 
 
     return nombre_
@@ -722,16 +722,16 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
         Consejos, PotAhorro = recoDispensadores(consumo)
-        #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
+
         #print(PotAhorro.at[0,"Accion"])
     if ClavesS[0] == 'BP':
         Consejos, PotAhorro = recoPresu(Claves,consumo)
     if ClavesS[0] == 'AA':
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
 
-    print(PotAhorro)
+
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
@@ -742,9 +742,6 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     """
     return Consejos,Notas
 ###################RECOMENDACIONES #######################################
-
-
-
 
 def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     """ Se crean las páginas en donde se muestran los consumos que ocupan una página completa """
@@ -918,10 +915,16 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura-90, canvas)
         parrafos = []
-        # Automatizacion ######################
+
+
+    # Automatizacion ######################
+
         if not pd.isna(Claves):
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
-        # Automatizacion  ######################
+
+    # Automatizacion  ######################
+
+
         if nota == '.':
             parrafos.append(Paragraph('El consumo de tu equipo es bastante bueno, continua con su buen uso', Estilos.cuadros_bajo))
         else:
@@ -1099,11 +1102,12 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     Lugares= LFugas['E'].tolist()
     vEstEle=False
     vEstMec=False
-    nSob=500
-    nSub=500
-    tSob=10000
-    tSub=10000
-    sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
+    nSob=100
+    nSub=100
+    tSob=5
+    tSub=5
+    #sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
+    #sepNobAta(fugas_,tarifa)
 
     for lista in Lugares:
         fugas= fugas_.loc[fugas_['E']==lista]
@@ -1617,6 +1621,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     if solar:
         print("Creando hojas solar")
         Solar(canvas,tarifa,costo,consumo,SolarS)
+
     porF=por_A_fugas(fugas)
     print("Generando hojas de Aparatos...")
     aparatosG,aparatosM, aparatosC, aparatos= Clasificador(aparatos)

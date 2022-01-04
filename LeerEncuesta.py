@@ -7,7 +7,7 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial,lee
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
-import funcionesComunes as fc
+
 
 
 ####################  FUNCIONES ###################################
@@ -31,6 +31,7 @@ def Crear_Kobo(NCliente):
     Cal    = pd.DataFrame()
     Aire   = pd.DataFrame()
     Segu = pd.DataFrame()
+    Solar= pd.DataFrame()
     Nota = pd.DataFrame()
     pd.set_option('display.max_columns', 15)
     Datosa= pd.DataFrame(columns=['Circuito','Tablero'])
@@ -52,7 +53,7 @@ def Crear_Kobo(NCliente):
             Tablero = Excel.loc[i, ['tablero_otro_c_i']]
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
         Datos, fila, filaLib, Fugas, ilum, clust, coci, comu,esp,lava,refri,\
-        bomba,pcs,cal,segu,aires,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
+        bomba,pcs,cal,segu,aires,solar,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
         Ilum  =  Ilum.append(ilum)
         Clust =  Clust.append(clust)
         Coci  =  Coci.append(coci)
@@ -65,6 +66,7 @@ def Crear_Kobo(NCliente):
         Cal = Cal.append(cal)
         Segu = Segu.append(segu)
         Aire = Aire.append(aires)
+        Solar =Solar.append(solar)
         Nota=Nota.append(notass)
         Datosa =Datosa.append(Datos, ignore_index=True)
         Circuito = Excel.loc[i, ['circuito_c_i']]
@@ -72,7 +74,7 @@ def Crear_Kobo(NCliente):
         FugasT = FugasT.append(Fugas, ignore_index=True)
     writer.save()
     Tluz=condicionesLuces(Ilum)
-    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
+    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz,Solar)
 
 
 
@@ -83,13 +85,15 @@ def Crear_Kobo(NCliente):
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
-    # equipo='Refris'
+    equipo='Refris'
     # equipo='Regulador'
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
     # equipo='Reguladores_y_No-Breaks'
+
     equipo="Aires"
+
 
     Cliente = 'Bot_'+equipo
     return Cliente
@@ -99,11 +103,12 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
-    NCliente = Cliente_Prueba()
-    #NCliente = "Celia Hamui"
+    #NCliente = Cliente_Prueba()
+    #NCliente = "Carinne Lamadieu"
     #NCliente = "Alvaro Cepeda"
-    #NCliente = "Laura Gomez"
-    #NCliente = "Victor Topete"
+    #NCliente = "Jorge Burillo"
+    #NCliente = "Alejandra Hanhausen"
+    NCliente  = "Ana Isabel"
 
     return NCliente
 ####################################################################################
@@ -123,7 +128,8 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='6'
+    Opcion='2'
+
 #######################
 
 
@@ -149,8 +155,7 @@ if __name__ == '__main__':
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
-        solar='No'
-        if solar =='Si':
+        if solar:
             datosSolar = leer_solar(NCliente)
 
         CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)
@@ -162,18 +167,19 @@ if __name__ == '__main__':
 
 ###########################################
     if Opcion == '6':
-        """
-        from libBomGrav import armarTxt
-        Claves = "600,si,si,si,ninguno,si,alto,abiertas,si,si,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
-        txt, PotAhorro = armarTxt(100,20,Claves)
-        print(txt)
-        print(PotAhorro.at[0,"Accion"])
-        """
+        #from libBomGrav import armarTxt
+        #Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
+        #txt, PotAhorro = armarTxt(100,20,Claves)
+        #print(txt)
+
+        #print(PotAhorro.at[0,"Accion"])
+        
         # from funcionesComunes import dataClima as dc
         # wd = dc(CP="10340",Period="today")
 
         import libreriaAiresAcondicionados as libAA
         print(libAA.armarTxt())
+
 
 
 

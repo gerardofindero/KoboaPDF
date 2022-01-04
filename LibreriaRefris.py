@@ -126,8 +126,8 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
-        TRef=Datos[0]
-        TCong = Datos[1]
+        TCong=Datos[0]
+        TRef = Datos[1]
         NomCom=Datos[2]
         TempCom=Datos[3]
         Volumen=Datos[4]
@@ -158,9 +158,9 @@ def LeeClavesR(Claves,notas,nombre,consumo):
 
         #Temperatura refrigerador mal
         if 'TRM' in Claves:
-            Texto= Texto+' '+lib.loc['REF14','E']+' '+lib.loc['REF16','E']+' '+lib.loc['REF18','E']
+            Texto= Texto+' '+lib.loc['REF14','Texto']+' '+lib.loc['REF16','Texto']+' '+lib.loc['REF18','Texto']
             #Texto = Texto.replace('[EQQ]', 'refrigerador')
-            TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
+            TextoF= TextoF+' '+lib2.loc['REFF22','Texto']
 
         #Temperatura refrigerador bien
         # if 'TRB' in Claves:
@@ -295,6 +295,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         Texto = Texto.replace('[P]', NomCom)
         TextoF = TextoF.replace('[P]', NomCom)
         TextoF = TextoF.replace('[R]', EQR)
+        TextoF = TextoF.replace('[TR]', TRef)
 
         Texto = Texto.replace('[/n]', '<br /><br />')
         Texto = Texto.replace('[...]', ' ')

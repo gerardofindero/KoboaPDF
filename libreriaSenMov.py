@@ -3,9 +3,10 @@ import pandas as pd
 from scipy.stats import norm
 import funcionesComunes as fc
 import unicodedata
-def recoSensores (kwh = None,w = None, lugar = None ,dac = None,hrsUso=None):
+def recoSensores (kwh,w, lugar ,dac,hrsUso):
     ls=libreriaSensores()
     ls.setData(kwh,w,lugar, dac,hrsUso)
+    print(lugar)
     txt=ls.armarTxt()
     return txt.replace("<br />","")
 
@@ -36,6 +37,8 @@ class libreriaSensores:
                 sheet_name='Calculadora')
         self.stats = self.stats.loc[self.stats.loc[:, "f"] == "s", :].reset_index(drop=True).copy()
         self.v=False
+
+
     def val(self, kwh, w, lugar,dac):
         val_kwh   = False
         val_w     = False
@@ -81,7 +84,7 @@ class libreriaSensores:
         else:
             self.v = False
 
-    def setData(self, kwh = None, w=None, lugar=None,dac=None,hrsUso=None):
+    def setData(self, kwh, w, lugar,dac,hrsUso):
         self.val(kwh,w,lugar,dac)
         if self.v:
             self.kwh   = kwh
