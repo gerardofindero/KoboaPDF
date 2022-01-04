@@ -120,11 +120,11 @@ def caritaRefri(consumo,Claves):
     Volumen=float(Datos[4])*0.000022
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-    if percentil>=0.99:
+    if percentil>=0.9:
         Ca = 3
-    if 0.5<=percentil<0.99:
+    if 0.3<=percentil<0.9:
         Ca = 2
-    if 0.5 > percentil:
+    if 0.3 > percentil:
         Ca = 1
 
     return Ca

@@ -467,6 +467,8 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
     costado(canvas)
     canvas.showPage()
 
+
+##########################################################################
 def iluminacion(canvas, width, height, luces,Tarifa):
     """ Se crean las páginas en donde se muestra el consumo de luz a detalle """
     Luces = luces.copy()
@@ -657,10 +659,6 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             else:
                 canvas.drawImage("Imagenes/Figuras/lucesabajo.png", 70, 500-((largo-1)*50), 480, (largo)*50)
                 canvas.drawImage("Imagenes/Figuras/lucesarriba.png", 70, 548 , 480, 30)
-                # canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, ((altura+15) - ((largo-1) * 60)), 480, ((largo) * 60))
-                # canvas.line(254, altura-((largo-4)*40), 254, altura-((largo-4)*40))
-                # canvas.line(154, altura-((largo-4)*40), 154, altura-((largo-4)*33))
-                # canvas.line(205, altura-((largo-4)*40), 205, altura-((largo-4)*33))
 
             texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
             texto('Continuación...', 12, gris, 'Montserrat-B', 60, height - 240, canvas)
@@ -669,7 +667,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     canvas.showPage()
     return carita
 
-
+##########################################################################
 def Dicc_Aparatos(nombre):
     nombre_ = unidecode(nombre.lower())
     abreviados = ['aspiradora','tv', 'bomba', 'calentador', 'refrigerador', 'estufa', 'luces', 'computadora',
@@ -742,8 +740,10 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     recoTirasLed en libreriaTirasLED
     """
     return Consejos,Notas
-###################RECOMENDACIONES #######################################
 
+
+
+###################RECOMENDACIONES #######################################
 def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     """ Se crean las páginas en donde se muestran los consumos que ocupan una página completa """
 
@@ -816,28 +816,41 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
-        canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
-        texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
+        if 'refrigerador' in nombre_:
 
+            canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png",50 , 50, 500, 400)
+            texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', 200, height * 0.5, canvas)
+            if len(Consejos)<1200:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+            elif 1700>=len(Consejos)>=1200:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+            else:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
+            frame = Frame(60, 80, 480, 330,showBoundary = 0 )
+            frame.addFromList(parrafos, canvas)
+
+        else:
+            canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
+            texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
 # Automatizacion  ######################
 
-        if len(Consejos)<700:
-            parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-        elif 1100>=len(Consejos)>=700:
-            parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
-        else:
-            parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
-        frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
-        frame.addFromList(parrafos, canvas)
+            if len(Consejos)<700:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+            elif 1100>=len(Consejos)>=700:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+            else:
+                parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
+            frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
+            frame.addFromList(parrafos, canvas)
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)
         costado(canvas)
         canvas.showPage()
 
-
+##########################################################################
 def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     """ Se crean las hojas con aparatos de consumo bajo """
     Medio=False
@@ -874,12 +887,6 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
             frame = Frame(60, altura -38, 500, 100)
             frame.addFromList(parrafos, canvas)
 
-        # elif 80>len(nombre) >= 60 :
-        #     #texto(nombre.upper(), 15, azul_1, 'Montserrat-B', 60, altura + 25, canvas)
-        #     parrafos=[]
-        #     parrafos.append(Paragraph(nombre.upper(), Estilos.titulos6))
-        #     frame = Frame(60, altura-35 , 500, 100)
-        #     frame.addFromList(parrafos, canvas)
 
         elif len(nombre) >= 60 :
             #texto(nombre.upper(), 15, azul_1, 'Montserrat-B', 60, altura + 25, canvas)
@@ -967,9 +974,6 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     else:
         largo = len(aparatosC)-3
 
-
-
-
     for index, aparato in aparatosC.iterrows():
         nombre = aparato[3] +' en '+aparato[4]
         carita = aparato[0]
@@ -1034,9 +1038,10 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if nota == '.':
             parrafos.append(Paragraph('Su consumo es óptimo', Estilos.cuadros_bajo))
         else:
-            if len(nota)<200:
+            if len(nota)<180:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-            elif 200<=len(nota)<350:
+            elif 180\
+                    <=len(nota)<350:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
             else:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))
