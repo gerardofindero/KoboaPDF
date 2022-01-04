@@ -29,6 +29,17 @@ from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
 
+from libreriaTubosFluorescente import recoTuboFluorescente
+from libreriaLucesSolares import recoSolares
+from libreriaBombasPresurizadoras import recoPresu
+#from libreriaClusterTV import armarTexto
+import libreriaClusterTV as CTV
+import libreriaClusterTV as CTV
+from reportlab import platypus
+from  reportlab.lib.styles import ParagraphStyle as PS
+from reportlab.platypus import SimpleDocTemplate
+import libreriaAiresAcondicionados as laa
+
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
                     datefmt='%Y-%m-%d %H:%M:%S')
@@ -714,8 +725,13 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos, PotAhorro = recoDispensadores(consumo)
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
-    # if ClavesS[0] == 'BP':
-    #     Consejos, PotAhorro = recoPresu(Claves,consumo)
+
+        #print(PotAhorro.at[0,"Accion"])
+    if ClavesS[0] == 'BP':
+        Consejos, PotAhorro = recoPresu(Claves,consumo)
+    if ClavesS[0] == 'AA':
+        Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
+
 
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
