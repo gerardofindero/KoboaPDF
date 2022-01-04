@@ -25,7 +25,7 @@ def iluminacion (Excel,Nocircuito):
     Circuito = Excel.loc[Nocircuito]
     Columnas=Excel.columns
     InfoEquipos = Circuito[Columnas.str.contains("iluminacion", case=False)]
-    lista=['incandescente','hal_geno','fluorescente','tira','led']
+    lista=['incandescente','hal_geno','fluorescente','tira_led','led']
     listaTubos=['t2','t5','t8','t12']
     # Aparatos_C.loc[NombreVar, 'Datos' ]=''
 ####Lum1
@@ -35,12 +35,14 @@ def iluminacion (Excel,Nocircuito):
     while esc==True:
         lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas,InfoEsc=escenario(InfoEquipos,j)
         tec=tec.split()
-
+        print(tec)
         for i in tec:
             for k in lista:
                 if i==k:
                     if k=='hal_geno':
                         k='halogenos'
+                    if k=='tira_led':
+                        k='tira'
 
                     tipo=k.capitalize()
                     Esc = 'E'+ str(j+1)
@@ -75,15 +77,11 @@ def iluminacion (Excel,Nocircuito):
                         Aparatos_C.loc[NombreVar, 'CodigoN']      = InfoLum.filter(regex='codigofindero_')[0]
                     else:
                         Aparatos_C.loc[NombreVar, 'CodigoN']      = InfoLum.filter(regex='codigofindero2_')[0]
-
                     if InfoLum.filter(regex='otrospendientes')[0]=='si':
-                        Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+\
-                                                                            ', '+InfoLum.filter(regex='otroscodigos')[0]
+                        Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+', '+InfoLum.filter(regex='otroscodigos')[0]
                         Aparatos_C.loc[NombreVar, 'Notas']        = str(Aparatos_C.loc[NombreVar, 'Notas'])+\
                                                                      '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
-
-
-                    if not k=='led':
+                    if k!='led' and k!='tira' :
                         Aparatos_C.loc[NombreVar, 'Gasto']        = InfoLum.filter(regex='gasto')[0]
                         Aparatos_C.loc[NombreVar, 'Donde']        = InfoLum.filter(regex='donde_c_i')[0]
                         Aparatos_C.loc[NombreVar, 'DondeDetalle'] = InfoLum.filter(regex='donde_detalle')[0]
@@ -117,6 +115,9 @@ def iluminacion (Excel,Nocircuito):
                             Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info'] +','+InfoLum.filter(regex='funcion')[0]+'/'
                         if 'cajillo' in InfoLum.filter(regex='donde_c_i')[0]:
                             Aparatos_C.loc[NombreVar, 'Info']         = '/CAJ_si_'+str(InfoLum.filter(regex='cajillo')[0])+'/'
+
+
+
 
                         if k== 'fluorescente':
                             if not InfoLum.filter(regex='disposicion')[0] == 'X':

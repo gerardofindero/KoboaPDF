@@ -48,6 +48,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
     DatosLava   = pd.DataFrame(columns=['Tablero', 'Circuito'])
     DatosBb     = pd.DataFrame(columns=['Tablero', 'Circuito'])
     DatosCal    = pd.DataFrame(columns=['Tablero', 'Circuito'])
+    DatosSol    = pd.DataFrame(columns=['Tablero', 'Circuito'])
     Fugas       = pd.DataFrame(columns=['Tablero','Circuito','Marca','Consumo'])
     nombre='C.'+ str(NomCircuito[0])
     pdcir=pd.DataFrame(columns= [str(tablero[0]), nombre ])
@@ -141,8 +142,13 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
             if indx == 8:
                 print("Solar")
                 Datos_Solar=solar(Excel, Nocircuito, NomCircuito)
+                DatosSol = DatosSol.append(Datos_Solar)
+                DatosSol['Tablero'].fillna(tablero[0], inplace=True)
+                DatosSol['Circuito'].fillna(NomCircuito[0], inplace=True)
+                DatosFun  = DatosFun.append(Datos_Solar, ignore_index=True)
                 Datos_Solar.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_Solar) + 4
+                print(Datos_Solar)
 
             if indx == 9:
                 print('Computo')
@@ -203,4 +209,4 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
     Fugas['Tablero'].fillna(tablero[0], inplace=True)
     Datoss=DatosFun.copy()
     return Datoss, primafila, FilaLib,Fugas,DatosIlu,DatosCL,DatosCoc,\
-           DatosCom,DatosES,DatosLava,DatosRF,DatosBb,DatosPC,DatosCal,DatosSegu,DatosAire,Notas_
+           DatosCom,DatosES,DatosLava,DatosRF,DatosBb,DatosPC,DatosCal,DatosSegu,DatosAire,DatosSol,Notas_
