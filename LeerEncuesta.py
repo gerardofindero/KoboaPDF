@@ -88,7 +88,8 @@ def Cliente_Prueba():
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
-    equipo='Reguladores_y_No-Breaks'
+    # equipo='Reguladores_y_No-Breaks'
+    equipo="Aires"
 
     Cliente = 'Bot_'+equipo
     return Cliente
@@ -168,8 +169,13 @@ if __name__ == '__main__':
         print(txt)
         print(PotAhorro.at[0,"Accion"])
         """
-        df = fc.dataClima(CP=str(25740))
-        print(df.feelslike)
+        # from funcionesComunes import dataClima as dc
+        # wd = dc(CP="10340",Period="today")
+
+        import libreriaAiresAcondicionados as libAA
+        print(libAA.armarTxt())
+
+
 
 
 

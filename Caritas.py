@@ -275,6 +275,14 @@ def caritaHielos(consumo,clave):
     if  20 >= consumo:
         Ca = 1
     return Ca
+def caritaAires(consumo,clave):
+    if consumo>=120:
+        Ca = 3
+    if 70 <=consumo<120:
+        Ca = 2
+    if consumo<70:
+        Ca = 1
+    return Ca
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
