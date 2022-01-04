@@ -1085,7 +1085,7 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     nSub=100
     tSob=5
     tSub=5
-    sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
+    #sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
     #sepNobAta(fugas_,tarifa)
 
     for lista in Lugares:
