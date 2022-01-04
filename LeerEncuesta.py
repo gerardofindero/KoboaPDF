@@ -102,12 +102,12 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
-    #NCliente = Cliente_Prueba()
+    NCliente = Cliente_Prueba()
     #NCliente = "Carinne Lamadieu"
     #NCliente = "Alvaro Cepeda"
     #NCliente = "Jorge Burillo"
     #NCliente = "Alejandra Hanhausen"
-    NCliente  = "Ana Isabel"
+    #NCliente  = "Ana Isabel"
 
     return NCliente
 ####################################################################################
