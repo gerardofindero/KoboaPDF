@@ -92,10 +92,9 @@ def Cliente_Prueba():
     # equipo='Bombas_Presurizadoras'
     # equipo='Reguladores_y_No-Breaks'
 
-    equipo="Aires"
 
+    Cliente = 'Bot_'+ equipo
 
-    Cliente = 'Bot_'+equipo
     return Cliente
 
 
@@ -128,7 +127,7 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='2'
+    Opcion='4'
 
 #######################
 

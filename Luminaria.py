@@ -26,6 +26,10 @@ def iluminacion (Excel,Nocircuito):
     Columnas=Excel.columns
     InfoEquipos = Circuito[Columnas.str.contains("iluminacion", case=False)]
     lista=['incandescente','hal_geno','fluorescente','tira_led','led']
+    AccesoN=['necesita_remoci_n_de_estructuras__p__ej_','con_andamios','luces_indirectas_de_dif_cil_acceso__p__e',
+             'dentro_de_alberca','otro']
+    AccesoS=['a_la_mano','con_escalera_mediana__1_5_m','con_escalera_larga__1_5_m']
+
     listaTubos=['t2','t5','t8','t12']
     # Aparatos_C.loc[NombreVar, 'Datos' ]=''
 ####Lum1
@@ -35,7 +39,6 @@ def iluminacion (Excel,Nocircuito):
     while esc==True:
         lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas,InfoEsc=escenario(InfoEquipos,j)
         tec=tec.split()
-        print(tec)
         for i in tec:
             for k in lista:
                 if i==k:
@@ -81,6 +84,10 @@ def iluminacion (Excel,Nocircuito):
                         Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+', '+InfoLum.filter(regex='otroscodigos')[0]
                         Aparatos_C.loc[NombreVar, 'Notas']        = str(Aparatos_C.loc[NombreVar, 'Notas'])+\
                                                                      '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
+
+                    if k=='tira':
+                        Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
+
                     if k!='led' and k!='tira' :
                         Aparatos_C.loc[NombreVar, 'Gasto']        = InfoLum.filter(regex='gasto')[0]
                         Aparatos_C.loc[NombreVar, 'Donde']        = InfoLum.filter(regex='donde_c_i')[0]
@@ -170,7 +177,7 @@ def iluminacion (Excel,Nocircuito):
                                 if not InfoLum.filter(regex=disposicion)[0] == 'X':
                                     Aparatos_C.loc[NombreVar, 'Disposicion']        = Aparatos_C.loc[NombreVar, 'Funcion']  +','+InfoLum.filter(regex=funcion)[0]
                                     Aparatos_C.loc[NombreVar, 'Info']               = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex=disposicion)[0]
-                                print(InfoLum.filter(regex=Portalamp)[0])
+
                                 if InfoLum.filter(regex=Portalamp)[0] != 'sin' :
                                     if InfoLum.filter(regex=Portalamp)[0] != 'X':
                                         Aparatos_C.loc[NombreVar, 'Portalamp']          = InfoLum.filter(regex=Portalamp)[0]
@@ -193,6 +200,10 @@ def iluminacion (Excel,Nocircuito):
                             Aparatos_C.loc[NombreVar, 'Datos']=Aparatos_C.loc[NombreVar, 'Datos'].replace(' ',',')
                     else:
                         Aparatos_C.loc[NombreVar, 'Datos']='YA ES LED'
+
+                    print(Aparatos_C.loc[NombreVar, 'Acceso'])
+                    if Aparatos_C.loc[NombreVar, 'Acceso'] in  AccesoN :
+                        Aparatos_C.loc[NombreVar, 'Datos']=Aparatos_C.loc[NombreVar, 'Datos']+','+'DACCS'
 
 
 
