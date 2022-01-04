@@ -193,30 +193,33 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
     cony=0
     infoL['J'].fillna('X')
     #Equipos = Equipos[~Equipos['Codigo'].str.contains('QQ', regex=False, na=False)]
-
+    lista_encontrado=[]
     for i in Equipos['Codigo']:
 
         separado=i.split(',')
         if len(separado)>1:
             for jj in separado:
-                print(jj)
+                jj = jj.replace(' ','')
                 jj = jj.upper()
                 identificadosPP= infoL[infoL['B'].str.contains(jj)].index
-                if not 'QQ' in identificados:
-                    if not identificados.empty:
-                        Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
-                        Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
+                if not 'QQ' in identificadosPP:
+                    if not identificadosPP.empty:
+                        Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificadosPP[0]+2)
+                        Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificadosPP[0]+2)
+                        Sheet1.range(2, identificadosPP[0]+2).color = (10, 255, 10)
+                        lista_encontrado.append(identificadosPP[0])
+        else:
+            i = i.upper()
+            identificados= infoL[infoL['B'].str.contains(i)].index
+            if not 'QQ' in identificados:
+                if not identificados.empty:
+                    Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
+                    Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
+                    Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
+                    Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
+                    Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
+                    lista_encontrado.append(identificados[0])
 
-
-        i = i.upper()
-        identificados= infoL[infoL['B'].str.contains(i)].index
-        if not 'QQ' in identificados:
-            if not identificados.empty:
-                Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
-                Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
-                Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
-                Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
-                Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
 
         cony=cony+1
 
@@ -235,6 +238,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
                 Sheet1.range(inicioL + cony, 6).value = PorcentajesTotales
                 Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
                 Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
+                lista_encontrado.append(identificados[0])
         else:
             PorcentajesTotales=''
             PotenciasTotales=''
@@ -250,6 +254,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
                     NotasTotales =  str(NotasTotales)+ str(infoL.loc[identificados[0], 'H'])
                     HorasT= str(HorasT)+str(infoL.loc[identificados[0], 'J'])
                     cont=cont+1
+                    lista_encontrado.append(identificados[0])
 
             Sheet1.range(inicioL + cony, 6).value  ='='+ PorcentajesTotales+'0'
             Sheet1.range(inicioL + cony, 7).value  = PotenciasTotales[:-1]
@@ -266,16 +271,35 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
     for i in FugasC['Codigo']:
         i = i.upper()
         identificados= infoL[infoL['B'].str.contains(i)].index
-        if 'QQ'in i or 'FFX' in i or i=='FF':
-            Sheet1.range(inicioF + cony, 9).value = 'X'
-        # else:
-        #     Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
-        #     Sheet1.range(inicioF + cony, 9).value = '=Lista!G'+str(identificados[0]+2)
+        if not identificados.empty:
+            lista_encontrado.append(identificados[0])
+            if 'QQ'in i or 'FFX' in i or i=='FF':
+                Sheet1.range(inicioF + cony, 9).value = 'X'
+            else:
+                Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
+                Sheet1.range(inicioF + cony, 9).value = '=Lista!G'+str(identificados[0]+2)
 
         cony=cony+1
 
     workbook.save()
     #workbook.close()
+    print(lista_encontrado)
+    try:
+        workbook.sheets.add('Lista')
+    except:
+        print('Hoja ya creada')
+
+    Sheet1 = workbook.sheets['Lista']
+
+    for i in lista_encontrado:
+        Sheet1.range(i+2,2).color = (50, 255, 50)
+
+    PEPES = infoL[infoL['B'].str.contains('FF|PP')]
+
+    porcentaje=(1-(len(lista_encontrado)/ len(PEPES)))*100
+    print(porcentaje)
+    workbook.save()
+
     return Equipos, Luminarias, Fugas
 
 
