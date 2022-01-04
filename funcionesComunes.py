@@ -8,6 +8,7 @@ import urllib.error
 import sys
 import requests
 from io import StringIO
+from datetime import date
 import os
 def ligarTextolink(texto, link):
     """
@@ -125,6 +126,8 @@ def dataClima(CP,Country="mexico",DefaultPeriod=True,StartDate="",EndDate="",Per
     -------
     df : data frame with weather data (feelslike) data have linear interpol to fill NaN
     """
+    today = date.today()
+    ad = today.strftime("%b-%d-%Y")
     # set-up
     # Base string for query
     BaseURL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/'
@@ -156,15 +159,16 @@ def dataClima(CP,Country="mexico",DefaultPeriod=True,StartDate="",EndDate="",Per
     ApiQuery += "&include="     + Include
     ApiQuery += "&key="         + ApiKey
 
-    if (CP+"_"+Country+".csv") in os.listdir():
-        print("Weather data in files")
-        df = pd.read_csv(CP+"_"+Country+".csv")
-        #df["feelslike"] = df["feelslike"].interpolate(method="linear", limit_direction="both")
-        #df.to_csv((CP + "_" + Country + ".csv"), index=False)
+    fileName =CP+"_"+Country+"_"+ad+".csv"
+    if (fileName) in os.listdir():
+        print("LEYENDO INFORMACIÓN CLIMATICA DESDE ARCHIVOS DEL PROYECTO")
+        df = pd.read_csv(fileName)
+        df["feelslike"] = df["feelslike"].interpolate(method="linear", limit_direction="both")
+        df.to_csv((fileName), index=False)
     else:
-        print(' - Running query URL: ', ApiQuery,"\n")
+        print(' - CORRIENDO QUERY AL URL: ', ApiQuery,"\n")
         r = requests.get(ApiQuery)
         df = pd.read_csv(StringIO(r.text))
-        df.to_csv((CP+"_"+Country+".csv"),index=False)
-        df["feelslike"]=df["feelslike"].interpolate(method="linear",limit_direction="both")
+        df["feelslike"] = df["feelslike"].interpolate(method="linear", limit_direction="both")
+        df.to_csv((fileName),index=False)
     return df
