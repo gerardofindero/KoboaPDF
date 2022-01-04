@@ -7,7 +7,7 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial,lee
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
-import funcionesComunes as fc
+
 
 
 ####################  FUNCIONES ###################################
@@ -85,12 +85,12 @@ def Crear_Kobo(NCliente):
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
-    # equipo='Refris'
+    equipo='Refris'
     # equipo='Regulador'
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
-    equipo='Reguladores_y_No-Breaks'
+    # equipo='Reguladores_y_No-Breaks'
 
     Cliente = 'Bot_'+equipo
     return Cliente
@@ -101,11 +101,11 @@ def Cliente_Prueba():
 def Nombre_Cliente():
 
     #NCliente = Cliente_Prueba()
-    #NCliente = "Sixto Rafael"
+    #NCliente = "Carinne Lamadieu"
     #NCliente = "Alvaro Cepeda"
-    #NCliente = "Laura Gomez"
-    #NCliente = "Victor Topete"
-    NCliente  = "Jorge Burillo"
+    #NCliente = "Jorge Burillo"
+    #NCliente = "Alejandra Hanhausen"
+    NCliente  = "Ana Isabel"
 
     return NCliente
 ####################################################################################
@@ -164,15 +164,12 @@ if __name__ == '__main__':
 
 ###########################################
     if Opcion == '6':
-        """
         from libBomGrav import armarTxt
-        Claves = "600,si,si,si,ninguno,si,alto,abiertas,si,si,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
+        Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
         txt, PotAhorro = armarTxt(100,20,Claves)
         print(txt)
-        print(PotAhorro.at[0,"Accion"])
-        """
-        df = fc.dataClima(CP=str(25740))
-        print(df.feelslike)
+
+
 
 
 
