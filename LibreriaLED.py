@@ -137,29 +137,31 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         Sensor=True
 
     # Textos al reporte cuando el foco ya es LED.
-    if Tecno =='led':
-
-        if aleatorio==1:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM14a', 'Texto']
-        if aleatorio==2:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM14b', 'Texto']
-        if aleatorio==3:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM14c', 'Texto']
+    if Tecno =='led' or Tecno=='tira':
+        if Tecno =='led':
+            if aleatorio==1:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM14a', 'Texto']
+            if aleatorio==2:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM14b', 'Texto']
+            if aleatorio==3:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM14c', 'Texto']
+        if Tecno =='tira':
+            TextoCompleto = TextoCompleto + Lib.loc['LUM18', 'Texto']
 
         if conteoled == 5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM7a', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07a', 'Texto']
             conteoled = 2
         if conteoled == 4:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM7b', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07b', 'Texto']
             conteoled = conteoled + 1
         if conteoled == 3:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM7c', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07c', 'Texto']
             conteoled = conteoled + 1
         if conteoled == 2:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM7d', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07d', 'Texto']
             conteoled = conteoled + 1
         if conteoled == 1:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM7f', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07f', 'Texto']
             conteoled = conteoled + 1
 
         # elif conteoled <= 5:
@@ -339,6 +341,10 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     TextoSensor=TextoSensor.replace('X','')
     TextoCompleto = TextoCompleto + '' +TextoSolar
     TextoCompleto = TextoCompleto + '' +TextoSensor
+
+
+    if 'DAACS' in tex:
+        TextoCompleto = Lib.loc['LUM06b', 'Texto']
 
     TextoCompleto = TextoCompleto.replace('[...]','')
     TextoCompleto = TextoCompleto.replace('[/n]','<br />')
