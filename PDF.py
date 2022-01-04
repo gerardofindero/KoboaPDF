@@ -900,10 +900,16 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura-90, canvas)
         parrafos = []
-        # Automatizacion ######################
+
+
+    # Automatizacion ######################
+
         if not pd.isna(Claves):
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
-        # Automatizacion  ######################
+
+    # Automatizacion  ######################
+
+
         if nota == '.':
             parrafos.append(Paragraph('El consumo de tu equipo es bastante bueno, continua con su buen uso', Estilos.cuadros_bajo))
         else:
