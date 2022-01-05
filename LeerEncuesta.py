@@ -48,7 +48,7 @@ def Crear_Kobo(NCliente):
         largoD = len(Datosa)
         Circuito = Excel.loc[i, ['circuito_c_i']]
         Datosa.loc[i + largoD, ['Circuito']] = Circuito.values
-        Tablero = Excel.loc[i, ['tablero_c_i']]
+        Tablero = Excel.loc[i, ['tablero_codigo_c_i']]
         if Tablero[0]=='otro':
             Tablero = Excel.loc[i, ['tablero_otro_c_i']]
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
@@ -57,14 +57,14 @@ def Crear_Kobo(NCliente):
         Ilum  =  Ilum.append(ilum)
         Clust =  Clust.append(clust)
         Coci  =  Coci.append(coci)
-        Comu  =  Comu.append(comu)
+        #Comu  =  Comu.append(comu)
         Esp   =  Esp.append(esp)
         Lava  =  Lava.append(lava)
         Refri =  Refri.append(refri)
         Bomba =  Bomba.append(bomba)
-        PCs   =  PCs.append(pcs)
+        #PCs   =  PCs.append(pcs)
         Cal = Cal.append(cal)
-        Segu = Segu.append(segu)
+        #Segu = Segu.append(segu)
         Aire = Aire.append(aires)
         Solar =Solar.append(solar)
         Nota=Nota.append(notass)
@@ -85,12 +85,13 @@ def Crear_Kobo(NCliente):
 def Cliente_Prueba():
     # equipo='Microcomponentes_Cocina'
     # equipo='TVs'
-    equipo='Refris'
+    # equipo='Refris'
     # equipo='Regulador'
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
     # equipo='Reguladores_y_No-Breaks'
+    equipo='Aires'
 
 
     Cliente = 'Bot_'+ equipo
@@ -102,12 +103,12 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
-    #NCliente = Cliente_Prueba()
+    NCliente = Cliente_Prueba()
     #NCliente = "Carinne Lamadieu"
     #NCliente = "Alvaro Cepeda"
     #NCliente = "Jorge Burillo"
     #NCliente = "Alejandra Hanhausen"
-    NCliente  = "Ana Isabel"
+    #NCliente  = "Ana Isabel"
 
     return NCliente
 ####################################################################################
@@ -127,7 +128,7 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-    Opcion='4'
+    Opcion='2'
 
 #######################
 
@@ -171,22 +172,12 @@ if __name__ == '__main__':
         #txt, PotAhorro = armarTxt(100,20,Claves)
         #print(txt)
 
+
         #print(PotAhorro.at[0,"Accion"])
-        
+
         # from funcionesComunes import dataClima as dc
         # wd = dc(CP="10340",Period="today")
 
         import libreriaAiresAcondicionados as libAA
         print(libAA.armarTxt())
-
-
-
-
-
-
-
-
-
-
-
 

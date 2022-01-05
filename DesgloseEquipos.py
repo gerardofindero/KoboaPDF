@@ -151,7 +151,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 print(Datos_Solar)
 
             if indx == 9:
-                print('Computo')
+                print('Tecnologia')
                 Datos_PC = computo(Excel, Nocircuito, NomCircuito)
                 DatosPC = DatosPC.append(Datos_PC)
                 DatosPC['Tablero'].fillna(tablero[0], inplace=True)
@@ -160,27 +160,8 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 Datos_PC.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_PC) + 4
 
+
             if indx == 10:
-                print('Comunicaciones')
-                Datos_Com = comunicaciones(Excel, Nocircuito, NomCircuito)
-                DatosCom = DatosCom.append(Datos_Com)
-                DatosCom['Tablero'].fillna(tablero[0], inplace=True)
-                DatosCom['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun = DatosFun.append(Datos_Com, ignore_index=True)
-                Datos_Com.to_excel(writer, index=True, startrow=primafila)
-                primafila = primafila + len(Datos_Com) + 4
-
-            if indx == 11:
-                print('Seguridad')
-                Datos_Segu = seguridad(Excel, Nocircuito, NomCircuito)
-                DatosSegu = DatosSegu.append(Datos_Segu)
-                DatosSegu['Tablero'].fillna(tablero[0], inplace=True)
-                DatosSegu['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun = DatosFun.append(Datos_Segu, ignore_index=True)
-                Datos_Segu.to_excel(writer, index=True, startrow=primafila)
-                primafila = primafila + len(Datos_Segu) + 4
-
-            if indx == 12:
                 print('Aires Acondicionados')
                 Datos_Aires = airesA(Excel, Nocircuito, NomCircuito)
                 DatosAire = DatosSegu.append(Datos_Aires)
@@ -190,7 +171,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 Datos_Aires.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_Aires) + 4
 
-            if indx == 13:
+            if indx == 11:
                 print("Especiales")
                 Datos_ES, Consum = especiales(Excel, Nocircuito,NomCircuito)
                 DatosES=DatosES.append(Datos_ES)
