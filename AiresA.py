@@ -56,4 +56,4 @@ def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'X'
     #print(Aparatos_C)
     return Aparatos_C
-    indx=0
+
