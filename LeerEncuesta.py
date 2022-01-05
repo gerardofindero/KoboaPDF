@@ -167,12 +167,13 @@ if __name__ == '__main__':
 
 ###########################################
     if Opcion == '6':
-        from libBomGrav import armarTxt
-        Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
-        txt, PotAhorro = armarTxt(100,20,Claves)
-        print(txt)
+        #from libBomGrav import armarTxt
+        #Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
+        #txt, PotAhorro = armarTxt(100,20,Claves)
+        #print(txt)
 
-        print(PotAhorro.at[0,"Accion"])
+
+        #print(PotAhorro.at[0,"Accion"])
 
         # from funcionesComunes import dataClima as dc
         # wd = dc(CP="10340",Period="today")
