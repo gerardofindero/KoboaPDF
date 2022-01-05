@@ -28,7 +28,6 @@ from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
-
 from libreriaTubosFluorescente import recoTuboFluorescente
 from libreriaLucesSolares import recoSolares
 from libreriaBombasPresurizadoras import recoPresu
