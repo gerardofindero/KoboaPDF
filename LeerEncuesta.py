@@ -91,7 +91,7 @@ def Cliente_Prueba():
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
     # equipo='Reguladores_y_No-Breaks'
-    equipo='Aires'
+    equipo='Luces'
 
 
     Cliente = 'Bot_'+ equipo

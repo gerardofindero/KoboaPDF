@@ -37,7 +37,7 @@ def iluminacion (Excel,Nocircuito):
     esc=True
     j=0
     while esc==True:
-        lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas,InfoEsc=escenario(InfoEquipos,j)
+        lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas,InfoEsc,pendiente,CodN=escenario(InfoEquipos,j)
         tec=tec.split()
         for i in tec:
             for k in lista:
@@ -57,7 +57,7 @@ def iluminacion (Excel,Nocircuito):
                     Aparatos_C.loc[NombreVar, 'Datos']         = ''
                     Aparatos_C.loc[NombreVar, 'Tecnologia']   = k
                     Aparatos_C.loc[NombreVar, 'Lugar']        = Lugar(lugar)
-                    Aparatos_C.loc[NombreVar, 'LugarES']      =lugar_especifico
+                    #Aparatos_C.loc[NombreVar, 'LugarES']      =lugar_especifico
                     Aparatos_C.loc[NombreVar, 'Fuga']         = fuga
                     Aparatos_C.loc[NombreVar, 'FugaDET']      = fugadetalles
                     Aparatos_C.loc[NombreVar, 'Standby']      = standby
@@ -70,26 +70,19 @@ def iluminacion (Excel,Nocircuito):
                     Aparatos_C.loc[NombreVar, 'Cantidad']     =str(Aparatos_C.loc[NombreVar, 'Numero'])
                     Aparatos_C.loc[NombreVar, 'Fundidos']     = InfoLum.filter(regex='fundidos')[0]
                     Aparatos_C.loc[NombreVar, 'Total']        = InfoLum.filter(regex='total')[0]
-                    Aparatos_C.loc[NombreVar, 'Combinacion']  = InfoLum.filter(regex='cobinacion')[0]
-                    Aparatos_C.loc[NombreVar, 'Consumo']      = consumoEq(InfoLum.filter(regex='consumo')[0])
-                    Aparatos_C.loc[NombreVar, 'DobCodigo']    = InfoLum.filter(regex='doblecodigo')[0]
                     Aparatos_C.loc[NombreVar, 'Forma' ] = 'F'
-                    #Aparatos_C.loc['Incandecentes E1', 'Pendientes']    = InfoLum.filter(regex='otrospendientes_c_i')[0]
+                    Aparatos_C.loc[NombreVar, 'CodigoN'] = CodN
 
-                    if InfoLum.filter(regex='doblecodigo')[0]=='no':
-                        Aparatos_C.loc[NombreVar, 'CodigoN']      = InfoLum.filter(regex='codigofindero_')[0]
-                    else:
-                        Aparatos_C.loc[NombreVar, 'CodigoN']      = InfoLum.filter(regex='codigofindero2_')[0]
-                    if InfoLum.filter(regex='otrospendientes')[0]=='si':
-                        Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+', '+InfoLum.filter(regex='otroscodigos')[0]
-                        Aparatos_C.loc[NombreVar, 'Notas']        = str(Aparatos_C.loc[NombreVar, 'Notas'])+\
-                                                                     '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
+                    # if InfoLum.filter(regex='otrospendientes')[0]=='si':
+                    #     Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+', '+InfoLum.filter(regex='otroscodigos')[0]
+                    #     Aparatos_C.loc[NombreVar, 'Notas']        = str(Aparatos_C.loc[NombreVar, 'Notas'])+\
+                    #                                                  '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
 
                     if k=='tira':
                         Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
 
                     if k!='led' and k!='tira' :
-                        Aparatos_C.loc[NombreVar, 'Gasto']        = InfoLum.filter(regex='gasto')[0]
+                        #Aparatos_C.loc[NombreVar, 'Gasto']        = InfoLum.filter(regex='gasto')[0]
                         Aparatos_C.loc[NombreVar, 'Donde']        = InfoLum.filter(regex='donde_c_i')[0]
                         Aparatos_C.loc[NombreVar, 'DondeDetalle'] = InfoLum.filter(regex='donde_detalle')[0]
                         Aparatos_C.loc[NombreVar, 'Cajillo']      = InfoLum.filter(regex='cajillo')[0]
@@ -133,7 +126,7 @@ def iluminacion (Excel,Nocircuito):
                             if not InfoLum.filter(regex='deterioro')[0] == 'X':
                                 Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+',/DET_'+InfoLum.filter(regex='deterioro')[0]+'/'
 
-                        Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
+                        #Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
                         Aparatos_C.loc[NombreVar, 'Adecuaciones'] = InfoLum.filter(regex='adecuaciones')[0]
                         Aparatos_C.loc[NombreVar, 'Apagador']     = InfoLum.filter(regex='apagador')[0]
                         Aparatos_C.loc[NombreVar, 'Cantidad' ]    = str(Aparatos_C.loc[NombreVar, 'Numero'])
@@ -201,7 +194,7 @@ def iluminacion (Excel,Nocircuito):
                     else:
                         Aparatos_C.loc[NombreVar, 'Datos']='YA ES LED'
 
-                    print(Aparatos_C.loc[NombreVar, 'Acceso'])
+                    #print(Aparatos_C.loc[NombreVar, 'Acceso'])
                     if Aparatos_C.loc[NombreVar, 'Acceso'] in  AccesoN :
                         Aparatos_C.loc[NombreVar, 'Datos']=Aparatos_C.loc[NombreVar, 'Datos']+','+'DACCS'
 
@@ -241,20 +234,25 @@ def escenario(InfoEquipos, num):
         lugar = InfoEsc.filter(regex='lugar_extra')[0]
     else:
         lugar = InfoEsc.filter(regex='lugar')[0]
-    lugar_especifico   = InfoEsc.filter(regex='lugar_especifico')[0]
-    if lugar_especifico=='otro':
-        lugar_especifico  = Lugar(InfoEsc.filter(regex='lugar_otro_c_i')[0])
-    else:
-        lugar_especifico  = Lugar(lugar_especifico)
-
+    lugar_especifico  = InfoEsc.filter(regex='donde_c_i')[0]
     tec             = InfoEsc.filter(regex='tecnologia')[0]
     fuga            = InfoEsc.filter(regex='fugaluces')[0]
     fugadetalles    = InfoEsc.filter(regex='fugaluces_detalles')[0]
     standby         = InfoEsc.filter(regex='standby')[0]
     sobreilum       = InfoEsc.filter(regex='sobreilum')[0]
     notas           = InfoEsc.filter(regex='notas')[0]
+    pendiente       = InfoEsc.filter(regex='espendiente_c_i')[0]
 
-    return lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas, InfoEsc
+    if pendiente== 'si':
+        if InfoEsc.filter(regex='codigofindero2').empty:
+            CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]+','+InfoEsc.filter(regex='codigofindero2_c_i')[0]
+        else:
+            CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]
+    else:
+        CodN= 'QQ'
+
+
+    return lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas, InfoEsc, pendiente,CodN
 
 
 
