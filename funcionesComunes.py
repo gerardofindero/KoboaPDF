@@ -160,15 +160,26 @@ def dataClima(CP,Country="mexico",DefaultPeriod=True,StartDate="",EndDate="",Per
     ApiQuery += "&key="         + ApiKey
 
     fileName =CP+"_"+Country+"_"+ad+".csv"
-    if (fileName) in os.listdir():
-        print("LEYENDO INFORMACIÓN CLIMATICA DESDE ARCHIVOS DEL PROYECTO")
-        df = pd.read_csv(fileName)
-        df["feelslike"] = df["feelslike"].interpolate(method="linear", limit_direction="both")
-        df.to_csv((fileName), index=False)
+    path=None
+    path1=f"D:/Findero Dropbox/Datos de Consultas/Datos Meteorologicos"
+    path2=f"../../../Datos de Consultas/Datos Meteorologicos"
+    if os.path.exists(path1):
+        path=path1
+    elif os.path.exists(path2):
+        path=path2
+    #print("Rutas para datos climaticos: ",path)
+    #print(os.listdir(path))
+    #print(fileName in os.listdir(path))
+    if (fileName) in os.listdir(path):
+        print("LEYENDO INFORMACIÓN CLIMATICA DESDE LA RUTA-> ",path)
+        df = pd.read_csv(path+"/"+fileName)
+
     else:
         print(' - CORRIENDO QUERY AL URL: ', ApiQuery,"\n")
         r = requests.get(ApiQuery)
         df = pd.read_csv(StringIO(r.text))
         df["feelslike"] = df["feelslike"].interpolate(method="linear", limit_direction="both")
-        df.to_csv((fileName),index=False)
+        df.to_csv((path+"/"+fileName),index=False)
+
+
     return df
