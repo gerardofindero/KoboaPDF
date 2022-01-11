@@ -31,6 +31,7 @@ def Crear_Kobo(NCliente):
     Cal    = pd.DataFrame()
     Aire   = pd.DataFrame()
     Segu = pd.DataFrame()
+    Solar= pd.DataFrame()
     Nota = pd.DataFrame()
     pd.set_option('display.max_columns', 15)
     Datosa= pd.DataFrame(columns=['Circuito','Tablero'])
@@ -47,24 +48,29 @@ def Crear_Kobo(NCliente):
         largoD = len(Datosa)
         Circuito = Excel.loc[i, ['circuito_c_i']]
         Datosa.loc[i + largoD, ['Circuito']] = Circuito.values
-        Tablero = Excel.loc[i, ['tablero_c_i']]
+        Tablero = Excel.loc[i, ['tablero_codigo_c_i']]
         if Tablero[0]=='otro':
             Tablero = Excel.loc[i, ['tablero_otro_c_i']]
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
         Datos, fila, filaLib, Fugas, ilum, clust, coci, comu,esp,lava,refri,\
+<<<<<<< HEAD
         bomba,pcs,cal,segu,aires,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
+=======
+        bomba,pcs,cal,segu,aires,solar,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
         Ilum  =  Ilum.append(ilum)
         Clust =  Clust.append(clust)
         Coci  =  Coci.append(coci)
-        Comu  =  Comu.append(comu)
+        #Comu  =  Comu.append(comu)
         Esp   =  Esp.append(esp)
         Lava  =  Lava.append(lava)
         Refri =  Refri.append(refri)
         Bomba =  Bomba.append(bomba)
-        PCs   =  PCs.append(pcs)
+        #PCs   =  PCs.append(pcs)
         Cal = Cal.append(cal)
-        Segu = Segu.append(segu)
+        #Segu = Segu.append(segu)
         Aire = Aire.append(aires)
+        Solar =Solar.append(solar)
         Nota=Nota.append(notass)
         Datosa =Datosa.append(Datos, ignore_index=True)
         Circuito = Excel.loc[i, ['circuito_c_i']]
@@ -72,12 +78,16 @@ def Crear_Kobo(NCliente):
         FugasT = FugasT.append(Fugas, ignore_index=True)
     writer.save()
     Tluz=condicionesLuces(Ilum)
-    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz)
+    Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz,Solar)
 
 
 
 
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 ##################          PRUEBAS        ########################################
 ##############    Elige el cliente prueba que desees correr  #####################
 def Cliente_Prueba():
@@ -88,9 +98,18 @@ def Cliente_Prueba():
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
+<<<<<<< HEAD
     equipo='Reguladores_y_No-Breaks'
 
     Cliente = 'Bot_'+equipo
+=======
+    # equipo='Reguladores_y_No-Breaks'
+    equipo='Luces'
+
+
+    Cliente = 'Bot_'+ equipo
+
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
     return Cliente
 
 
@@ -98,11 +117,20 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
+<<<<<<< HEAD
     # NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
     #NCliente = "Alvaro Cepeda"
     #NCliente = "Laura Gomez"
     NCliente = "Ana Isabel"
+=======
+    NCliente = Cliente_Prueba()
+    #NCliente = "Carinne Lamadieu"
+    #NCliente = "Alvaro Cepeda"
+    #NCliente = "Jorge Burillo"
+    #NCliente = "Alejandra Hanhausen"
+    #NCliente  = "Ana Isabel"
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
     return NCliente
 ####################################################################################
@@ -122,10 +150,19 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
+<<<<<<< HEAD
     Opcion='4'
 #######################
+=======
+    Opcion='2'
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
+#######################
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
 ### Se crea la lista (Esta opción no sirve, el programa es independiente)
     if Opcion == '1':
@@ -148,8 +185,7 @@ if __name__ == '__main__':
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
-        solar='No'
-        if solar =='Si':
+        if solar:
             datosSolar = leer_solar(NCliente)
 
         CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)
@@ -158,15 +194,29 @@ if __name__ == '__main__':
 ###########Para hacer pruebas################
     if Opcion == '5':
         leer_resumen(NCliente)
+<<<<<<< HEAD
 
 
 
 
 
 
+=======
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+
+###########################################
+    if Opcion == '6':
+        #from libBomGrav import armarTxt
+        #Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
+        #txt, PotAhorro = armarTxt(100,20,Claves)
+        #print(txt)
 
 
+        #print(PotAhorro.at[0,"Accion"])
 
+        # from funcionesComunes import dataClima as dc
+        # wd = dc(CP="10340",Period="today")
 
-
+        import libreriaAiresAcondicionados as libAA
+        print(libAA.armarTxt())
 

@@ -4,19 +4,19 @@ import funcionesComunes as fc
 
 def sepNobAta(dfDes,DAC):
     # A atacable D Nombre N texto Q claves
-    indexNB = dfDes.index[dfDes.D.str.contains('nobreak|no break|NoBreak|No Break', case=False)]
+    print(dfDes)
+    indexNB = dfDes.index[dfDes.D.str.contains('NoBreak',case=False)]
+    Claves = dfDes.loc[indexNB,'Q'].str.split(',',expand=True)
+    dfDes.loc[indexNB,'VA'] = Claves[1].astype(int)
+    dfDes.loc[indexNB, 'wC'] = Claves[2].astype(int)
 
-    dfDes.loc[indexNB, ['VA', 'wC']] = dfDes.loc[indexNB, 'Q'].str.split(',', expand=True)
-    dfDes.loc[indexNB, 'VA'] = pd.to_numeric(dfDes.loc[indexNB, 'VA'])
-    dfDes.loc[indexNB, 'wC'] = pd.to_numeric(dfDes.loc[indexNB, 'wC'])
-
-    dfDes[['fuga', 'nombre', 'dispPrincipal', 'trash']] = dfDes.loc[indexNB, 'D'].str.split(' ', n=3, expand=True)
-    dfDes.loc[indexNB, 'nombre'] = dfDes.at[indexNB, 'nombre'] + ' ' + dfDes.at[indexNB, 'dispPrincipal']
+    dfDes[['nombre','dispPrincipal','trash']] = dfDes.loc[indexNB,'D'].str.split(' ',n=2,expand=True)
+    dfDes.loc[indexNB,'nombre'] = dfDes.loc[indexNB,'nombre']+' '+ dfDes.loc[indexNB,'dispPrincipal']
 
     for i in indexNB:
         libUPSObj = libreriaUPS()
         libUPSObj.setData(nomNB        = dfDes.at[i,'nombre'],
-                          VA            = dfDes.at[i,'nombre'],
+                          VA            = dfDes.at[i,'VA'],
                           wC            = dfDes.at[i,'wC'],
                           w             = dfDes.at[i, 'J'],
                           dispPrincipal = dfDes.at[i,'dispPrincipal'],
@@ -24,7 +24,10 @@ def sepNobAta(dfDes,DAC):
         libUPSObj.armarTxt()
         dfDes.loc[i, 'N'] = libUPSObj.txt
         dfDes.loc[i, 'A'] = libUPSObj.atacable
-    return dfDes.iloc[:,'A':'Q'].copy()
+
+
+    return dfDes.loc[:,'A':'Q'].copy()
+
 class libreriaUPS:
     def __init__(self):
         self.txt = ''
@@ -102,12 +105,12 @@ class libreriaUPS:
             print('w de standby no es nuemrica')
         else:
             val_w = True
-
+        print(dispPrincipal)
         if dispPrincipal=='':
             print('dispositivo principal vacio')
         elif not isinstance(dispPrincipal,str):
             print('dispositivo principal no es una cadena')
-        elif dispPrincipal not in ['Refrigerador','TV','Congelador','Lavadora','Vala']:
+        elif dispPrincipal not in ['Refrigerador','TV','Congelador','Lavadora','PC','TV','NoBreak']:
             print('dispositivo principal no esta en la lista reconocida')
         else:
             val_dispPrincipal=True
@@ -144,6 +147,7 @@ class libreriaUPS:
             self.val=True
         else:
             self.val=False
+
     def recRem(self):
         filtro = (self.VA < self.dbUPS.va) & (self.dbUPS.sb < self.w)
         reco =self.dbUPS.loc[filtro,:].copy()
@@ -162,13 +166,14 @@ class libreriaUPS:
                 'ahorroBimestral': reco.ahorroBimestral,
                 'roi': reco.roi,
                 'accion':(['compra']*len(reco))})
-        self.sustitutos = self.sustitutos.append(df,ignore_index=True)
+            self.sustitutos = self.sustitutos.append(df,ignore_index=True)
 
     def armarTxt(self):
         txt = ''
         print('\nIniciando armarTxt')
         dispQueRequierenNoBreak = []
-        indispensable = self.dispPrincipal in dispQueRequierenNoBreak
+        #indispensable = self.dispPrincipal in dispQueRequierenNoBreak
+        indispensable = False
         if not indispensable:
             if self.w > 3:
                 self.recRem()
@@ -226,7 +231,16 @@ class libreriaUPS:
                 txt = txt + fc.selecTxt(self.lib, 'UPS06')
                 self.atacable = 'No'
         self.txt = txt.replace('[nomNB]', self.nomNB).replace('\n','<br />')
-
+        ### potencial de ahorro
+        if not indispensable:
+            self.txt = self.txt+",1,"+str(self.w)+","+fc.selecTxt(self.lib,"UPSpa01")
+        if indispensable:
+            if self.w<3:
+                self.txt = self.txt+",0,0,"+fc.selecTxt(self.lib,"UPSpa03")
+            else:
+                porAhorro= self.sustitutos.at[0,"ahorroBimestral"]/self.w
+                nbsus=fc.ligarTextolink("No break",self.sustitutos.at[0,"link"])
+                self.txt = self.txt + ","+str(porAhorro)+","+str(self.sustitutos.at[0,"ahorroBimestral"]) +","+ fc.selecTxt(self.lib, "UPSpa03").replace("[recomendacion]",nbsus)
 
 
 

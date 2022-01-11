@@ -34,85 +34,53 @@ def libreriaL():
 
 
 
-## 2
+
 ## Esta función elige la primera sección de cada texto, en base al la información reportada en KOBO
-def CondicionesLuces(Luminaria): # Luminaria aquí es la base de datos condensada de Kobo.
-    ## Se hace una copia de respaldo para no alterar los datos originales.
+
+def CondicionesLuces(Luminaria):
+# Luminaria aquí es la base de datos condensada de Kobo.
+## Se hace una copia de respaldo para no alterar los datos originales.
     Lumi = Luminaria.copy()
     print('Luminaria')
 
-    ## Se lee la libreria textos de luminarias con la función libreriaL() y se asigna a 'Lib'
+## Se lee la libreria textos de luminarias con la función libreriaL() y se asigna a 'Lib'
     Lib = libreriaL()
-    ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO).
-    #print(Luminaria)
-    ##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO).
+
+##Se rellenan los datos faltantes con NA en luminaria adicional (Luminaria KOBO).
     Luminaria['Adicional'].fillna('NA', inplace=True)
 
-    ## Se resetea el indice para tener la referencia bien establecida (Luminaria KOBO).
+## Se resetea el indice para tener la referencia bien establecida (Luminaria KOBO).
     Luminaria.reset_index(drop=True, inplace=True)
 
-    FraseLED=0
-    ## En este ciclo FOR se analiza cada una de las luces/conjunto de luces reportadas en el KOBO y se le asiga el texto correspondiente de la librería.
+## En este ciclo FOR se analiza cada una de las luces/conjunto de luces reportadas en el KOBO y se le asiga el texto correspondiente de la librería.
     for i in Luminaria.index:
-        Numero = Luminaria.loc[i, 'Numero'] # Obtiene el número de luminarias que hay de ese tipo en ese espacio específico.
+        Numero = Luminaria.loc[i, 'Numero']         # Obtiene el número de luminarias que hay de ese tipo en ese espacio específico.
 
-        ## Se asignan las variables de tipo y lugar de las luminarias encontradas en KOBO
-        Tipo = Luminaria.loc[i, 'Tecnologia'] # Obtiene la tecnologia de luminarias
-        Lugar = Luminaria.loc[i, 'Lugar'] # Obtiene el lugar dónde se encuentra la luminaria.
-        TextoCompleto = '' # Define la variable 'TextoCompleto' para llenar el texto que debe ir en el archivo, pero no asigna texto todavía.
-        Car = '' # Va a ser el conjunto de caracterísiticas adicionales de los focos. Por ejemplo, temperatura de color, si es dimeable, si es foco inteligente.
-        cuantos = 0 # Conteo de caracteristicas de focos
+    ## Se asignan las variables de tipo y lugar de las luminarias encontradas en KOBO
+        Tipo = Luminaria.loc[i, 'Tecnologia']       # Obtiene la tecnologia de luminarias
 
-        ## Establece los textos a reportar cuando la luminaria no es LED.
+    ## Establece los textos a reportar cuando la luminaria no es LED.
         if Tipo != 'led':
-            Adicional = Luminaria.loc[i, 'Adicional'] # Agrega todas las características adicionales de un tipo de foco (p. ej. dimeable, luz cálida, foco inteligente, etc...).
-            # if Adicional == 'NA':
-            #     #print('No se tienen datos para el reemplazo del foco de tecnología diferente a LED')
-            #     TextoCompleto = 'NO HAY CARS'
-            # if Adicional != 'NA':
-            #     if 'calida' in Adicional:
-            #         Car = Car + 'luz cálida '
-            #         if cuantos > 0:
-            #             Car = Car + ','
-            #         cuantos = cuantos + 1
-            #     if 'fria' in Adicional:
-            #         Car = Car + 'luz fría '
-            #         if cuantos > 0:
-            #             Car = Car + ','
-            #         cuantos = cuantos + 1
-            #     if 'atenuable' in Adicional:
-            #         Car = Car + 'foco dimeable '
-            #         if cuantos > 0:
-            #             Car = Car + ','
-            #         cuantos = cuantos + 1
-            #     if 'inteligente' in Adicional:
-            #         Car = Car + 'foco inteligente '
-            #         if cuantos > 0:
-            #             Car = Car + ','
-            #         cuantos = cuantos + 1
-            #     if 'filamento' in Adicional:
-            #         Car = Car + 'de filamento '
-            #         if cuantos > 0:
-            #             Car = Car + ','
-            #         cuantos = cuantos + 1
-            TextoCompleto = Adicional
+            Adicional = Luminaria.loc[i, 'Adicional']      # Agrega todas las características adicionales de un tipo de foco (p. ej. dimeable, luz cálida, foco inteligente, etc...).
+            if Adicional == 'NA':
+                TextoCompleto = 'NA'
+            else:
+                TextoCompleto = Adicional
 
         else:
-            TextoCompleto = 'Ya es LED'
+            TextoCompleto = 'LED'
 
 
-        ##Se escribe el texto resultante en el condensado de Kobo.
+    ##Se escribe el texto resultante en el condensado de Kobo.
         Luminaria.loc[i, 'Texto'] = TextoCompleto
 
-        ## Se regresan los textos correspondientes como un data frame.
+    ## Se regresan los textos correspondientes como un data frame.
     return Luminaria['Texto']
 
 
 
 
 
-
-## 3.
 ############################# Base de Datos de Luminarias ###############################################
 ## En esta parte se lee la base de datos de luminarias y se filtran las opciones hasta tener el mejor sustituto LED
 
@@ -134,12 +102,6 @@ def libreriaLED():
     Libreria.columns = Dicc
     return Libreria
 
-
-
-
-
-
-
 ## 4.
 ## Segunda parte para introducir textos de la librería de luminarias
 ## En esta funión se llevan a cabo los calculos para tener el % de ahorro y el ROI
@@ -151,64 +113,55 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     Lib =  libreriaL()
     Clav=''
     TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
-    ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
-    #ENTY = EntyTip.split()
+    #ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
+    ENTY = EntyTip.split()
     tipo=''
     entrada=''
     Solar=False
     Sensor=False
 
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
-    # if len(EntyTip.split()) == 3:
-    #     Clav = EntyTip.split()
-    # Clave=Clav[2]
-    # print(Clave)
-    # if len(EntyTip.split()) == 2:
-    #     ENTY = EntyTip.split()
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
     Numero = float(NumyTip.split()[0]) # Se saca el número de focos de cierto tipo
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
-
-
-
-
     if Numero==0:
         Numero=0.001
     Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
 
     TextoSolar=''
-    # if 'NOC' in texto:
-    #     TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
-    #     Solar=True
-    TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC)
+    if 'NOC' in texto:
+        TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
+        Solar=True
+    TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC,hrsUso=uso)
     if TextoSensor!='X':
         Sensor=True
 
-
-
     # Textos al reporte cuando el foco ya es LED.
-    if Tecno =='led':
+    if Tecno =='led' or Tecno=='tira':
+        if Tecno =='led':
+            if aleatorio==1:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM14a', 'Texto']
+            if aleatorio==2:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM14b', 'Texto']
+            if aleatorio==3:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM14c', 'Texto']
+        if Tecno =='tira':
+            TextoCompleto = TextoCompleto + Lib.loc['LUM18', 'Texto']
 
-        if aleatorio==1:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM26', 'Texto']
-        if aleatorio==2:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM27', 'Texto']
-        if aleatorio==3:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM28', 'Texto']
         if conteoled == 5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM13', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07a', 'Texto']
             conteoled = 2
         if conteoled == 4:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07b', 'Texto']
             conteoled = conteoled + 1
         if conteoled == 3:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07c', 'Texto']
             conteoled = conteoled + 1
         if conteoled == 2:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM10', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07d', 'Texto']
             conteoled = conteoled + 1
         if conteoled == 1:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM09', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07f', 'Texto']
             conteoled = conteoled + 1
 
         # elif conteoled <= 5:
@@ -217,23 +170,23 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         #     if conteoled==5:
 
         if uso>5 and Numero<10:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM23', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
         if Numero>10 and uso<5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM24', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
         if Numero>10 and uso>5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM25', 'Texto']
+            TextoCompleto = TextoCompleto + Lib.loc['LUM13', 'Texto']
 
         if Sensor==False and Solar==False:
             if aleatorio==1:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM31', 'Texto']
+                TextoCompleto = TextoCompleto + Lib.loc['LUM16a', 'Texto']
         if Sensor==False and Solar==False:
             if aleatorio==2:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM32', 'Texto']
+                TextoCompleto = TextoCompleto + Lib.loc['LUM16b', 'Texto']
         if Sensor==False and Solar==False:
             if aleatorio==3:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM33', 'Texto']
+                TextoCompleto = TextoCompleto + Lib.loc['LUM16c', 'Texto']
 
-        print(tex)
+    ##### Tira LEDS
         if 'tira' in tex:
             largoLED= tex.split(',')[1]
             largoLED=largoLED.replace('cm','')
@@ -389,6 +342,10 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     TextoCompleto = TextoCompleto + '' +TextoSolar
     TextoCompleto = TextoCompleto + '' +TextoSensor
 
+
+    if 'DACCS' in tex:
+        TextoCompleto = TextoCompleto+ Lib.loc['LUM06b', 'Texto']
+
     TextoCompleto = TextoCompleto.replace('[...]','')
     TextoCompleto = TextoCompleto.replace('[/n]','<br />')
 
@@ -444,21 +401,23 @@ def Caracteristicas(tex):
 
     if 'cálida' in tex:
         Car1 = 'Cálida'
-    if 'fria' in tex:
-        Car1 = 'Blanca'
+    elif 'fria' in tex:
+        Car1 = 'Fria'
+    else:
+        Car1 = 'No'
 
     if 'dimeable' in tex:
-        Car2 = 'Si'
+        Car2 = 'Dimeable'
     else:
         Car2 = 'No'
 
     if 'inteligente' in tex:
-        Car3 = 'Si'
+        Car3 = 'Inteligente'
     else:
         Car3 = 'No'
 
     if 'filamento' in tex:
-        Car4 = 'Si'
+        Car4 = 'Filamento'
     else:
         Car4 = 'No'
 

@@ -4,7 +4,7 @@ from unidecode import unidecode
 def textodeconsejos(equipo,equipo1):
 
     texto=''
-    refris=['refrigerador','congelador','bar','hielos']
+    refris=['refrigerador','congelador','bar','hielos','regulador']
     oficina=['impresora','fax']
     conteo =1
     checa =  any(item in equipo for item in oficina)
@@ -25,6 +25,7 @@ def textodeconsejos(equipo,equipo1):
     else:
         if 'microondas' in equipo:
             texto = texto+' ' + 'Desconecta el microondas cuando no se use para ahorrar energía. <br /> '
+
         if 'decodificador' in equipo:
             texto = texto + ' ' + 'Puedes apagar los decodificadores en los horarios en que no usas tu TV. ' \
                                   'Solo te recomendamos prenderlos la madrugada del domingo para recibir actualizaciones. <br />'
@@ -71,15 +72,18 @@ def textodeconsejos(equipo,equipo1):
     return texto
 
 def textodeequiposA(equipo,nota):
-    texto=''
+    texto=nota
     if 'laptop' in equipo.lower():
         texto = texto+' ' + 'Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
     elif 'aspirador' in equipo.lower():
-        texto = texto+' ' + 'La aspiradora se usó varios días a la semana, tienes buenos hábitos de uso, ' \
-                            'recuerda desconectarla cuando no la estés usando. <br /> '
-
+        texto = texto+' ' + 'La aspiradora se usó varios días a la seman. Su consumo es un poco más elevado que la mayoría de nuestros clientes., ' \
+                            ' Recuerda desconectarla cuando no la estés usando. <br /> '
     elif 'cabello' in equipo.lower():
+        texto = texto+' ' + 'Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
+                            'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
+
+    elif 'pelo' in equipo.lower():
         texto = texto+' ' + 'Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
@@ -100,7 +104,7 @@ def textodeequiposA(equipo,nota):
     return texto
 
 def textodeequiposV(equipo,nota):
-    texto=''
+    texto=nota
     if 'laptop' in equipo.lower():
         texto = texto+' ' + 'Tienes un buen consumo usando tu laptop. Para las laptops te recomendamos desconectarlas ' \
                             'del enchufe cuando se terminen de usar. ' \
@@ -111,7 +115,8 @@ def textodeequiposV(equipo,nota):
 
     if 'bomba' \
        '' in equipo.lower():
-        texto = texto+' ' + 'Tu bomba tiene un buen consumo. Sigue así <br /> '
+        texto = texto+' ' + 'Revisamos el funcionamiento de tu bomba, No encontramos problemas, tiene un buen funcionamiento y un ' \
+                            'consumo de energía eficiente. Recuerda darle mantenimiento de manera regular <br /> '
 
     elif 'aspirador' in equipo.lower():
         texto = texto+' ' + 'La aspiradora se usó varios días a la semana, tienes buenos hábitos de uso, ' \
@@ -119,6 +124,10 @@ def textodeequiposV(equipo,nota):
 
 
     elif 'cabello' in equipo.lower():
+        texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
+                            'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
+
+    elif 'pelo' in equipo.lower():
         texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
@@ -148,7 +157,6 @@ def textodeequiposV(equipo,nota):
 def noatac(equipo,todo):
     equipo=str(equipo)
     todo=str(todo)
-    print(todo)
     if 'refrigerador' in equipo:
         Consejos='Lamentablemente es difícil reducir el consumo de standby de un refrigerador sin reemplazarlo'
     elif 'calentador' in equipo:
