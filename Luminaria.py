@@ -230,6 +230,7 @@ def iluminacion (Excel,Nocircuito):
 def escenario(InfoEquipos, num):
     escena='esce'+str(num+1)
     InfoEsc = InfoEquipos.filter(regex=escena)
+    InfoEsc = InfoEsc.fillna('X')
     if InfoEsc.filter(regex='lugar')[0] == 'otro':
         lugar = InfoEsc.filter(regex='lugar_extra')[0]
     else:
@@ -244,7 +245,8 @@ def escenario(InfoEquipos, num):
     pendiente       = InfoEsc.filter(regex='espendiente_c_i')[0]
 
     if pendiente== 'si':
-        if InfoEsc.filter(regex='codigofindero2').empty:
+        print(InfoEsc.filter(regex='codigofindero2').empty)
+        if not InfoEsc.filter(regex='codigofindero2')[0]=='X':
             CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]+','+InfoEsc.filter(regex='codigofindero2_c_i')[0]
         else:
             CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]

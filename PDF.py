@@ -720,6 +720,14 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
         Consejos, PotAhorro = recoDispensadores(consumo)
+<<<<<<< HEAD
+        #print(PotAhorro.at[0,"Accion"])
+    if ClavesS[0] == 'HL':
+        Consejos, PotAhorro = recoMaqHie(consumo)
+        #print(PotAhorro.at[0,"Accion"])
+    if ClavesS[0] == 'BP':
+        Consejos, PotAhorro = recoPresu(Claves,consumo)
+=======
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
 
@@ -729,7 +737,10 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
     if ClavesS[0] == 'AA':
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
 
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
+
+    print(PotAhorro)
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
@@ -835,6 +846,16 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
 # Automatizacion  ######################
 
+<<<<<<< HEAD
+        if len(Consejos)<700:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+        elif 1100>=len(Consejos)>=700:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+        else:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
+        frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
+        frame.addFromList(parrafos, canvas)
+=======
             if len(Consejos)<700:
                 parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
             elif 1100>=len(Consejos)>=700:
@@ -843,6 +864,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
                 parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
             frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
             frame.addFromList(parrafos, canvas)
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)
@@ -928,10 +950,14 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
 
         if not pd.isna(Claves):
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+<<<<<<< HEAD
+        # Automatizacion  ######################
+=======
 
     # Automatizacion  ######################
 
 
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
         if nota == '.':
             parrafos.append(Paragraph('El consumo de tu equipo es bastante bueno, continua con su buen uso', Estilos.cuadros_bajo))
         else:
@@ -1029,8 +1055,13 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         texto('{:,}'.format(consumo) + ' kWh', 15, azul_2, 'Montserrat-L', width - 60 - largo_cifra,
               altura+80, canvas)
         # Automatizacion ######################
+<<<<<<< HEAD
+        # if not pd.isna(Claves):
+        #     nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+=======
         if not pd.isna(Claves):
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
         # Automatizacion  ######################
         parrafos = []
 
