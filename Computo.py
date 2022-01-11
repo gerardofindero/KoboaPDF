@@ -15,12 +15,6 @@ def computo(Excel,Nocircuito, NomCircuito):
     stnby = Circuito.filter(regex='circuito_standby_c_i')[0]
     stnbyCod = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     
-    if isinstance(Circuito.filter(regex='computo_equipos_desconectar_c_i')[0], str):
-        Nomedidos = Circuito.filter(regex='computo_equipos_desconectar_c_i')[0]
-    else:
-        Nomedidos = " no_hay"
-
-    indx = 0
     for i in Equipos:
         if i == 1:
             Circuito=Equipos.filter(regex='computo')
