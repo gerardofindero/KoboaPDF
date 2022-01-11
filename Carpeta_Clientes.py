@@ -37,8 +37,7 @@ def carpeta_clientes(Cliente):
     carpeta_resultados = carpeta_resultados + f"{carpeta_cliente}/Resultados"
 
     cliente_ = Cliente.replace(' ', '_')
-    if 'Bot_' in Cl:
-        cliente_=Cl
+
     archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
     print(archivo_resultados)
 
