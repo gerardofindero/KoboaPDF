@@ -14,19 +14,18 @@ def bombas (Excel,Nocircuito):
     Equipos= Circuito[InfoEquipos]
     indx=0
     CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
+    Aparatos_C.loc['Tuberia', 'TinacoEx'] = Equipos.filter(regex='tinaco_existencia_c_i')[0]
+    Aparatos_C.loc['Tuberia', 'TinacoAl'] = Equipos.filter(regex='tinaco_altura_c_i')[0]
     InfoDeco = Equipos.filter(regex='bomba1')
     Bomba = InfoDeco.filter(regex='tipo')[0]
     zona = InfoDeco.filter(regex='zona_c_i')[0]
     if zona=='otro':
         zona = InfoDeco.filter(regex='zona_otro')[0]
-
-    #Aparatos_C.loc['Bomba', 'CodigoS'] = 'X'
-    #Aparatos_C.loc['Bomba', 'CodigoN'] = 'X'
-
     InfoDeco = Equipos.filter(regex='tuberia')
-
+    Aparatos_C.loc['Tuberia', 'Pastilla'] = InfoDeco.filter(regex='pastilla')[0]
     Aparatos_C.loc['Tuberia', 'Codos'] = InfoDeco.filter(regex='codos')[0]
-    Aparatos_C.loc['Tuberia', 'Valvulas'] = InfoDeco.filter(regex='valvulas')[0]
+    #Aparatos_C.loc['Tuberia', 'Jarros'] = InfoDeco.filter(regex='jarrosdeaire')[0]
+    Aparatos_C.loc['Tuberia', 'Valvulas'] = InfoDeco.filter(regex='valvulas_numero')[0]
     Aparatos_C.loc['Tuberia', 'Valvulas Abiertas'] = InfoDeco.filter(regex='valvulas_abiertas')[0]
     Aparatos_C.loc['Tuberia', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
     Aparatos_C.loc['Tuberia', 'PresionOFF PA'] = InfoDeco.filter(regex='presion_off_pa')[0]
@@ -40,12 +39,9 @@ def bombas (Excel,Nocircuito):
 
     if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= InfoDeco.filter(regex='bombap')
-
         Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(consumoEq(InfoBomba.filter(regex='standby')[0]))
-
         if not InfoDeco.filter(regex='nominal').empty and InfoDeco.filter(regex='nominal')[0]!=0:
             Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoDeco.filter(regex='nominal')[0])
-
         if not InfoDeco.filter(regex='real').empty and InfoDeco.filter(regex='real')[0]!=0:
             Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoDeco.filter(regex='real')[0])
 
@@ -55,7 +51,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Presión', 'Zona'] = zona
         Aparatos_C.loc['Bomba de Presión', 'Marca'] = ' '
         Aparatos_C.loc['Bomba de Presión', 'Atacable'] = 'Si'
-        Aparatos_C.loc['Bomba de Presión', 'Encendido +35min'] = Equipos.filter(regex='hidro_tiempo_c_i')[0]
+        Aparatos_C.loc['Bomba de Presión', 'EncendidoHidro'] = Equipos.filter(regex='hidro_tiempo_c_i')[0]
         Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'BP'
         #print(Aparatos_C.loc['Bomba de Presión', 'Nominal'])
 
@@ -127,20 +123,8 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Alberca', 'Atacable'] = 'Si'
         Aparatos_C.loc['Alberca', 'Clave'] = 'X'
 
-
-    # NomAparato = 'Tinaco'
-    # Aparatos_C.loc[1, 'Aparatos'] = NomAparato
-    # InfoDeco = Equipos.filter(regex='tinaco1')
-    # Aparatos_C.loc[1, 'No. de Tinacos'] = InfoDeco.filter(regex='existencia')[0]
-    # Aparatos_C.loc[1, 'Altura del tinaco'] = InfoDeco.filter(regex='altura')[0]
-    #
-    #
-    # NomAparato = 'Tuberia'
-    # Aparatos_C.loc[2, 'Aparatos'] = NomAparato
-    # InfoDeco = Equipos.filter(regex='tuberia')
-    # Aparatos_C.loc[2, 'Presion de agua'] = InfoDeco.filter(regex='presion')[0]
-    # Aparatos_C.loc[2, 'Hay jarros de aire'] = InfoDeco.filter(regex='jarrosaire')[0]
-    # Aparatos_C.loc[2, 'Diametro tuberia'] = InfoDeco.filter(regex='diametro')[0]
-    #Aparatos_C.loc[2, 'Presion planta baja'] = InfoDeco.filter(regex='presionpb')[0]
+        
     Aparatos=Aparatos_C.dropna(1,thresh=1)
+
+    print(Aparatos)
     return Aparatos

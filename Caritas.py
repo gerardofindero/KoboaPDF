@@ -40,13 +40,13 @@ def caritaMicroondas(consumo,clave):
     consumoTrans= consumo**0.4
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     Percentil=round(percentil,2)
-    if Percentil>0.66:
+    if Percentil>0.90:
         Ca=3
-    if 0.45<Percentil<=0.66:
+    elif 0.90 >= Percentil>=0.50:
         Ca=2
-
-    if 0.45 >= Percentil:
+    else:
         Ca=1
+
 
     return Ca
 
@@ -56,12 +56,13 @@ def caritaCafetera(consumo,clave):
     dstd  = 2.39
     kwh = kWh**0.42
     Percentil= norm.cdf(kwh,loc=media,scale=dstd)
-    if Percentil>0.66:
-        Ca=3
-    if 0.33<Percentil<0.66:
+
+    if Percentil>0.55:
         Ca=2
-    if 0.33 > Percentil:
+    if 0.55 >= Percentil:
         Ca=1
+    if kWh >35:
+        Ca=3
 
     return Ca
 
@@ -85,20 +86,24 @@ def caritaTV(consumo,clave):
     DAtosTV=DatosTV[2].split('/')
     pulgadas=float(DAtosTV[2])
     potencia = float(DAtosTV[0])
-    PotTeorica = math.exp(2.958131 + 0.039028 * Pulgadas)
-    XX = np.log(Potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
-    Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * Pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
-
+    PotTeorica = math.exp(2.958131 + 0.039028 * pulgadas)
+    XX = np.log(potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
+    Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
     uso=(kWh*1000)/(potencia*60)
+
     if uso >= 3.5:
-        if kWh>45:
-            Ca = 3
-        else:
-            Ca=2
-    if (1 <= uso < 3.5) or (Percentil >= 0.9) or (KWh>=15):
-            Ca = 2
-    if (uso < 1 or kWh<15) and (Percentil < 0.9):
-        Ca = 1
+        Ca=3
+    else:
+        Ca=1
+    if Percentil >= 0.9:
+        Ca=2
+    if kWh>45:
+        Ca = 3
+
+    # elif (1 <= uso < 3.5) or (Percentil >= 0.9):
+    #         Ca = 2
+    # elif (uso < 1 or kWh<15) and (Percentil < 0.9):
+    #     Ca = 1
 
     return Ca
 
@@ -112,24 +117,14 @@ def caritaRefri(consumo,Claves):
     TCong = Datos[1]
     NomCom=Datos[2]
     TempCom=Datos[3]
-    Volumen=13
-    #Volumen=float(Datos[4])
-
+    Volumen=float(Datos[4])*0.000022
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-    # if percentil>=0.99:
-    #     Ca = 3
-    # if 0.5<=percentil<0.99:
-    #     Ca = 2
-    # if 0.5 > percentil:
-    #     Ca = 1
-
-
-    if kWh>150:
+    if percentil>=0.99:
         Ca = 3
-    if 95<kWh<=150:
+    if 0.5<=percentil<0.99:
         Ca = 2
-    if 95 >= kWh:
+    if 0.5 > percentil:
         Ca = 1
 
     return Ca
@@ -146,14 +141,23 @@ def caritaMiniB(consumo,Claves):
     TCong = Datos[1]
     NomCom=Datos[2]
     TempCom=Datos[3]
-    Volumen=13
-    #Volumen=float(Datos[4])
-    if kWh>150:
+    Volumen=float(Datos[4])
+    percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+    if percentil>=0.99:
         Ca = 3
-    if 100<kWh<=150:
+    if 0.5<=percentil<0.99:
         Ca = 2
-    if 100 >= kWh:
+    if 0.5 > percentil:
         Ca = 1
+
+
+    # if kWh>150:
+    #     Ca = 3
+    # if 95<kWh<=150:
+    #     Ca = 2
+    # if 95 >= kWh:
+    #     Ca = 1
+
 
     return Ca
 
@@ -162,22 +166,49 @@ def caritaCava(consumo,Claves):
     kWh = float(consumo)
     ClavesSep=Claves.split(",")
     Datos= ClavesSep[1].split("/")
-    TRef=Datos[0]
-    TCong = Datos[1]
-    NomCom=Datos[2]
-    TempCom=Datos[3]
-    Volumen=13
-    #Volumen=float(Datos[4])
+    Volumen=float(Datos[4])
+    formulaV=(Volumen/1300.8)+21.4
+    formulaR=(Volumen/1300.8)+51.6
 
-    if kWh>150:
-        Ca = 3
-    if 100<kWh<=150:
-        Ca = 2
-    if 100 >= kWh:
-        Ca = 1
-
+    if formulaV>kWh:
+        Ca=1
+    if formulaV<kWh<formulaR:
+        Ca=2
+    if formulaR<kWh:
+        Ca=3
     return Ca
 
+
+def caritaCongeV(consumo,Claves):
+    kWh = float(consumo)
+    ClavesSep=Claves.split(",")
+    Datos= ClavesSep[1].split("/")
+    Volumen=float(Datos[4])
+    formulaV=(Volumen/6863.63)-8.83
+    formulaR=(Volumen/3432.19)-17.67
+
+    if formulaV>kWh:
+        Ca=1
+    if formulaV<kWh<formulaR:
+        Ca=2
+    if formulaR<kWh:
+        Ca=3
+    return Ca
+
+def caritaCongeH(consumo,Claves):
+    kWh = float(consumo)
+    ClavesSep=Claves.split(",")
+    Datos= ClavesSep[1].split("/")
+    Volumen=float(Datos[4])
+    formulaV=(Volumen/8000.35)-7.58
+    formulaR=(Volumen/3955.11)-15.33
+
+    if formulaV>kWh:
+        Ca=1
+    if formulaV<kWh<formulaR:
+        Ca=2
+    if formulaR<kWh:
+        Ca=3
 
 def caritaPlancha(consumo,clave):
     if consumo>33:
@@ -227,6 +258,23 @@ def caritaBombaR(consumo,clave):
     return Ca
 
 
+def caritaDispensador(consumo,clave):
+    if consumo>=40:
+        Ca = 3
+    if 20<consumo<40:
+        Ca = 2
+    if  20 >= consumo:
+        Ca = 1
+    return Ca
+
+def caritaHielos(consumo,clave):
+    if consumo>=40:
+        Ca = 3
+    if 20<consumo<40:
+        Ca = 2
+    if  20 >= consumo:
+        Ca = 1
+    return Ca
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
@@ -237,13 +285,13 @@ def definircarita(Equipo):
             if equipoid == 'RF':
                 Carita = caritaRefri(consumo,clave)
             elif equipoid == 'CN':
-                Carita = caritaRefri(consumo,clave)
+                Carita = caritaCongeV(consumo,clave)
             elif equipoid == 'MB':
                 Carita = caritaMiniB(consumo,clave)
             elif equipoid == 'CV':
                 Carita = caritaCava(consumo,clave)
             elif equipoid == 'HL':
-                Carita = caritaRefri(consumo,clave)
+                Carita = caritaHielos(consumo,clave)
             elif equipoid == 'TV':
                 Carita = caritaTV(consumo,clave)
             elif equipoid == 'LV':
@@ -264,6 +312,8 @@ def definircarita(Equipo):
                 Carita =caritaCafetera(consumo,clave)
             elif equipoid == 'AA':
                 Carita =caritaAires(consumo,clave)
+            elif equipoid == 'DA':
+                Carita =caritaDispensador(consumo,clave)
             else:
                 Carita =caritaEquipos(consumo, clave)
 

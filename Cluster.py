@@ -213,9 +213,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 if 'bluray' in Nomedidos:
                     print("blueray no desconectado")
                     Aparatos_C.loc['Bluray', 'Standby'] =0.001
-
                 else:
-
                     Aparatos_C.loc['Bluray', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
 
             if indx == 10:
@@ -231,7 +229,8 @@ def clustertv(Excel,Nocircuito,NomCircuito):
 
                 if InfoDeco.filter(regex='regulador1_apagado_c_i')[0] == 'si':
                     Aparatos_C.loc['Regulador1', 'Standby'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                    Aparatos_C.loc['Regulador1', 'CodigoS'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                    Aparatos_C.loc['Regulador1', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                    Aparatos_C.loc['Regulador1', 'Clave'] = 'RG'
 
                 elif InfoDeco.filter(regex='regulador1_apagado_c_i')[0] == 'no':
                     Aparatos_C.loc['Regulador1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
@@ -250,10 +249,12 @@ def clustertv(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['NoBreak', 'Existencia'] = 1
                 Aparatos_C.loc['NoBreak', 'Atacable'] = 'Si'
                 Aparatos_C.loc['NoBreak', 'Lugar'] = Zona
+                Aparatos_C.loc['NoBreak', 'Apagado'] = InfoDeco.filter(regex='apagado_c_i')[0]
 
                 if InfoDeco.filter(regex='nobreak_apagado_c_i')[0] == 'si':
                     Aparatos_C.loc['NoBreak', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-                    Aparatos_C.loc['NoBreak', 'CodigoS'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                    Aparatos_C.loc['NoBreak', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                    Aparatos_C.loc['NoBreak', 'Clave'] = 'NB'
                 elif InfoDeco.filter(regex='nobreak_apagado_c_i')[0] == 'no':
                     Aparatos_C.loc['NoBreak', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                     Aparatos_C.loc['NoBreak', 'CodigoS'] =  CodStandby
@@ -407,7 +408,6 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Multis=1
     zona=Zona
     Info_C.loc['Consumo Total', 'Info'] = TotConsumo
-
 
     return Aparatos, TotConsumo, zona
 

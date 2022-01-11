@@ -16,7 +16,33 @@ def leerLibreria():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas Presurizadoras/libreriaBombPre.xlsx",
             sheet_name='link')
     return lib, link
-def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
+#def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
+def recoPresu(Claves,kwh):
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+    trsh, w, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru = Claves.split(sep=",")
+    w= float(w)
+    """
+    Parameters
+    ----------
+    w        potencia numerico
+    kwh      consumo numerico
+    tinaco   kobo-> plomeria_tinaco_existencia_c_i          valores(str) si, no
+    pastilla kobo-> plomeria_tuberia_pastilla_c_i           valores(str) si, no
+    pb       kobo-> plomeria_tuberia_presion_off_pa_c_i     valores(str) bien, insuficiente, nada
+    pa       kobo-> plomeria_tuberia_presion_off_pa_c_i     valores(str) bien, insuficiente, nada, no_hay_pa
+    ver      kobo-> plomeria_tuberia_valvulas_verificar_c_i valores(str) bien, insuficiente, nada
+    val      kobo-> plomeria_tuberia_valvulas_abiertas_c_i  valore(str) abiertas, algo_cerradas
+    jar      kobo-> plomeria_tinaco_jarrosdeaire_c_i,       valores(str) bien, valvula, no_hay
+    fug1     kobo-> plomeria_tuberia_fuga_c_i               valores(str) si, no
+    fug1l    kobo-> plomeria_tuberia_fuga_lugar_c_i         valores(str) TEXTO LIBRE
+    fug2     kobo-> plomeria_tuberia_inspeccion_c_i         valores(str) si, no
+    fug2l    kobo-> plomeria_tuberia_inspeccion_lugar_c_i   valores(str) TEXTO LIBRE
+    pru      kobo-> plomeria_tuberia_pruebafugas            valores(str) apaga, prendido, no_se_pudo_ver
+
+    Returns
+    -------
+    texto con recomendacion
+    """
     lib, link = leerLibreria()
     tpro = kwh*1000/w/(24*60)
 
@@ -34,7 +60,29 @@ def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2
         txt = txt + fc.selecTxt(lib, "PRE16")
     if fug2=="no":
         txt = txt + fc.selecTxt(lib, "PRE17")
-    return txt
+    # Potencual de ahorro
+    PotAhorro["Accion"] = ""
+    if ("el caudal de agua es adecuado" in txt):
+        PotAhorro["%Ahorro"] = 1
+        PotAhorro["kwhAhorrado"] = kwh
+        PotAhorro["Accion"] = fc.selecTxt(lib, "PREpa03")
+    elif (fug1 == "si") or (fug2=="si"):
+        PotAhorro["%Ahorro"]     =  1-(0.5/tpro)
+        PotAhorro["kwhAhorrado"] = PotAhorro.at[0,"%Ahorro"]*kwh
+        PotAhorro["Accion"]      = fc.selecTxt(lib,"PREpa01")
+    elif (tinaco=="no", ):
+        PotAhorro["%Ahorro"] = 1
+        PotAhorro["kwhAhorrado"] = kwh
+        PotAhorro["Accion"] = fc.selecTxt(lib, "PREpa02")
+    elif ("[timer]" in txt):
+        PotAhorro["%Ahorro"] = 1 - (0.5 / tpro)
+        PotAhorro["kwhAhorrado"] = PotAhorro.at[0, "%Ahorro"] * kwh
+        PotAhorro["Accion"] = fc.selecTxt(lib, "PREpa04")
+
+    if kwh>35:
+        return [txt.replace("\n","<br/>"), PotAhorro]
+    else:
+        return [fc.selecTxt(lib,"PRE00"),  PotAhorro]
 
 
 def prezuNece(txt, lib, pb, pa, ver, val, jar, fug1, fug2, pru, tpro):
@@ -68,7 +116,9 @@ def fugas(txt, lib, fug1, fug2, pru, tpro):
     print(tpro)
     hrsUso = int(tpro*24)
     minUso = int(tpro*24*60)
-    if hrsUso>=1:
+    if hrsUso==1:
+        txt = txt + fc.selecTxt(lib, "PRE08").replace("[horasUso]", str(hrsUso)).replace("horas","hora")
+    elif hrsUso>1:
         txt = txt +fc.selecTxt(lib,"PRE08").replace("[horasUso]",str(hrsUso))
     else:
         txt = txt +fc.selecTxt(lib,"PRE08").replace("[horasUso]",str(minUso)).replace("horas","minutos")

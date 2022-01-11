@@ -109,7 +109,9 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
 
         XX         = np.log(Potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
         Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * Pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
-        
+        # print("_________________")
+        # print(Percentil)
+        # print(uso)
         if Percentil < 0.9:
             Texto = Texto + ' ' + lib.loc['TV01A', 'Texto'] # Tu TV es de tecnología eficiente.
 
@@ -127,9 +129,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
             Texto = Texto +'TV03A'+ lib.loc['TV03A','Texto']
 
         if uso < 1:
-        
             Texto = Texto +'TV03C'+ lib.loc['TV03C','Texto']
-
 
         if Standby>1:
             Texto = Texto + ' ' + lib.loc['TV05A', 'Texto']
@@ -140,7 +140,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
     Texto = Texto.replace('[...]', ' ')
     Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
     Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
-
+    #print(Texto)
     return Texto
 
 
