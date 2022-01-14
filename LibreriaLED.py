@@ -132,9 +132,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     if 'NOC' in texto:
         TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
         Solar=True
-    TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC,hrsUso=uso)
-    if TextoSensor!='X':
-        Sensor=True
+    #TextoSensor = recoSensores (kwh =VV , w = Watts, lugar = Lugar ,dac = DAC,hrsUso=uso)
+    #if TextoSensor!='X':
+    #    Sensor=True
 
     # Textos al reporte cuando el foco ya es LED.
     if Tecno =='led' or Tecno=='tira':
@@ -338,9 +338,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     #     TextoCompleto = TextoCompleto+'. No existe información suficiente para una recomendación'
 
     TextoCompleto=recoTuboFluorescente(tex,Numero,DAC,Watts,VV,texto,TextoCompleto)
-    TextoSensor=TextoSensor.replace('X','')
+    #TextoSensor=TextoSensor.replace('X','')
     TextoCompleto = TextoCompleto + '' +TextoSolar
-    TextoCompleto = TextoCompleto + '' +TextoSensor
+    #TextoCompleto = TextoCompleto + '' +TextoSensor
 
 
     if 'DACCS' in tex:

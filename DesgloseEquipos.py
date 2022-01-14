@@ -2,7 +2,7 @@ import pandas as pd
 from pandas import ExcelWriter
 
 from pathlib         import Path
-from Refrigeradores  import refrigerador
+from refris__  import refrigerador
 from Cluster         import clustertv
 from Especiales      import especiales
 #from Iluminacion    import iluminacion

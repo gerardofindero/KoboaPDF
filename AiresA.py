@@ -1,5 +1,5 @@
 import pandas as pd
-from Consumo    import consumoEq
+#from Consumo    import consumoEq
 
 def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C = pd.DataFrame(
@@ -18,9 +18,9 @@ def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Aire Acondicionado', 'Zona'] = zona
     Aparatos_C.loc['Aire Acondicionado', 'Tecnologia'] = tec
     Aparatos_C.loc['Aire Acondicionado', 'Alimentacion'] = Equipos.filter(regex='alimentacion_c_i')[0]
-    Aparatos_C.loc['Aire Acondicionado', 'Nominal'] = consumoEq(Equipos.filter(regex='consumo_c_i')[0])
-    Aparatos_C.loc['Aire Acondicionado', 'Nominal2F3F'] = consumoEq(Equipos.filter(regex='consumo2F3F_c_i')[0])
-    Aparatos_C.loc['Aire Acondicionado', 'Nominal2F3F'] = consumoEq(Equipos.filter(regex='consumo1F_c_i')[0])
+    Aparatos_C.loc['Aire Acondicionado', 'Nominal'] = Equipos.filter(regex='consumo_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Nominal2F3F'] = Equipos.filter(regex='consumo2F3F_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Nominal1F'] = Equipos.filter(regex='consumo1F_c_i')[0]
     if not Equipos.filter(regex='codigofindero_c_i')[0]=='X':
         Aparatos_C.loc['Aire Acondicionado', 'CodigoN'] = Equipos.filter(regex='codigofindero_c_i')[0]
         if not Equipos.filter(regex='codigofindero2_c_i')[0]=='X':
@@ -28,15 +28,35 @@ def airesA (Excel,Nocircuito,NomCircuito):
                                                               +','+ Equipos.filter(regex='codigofindero2_c_i')[0]
     else:
         Aparatos_C.loc['Aire Acondicionado', 'CodigoN'] = Equipos.filter(regex='codigofinderoQQ_c_i')[0]
-    Aparatos_C.loc['Aire Acondicionado', 'Gasto'] = Equipos.filter(regex='gasto_c_i')[0]
-    Aparatos_C.loc['Aire Acondicionado', 'Standby'] = Equipos.filter(regex='standby_c_i')[0]
+
+    Aparatos_C.loc['Aire Acondicionado', 'Gasto']       = Equipos.filter(regex='gasto_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Standby']     = Equipos.filter(regex='standby_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Standby2F3F'] = Equipos.filter(regex='standby2F3F_c_i')[0]
-    Aparatos_C.loc['Aire Acondicionado', 'Standby1F'] = Equipos.filter(regex='standby1F_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Standby1F']   = Equipos.filter(regex='standby1F_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Codigofuga2F3F'] = Equipos.filter(regex='codigofuga2F3F_c_i')[0]
-    Aparatos_C.loc['Habitacion', 'Temperatura'] = Equipos.filter(regex='temperatura_habitacion')[0]
-    Aparatos_C.loc['Aire Acondicionado', 'TemperaturaP'] = Equipos.filter(regex='temperatura_programada')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'TemperaturaP']   = Equipos.filter(regex='temperatura_programada')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'SEER']           = Equipos.filter(regex='seer_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Personas']       = Equipos.filter(regex='personas')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Marca']          = Equipos.filter(regex='marca')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas'] = Equipos.filter(regex='refrigerante_fugasTxt_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT']  = Equipos.filter(regex='refrigerante_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Marca']       = Equipos.filter(regex='marca')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica'] = Equipos.filter(regex='zonaTermica_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'CP']          = Equipos.filter(regex='cp_c_i')[0]
+    Aparatos_C.loc['Aire Acondicionado', 'Notas']       = Equipos.filter(regex='notas_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Temperatura']         = Equipos.filter(regex='temperatura_habitacion')[0]
 
-
+    InfoDeco = Equipos.filter(regex='cuarto')
+    Aparatos_C.loc['Habitacion', 'Largo'] = InfoDeco.filter(regex='largo_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Ancho'] = InfoDeco.filter(regex='ancho_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Actividad'] = InfoDeco.filter(regex='actividad_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Iluminacion'] = InfoDeco.filter(regex='iluminacion_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'FuentesCalor'] = InfoDeco.filter(regex='fuentes_calor_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Cortinas'] = InfoDeco.filter(regex='cortinas_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Pelicula'] = InfoDeco.filter(regex='pelicula_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Paredes'] = InfoDeco.filter(regex='paredes_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'Filtraciones'] = InfoDeco.filter(regex='filtraciones_c_i')[0]
+    Aparatos_C.loc['Habitacion', 'FiltracionesTXT'] = InfoDeco.filter(regex='filtracionesTxt_c_i')[0]
 
 
 
@@ -44,44 +64,69 @@ def airesA (Excel,Nocircuito,NomCircuito):
     # Aparatos_C.loc['Evaporador', 'Zona'] = zona
     # Aparatos_C.loc['Evaporador', 'Tecnologia'] = tec
     Aparatos_C.loc['Evaporador', 'Ubicacion'] = InfoDeco.filter(regex='ubicacion')[0]
-    Aparatos_C.loc['Evaporador', 'ZonaTermica'] = InfoDeco.filter(regex='ubicacion')[0]
-    Aparatos_C.loc['Evaporador', 'CP'] = InfoDeco.filter(regex='cp')[0]
-    Aparatos_C.loc['Evaporador', ''] = InfoDeco.filter(regex='cp')[0]
-    # Aparatos_C.loc['Evaporador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo_c_i_001')[0])
-    # Aparatos_C.loc['Evaporador', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i_001')[0]
-    # Aparatos_C.loc['Evaporador', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
-    # Aparatos_C.loc['Evaporador', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-    # #Aparatos_C.loc['Aire_Acondicionado', 'Volumen Cuarto'] = Equipos.filter(regex='largo')[0]*Equipos.filter(regex='ancho')[0]
-    # InfoDeco = Equipos.filter(regex='condensador')
-    # Aparatos_C.loc['Condensador', 'Capacidad'] = InfoDeco.filter(regex='capacidad')[0]
-    # Aparatos_C.loc['Condensador', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-    # Aparatos_C.loc['Condensador', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
-    # Aparatos_C.loc['Condensador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-    # Aparatos_C.loc['Condensador', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
-    # Aparatos_C.loc['Condensador', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-    # print(Aparatos_C)
+    Aparatos_C.loc['Evaporador', 'Velocidad'] = InfoDeco.filter(regex='velocidad')[0]
+    Aparatos_C.loc['Evaporador', 'Alto'] = InfoDeco.filter(regex='alto')[0]
+    Aparatos_C.loc['Evaporador', 'Largo'] = InfoDeco.filter(regex='largo')[0]
+    Aparatos_C.loc['Evaporador', 'Limpieza'] = InfoDeco.filter(regex='limpieza')[0]
+    Aparatos_C.loc['Evaporador', 'Ventilador'] = InfoDeco.filter(regex='ventilador_c_i')[0]
+    Aparatos_C.loc['Evaporador', 'VentiladorTXT'] = InfoDeco.filter(regex='ventiladorTxt_c_i')[0]
+    Aparatos_C.loc['Evaporador', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
+    Aparatos_C.loc['Evaporador', 'Nominal']     = Equipos.filter(regex='consumo_c_i')[0]
+    Aparatos_C.loc['Evaporador', 'Nominal2F3F'] = Equipos.filter(regex='consumo2F3F_c_i')[0]
+    Aparatos_C.loc['Evaporador', 'Nominal1F'] = Equipos.filter(regex='consumo1F_c_i')[0]
 
+    InfoDeco = Equipos.filter(regex='condensador')
 
+    Aparatos_C.loc['Condensador', 'Refrigerante'] = InfoDeco.filter(regex='refrigerante_c_i')[0]
+    Aparatos_C.loc['Condensador', 'RefrigeranteOTRO'] = InfoDeco.filter(regex='refrigerante_otro_c_i')[0]
+    Aparatos_C.loc['Condensador', 'SucPRES'] = InfoDeco.filter(regex='presion_succion_c_i')[0]
+    Aparatos_C.loc['Condensador', 'SucTEMP'] = InfoDeco.filter(regex='temperatura_succion_c_i')[0]
+    Aparatos_C.loc['Condensador', 'DesPRES'] = InfoDeco.filter(regex='presion_descarga_c_i')[0]
+    Aparatos_C.loc['Condensador', 'DesTEMP'] = InfoDeco.filter(regex='temperatura_descarga_c_i')[0]
+    Aparatos_C.loc['Condensador', 'Radiacion'] = InfoDeco.filter(regex='radiacion')[0]
+    Aparatos_C.loc['Condensador', 'Limpieza'] = InfoDeco.filter(regex='limpieza')[0]
+    Aparatos_C.loc['Condensador', 'Ventilador'] = InfoDeco.filter(regex='ventilador_c_i')[0]
+    Aparatos_C.loc['Condensador', 'VentiladorTXT'] = InfoDeco.filter(regex='ventiladorTxt_c_i')[0]
+    Aparatos_C.loc['Condensador', 'Tuberias'] = InfoDeco.filter(regex='tuberias')[0]
 
-
-
-
-
-    # Aparatos_C.loc['Aire Acondicionado', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
-    # #notasa = InfoDeco.filter(regex='notas')[0]
-    # # Aparatos_C.loc['Aire_Acondicionado', 'Volumen Cuarto'] = Equipos.filter(regex='largo')[0]*Equipos.filter(regex='ancho')[0]
-    # InfoDeco = Equipos.filter(regex='condensador')
-    # Aparatos_C.loc['Aire Acondicionado', 'Capacidad'] = InfoDeco.filter(regex='capacidad')[0]
-    # Aparatos_C.loc['Aire Acondicionado', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-    # Aparatos_C.loc['Aire Acondicionado', 'CodigoS'] = CodStandby
-    # #Aparatos_C.loc['Condensador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
-    # #Aparatos_C.loc['Condensador', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
-    # Aparatos_C.loc['Aire Acondicionado', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-    # Aparatos_C.loc['Aire Acondicionado', 'Atacable'] = 'Si'
-    # Aparatos_C.loc['Aire Acondicionado', 'CodigoN'] = Equipos.filter(regex='aires_consumo_codigofindero_c_i')[0]
-    # #print(Equipos.filter(regex='consumo_c_i'))
-    # Aparatos_C.loc['Aire Acondicionado', 'Nominal'] = consumoEq(Equipos.filter(regex='aires_consumo_c_i')[0])
-    # Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'X'
+    Aparatos_C = Aparatos_C.fillna('X')
     print(Aparatos_C)
+    Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'AA'+','+str(Aparatos_C.loc['Aire Acondicionado', 'Nominal'])+','\
+                                                    + Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica']+','\
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'CP']) + ',' \
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'TemperaturaP']) + ',' \
+                                                    + Aparatos_C.loc['Habitacion', 'Pelicula'] + ','\
+                                                    + Aparatos_C.loc['Habitacion', 'Paredes'] + ',' \
+                                                    + Aparatos_C.loc['Condensador', 'Radiacion'] + ',' \
+                                                    + Aparatos_C.loc['Habitacion', 'Filtraciones'] + ',' \
+                                                    + Aparatos_C.loc['Habitacion', 'FiltracionesTXT'] + ',' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Velocidad']) + ',' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Alto']) + ',' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Largo']) + ',' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Temperatura']) + ',' \
+                                                    + str(Aparatos_C.loc['Habitacion', 'Temperatura']) + ',' \
+                                                    + str(Aparatos_C.loc['Habitacion', 'Alto'] )+ ',' \
+                                                    + str(Aparatos_C.loc['Habitacion', 'Largo']) + ',' \
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'Personas']) + ',' \
+                                                    + Aparatos_C.loc['Habitacion', 'Actividad'] + ',' \
+                                                    + Aparatos_C.loc['Habitacion', 'Iluminacion'] + ',' \
+                                                    + Aparatos_C.loc['Habitacion', 'FuentesCalor'] + ',' \
+                                                    + Aparatos_C.loc['Evaporador', 'Limpieza'] + ',' \
+                                                    + Aparatos_C.loc['Condensador', 'Limpieza'] + ',' \
+                                                    + Aparatos_C.loc['Evaporador', 'Ventilador'] + ',' \
+                                                    + Aparatos_C.loc['Condensador', 'Ventilador'] + ',' \
+                                                    + Aparatos_C.loc['Evaporador', 'VentiladorTXT'] + ',' \
+                                                    + Aparatos_C.loc['Condensador', 'VentiladorTXT'] + ',' \
+                                                    + Aparatos_C.loc['Condensador', 'Tuberias'] + ',' \
+                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas'] + ',' \
+                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT'] + ',' \
+                                                    + str(Aparatos_C.loc['Condensador', 'SucTEMP'] )+ ',' \
+                                                    + str(Aparatos_C.loc['Condensador', 'DesTEMP'])
+
+
+    Aparatos_C.loc['Aire Acondicionado', 'CodigoS'] = 'FF1'
+    Aparatos_C.loc['Aire Acondicionado', 'Atacable'] = 'Si'
+    Aparatos_C.loc['Aire Acondicionado', 'Standby'] = 5
+
     return Aparatos_C
 
