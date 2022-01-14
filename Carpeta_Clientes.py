@@ -8,8 +8,10 @@ def carpeta_clientes(Cliente):
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
     carpeta_resultados=' '
+    Cl=''
     try:
         #carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/11-noviembre/"
+        # carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/12-diciembre/"
         carpeta_resultados = f"../../../Datos de clientes/Clientes 2021/12-diciembre/"
         clientes = os.listdir(carpeta_resultados)
         if 'Bot_' in Cliente:
@@ -21,7 +23,7 @@ def carpeta_clientes(Cliente):
 
     except:
         #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
-        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2021/12-diciembre/"
+        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/12-diciembre/"
         clientes = os.listdir(carpeta_resultados)
         Cl=''
         if 'Bot_' in Cliente:

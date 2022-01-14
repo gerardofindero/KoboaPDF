@@ -5,8 +5,9 @@ from pathlib         import Path
 from refris__  import refrigerador
 from Cluster         import clustertv
 from Especiales      import especiales
-#from Iluminacion     import iluminacion
-from Luminaria     import iluminacion
+#from Iluminacion    import iluminacion
+from Tecnologia      import tecnologia
+from Luminaria       import iluminacion
 from Bombas          import bombas
 from Lavanderia      import lavanderia
 from Cocina          import cocina
@@ -152,7 +153,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
 
             if indx == 9:
                 print('Tecnologia')
-                Datos_PC = computo(Excel, Nocircuito, NomCircuito)
+                Datos_PC = tecnologia(Excel, Nocircuito, NomCircuito)
                 DatosPC = DatosPC.append(Datos_PC)
                 DatosPC['Tablero'].fillna(tablero[0], inplace=True)
                 DatosPC['Circuito'].fillna(NomCircuito[0], inplace=True)

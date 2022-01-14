@@ -418,7 +418,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Luminarias['Equipo'] = 'Luces '+ Luminaria['Lugar']
     Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['LugarEs']
     Luminarias['Ubicacion'] = 'C'+ Luminaria['Circuito'].apply(str)+' '+Luminaria['Tablero'].apply(str)
-    Luminarias['Potencia Kobo'] = Luminaria['Consumo']
+    #Luminarias['Potencia Kobo'] = Luminaria['Consumo']
+    Luminarias['Potencia Kobo'] = 'X'
 
     Luminarias['Texto']=Luminaria['Adicional']
     Luminarias['Notas'] = Luminaria['Notas']
