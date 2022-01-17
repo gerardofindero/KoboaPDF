@@ -4416,3 +4416,11 @@ KeyError: 'IW17_Puerto1'
 
 2022-01-05 14:56:36 INFO:  NumExpr defaulting to 8 threads. 
 
+2022-01-14 19:40:04 INFO:  Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8. 
+
+2022-01-14 19:40:04 INFO:  NumExpr defaulting to 8 threads. 
+
+2022-01-14 20:07:22 INFO:  Note: NumExpr detected 12 cores but "NUMEXPR_MAX_THREADS" not set, so enforcing safe limit of 8. 
+
+2022-01-14 20:07:22 INFO:  NumExpr defaulting to 8 threads. 
+

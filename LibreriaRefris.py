@@ -118,17 +118,17 @@ def Clasifica(Claves):
 def LeeClavesR(Claves,notas,nombre,consumo):
     kWh = float(consumo)
     Texto=''
-<<<<<<< HEAD
+
     TextoF=notas
     PotencialAhorro=0
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib,lib2 = libreria2()
-=======
+
     TextoF = notas
     PotencialAhorro=0
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib = libreria2()
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
@@ -139,7 +139,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         TempCom=Datos[3]
         Volumen=Datos[4]
 
-<<<<<<< HEAD
+
 
 
 #### Dentro del cuadro
@@ -250,13 +250,12 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             TextoF = recoMaqHie(consumo)
 
 
-=======
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+
         if equipoR=='RF':
             EQR='refrigerador'
             Volumen=float(Datos[4])*0.000022
             percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-<<<<<<< HEAD
+
             if 0.5 > percentil:
                 Texto = notas+lib2.loc['REFF20','Texto']
             if percentil>0.90:
@@ -299,14 +298,14 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             TextoF = TextoF.replace('Refrigerador', 'Cava')
 
 
-=======
+
             if 0.3 > percentil:
                 Texto = lib.loc['REF001','Texto']
             elif percentil>0.90:
                 Texto = lib.loc['REF016','Texto']
                 if NomCom>120:
                     Texto = lib.loc['REF017','Texto']
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+
 
 
 
@@ -459,12 +458,12 @@ def LeeClavesR(Claves,notas,nombre,consumo):
 
         Texto = Texto.replace('[P]', NomCom)
         TextoF = TextoF.replace('[P]', NomCom)
-<<<<<<< HEAD
+
         TextoF = TextoF.replace('[R]', EQR)
-=======
+
         #TextoF = TextoF.replace('[R]', EQR)
         TextoF = TextoF.replace('[TR]', TRef)
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+
 
         Texto = Texto.replace('[/n]', '<br /><br />')
         Texto = Texto.replace('[...]', ' ')
