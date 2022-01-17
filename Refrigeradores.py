@@ -26,8 +26,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
     indx=0
     StandbyCod =Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     notass=Circuito.filter(regex='refrigeracion_notas_c_i')[0]
-    Tierra = Circuito.filter(regex='refrigeracion_tierra_c_i')[0]
-    MismoReg = Circuito.filter(regex='refrigeracion_mismo_regulador_c_i')[0]
+    Tierra = Circuito.filter(regex='tierra_c_i')[0]
+    #MismoReg = Circuito.filter(regex='refrigeracion_mismo_regulador_c_i')[0]
 
     for i in Equipos:
         if i == 1:
@@ -42,7 +42,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 alto = InfoDeco.filter(regex='alto')[0]
                 ancho = InfoDeco.filter(regex='ancho')[0]
                 profundo = InfoDeco.filter(regex='profundo')[0]
-
+                Aparatos_C.loc['Refrigerador', 'Encendido'] = InfoDeco.filter(regex="encendido_c_i")[0]
                 if InfoDeco.filter(regex='zona_c_i')[0] == 'otro':
                     Aparatos_C.loc['Refrigerador', 'Zona'] = InfoDeco.filter(regex='zona_otro_c_i')[0]
                 else:
@@ -69,8 +69,10 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Refrigerador', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]
                 Aparatos_C.loc['Refrigerador', 'Prob Descr']  = InfoDeco.filter(regex='compresor_problema_descrp')[0]
                 Aparatos_C.loc['Refrigerador', 'Empaques']    = InfoDeco.filter(regex='empaques')[0]
-                Aparatos_C.loc['Refrigerador', 'Termostato']  = InfoDeco.filter(regex='termostato')[0]
-                Aparatos_C.loc['Refrigerador', 'Ventilacion'] = InfoDeco.filter(regex='ventilacion_c_i')[0]
+                Aparatos_C.loc['Refrigerador', 'Difusor'] = InfoDeco.filter(regex='ventilador_c_i')[0]
+                #Aparatos_C.loc['Refrigerador', 'Termostato']  = InfoDeco.filter(regex='termostato')[0]
+                Aparatos_C.loc['Refrigerador', 'Encerrado'] = InfoDeco.filter(regex='encerrado_c_i')[0]
+                Aparatos_C.loc['Refrigerador', 'Ventilas'] = InfoDeco.filter(regex='ventilas_c_i')[0]
                 Aparatos_C.loc['Refrigerador', 'Tipo']        = InfoDeco.filter(regex='ventilacion')[0]
                 Aparatos_C.loc['Refrigerador', 'Cierre']      = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Refrigerador', 'Tipo']        = InfoDeco.filter(regex='tipo')[0]
