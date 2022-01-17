@@ -185,6 +185,9 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                                 Texto += lib.loc["REF007", "Texto"]
                             else:
                                 Texto += lib.loc["REF009", "Texto"]
+                        PotAhorro['%Ahorro'] = PotencialAhorro
+                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                        PotAhorro['Accion'] = 'Reemplazar el equipo por uno nuevo'
                     elif (Nt == 0) and ("CN" in Claves):
                         Texto += lib.loc["REF028","Texto"] + lib.loc["REF029","Texto"]
                     elif (Nt == 0) and ((Encendido*(1-0.07*Ns))<0.53):
@@ -227,14 +230,12 @@ def LeeClavesR(Claves,notas,nombre,consumo):
 
 
             Texto = Texto.replace("/n*", "<br />- ")
-            print("percentil original Refris: ",percentil)
-            print("percentil Ns Refris: ",percentilNs)
+            #print("percentil original Refris: ",percentil)
+            #print("percentil Ns Refris: ",percentilNs)
             #print(Texto)
 
 
-    PotAhorro['%Ahorro']=PotencialAhorro
-    PotAhorro['kWhAhorrado']=kWh*PotencialAhorro
-    PotAhorro['Accion']='Reemplazar el equipo por uno nuevo'
+
 
 
 
