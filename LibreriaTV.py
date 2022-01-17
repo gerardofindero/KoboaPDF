@@ -112,7 +112,9 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         # print("_________________")
         # print(Percentil)
         # print(uso)
+
         uniones=0
+
         if Percentil < 0.9:
             Texto = Texto + ' ' + lib.loc['TV01A', 'Texto'] # Tu TV es de tecnología eficiente.
             uniones=1
@@ -142,9 +144,13 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
             Texto = Texto +ClaveLib+ lib.loc['TV03A','Texto']
 
         if uso < 1:
+
+            Texto = Texto +'TV03C'+ lib.loc['TV03C','Texto']
+
             #ClaveLib='TV03C'
             ClaveLib=''
             Texto = Texto +ClaveLib+ lib.loc['TV03C','Texto']
+
 
         if Standby>1:
             #ClaveLib='TV05A'

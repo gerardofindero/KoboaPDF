@@ -119,6 +119,7 @@ def caritaRefri(consumo,Claves):
     TempCom=Datos[3]
     Volumen=float(Datos[4])*0.000022
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
+
     Ns = 0
     if (TRef < 4) or (TCong < -14): Ns += 1
     if "VN" in Claves: Ns += 1
@@ -132,7 +133,7 @@ def caritaRefri(consumo,Claves):
             Ca = 2
     if 0.3<=percentil<0.9:
         Ca = 2
-    if 0.3 > percentil:
+    if 0.5 > percentil:
         Ca = 1
 
     return Ca
@@ -281,14 +282,6 @@ def caritaHielos(consumo,clave):
     if 20<consumo<40:
         Ca = 2
     if  20 >= consumo:
-        Ca = 1
-    return Ca
-def caritaAires(consumo,clave):
-    if consumo>=120:
-        Ca = 3
-    if 70 <=consumo<120:
-        Ca = 2
-    if consumo<70:
         Ca = 1
     return Ca
 
