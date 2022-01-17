@@ -52,12 +52,9 @@ def Crear_Kobo(NCliente):
         if Tablero[0]=='otro':
             Tablero = Excel.loc[i, ['tablero_otro_c_i']]
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
-        Datos, fila, filaLib, Fugas, ilum, clust, coci, comu,esp,lava,refri,\
-<<<<<<< HEAD
-        bomba,pcs,cal,segu,aires,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
-=======
-        bomba,pcs,cal,segu,aires,solar,notass= definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+        Datos, fila, filaLib, Fugas, ilum, clust, coci,esp,lava,refri,bomba,pcs,cal,aires,solar,notass\
+            = definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
+
         Ilum  =  Ilum.append(ilum)
         Clust =  Clust.append(clust)
         Coci  =  Coci.append(coci)
@@ -84,10 +81,7 @@ def Crear_Kobo(NCliente):
 
 
 
-<<<<<<< HEAD
 
-=======
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 ##################          PRUEBAS        ########################################
 ##############    Elige el cliente prueba que desees correr  #####################
 def Cliente_Prueba():
@@ -98,19 +92,15 @@ def Cliente_Prueba():
     # equipo='Maquinas_de_Hielo_y_Dispensadores'
     # equipo='Lavadoras_y_Secadoras'
     # equipo='Bombas_Presurizadoras'
-<<<<<<< HEAD
-    equipo='Reguladores_y_No-Breaks'
+    #equipo='Reguladores_y_No-Breaks'
+    #equipo='Luces'
 
-    Cliente = 'Bot_'+equipo
-=======
-    # equipo='Reguladores_y_No-Breaks'
-    #cequipo='Luces'
     equipo='Tecno'
 
 
     Cliente = 'Bot_'+ equipo
 
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+
     return Cliente
 
 
@@ -118,20 +108,10 @@ def Cliente_Prueba():
 ################# SE ELIGE EL CLIENTE ##############################################
 def Nombre_Cliente():
 
-<<<<<<< HEAD
+
     # NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
-    #NCliente = "Alvaro Cepeda"
-    #NCliente = "Laura Gomez"
-    NCliente = "Ana Isabel"
-=======
-    NCliente = Cliente_Prueba()
-    #NCliente = "Carinne Lamadieu"
-    #NCliente = "Alvaro Cepeda"
-    #NCliente = "Jorge Burillo"
-    #NCliente = "Alejandra Hanhausen"
-    #NCliente  = "Ana Isabel"
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
+    NCliente = "Rodolfo Hill"
 
     return NCliente
 ####################################################################################
@@ -151,19 +131,10 @@ if __name__ == '__main__':
         #
 ########################
 ## Se elige la opción del programa que se quiere correr
-<<<<<<< HEAD
-    Opcion='4'
-#######################
-=======
+
     Opcion='2'
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
-
 #######################
 
-<<<<<<< HEAD
-=======
-
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
 ### Se crea la lista (Esta opción no sirve, el programa es independiente)
     if Opcion == '1':
@@ -195,15 +166,6 @@ if __name__ == '__main__':
 ###########Para hacer pruebas################
     if Opcion == '5':
         leer_resumen(NCliente)
-<<<<<<< HEAD
-
-
-
-
-
-
-=======
->>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
 ###########################################
     if Opcion == '6':

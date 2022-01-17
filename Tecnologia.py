@@ -78,14 +78,15 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
 
     InfoDeco = Equipos.filter(regex='router3')
     Otro     = InfoDeco.filter(regex='existencia_c_i')[0]
+
     if Otro == 'si':
-    InfoDeco = Equipos.filter(regex='router3')
-    Aparatos_C.loc['Router3', 'Marca']      = InfoDeco.filter(regex='marca')[0]
-    if Aparatos_C.loc['Router3', 'Marca'] == 'otro':
-        Aparatos_C.loc['Router3', 'Marca']      = InfoDeco.filter(regex='marca_otro')[0]
-    Aparatos_C.loc['Router3', 'Standby']    = InfoDeco.filter(regex='standby')[0]
-    Aparatos_C.loc['Router3', 'Atacable']   = 'Si'
-    Aparatos_C.loc['Router3', 'Zona']       = Zona
+        InfoDeco = Equipos.filter(regex='router3')
+        Aparatos_C.loc['Router3', 'Marca']      = InfoDeco.filter(regex='marca')[0]
+        if Aparatos_C.loc['Router3', 'Marca'] == 'otro':
+            Aparatos_C.loc['Router3', 'Marca']      = InfoDeco.filter(regex='marca_otro')[0]
+        Aparatos_C.loc['Router3', 'Standby']    = InfoDeco.filter(regex='standby')[0]
+        Aparatos_C.loc['Router3', 'Atacable']   = 'Si'
+        Aparatos_C.loc['Router3', 'Zona']       = Zona
 
     InfoDeco = Equipos.filter(regex='router4')
     Otro     = InfoDeco.filter(regex='existencia_c_i')[0]
@@ -108,9 +109,12 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
     InfoDeco = Equipos.filter(regex='monitor1')
     Aparatos_C.loc['Monitor', 'Standby']      = InfoDeco.filter(regex='standby')[0]
     InfoDeco = Equipos.filter(regex='monitor2')
-    if Equipos.filter(regex='existencia') == 'si':
-        Aparatos_C.loc['Monitor2', 'Standby']      = InfoDeco.filter(regex='standby')[0]
+    # if Equipos.filter(regex='existencia') == 'si':
+    #     Aparatos_C.loc['Monitor2', 'Standby']      = InfoDeco.filter(regex='standby')[0]
 
+    InfoDeco = Equipos.filter(regex='cctv')
+    Aparatos_C.loc['CCTV', 'Marca'] = InfoDeco.filter(regex='marca')[0]
+    Aparatos_C.loc['CCTV', 'Standby'] = InfoDeco.filter(regex='standby')[0]
 
     print(Aparatos_C)
     return Aparatos_C

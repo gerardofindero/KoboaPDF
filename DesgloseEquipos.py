@@ -191,4 +191,4 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
     Fugas['Tablero'].fillna(tablero[0], inplace=True)
     Datoss=DatosFun.copy()
     return Datoss, primafila, FilaLib,Fugas,DatosIlu,DatosCL,DatosCoc,\
-           DatosCom,DatosES,DatosLava,DatosRF,DatosBb,DatosPC,DatosCal,DatosSegu,DatosAire,DatosSol,Notas_
+           DatosES,DatosLava,DatosRF,DatosBb,DatosPC,DatosCal,DatosAire,DatosSol,Notas_
