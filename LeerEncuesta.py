@@ -95,7 +95,8 @@ def Cliente_Prueba():
     #equipo='Reguladores_y_No-Breaks'
     #equipo='Luces'
 
-    equipo='Tecno'
+    #equipo='Tecno'
+    equipo='Refris2'
 
 
     Cliente = 'Bot_'+ equipo
@@ -109,9 +110,10 @@ def Cliente_Prueba():
 def Nombre_Cliente():
 
 
-    # NCliente = Cliente_Prueba()
+    #NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
-    NCliente = "Rodolfo Hill"
+    #NCliente = "Rodolfo Hill"
+    NCliente = "Salvador Medina"
 
     return NCliente
 ####################################################################################

@@ -93,6 +93,7 @@ def separar_fugasBB(Equip):
 
 def separar_fugasC(Equip):
     texto="H"
+    print(Equip)
     try:
         texto=Equip.loc[['Notas', 'Marca']]
         Equip.drop(index='Notas',inplace=True)
@@ -108,11 +109,11 @@ def separar_fugasC(Equip):
     Fuga['Marca'].fillna('!', inplace=True)
     Aparatos.fillna({'Nominal': 0}, inplace=True)
     Fuga.fillna({'Standby': 0}, inplace=True)
-    Aparatos.dropna(subset=['Nominal'], inplace=True)
-    Aparatos = Aparatos[Aparatos.Nominal != 0]
+    # Aparatos.dropna(subset=['Nominal'], inplace=True)
+    # Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
     Equipos['Codigo'] = Aparatos['CodigoN']
-    Equipos['Equipo'] = Aparatos['index']+' '+Aparatos['Marca'].apply(str)
+    Equipos['Equipo'] = Aparatos['index'] +' '+Aparatos['Marca'].apply(str)
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar'] = Aparatos['Zona']
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
@@ -146,6 +147,7 @@ def separar_fugasC(Equip):
 
 def separar_fugasE(Equip):
     texto="H"
+    print(Equip)
     try:
         texto=Equip.loc[['Notas', 'Marca']]
         Equip.drop(index='Notas',inplace=True)
@@ -156,13 +158,13 @@ def separar_fugasE(Equip):
     Fugas   = pd.DataFrame(columns=['Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Atacable','Notas'])
     Aparatos=Equip.copy()
     Fuga = Equip.copy()
-
-    Aparatos.fillna({'Nominal': 0}, inplace=True)
-    Fuga.fillna({'Standby': 0}, inplace=True)
+    Aparatos['Nominal']=Aparatos['Nominal'].replace(0,'X')
+    Aparatos.fillna({'Nominal': 'X'}, inplace=True)
+    Fuga.fillna({'Standby': 'X'}, inplace=True)
     Aparatos['Marca'].fillna('!', inplace=True)
     Fuga['Marca'].fillna('!', inplace=True)
-    Aparatos.dropna(subset=['Nominal'], inplace=True)
-    Aparatos = Aparatos[Aparatos.Nominal != 0]
+    #Aparatos.dropna(subset=['Nominal'], inplace=True)
+    #Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['Equipo'] = Aparatos['Equipo']+' '+Aparatos['Marca']

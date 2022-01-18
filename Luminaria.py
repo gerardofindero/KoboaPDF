@@ -37,7 +37,7 @@ def iluminacion (Excel,Nocircuito):
     esc=True
     j=0
     while esc==True:
-        lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas,InfoEsc,pendiente,CodN=escenario(InfoEquipos,j)
+        lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas,InfoEsc,pendiente,CodN,Consumo=escenario(InfoEquipos,j)
         tec=tec.split()
         for i in tec:
             for k in lista:
@@ -72,6 +72,9 @@ def iluminacion (Excel,Nocircuito):
                     Aparatos_C.loc[NombreVar, 'Total']        = InfoLum.filter(regex='total')[0]
                     Aparatos_C.loc[NombreVar, 'Forma' ] = 'F'
                     Aparatos_C.loc[NombreVar, 'CodigoN'] = CodN
+                    Aparatos_C.loc[NombreVar, 'Consumo'] = Consumo
+
+
 
                     # if InfoLum.filter(regex='otrospendientes')[0]=='si':
                     #     Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+', '+InfoLum.filter(regex='otroscodigos')[0]
@@ -243,6 +246,7 @@ def escenario(InfoEquipos, num):
     sobreilum       = InfoEsc.filter(regex='sobreilum')[0]
     notas           = InfoEsc.filter(regex='notas')[0]
     pendiente       = InfoEsc.filter(regex='espendiente_c_i')[0]
+    Consumo         = InfoEsc.filter(regex='noreportada_consumo')[0]
 
     if pendiente== 'si':
         print(InfoEsc.filter(regex='codigofindero2').empty)
@@ -254,7 +258,7 @@ def escenario(InfoEquipos, num):
         CodN= 'QQ'
 
 
-    return lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas, InfoEsc, pendiente,CodN
+    return lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas, InfoEsc, pendiente,CodN,Consumo
 
 
 
