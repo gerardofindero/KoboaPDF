@@ -237,8 +237,11 @@ def LeeClavesR(Claves,notas,nombre,consumo):
 
 
             Texto = Texto.replace("/n*", "<br />- ")
+            Texto = Texto.replace("\\n*", "<br />- ")
             linkBlog = links.loc["[link]","link"]
+            linkGuia = links.loc["[link guia de refrigeradores]","link"]
             Texto = Texto.replace("[link]",fc.ligarTextolink("link",linkBlog))
+            Texto = Texto.replace("[link guia de refrigeradores]",fc.ligarTextolink("(Guia de compra)",linkGuia))
             #print("percentil original Refris: ",percentil)
             #print("percentil Ns Refris: ",percentilNs)
             #print(Texto)
