@@ -1,4 +1,5 @@
 import pandas as pd
+import funcionesComunes as fc
 from libreriaHielo import recoMaqHie
 from scipy.stats import norm
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
@@ -9,7 +10,13 @@ def libreria2():
         Libreria = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='Libreria')
     Libreria=Libreria.set_index('Codigo')
     return Libreria
-
+def linkss():
+    try:
+        links = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='links')
+    except:
+        links = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='links')
+    links=links.set_index('variable')
+    return links
 
 def ClavesRefri(EquiposRefri):
     EquiposR = EquiposRefri
@@ -79,7 +86,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
     PotencialAhorro=0
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib = libreria2()
-
+    links = linkss()
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
@@ -230,6 +237,8 @@ def LeeClavesR(Claves,notas,nombre,consumo):
 
 
             Texto = Texto.replace("/n*", "<br />- ")
+            linkBlog = links.loc["[link]","link"]
+            Texto = Texto.replace("[link]",fc.ligarTextolink("link",linkBlog))
             #print("percentil original Refris: ",percentil)
             #print("percentil Ns Refris: ",percentilNs)
             #print(Texto)

@@ -133,7 +133,7 @@ def caritaRefri(consumo,Claves):
             Ca = 2
     if 0.3<=percentil<0.9:
         Ca = 2
-    if 0.5 > percentil:
+    if 0.3> percentil:
         Ca = 1
 
     return Ca
