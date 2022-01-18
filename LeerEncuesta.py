@@ -95,6 +95,7 @@ def Cliente_Prueba():
     #equipo='Reguladores_y_No-Breaks'
     #equipo='Luces'
 
+    #equipo='Tecno'
     equipo='Refris2'
 
 
@@ -109,9 +110,10 @@ def Cliente_Prueba():
 def Nombre_Cliente():
 
 
-    NCliente = Cliente_Prueba()
+    #NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
     #NCliente = "Rodolfo Hill"
+    NCliente = "Salvador Medina"
 
     return NCliente
 ####################################################################################
@@ -132,7 +134,7 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
-    Opcion='4'
+    Opcion='2'
 #######################
 
 

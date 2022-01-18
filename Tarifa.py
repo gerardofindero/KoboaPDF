@@ -24,6 +24,8 @@ def leer_tarifa_Dac():
     mes = fecha.strftime("%B").capitalize()
     anho = fecha.strftime("%Y")
     anhoActual= int(anho)-1913
+    if int(anho)==2022:
+        anhoActual=anhoActual+11
     TarifaDAC=round(float(Tarifas.loc[anhoActual+datetime.now().month, ['Central']].values*1.16),3)
     #print(datetime.now().month)
     print('La tarifa actual es de:' + str(TarifaDAC))

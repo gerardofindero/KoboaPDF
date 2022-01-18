@@ -25,6 +25,8 @@ def carpeta_clientes(Cliente):
     except:
         #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
         carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/01-enero/"
+        #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2021/12-diciembre/"
+
         clientes = os.listdir(carpeta_resultados)
         Cl=''
         if 'Bot_' in Cliente:
@@ -44,5 +46,6 @@ def carpeta_clientes(Cliente):
         cliente_=Cl
     archivo_resultados = f"{carpeta_resultados}/Resumen_{cliente_}.xlsx"
     print(archivo_resultados)
+
 
     return archivo_resultados
