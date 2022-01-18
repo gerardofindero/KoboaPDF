@@ -215,10 +215,8 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                         PotAhorro['Accion'] += lib.loc["REFpa25", "Texto"]
                         # Mala ventilacion
                         if "VN" in Claves:
-                            if "SV" in Claves:
-                                Texto += lib.loc["REF007", "Texto"]
-                            else:
-                                Texto += lib.loc["REF009", "Texto"]
+                            Texto += lib.loc["REF027", "Texto"]
+
                     elif (Nt == 0) and ("CN" in Claves):
                         Texto += lib.loc["REF028","Texto"] + lib.loc["REF029","Texto"]
                         PotAhorro['%Ahorro'] = 0.50
@@ -229,11 +227,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                     if TempCom > 50:
                         Texto += lib.loc["REF031","Texto"] + lib.loc["REF032","Texto"]
 
-           
-
-
             else:
-
             ########## Escenario amarillo ##########
                 Texto += lib.loc['REF002','Texto']
                 # Temperaturas muy bajas
@@ -285,9 +279,5 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             #print("percentil Ns Refris: ",percentilNs)
             #print(Texto)
 
-
-
-    print("Porcencial de ahorro############# ",PotAhorro.at[0,"Accion"])
-
-
+    #print("Porcencial de ahorro############# ",PotAhorro.at[0,"Accion"])
     return Texto,TextoF,PotAhorro
