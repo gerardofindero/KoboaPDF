@@ -113,18 +113,27 @@ def caritaRefri(consumo,Claves):
     ClavesSep=Claves.split(",")
     tipo=ClavesSep[0]
     Datos= ClavesSep[1].split("/")
-    TRef=Datos[0]
-    TCong = Datos[1]
+    TRef=float(Datos[0])
+    TCong = float(Datos[1])
     NomCom=Datos[2]
     TempCom=Datos[3]
     Volumen=float(Datos[4])*0.000022
     #NORMDIST(((kWh*6)^0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,0,1,TRUE)
-    percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-    if percentil>=0.99:
-        Ca = 3
-    if 0.5<=percentil<0.99:
+
+    Ns = 0
+    if (TRef < 4) or (TCong < -14): Ns += 1
+    if "VN" in Claves: Ns += 1
+    if "SU" in Claves: Ns += 1
+    percentil   = norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+    percentilNs = norm.cdf((((1-0.07*Ns)*float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+    if percentil>=0.9:
+        if percentilNs>=0.9:
+            Ca = 3
+        if percentilNs<0.9:
+            Ca = 2
+    if 0.3<=percentil<0.9:
         Ca = 2
-    if 0.5 > percentil:
+    if 0.3> percentil:
         Ca = 1
 
     return Ca

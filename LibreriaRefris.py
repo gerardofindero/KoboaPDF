@@ -1,26 +1,22 @@
 import pandas as pd
+import funcionesComunes as fc
 from libreriaHielo import recoMaqHie
 from scipy.stats import norm
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/"
-                                  f"Libreria_de_Refrigeradores.xlsx",sheet_name='Libreria')
-        # Libreria2 = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/"
-        #                           f"Libreria_de_Refrigeradores.xlsx",sheet_name='LibreriaF')
+        Libreria = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='Libreria')
     except:
-        Libreria = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/"
-                                 f"Libreria_de_Refrigeradores.xlsx",sheet_name='Libreria')
-        # Libreria2 = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/"
-        #                          f"Libreria_de_Refrigeradores.xlsx",sheet_name='LibreriaF')
-    #Dicc = ['A', 'B', 'C', 'D', 'E'] # Define los nombres de las columnas en Excel.
-    #Dicc2 = ['A', 'B', 'C', 'D', 'F','E'] # Define los nombres de las columnas en Excel.
-    #Libreria.columns = Dicc
-    #Libreria2.columns = Dicc2
-    #Libreria2=Libreria2.set_index('Codigo')
+        Libreria = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='Libreria')
     Libreria=Libreria.set_index('Codigo')
     return Libreria
-
+def linkss():
+    try:
+        links = pd.read_excel( f"../../../Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='links')
+    except:
+        links = pd.read_excel(f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Refrigeradores/libreriaRefrisV3s.xlsx",sheet_name='links')
+    links=links.set_index('variable')
+    return links
 
 def ClavesRefri(EquiposRefri):
     EquiposR = EquiposRefri
@@ -36,75 +32,41 @@ def ClavesRefri(EquiposRefri):
         NominalComp = int(EquiposR['Pot Compresor'][0])
         TempComp = float(EquiposR['Temp Compresor'][0])
         Volumen =int(EquiposR['Volumen'][0])
+        Encendido = float(EquiposR["Encendido"][0])
         Codigo=EquiposR['Clave'][0]
-        Codigo = str(Codigo)+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)
-
-        ## Compresor Nominal
-        if NominalComp > 120:
-            Codigo += ",CN"
-
-        #Calor
-        if TempComp > 50:
-            Codigo +=',TM'
-
-        if 'prendido' in str(EquiposR['Prob Refr']):
-            Codigo +=',PR'
-        if 'puertas' in str(EquiposR['Prob Refr']):
-            Codigo +=',PT'
-        if 'dehielo' in str(EquiposR['Prob Refr']):
-            Codigo +=',DH'
-        if  'si' in EquiposR['Tuberias']:
-            Codigo += ",TB"
-        if  'si' in EquiposR['Jabon']:
-            Codigo += ",JB"
-        if 'inexistente' in str(EquiposR['Prob Refr']) or 'descompuesto' in str(EquiposR['Prob Refr']):
-            Codigo +=',AM'
-
-    #Ruido
-        if 'ruido' in str(EquiposR['Prob Comp']):
-            Codigo +=',RU'
-
-        #Ventilador
-        if 'ventilador' in str(EquiposR['Prob Comp']):
-            Codigo +=",VE"
-
-        if 'encerrado' in str(EquiposR['Ventilacion']):
-            Codigo +=",VN"
-
-         # Suciedad
-        if 'suciedad' in str(EquiposR['Prob Comp']):
-            Codigo += ",SU"
-        # Viejo
-        if 'viejo' in str(EquiposR['Prob Comp']):
-            Codigo += ",VI"
-            # Suciedad
-        if 'encerrado' in str(EquiposR['Prob Comp']):
-            Codigo += ",EN"
-        # Viejo
-        if 'enclaustrado' in str(EquiposR['Prob Comp']):
-            Codigo += ",EN"
-        #Cierre
-        if EquiposR['Cierre'][0]!= 0:
-
-            Codigo += ",CI"
-        #Empaques
-        if EquiposR['Empaques'][0] != 'si':
-            Codigo += ",EB"
-        else:
-            Codigo += ",EM"
-
-        #Temperatura interior
-        if -10 > EquiposR['Temp Conge'][0] >-14:
-            Codigo += ',TCB'
-        if EquiposR['Temp Conge'][0] <-14:
-            Codigo += ',TCM'
-        # Temperatura interior
-
-        if 3 >= TempR >= -7:
-            Codigo += ',TRB'
-        if EquiposR['Temp Refri'][0] < -8:
-            Codigo += ',TRM'
-
+        Codigo = str(Codigo)+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)+"/"+str(Encendido)
+####### Detalles      #######################################
+        # Alarma
+        if "inexistente"  in str(EquiposR["Alarma"])    : Codigo += ",AI"
+        if "descompuesto" in str(EquiposR["Alarma"])    : Codigo += ",AD"
+        # Ventilas
+        if "no"           in str(EquiposR["Ventilas"])  : Codigo += ",SV"
+        # Porcentaje de prendido
+        if ("prolongado"  in str(EquiposR["Prob Refr"])) \
+        or ("ontiempo"    in str(EquiposR["Prob Refr"])): Codigo += ",PR"
+        # Ciclos de deshielo continuos
+        if "deshielo"     in str(EquiposR["Prob Refr"]) : Codigo += ",DH"
+####### Causas suaves #######################################
+        # Ventilacion
+        if '1'          in str(EquiposR['Encerrado']) : Codigo += ",VN"
+        # Evaporador sucio
+        if 'suciedad'   in str(EquiposR['Prob Comp']) : Codigo += ",SU"
+####### Causas tecnica ######################################
+        # compresor a alta potencia
+        if (NominalComp > 120) \
+        or ("altapotencia" in str(EquiposR["Prob Refr"])) :Codigo += ",CN"
+        # empaque
+        if "si" in str(EquiposR["Empaques"]): Codigo += "EM"
+        # difusor mal
+        if ("potenciaventilador" in str(EquiposR["Prob Comp"] ))\
+        or ("tocandolo"          in str(EquiposR["Difusor"]   ))\
+        or ("detenido"           in str(EquiposR["Difusor"]   ))\
+        or ("rotas"              in str(EquiposR["Difusor"]   ))\
+        or ("otro"               in str(EquiposR["Difusor"]   )): Codigo += "DM"
+        # tuberias picadas | fugas de refrigerante
+        if "si" in str(EquiposR["Tuberias"]): Codigo += "FG"
+        # puertas dañadas
+        if "puertasdanadas"     in str(EquiposR["Cierre"]): Codigo += "PD"
     return  Codigo
 
 
@@ -116,363 +78,173 @@ def Clasifica(Claves):
 
 
 def LeeClavesR(Claves,notas,nombre,consumo):
+    print("Claves refrigeracion",Claves)
     kWh = float(consumo)
     Texto=''
-
-    TextoF=notas
-    PotencialAhorro=0
-    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
-    lib,lib2 = libreria2()
 
     TextoF = notas
     PotencialAhorro=0
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib = libreria2()
-
+    links = linkss()
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
-        TCong=Datos[0]
-        TRef = Datos[1]
-        NomCom=Datos[2]
-        TempCom=Datos[3]
-        Volumen=Datos[4]
 
+        TRef      = float(Datos[0])
+        TCong     = float(Datos[1])
+        NomCom    = float(Datos[2])
+        TempCom   = float(Datos[3])
+        Volumen   = float(Datos[4])
+        Encendido = float(Datos[5])/100
 
-
-
-#### Dentro del cuadro
-        # Empaques bien
-        if 'EB' in Claves:
-            #Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[12,'E']
-            TextoF= TextoF+' '+lib2.loc['REFF06','Texto']
-
-        # Empaques mal
-        if 'EM' in Claves:
-            Texto= Texto+' '+lib.loc['REF13','Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-
-        # Temperatura congelador mal
-        if 'TCM' in Claves:
-            Texto= Texto+' '+lib.loc['REF14','Texto']+' '+lib.loc['REF15','Texto']+' '+lib.loc['REF17','Texto']
-            Texto = Texto.replace('[EQQ]', 'congelador')
-            #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-
-        #Temperatura congelador bien
-        # if 'TCB' in Claves:
-        #     #Texto = Texto + ' ' + lib.loc[17, 'E']
-        #     TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-
-        #Temperatura refrigerador mal
-        if 'TRM' in Claves:
-            Texto= Texto+' '+lib.loc['REF14','E']+' '+lib.loc['REF16','E']+' '+lib.loc['REF18','E']
-            #Texto = Texto.replace('[EQQ]', 'refrigerador')
-            TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-
-        #Temperatura refrigerador bien
-        # if 'TRB' in Claves:
-        #     #Texto = Texto + ' ' + lib.loc[18, 'E']
-        #     TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-###
-        ## Compresor Nominal
-        if 'CN' in Claves:
-            Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF02','Texto']
-            Texto= Texto.replace(' [Y]',str(NomCom))
-            TextoF= TextoF+' '+lib2.loc['REFF04','Texto']
-            if 'TM' in Claves:
-                Texto= Texto+' y una'
-
-        ## Temp Compresor
-        if float(TempCom) > 10.0:
-            if 'TM' in Claves:
-                Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF01','Texto']
-                #Texto = Texto.replace('[TC]', str(TempCom))
-                TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
-
-                TextoF = TextoF.replace('[TC]', str(TempCom))
-
-            else:
-                TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
-                TextoF = TextoF.replace('[TC]', str(TempCom))
-
-        if 'TM' in Claves or 'CN' in Claves:
-            Texto= Texto+' '+ lib.loc['REF03','Texto']
-
-###
-        if 'RU' in Claves or 'VI' in Claves:
-            Texto= Texto+' '+ lib.loc['REF04','Texto']
-        ## Ruido
-        if 'RU' in Claves:
-            Texto = Texto + ' ' + lib.loc['REF05', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF12','Texto']
-        ## Viejo
-        if 'VI' in Claves:
-            Texto = Texto + ' ' + lib.loc['REF06', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF13','Texto']
-        if 'RU' in Claves or 'VI' in Claves:
-            Texto= Texto+' '+ lib.loc['REF07','Texto']
-
-        ## VEntilador
-        if 'VE' in Claves:
-            Texto = Texto + ' ' + lib.loc['REF09', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF19','Texto']
-
-        ## Sucio
-        if 'SU' in Claves:
-            Texto = Texto + ' ' + lib.loc['REF08', 'Texto']
-            TextoF= TextoF +' ' + lib2.loc['REFF14','Texto']
-
-
-        ## Ventilador Encerrado
-        if 'VN' in Claves:
-            Texto = Texto + ' ' + lib.loc['REF12', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF15','Texto']
-        if 'PR' in Claves:
-            Texto= Texto+' '+ lib.loc['REF10', 'Texto']
-            #TextoF= TextoF+' '+lib2.loc['REFF02','Texto']
-        if 'PT' in Claves:
-            Texto= Texto+' '+ lib.loc['REF11', 'Texto']
-            TextoF= TextoF+' '+lib2.loc['REFF21','Texto']
-        if 'DH' in Claves:
-            #Texto= Texto+' '+lib.loc[6,'E']
-            TextoF= TextoF+' '+lib2.loc['REFF03','Texto']
-        if 'TB' in Claves:
-            #Texto= Texto+' '+lib.loc[6,'E']
-            TextoF= TextoF+' '+lib2.loc['REFF016','Texto']
-        if 'JB' in Claves:
-            #Texto= Texto+' '+lib.loc[6,'E']
-            TextoF= TextoF+' '+lib2.loc['REFF017','Texto']
-        if 'AM' in Claves:
-            #Texto= Texto+' '+lib.loc[6,'E']
-            TextoF= TextoF+' '+lib2.loc['REFF018','Texto']
-        if 'hielo' in nombre:
-            TextoF = recoMaqHie(consumo)
-
-
+        #print("NomCom",NomCom)
+        #print("TempCom",TempCom)
+        #print("Volumen",Volumen)
+        #print("TRef",TRef)
+        #print("TCong",TCong)
+        #print("Encendido",Encendido)
 
         if equipoR=='RF':
             EQR='refrigerador'
             Volumen=float(Datos[4])*0.000022
-            percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
 
-            if 0.5 > percentil:
-                Texto = notas+lib2.loc['REFF20','Texto']
-            if percentil>0.90:
-                PotencialAhorro=1-(90/kWh)
+            percentil = norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+
+            Ns = 0
+            if (TRef < 4) or (TCong <-14): Ns+=1
+            if "VN" in Claves            : Ns+=1
+            if "SU" in Claves            : Ns+=1
+            EncendidoNs=Encendido-(0.07*Ns)
+            percentilNs =  norm.cdf((((1-0.07*Ns)*float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+            #print("EncendidoNs", EncendidoNs)
+            #print("Ns", Ns)
+            #print("Percentil ori",percentil)
+            #print("Percentil Ns",percentilNs)
+            #print("kwh kwhNs",kWh,kWh*(1-(0.07*Ns)))
+            Nt = 0
+            #if "CN" in Claves: Nt +=1
+            if "EM" in Claves: Nt +=1
+            if "DM" in Claves: Nt +=1
+            if "FG" in Claves: Nt +=1
+            if "PD" in Claves: Nt +=1
+            #print("Nt",Nt)
+            if percentil<0.3:
+                #### Zona verde ####
+                Texto += lib.loc['REF001','Texto'] + lib.loc["REF015","Texto"]
+            elif percentil>=0.90:
+                #### NS a amarillo ####
+                if percentilNs<0.90:
+                    Texto += lib.loc['REF002', 'Texto']
+                    # Temperaturas muy bajas
+                    if Ns>0:
+                        Texto += lib.loc["REF003", "Texto"]
+                        if TRef >= 4 and TCong < -14:
+                            Texto += lib.loc["REF004", "Texto"]
+                        elif TRef < 4 and TCong >= -14:
+                            Texto += lib.loc["REF005", "Texto"]
+                        elif TRef < 4 and TCong < -14:
+                            Texto += lib.loc["REF006", "Texto"]
+                        # Mala ventilacion
+                        if "VN" in Claves:
+                            if "SV" in Claves:
+                                Texto += lib.loc["REF007", "Texto"]
+                            else:
+                                Texto += lib.loc["REF009", "Texto"]
+                        if "SU" in Claves:
+                            Texto += lib.loc["REF010", "Texto"]
+
+                    if "PR" in Claves:
+                        Texto += "<br />" + lib.loc["REF011", "Texto"]
+                        if "AI" in Claves:
+                            Texto += lib.loc["REF011S02", "Texto"]
+                        if "AD" in Claves:
+                            Texto += lib.loc["REF011S03", "Texto"]
+                    Texto += lib.loc["REF015", "Texto"]
+                else:
+                    #### NS rojo ####
+                    Texto += lib.loc['REF016', 'Texto']
+                    if (NomCom > 120) and not("CN" in Claves):
+                        Texto+= lib.loc["REF017","Texto"]
+                    elif (NomCom <= 120) and ("CN" in Claves):
+                        Texto+= lib.loc["REF018","Texto"]
+                    elif (NomCom > 120) and ("CN" in Claves):
+                        Texto += lib.loc["REF019","Texto"]
+                    else:
+                        Texto = Texto.replace(" La principal causa es que su compresor (motor)","")
+                    if Nt>0:
+                        Texto += lib.loc["REF020","Texto"]
+                        if "FG" in Claves:
+                            Texto += lib.loc["REF021","Texto"]
+                        if "DM" in Claves:
+                            Texto += lib.loc["REF022","Texto"]
+                        if "EM" in Claves:
+                            Texto += lib.loc["REF023","Texto"]
+                        if "PD" in Claves:
+                            Texto += lib.loc["REF024","Texto"]
+
+                    if Nt>1:
+                        Texto += lib.loc["REF025","Texto"] + lib.loc["REF026","Texto"]
+                        # Mala ventilacion
+                        if "VN" in Claves:
+                            if "SV" in Claves:
+                                Texto += lib.loc["REF007", "Texto"]
+                            else:
+                                Texto += lib.loc["REF009", "Texto"]
+                        PotAhorro['%Ahorro'] = PotencialAhorro
+                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                        PotAhorro['Accion'] = 'Reemplazar el equipo por uno nuevo'
+                    elif (Nt == 0) and ("CN" in Claves):
+                        Texto += lib.loc["REF028","Texto"] + lib.loc["REF029","Texto"]
+                    elif (Nt == 0) and ((Encendido*(1-0.07*Ns))<0.53):
+                        Texto += lib.loc["REF030","Texto"]
+                    if TempCom > 50:
+                        Texto += lib.loc["REF031","Texto"] + lib.loc["REF032","Texto"]
+
+           
+
+
             else:
-                PotencialAhorro=0
+
+            ########## Escenario amarillo ##########
+                Texto += lib.loc['REF002','Texto']
+                # Temperaturas muy bajas
+                if Ns>0:
+                    Texto += lib.loc["REF003","Texto"]
+                    if   TRef >= 4 and TCong <  -14:
+                        Texto+= lib.loc["REF004","Texto"]
+                    elif TRef <  4 and TCong >= -14:
+                        Texto+= lib.loc["REF005","Texto"]
+                    elif TRef <  4 and TCong <  -14:
+                        Texto+= lib.loc["REF006","Texto"]
+                    # Mala ventilacion
+                    if "VN" in Claves:
+                        if "SV" in Claves:
+                            Texto += lib.loc["REF007", "Texto"]
+                        else:
+                            Texto += lib.loc["REF009", "Texto"]
+                    if "SU" in Claves:
+                        Texto += lib.loc["REF010", "Texto"]
+
+                if "PR" in Claves:
+                    Texto += "<br />" + lib.loc["REF011","Texto"]
+                    if "AI" in Claves:
+                        Texto += lib.loc["REF011S02","Texto"]
+                    if "AD" in Claves:
+                        Texto += lib.loc["REF011S03","Texto"]
+                Texto += lib.loc["REF015","Texto"]
 
 
-        if equipoR=='CN':
-            EQR='congelador'
-            formulaV=(float(Volumen)/6863.63)-8.83
-            if formulaV>kWh:
-                Texto = notas+lib2.loc['REFF20','Texto']
-            Texto = Texto.replace('Refrigerador', 'Congelador')
-            TextoF = TextoF.replace('Refrigerador', 'Congelador')
-            if kWh>250:
-                PotencialAhorro=1-(120/kWh)
-            else:
-                PotencialAhorro=0
-
-
-
-
-        if equipoR=='MB':
-            EQR='minibar'
-            Volumen=float(Datos[4])*0.000022
-            percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-            if 0.5 > percentil:
-                Texto = notas+lib2.loc['REFF20','Texto']
-            Texto = Texto.replace('Refrigerador', 'Minibar')
-            TextoF = TextoF.replace('Refrigerador', 'Minibar')
-
-
-        if equipoR=='CV':
-            EQR='cava'
-            formulaV=(float(Volumen)/1300.8)+21.4
-            if formulaV>kWh:
-                Texto = notas+lib2.loc['REFF20','Texto']
-            Texto = Texto.replace('Refrigerador', 'Cava')
-            TextoF = TextoF.replace('Refrigerador', 'Cava')
-
-
-
-            if 0.3 > percentil:
-                Texto = lib.loc['REF001','Texto']
-            elif percentil>0.90:
-                Texto = lib.loc['REF016','Texto']
-                if NomCom>120:
-                    Texto = lib.loc['REF017','Texto']
+            Texto = Texto.replace("/n*", "<br />- ")
+            linkBlog = links.loc["[link]","link"]
+            Texto = Texto.replace("[link]",fc.ligarTextolink("link",linkBlog))
+            #print("percentil original Refris: ",percentil)
+            #print("percentil Ns Refris: ",percentilNs)
+            #print(Texto)
 
 
 
-
-
-            else:
-                Texto = lib.loc['REF002','Texto']
-
-
-
-# #### Dentro del cuadro
-#         # Empaques bien
-#         if 'EB' in Claves:
-#             #Texto= Texto+' '+lib.loc[10,'E']+' '+lib.loc[12,'E']
-#             TextoF= TextoF+' '+lib2.loc['REFF06','Texto']
-#
-#         # Empaques mal
-#         if 'EM' in Claves:
-#             Texto= Texto+' '+lib.loc['REF13','Texto']
-#             TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-#
-#         # Temperatura congelador mal
-#         if 'TCM' in Claves:
-#             Texto= Texto+' '+lib.loc['REF14','Texto']+' '+lib.loc['REF15','Texto']+' '+lib.loc['REF17','Texto']
-#             Texto = Texto.replace('[EQQ]', 'congelador')
-#             #TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-#
-#         #Temperatura congelador bien
-#         # if 'TCB' in Claves:
-#         #     #Texto = Texto + ' ' + lib.loc[17, 'E']
-#         #     TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-#
-#         #Temperatura refrigerador mal
-#         if 'TRM' in Claves:
-#             Texto= Texto+' '+lib.loc['REF14','Texto']+' '+lib.loc['REF16','Texto']+' '+lib.loc['REF18','Texto']
-#             #Texto = Texto.replace('[EQQ]', 'refrigerador')
-#             TextoF= TextoF+' '+lib2.loc['REFF22','Texto']
-#
-#         #Temperatura refrigerador bien
-#         # if 'TRB' in Claves:
-#         #     #Texto = Texto + ' ' + lib.loc[18, 'E']
-#         #     TextoF= TextoF+' '+lib2.loc['REFF07','Texto']
-# ###
-#         ## Compresor Nominal
-#         if 'CN' in Claves:
-#             Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF02','Texto']
-#             Texto= Texto.replace(' [Y]',str(NomCom))
-#             TextoF= TextoF+' '+lib2.loc['REFF04','Texto']
-#             if 'TM' in Claves:
-#                 Texto= Texto+' y una'
-#
-#         ## Temp Compresor
-#         if float(TempCom) > 10.0:
-#             if 'TM' in Claves:
-#                 Texto= Texto+' '+lib.loc['REF00','Texto']+' '+lib.loc['REF01','Texto']
-#                 #Texto = Texto.replace('[TC]', str(TempCom))
-#                 TextoF= TextoF+' '+lib2.loc['REFF10','Texto']
-#
-#                 TextoF = TextoF.replace('[TC]', str(TempCom))
-#
-#             else:
-#                 TextoF= TextoF+' '+lib2.loc['REFF11','Texto']
-#                 TextoF = TextoF.replace('[TC]', str(TempCom))
-#
-#         if 'TM' in Claves or 'CN' in Claves:
-#             Texto= Texto+' '+ lib.loc['REF03','Texto']
-#
-# ###
-#         if 'RU' in Claves or 'VI' in Claves:
-#             Texto= Texto+' '+ lib.loc['REF04','Texto']
-#         ## Ruido
-#         if 'RU' in Claves:
-#             Texto = Texto + ' ' + lib.loc['REF05', 'Texto']
-#             TextoF= TextoF+' '+lib2.loc['REFF12','Texto']
-#         ## Viejo
-#         if 'VI' in Claves:
-#             Texto = Texto + ' ' + lib.loc['REF06', 'Texto']
-#             TextoF= TextoF+' '+lib2.loc['REFF13','Texto']
-#         if 'RU' in Claves or 'VI' in Claves:
-#             Texto= Texto+' '+ lib.loc['REF07','Texto']
-#
-#         ## VEntilador
-#         if 'VE' in Claves:
-#             Texto = Texto + ' ' + lib.loc['REF09', 'Texto']
-#             TextoF= TextoF+' '+lib2.loc['REFF19','Texto']
-#
-#         ## Sucio
-#         if 'SU' in Claves:
-#             Texto = Texto + ' ' + lib.loc['REF08', 'Texto']
-#             TextoF= TextoF +' ' + lib2.loc['REFF14','Texto']
-#
-#
-#         ## Ventilador Encerrado
-#         if 'VN' in Claves:
-#             Texto = Texto + ' ' + lib.loc['REF12', 'Texto']
-#             TextoF= TextoF+' '+lib2.loc['REFF15','Texto']
-#         if 'PR' in Claves:
-#             Texto= Texto+' '+ lib.loc['REF10', 'Texto']
-#             #TextoF= TextoF+' '+lib2.loc['REFF02','Texto']
-#         if 'PT' in Claves:
-#             Texto= Texto+' '+ lib.loc['REF11', 'Texto']
-#             TextoF= TextoF+' '+lib2.loc['REFF21','Texto']
-#         if 'DH' in Claves:
-#             #Texto= Texto+' '+lib.loc[6,'E']
-#             TextoF= TextoF+' '+lib2.loc['REFF03','Texto']
-#         if 'TB' in Claves:
-#             #Texto= Texto+' '+lib.loc[6,'E']
-#             TextoF= TextoF+' '+lib2.loc['REFF016','Texto']
-#         if 'JB' in Claves:
-#             #Texto= Texto+' '+lib.loc[6,'E']
-#             TextoF= TextoF+' '+lib2.loc['REFF017','Texto']
-#         if 'AM' in Claves:
-#             #Texto= Texto+' '+lib.loc[6,'E']
-#             TextoF= TextoF+' '+lib2.loc['REFF018','Texto']
-
-        # if 'hielo' in nombre:
-        #     TextoF = recoMaqHie(consumo)
-        # if equipoR=='CN':
-        #     EQR='congelador'
-        #     formulaV=(float(Volumen)/6863.63)-8.83
-        #     if formulaV>kWh:
-        #         Texto = notas+lib2.loc['REF20','Texto']
-        #     Texto = Texto.replace('Refrigerador', 'Congelador')
-        #     TextoF = TextoF.replace('Refrigerador', 'Congelador')
-        #     if kWh>250:
-        #         PotencialAhorro=1-(120/kWh)
-        #     else:
-        #         PotencialAhorro=0
-        #
-        #
-        #
-        #
-        # if equipoR=='MB':
-        #     EQR='minibar'
-        #     Volumen=float(Datos[4])*0.000022
-        #     percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-        #     if 0.5 > percentil:
-        #         Texto = notas+lib2.loc['REFF20','Texto']
-        #     Texto = Texto.replace('Refrigerador', 'Minibar')
-        #     TextoF = TextoF.replace('Refrigerador', 'Minibar')
-        #
-        #
-        # if equipoR=='CV':
-        #     EQR='cava'
-        #     formulaV=(float(Volumen)/1300.8)+21.4
-        #     if formulaV>kWh:
-        #         Texto = notas+lib2.loc['REFF20','Texto']
-        #     Texto = Texto.replace('Refrigerador', 'Cava')
-        #     TextoF = TextoF.replace('Refrigerador', 'Cava')
-
-
-        Texto = Texto.replace('[P]', NomCom)
-        TextoF = TextoF.replace('[P]', NomCom)
-
-        TextoF = TextoF.replace('[R]', EQR)
-
-        #TextoF = TextoF.replace('[R]', EQR)
-        TextoF = TextoF.replace('[TR]', TRef)
-
-
-        Texto = Texto.replace('[/n]', '<br /><br />')
-        Texto = Texto.replace('[...]', ' ')
-        TextoF = TextoF.replace('[/n]', '<br /><br />')
-        TextoF = TextoF.replace('[...]', ' ')
-
-    PotAhorro['%Ahorro']=PotencialAhorro
-    PotAhorro['kWhAhorrado']=kWh*PotencialAhorro
-    PotAhorro['Accion']='Reemplazar el equipo por uno nuevo'
 
 
 
