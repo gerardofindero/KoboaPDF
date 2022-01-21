@@ -63,7 +63,7 @@ def Crear_Kobo(NCliente):
         Lava  =  Lava.append(lava)
         Refri =  Refri.append(refri)
         Bomba =  Bomba.append(bomba)
-        #PCs   =  PCs.append(pcs)
+        PCs   =  PCs.append(pcs)
         Cal = Cal.append(cal)
         #Segu = Segu.append(segu)
         Aire = Aire.append(aires)
@@ -113,7 +113,9 @@ def Nombre_Cliente():
     #NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
     #NCliente = "Rodolfo Hill"
-    NCliente = "Salvador Medina"
+    #NCliente = "Jorge Mercado"
+    #NCliente = "Guillermo Casas"
+    NCliente = "Carmela Oteyza"
 
     return NCliente
 ####################################################################################

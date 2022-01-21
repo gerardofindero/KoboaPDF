@@ -85,8 +85,10 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
     #print(Claves)
     AA,w,zona,cp,tempp,peli,pare,radi,filt,filtTxt,velocidad,alto,largo,evaTemp,habTemp,largoC,anchoC,nPerso,activi,ilumin,fuentes,evaLim,conLim,evaVen,conVen,evaVenT,conVenT,tuberias,fugas,fugasT,tempSuc,tempDes = Claves.split(",")
     # adecuación de claves númericas
-    w         = float(w)
-    tempp     = float(tempp)
+    try   : w         = float(w)
+    except: w = 0
+    try   : tempp     = float(tempp)
+    except: tempp = 0
 
 
     # información clímatica
@@ -127,14 +129,22 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
 
     if kwh>=70:
         # variables sección amarilla
-        velocidad = float(velocidad)
-        alto      = float(alto)
-        largo     = float(largo)
-        evaTemp   = float(evaTemp)
-        habTemp   = float(habTemp)
-        largoC    = float(largoC)
-        anchoC    = float(anchoC)
-        nPerso    = float(nPerso)
+        try   : velocidad = float(velocidad)
+        except: velocidad =0
+        try   : alto      = float(alto)
+        except: alto      = 0
+        try   : largo     = float(largo)
+        except: largo     = 0
+        try   : evaTemp   = float(evaTemp)
+        except: evaTemp   = 0
+        try   : habTemp   = float(habTemp)
+        except: habTemp   = 0
+        try   : largoC    = float(largoC)
+        except: largoC    = 0
+        try   : anchoC    = float(anchoC)
+        except: anchoC    = 0
+        try   : nPerso    = float(nPerso)
+        except: nPerso    = 0
         # cambio de sección
         txt+="<br />"
 
@@ -182,17 +192,18 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
         if (ilumin!="") and (ilumin!="led"):
             txt+=fc.selecTxt(lib,"AA10")+" "
         # Carga termica
-        if toneladasRequeridas>toneladas:
+        if (toneladasRequeridas>toneladas) and (toneladas!=0) :
             txt+=fc.selecTxt(lib,"AA11").replace("[tE]",str(round(toneladas,2))).replace("[tR]",str(round(toneladasRequeridas,2)))+" "
         seerS=round(seerS)
         # SEER
-        if seerS<16:
-            txt+=fc.selecTxt(lib, "AA12")+" "
-        elif 16<=seerS<19:
-            txt+=fc.selecTxt(lib,"AA13")+" "
-        elif 19<=seerS:
-            txt+=fc.selecTxt(lib,"AA14")+" "
-        txt=txt.replace("[seer]",str(seerS))
+        if toneladas != 0:
+            if seerS<16:
+                txt+=fc.selecTxt(lib, "AA12")+" "
+            elif 16<=seerS<19:
+                txt+=fc.selecTxt(lib,"AA13")+" "
+            elif 19<=seerS:
+                txt+=fc.selecTxt(lib,"AA14")+" "
+            txt=txt.replace("[seer]",str(seerS))
         # resumen de revisión
         if (seerS>=16) and (hrsUso<=hrsNe):
             txt+=fc.selecTxt(lib,"AA06S2")
@@ -213,7 +224,7 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
                 txt+=fc.selecTxt(lib,"AA21")+" "
             if fugas=="si":
                 txt+=fc.selecTxt(lib,"AA22").replace("[fugasTxt]",fugasT)+" "
-        if (seerS<16) or (toneladasRequeridas>toneladas):
+        if ((seerS<16) or (toneladasRequeridas>toneladas)) and (toneladas!=0):
             aadb["ton"]=aadb[["BTU/h"]]/12000
             if (aadb.ton==toneladasRequeridas).any():
                 idx    = aadb.index[aadb.ton==toneladasRequeridas][0]

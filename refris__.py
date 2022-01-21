@@ -146,7 +146,13 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Congelador', 'Cierre']      = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Congelador', 'Tipo']        = InfoDeco.filter(regex='tipo')[0]
                 Aparatos_C.loc['Congelador', 'Dispensador'] = InfoDeco.filter(regex='dispensador')[0]
-                Aparatos_C.loc['Congelador', 'CodigoN']     = InfoDeco.filter(regex='codigofindero')[0]
+
+                if InfoDeco.filter(regex='espendiente')[0] =='si':
+                    Aparatos_C.loc['Congelador', 'CodigoN']     = InfoDeco.filter(regex='codigofindero')[0]
+                if InfoDeco.filter(regex='espendiente')[0] =='no':
+                    Aparatos_C.loc['Congelador', 'CodigoN']     = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
+
+
                 Aparatos_C.loc['Congelador', 'Notas']       = notass
                 if not pd.isna(InfoDeco.filter(regex='standby_c_i')[0]) :
                     Aparatos_C.loc['Congelador', 'Standby'] = consumoEq( InfoDeco.filter(regex='standby_c_i')[0])
@@ -185,7 +191,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                     Aparatos_C.loc['Minibar', 'Zona'] = InfoDeco.filter(regex='zona_c_i')[0]
 
                 Aparatos_C.loc['Minibar', 'Volumen'] = float(alto) * float(ancho) * float(profundo)
-                Aparatos_C.loc['Minibar', 'Temp Refri'] =temperatura( InfoDeco.filter(regex='minibar1_temp_c_i')[0])
+                Aparatos_C.loc['Minibar', 'Temp Refri'] =temperatura( InfoDeco.filter(regex='minibar1_trefri_c_i')[0])
                 Aparatos_C.loc['Minibar', 'Pot Compresor'] = InfoDeco.filter(regex='compresor_potencia')[0]
                 Aparatos_C.loc['Minibar', 'CodigoN'] = InfoDeco.filter(regex='codigofindero')[0]
                 PotCompresor = InfoDeco.filter(regex='compresor_potencia')[0]
@@ -249,7 +255,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Cava', 'Ventilacion']    = InfoDeco.filter(regex='ventilacion')[0]
                 Aparatos_C.loc['Cava', 'Cierre']         = InfoDeco.filter(regex='cierre')[0]
                 Aparatos_C.loc['Cava', 'Tipo']           = InfoDeco.filter(regex='tipo')[0]
-                Aparatos_C.loc['Cava', 'Dispensador']    = InfoDeco.filter(regex='dispensador')[0]
+                #Aparatos_C.loc['Cava', 'Dispensador']    = InfoDeco.filter(regex='dispensador')[0]
                 Aparatos_C.loc['Cava', 'CodigoN']        = InfoDeco.filter(regex='codigofindero')[0]
                 Aparatos_C.loc['Cava', 'Notas'] = notass
 

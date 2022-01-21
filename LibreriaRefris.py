@@ -91,7 +91,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
-
+        print(Datos)
         TRef      = float(Datos[0])
         TCong     = float(Datos[1])
         NomCom    = float(Datos[2])

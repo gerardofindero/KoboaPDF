@@ -375,8 +375,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
 
     if not PCs.empty:
-        print("Computo")
-        Equipo, Fuga = separar_fugas(PCs)
+        print("Tecnología")
+        Equipo, Fuga = separar_fugasTec(PCs)
         Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
         Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
 
@@ -416,9 +416,9 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
-    #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
-    #print(regusDF)
 
+
+    #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
     Luminaria.fillna(' ', inplace=True)
     Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
     Luminaria.loc[Luminaria['TipoyTam'].str.contains('tubo'), 'Tipytam'] = 'tubos'
@@ -463,7 +463,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Equipos.reset_index(inplace=True, drop=True)
     Fugas.reset_index(inplace=True, drop=True)
     Luminarias.reset_index(inplace=True, drop=True)
-    Equipos.drop(Equipos[Equipos.Codigo == 'X'].index, inplace=True)
+    #Equipos.drop(Equipos[Equipos.Codigo == 'X'].index, inplace=True)
     Equipos.reset_index(inplace=True, drop=True)
 
     Luminarias.sort_values(by='Lugar', ascending=True, inplace=True)
