@@ -23,7 +23,7 @@ def leer_deciframiento(Cliente):
     EXX   = Exx[~Exx['D'].str.contains('Luces', regex=False,na=False)]
     Aparatos = EXX[~EXX['D'].str.contains('Fuga', regex=False,na=False)]
     Aparatos = Aparatos[~Aparatos['B'].str.contains('Codigo', regex=False, na=False)]
-    Aparatos.drop([0,1],inplace=True)
+    #Aparatos.drop([0,1],inplace=True)
     ConsumoFugas=Fugas['K'].sum()
     SolarB=False
     print(Solar)

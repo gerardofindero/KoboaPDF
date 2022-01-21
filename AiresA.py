@@ -12,10 +12,11 @@ def airesA (Excel,Nocircuito,NomCircuito):
     InfoEquipos = Columnas[Columnas.str.contains("aires", case=False)]
     Equipos= Circuito[InfoEquipos]
     Equipos=Equipos.fillna('X')
+
     zona = Equipos.filter(regex='zona')[0]
     tec = Equipos.filter(regex='tecnologia')[0]
-    #CodStandby   = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Zona'] = zona
+    Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica'] = Equipos.filter(regex='zonaTermica')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Tecnologia'] = tec
     Aparatos_C.loc['Aire Acondicionado', 'Alimentacion'] = Equipos.filter(regex='alimentacion_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Nominal'] = Equipos.filter(regex='consumo_c_i')[0]
@@ -41,7 +42,6 @@ def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas'] = Equipos.filter(regex='refrigerante_fugasTxt_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT']  = Equipos.filter(regex='refrigerante_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Marca']       = Equipos.filter(regex='marca')[0]
-    Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica'] = Equipos.filter(regex='zonaTermica_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'CP']          = Equipos.filter(regex='cp_c_i')[0]
     Aparatos_C.loc['Aire Acondicionado', 'Notas']       = Equipos.filter(regex='notas_c_i')[0]
     Aparatos_C.loc['Habitacion', 'Temperatura']         = Equipos.filter(regex='temperatura_habitacion')[0]
@@ -90,7 +90,7 @@ def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Condensador', 'Tuberias'] = InfoDeco.filter(regex='tuberias')[0]
 
     Aparatos_C = Aparatos_C.fillna('X')
-    print(Aparatos_C)
+
     Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'AA'+','+str(Aparatos_C.loc['Aire Acondicionado', 'Nominal'])+','\
                                                     + Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica']+','\
                                                     + str(Aparatos_C.loc['Aire Acondicionado', 'CP']) + ',' \
@@ -127,6 +127,8 @@ def airesA (Excel,Nocircuito,NomCircuito):
     Aparatos_C.loc['Aire Acondicionado', 'CodigoS'] = 'FF1'
     Aparatos_C.loc['Aire Acondicionado', 'Atacable'] = 'Si'
     Aparatos_C.loc['Aire Acondicionado', 'Standby'] = 5
+    #Aparatos_C.drop(Aparatos_C[Aparatos_C.Nominal == 'X'].index, inplace=True)
+    Aparatos_C.drop(['Condensador', 'Evaporador','Habitacion'],inplace=True)
 
     return Aparatos_C
 
