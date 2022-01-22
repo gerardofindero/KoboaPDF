@@ -311,7 +311,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
     PEPES = infoL[infoL['B'].str.contains('FF|PP')]
 
     porcentaje=(1-(len(lista_encontrado)/ len(PEPES)))*100
-    print(porcentaje)
+
     workbook.save()
 
     return Equipos, Luminarias, Fugas

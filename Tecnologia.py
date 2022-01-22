@@ -357,7 +357,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
         if Aparatos_C.loc['Regulador', 'Equipos'] == 'otro':
             Aparatos_C.loc['Regulador', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['Regulador', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-        Aparatos_C.loc['Regulador', 'Notas']       = Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+        Aparatos_C.loc['Regulador', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['Regulador', 'Atacable']     = 'Si'
 
     InfoDeco = Equipos.filter(regex='regulador2')
@@ -373,7 +373,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
         if Aparatos_C.loc['Regulador2', 'Equipos'] == 'otro':
             Aparatos_C.loc['Regulador2', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['Regulador2', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-        Aparatos_C.loc['Regulador2', 'Notas']       = Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+        Aparatos_C.loc['Regulador2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['Regulador2', 'Atacable']     = 'Si'
 
         InfoDeco = Equipos.filter(regex='regulador3')
@@ -389,7 +389,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
             if Aparatos_C.loc['Regulador3', 'Equipos'] == 'otro':
                 Aparatos_C.loc['Regulador3', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
             Aparatos_C.loc['Regulador3', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-            Aparatos_C.loc['Regulador3', 'Notas']       = Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+            Aparatos_C.loc['Regulador3', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
             Aparatos_C.loc['Regulador3', 'Atacable']     = 'Si'
 
         InfoDeco = Equipos.filter(regex='nobreak1')
@@ -405,7 +405,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
         if Aparatos_C.loc['NoBreak', 'Equipos'] == 'otro':
             Aparatos_C.loc['NoBreak', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['NoBreak', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-        Aparatos_C.loc['NoBreak', 'Notas']       = Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+        Aparatos_C.loc['NoBreak', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['NoBreak', 'Atacable']     = 'Si'
 
     InfoDeco = Equipos.filter(regex='nobreak2')
@@ -421,7 +421,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
         if Aparatos_C.loc['NoBreak2', 'Equipos'] == 'otro':
             Aparatos_C.loc['NoBreak2', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['NoBreak2', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-        Aparatos_C.loc['NoBreak2', 'Notas']       = Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+        Aparatos_C.loc['NoBreak2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['NoBreak2', 'Atacable']     = 'Si'
 
         InfoDeco = Equipos.filter(regex='nobreak3')
@@ -437,7 +437,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
             if Aparatos_C.loc['NoBreak3', 'Equipos'] == 'otro':
                 Aparatos_C.loc['NoBreak3', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
             Aparatos_C.loc['NoBreak3', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-            Aparatos_C.loc['NoBreak3', 'Notas']       = Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+            Aparatos_C.loc['NoBreak3', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
             Aparatos_C.loc['NoBreak3', 'Atacable']     = 'Si'
 
 

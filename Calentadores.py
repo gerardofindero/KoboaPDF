@@ -62,14 +62,18 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Boiler Electrico', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Boiler Electrico', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Boiler Electrico', 'Atacable'] = 'Si'
-                Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                if InfoDeco.filter(regex='codigofindero2_c_i')[0]=='X':
+                    Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0] \
+                                                               + InfoDeco.filter(regex='codigofindero2_c_i')[0]
+                else:
+                    Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+
                 Aparatos_C.loc['Boiler Electrico', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
                 Aparatos_C.loc['Boiler Electrico', 'Existencia'] = 1
                 Aparatos_C.loc['Boiler Electrico', 'Clave'] = 'X'
 
             if indx == 2:
                 InfoDeco = Circuito.filter(regex='boiler_gas')
-
                 #Aparatos_C.loc['Boiler de Gas', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Boiler de Gas', 'Standby'] =  consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Boiler de Gas', 'Marca'] = InfoDeco.filter(regex='marca')[0]
@@ -100,7 +104,12 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Calentador Otro', 'Existencia'] = 1
                 Aparatos_C.loc['Calentador Otro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Notas', 'Existencia'] = 1
-                Aparatos_C.loc['Calentador Otro', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero_c_i')[0]
+                if InfoDeco.filter(regex='codigofindero2_c_i')[0]=='X':
+                    Aparatos_C.loc['Calentador Otro', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0] \
+                                                                + InfoDeco.filter(regex='codigofindero2_c_i')[0]
+                else:
+                    Aparatos_C.loc['Calentador Otro', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+
                 Aparatos_C.loc['Calentador Otro', 'Clave'] = 'X'
                 #Aparatos_C.loc['Calentador Otro', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
                 #Aparatos_C.loc['Zona', 'Existencia'] = 1
