@@ -109,7 +109,6 @@ def caritaTV(consumo,clave):
 
 def caritaRefri(consumo,Claves):
     kWh = float(consumo)
-
     ClavesSep=Claves.split(",")
     tipo=ClavesSep[0]
     Datos= ClavesSep[1].split("/")
@@ -142,31 +141,30 @@ def caritaRefri(consumo,Claves):
 
 def caritaMiniB(consumo,Claves):
     kWh = float(consumo)
-
     ClavesSep=Claves.split(",")
     tipo=ClavesSep[0]
     Datos= ClavesSep[1].split("/")
-    TRef=Datos[0]
-    TCong = Datos[1]
-    NomCom=Datos[2]
-    TempCom=Datos[3]
-    Volumen=float(Datos[4])
-    percentil= norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-    if percentil>=0.99:
-        Ca = 3
-    if 0.5<=percentil<0.99:
+    TRef= float(Datos[0])
+    TCong = float(Datos[1])
+    NomCom=float(Datos[2])
+    TempCom=float(Datos[3])
+    Volumen=float(Datos[4])*0.000022
+    Ns = 0
+    if (TRef < 4) or (TCong < -14): Ns += 1
+    if "VN" in Claves: Ns += 1
+    if "SU" in Claves: Ns += 1
+    percentil = norm.cdf(((float(kWh) * 6.0) ** 0.1 - (1.738365 + 0.0057272 * Volumen)) / 0.01962684, loc=0, scale=1)
+    percentilNs = norm.cdf(
+        (((1 - 0.07 * Ns) * float(kWh) * 6.0) ** 0.1 - (1.738365 + 0.0057272 * Volumen)) / 0.01962684, loc=0, scale=1)
+    if percentil >= 0.9:
+        if percentilNs >= 0.9:
+            Ca = 3
+        if percentilNs < 0.9:
+            Ca = 2
+    if 0.3 <= percentil < 0.9:
         Ca = 2
-    if 0.5 > percentil:
+    if 0.3 > percentil:
         Ca = 1
-
-
-    # if kWh>150:
-    #     Ca = 3
-    # if 95<kWh<=150:
-    #     Ca = 2
-    # if 95 >= kWh:
-    #     Ca = 1
-
 
     return Ca
 
@@ -175,16 +173,34 @@ def caritaCava(consumo,Claves):
     kWh = float(consumo)
     ClavesSep=Claves.split(",")
     Datos= ClavesSep[1].split("/")
-    Volumen=float(Datos[4])
+    TRef = float(Datos[0])
+    TCong = float(Datos[1])
+    NomCom = float(Datos[2])
+    TempCom = float(Datos[3])
+    Volumen = float(Datos[4])
     formulaV=(Volumen/1300.8)+21.4
     formulaR=(Volumen/1300.8)+51.6
-
-    if formulaV>kWh:
-        Ca=1
-    if formulaV<kWh<formulaR:
-        Ca=2
-    if formulaR<kWh:
-        Ca=3
+    Ns = 0
+    if (TRef < 4) or (TCong < -14): Ns += 1
+    if "VN" in Claves: Ns += 1
+    if "SU" in Claves: Ns += 1
+    if kWh < formulaV              : percentil = 0.20
+    elif formulaV <= kWh < formulaR: percentil = 0.50
+    else                           : percentil = 0.95
+    if kWh * (1 - (Ns * 0.07)) < formulaV      : percentilNs = 0.20
+    elif formulaV<= kWh*(1-(Ns*0.07)) <formulaR: percentilNs = 0.50
+    else                                       : percentilNs = 0.95
+    #print("percentil caritas",percentil)
+    #print("percentil Ns caritas",percentilNs)
+    if percentil >= 0.9:
+        if percentilNs >= 0.9:
+            Ca = 3
+        if percentilNs < 0.9:
+            Ca = 2
+    if 0.3 <= percentil < 0.9:
+        Ca = 2
+    if 0.3 > percentil:
+        Ca = 1
     return Ca
 
 
