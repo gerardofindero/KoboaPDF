@@ -114,8 +114,8 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 DatosCoc = DatosCoc.append(Datos_CN)
                 DatosCoc['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCoc['Circuito'].fillna(NomCircuito[0], inplace=True)
-                notass = Datos_CN.loc['Notas', 'Marca']
-                DatosCoc['Notas'] = notass
+                #notass = Datos_CN.loc['Notas', 'Marca']
+                #DatosCoc['Notas'] = notass
                 DatosFun = DatosFun.append(Datos_CN, ignore_index=True)
                 Datos_CN.to_excel(writer, index=True ,startrow=primafila)
                 primafila = primafila+len(Datos_CN) + 4
@@ -190,5 +190,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
     Fugas['Circuito'].fillna(NOM, inplace = True)
     Fugas['Tablero'].fillna(tablero[0], inplace=True)
     Datoss=DatosFun.copy()
+
+
     return Datoss, primafila, FilaLib,Fugas,DatosIlu,DatosCL,DatosCoc,\
            DatosES,DatosLava,DatosRF,DatosBb,DatosPC,DatosCal,DatosAire,DatosSol,Notas_

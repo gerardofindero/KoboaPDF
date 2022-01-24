@@ -63,7 +63,7 @@ def Crear_Kobo(NCliente):
         Lava  =  Lava.append(lava)
         Refri =  Refri.append(refri)
         Bomba =  Bomba.append(bomba)
-        #PCs   =  PCs.append(pcs)
+        PCs   =  PCs.append(pcs)
         Cal = Cal.append(cal)
         #Segu = Segu.append(segu)
         Aire = Aire.append(aires)
@@ -95,6 +95,7 @@ def Cliente_Prueba():
     #equipo='Reguladores_y_No-Breaks'
     #equipo='Luces'
 
+    #equipo='Tecno'
     equipo='Refris2'
 
 
@@ -109,9 +110,12 @@ def Cliente_Prueba():
 def Nombre_Cliente():
 
 
-    NCliente = Cliente_Prueba()
+    #NCliente = Cliente_Prueba()
     #NCliente = "Celia Hamui"
     #NCliente = "Rodolfo Hill"
+    #NCliente = "Jorge Mercado"
+    #NCliente = "Guillermo Casas"
+    NCliente = "Carmela Oteyza"
 
     return NCliente
 ####################################################################################
@@ -132,7 +136,7 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
-    Opcion='4'
+    Opcion='2'
 #######################
 
 

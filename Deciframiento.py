@@ -188,119 +188,130 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
 
 
 ###################### Parte de matchear códigos PP y QQ ###############################
-    # infoL= leer_lista(Cliente)
-    # infoL['B']=infoL['B'].str.upper()
-    # cony=0
-    # infoL['J'].fillna('X')
-    # #Equipos = Equipos[~Equipos['Codigo'].str.contains('QQ', regex=False, na=False)]
-    # lista_encontrado=[]
-    # for i in Equipos['Codigo']:
-    #     try:
-    #         separado=i.split(',')
-    #     except:
-    #         separado ='1'
-    #
-    #     if len(separado)>1:
-    #         for jj in separado:
-    #             jj = jj.replace(' ','')
-    #             jj = jj.upper()
-    #             identificadosPP= infoL[infoL['B'].str.contains(jj)].index
-    #             if not 'QQ' in identificadosPP:
-    #                 if not identificadosPP.empty:
-    #                     Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificadosPP[0]+2)
-    #                     Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificadosPP[0]+2)
-    #                     Sheet1.range(2, identificadosPP[0]+2).color = (10, 255, 10)
-    #                     lista_encontrado.append(identificadosPP[0])
-    #     else:
-    #         i = i.upper()
-    #         identificados= infoL[infoL['B'].str.contains(i)].index
-    #         if not 'QQ' in identificados:
-    #             if not identificados.empty:
-    #                 Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
-    #                 Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
-    #                 Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
-    #                 Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
-    #                 Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
-    #                 lista_encontrado.append(identificados[0])
-    #
-    #
-    #     cony=cony+1
-    #
-    #
-    # cony = 0
-    # inicioL = len(Equipos) + 10
-    # for i in Luminarias['Codigo']:
-    #     i=str(i)
-    #     i=i.upper()
-    #     separados= i.split(',')
-    #     if len(separados)==1:
-    #         identificados= infoL[infoL['B'].str.contains(i)].index
-    #
-    #         if not identificados.empty:
-    #             PorcentajesTotales =   '=Lista!D'+str(identificados[0]+2)
-    #             Sheet1.range(inicioL + cony, 6).value = PorcentajesTotales
-    #             Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
-    #             Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
-    #             lista_encontrado.append(identificados[0])
-    #     else:
-    #         PorcentajesTotales=''
-    #         PotenciasTotales=''
-    #         NotasTotales=''
-    #         HorasT=0
-    #         cont=0
-    #         for k in separados:
-    #             k=k.replace(' ','')
-    #             identificados= infoL[infoL['B'].str.contains(k)].index
-    #             if not identificados.empty:
-    #                 PorcentajesTotales =  PorcentajesTotales + 'Lista!D'+ str(identificados[0]+2)+'+'
-    #                 PotenciasTotales =  PotenciasTotales + str(infoL.loc[identificados[0], 'F'])+','
-    #                 NotasTotales =  str(NotasTotales)+ str(infoL.loc[identificados[0], 'H'])
-    #                 HorasT= str(HorasT)+str(infoL.loc[identificados[0], 'J'])
-    #                 cont=cont+1
-    #                 lista_encontrado.append(identificados[0])
-    #
-    #         Sheet1.range(inicioL + cony, 6).value  ='='+ PorcentajesTotales+'0'
-    #         Sheet1.range(inicioL + cony, 7).value  = PotenciasTotales[:-1]
-    #         Sheet1.range(inicioL + cony, 16).value = NotasTotales
-    #         #Sheet1.range(inicioL + cony, 8).value = str(round(HorasT/cont,1))
-    #
-    #     cony = cony + 1
-    #
-    #
-    # cony = 0
-    # inicioF = len(Equipos) + len(Luminarias) + 13
-    # FugasC['Codigo'].fillna('FFX',inplace=True)
-    # #Fugas['Watts Circuito']=np.where(Fugas['Codigo']!= 'FFX', infoL.loc[identificados[0], 'D'], '')
-    # for i in FugasC['Codigo']:
-    #     i = i.upper()
-    #     identificados= infoL[infoL['B'].str.contains(i)].index
-    #     if not identificados.empty:
-    #         lista_encontrado.append(identificados[0])
-    #         if 'QQ'in i or 'FFX' in i or i=='FF':
-    #             Sheet1.range(inicioF + cony, 9).value = 'X'
-    #         else:
-    #             Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
-    #             Sheet1.range(inicioF + cony, 9).value = '=Lista!G'+str(identificados[0]+2)
-    #
-    #     cony=cony+1
-    #
-    # workbook.save()
-    # #workbook.close()
-    # #print(lista_encontrado)
-    # try:
-    #     workbook.sheets.add('Lista')
-    # except:
-    #     print('Hoja ya creada')
-    #
-    # Sheet1 = workbook.sheets['Lista']
-    #
-    # for i in lista_encontrado:
-    #     Sheet1.range(i+2,2).color = (50, 255, 50)
-    #
-    # PEPES = infoL[infoL['B'].str.contains('FF|PP')]
-    #
-    # porcentaje=(1-(len(lista_encontrado)/ len(PEPES)))*100
-    # print(porcentaje)
+    infoL= leer_lista(Cliente)
+    infoL['B']=infoL['B'].str.upper()
+    cony=0
+    infoL['J'].fillna('X')
+    #Equipos = Equipos[~Equipos['Codigo'].str.contains('QQ', regex=False, na=False)]
+    lista_encontrado=[]
+    PorcentajesTotales=''
+    for i in Equipos['Codigo']:
+        try:
+            separado=i.split(',')
+        except:
+            separado ='1'
+        PorcentajesTotales=''
+        PotenciasTotales=0
+        if len(separado)>1:
+            for jj in separado:
+                jj = jj.replace(' ','')
+                jj = jj.upper()
+                identificadosPP= infoL[infoL['B'].str.contains(jj)].index
+                if not 'QQ' in identificadosPP:
+                    if not identificadosPP.empty:
+                        PorcentajesTotales =  'Lista!D'+str(identificadosPP[0]+2)+'+'+PorcentajesTotales
+                        if PotenciasTotales > infoL.loc[identificadosPP[0], 'F']:
+                            PotenciasTotales =  PotenciasTotales
+                        else:
+                            PotenciasTotales =  infoL.loc[identificadosPP[0], 'F']
+                        #Sheet1.range(7 + cony, 6).value =   str(PorcentajesTotales)
+                        Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificadosPP[0]+2)
+                        Sheet1.range(2, identificadosPP[0]+2).color = (10, 255, 10)
+                        lista_encontrado.append(identificadosPP[0])
+                        PrcTo='='+ PorcentajesTotales+'0'
+                        PrcTo =PrcTo.replace('+0','')
+                        Sheet1.range(7 + cony, 6).value  = PrcTo
+                        Sheet1.range(7 + cony, 7).value  = str(PotenciasTotales)
+        else:
+            i = i.upper()
+            identificados= infoL[infoL['B'].str.contains(i)].index
+            if not 'QQ' in identificados:
+                if not identificados.empty:
+                    Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
+                    Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
+                    Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
+                    Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
+                    Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
+                    lista_encontrado.append(identificados[0])
+
+
+        cony=cony+1
+
+
+    cony = 0
+    inicioL = len(Equipos) + 10
+    for i in Luminarias['Codigo']:
+        i=str(i)
+        i=i.upper()
+        separados= i.split(',')
+        if len(separados)==1:
+            identificados= infoL[infoL['B'].str.contains(i)].index
+
+            if not identificados.empty:
+                PorcentajesTotales =   '=Lista!D'+str(identificados[0]+2)
+                Sheet1.range(inicioL + cony, 6).value = PorcentajesTotales
+                Sheet1.range(inicioL + cony, 7).value = infoL.loc[identificados[0], 'F']
+                Sheet1.range(inicioL + cony, 16).value = infoL.loc[identificados[0], 'H']
+                lista_encontrado.append(identificados[0])
+        else:
+            PorcentajesTotales=''
+            PotenciasTotales=''
+            NotasTotales=''
+            HorasT=0
+            cont=0
+            for k in separados:
+                k=k.replace(' ','')
+                identificados= infoL[infoL['B'].str.contains(k)].index
+                if not identificados.empty:
+                    PorcentajesTotales =  PorcentajesTotales + 'Lista!D'+ str(identificados[0]+2)+'+'
+                    PotenciasTotales =  PotenciasTotales + str(infoL.loc[identificados[0], 'F'])+','
+                    NotasTotales =  str(NotasTotales)+ str(infoL.loc[identificados[0], 'H'])
+                    HorasT= str(HorasT)+str(infoL.loc[identificados[0], 'J'])
+                    cont=cont+1
+                    lista_encontrado.append(identificados[0])
+
+            Sheet1.range(inicioL + cony, 6).value  ='='+ PorcentajesTotales+'0'
+            Sheet1.range(inicioL + cony, 7).value  = PotenciasTotales[:-1]
+            Sheet1.range(inicioL + cony, 16).value = NotasTotales
+            #Sheet1.range(inicioL + cony, 8).value = str(round(HorasT/cont,1))
+
+        cony = cony + 1
+
+
+    cony = 0
+    inicioF = len(Equipos) + len(Luminarias) + 13
+    FugasC['Codigo'].fillna('FFX',inplace=True)
+    #Fugas['Watts Circuito']=np.where(Fugas['Codigo']!= 'FFX', infoL.loc[identificados[0], 'D'], '')
+    for i in FugasC['Codigo']:
+        i = i.upper()
+        identificados= infoL[infoL['B'].str.contains(i)].index
+        if not identificados.empty:
+            lista_encontrado.append(identificados[0])
+            if 'QQ'in i or 'FFX' in i or i=='FF':
+                Sheet1.range(inicioF + cony, 9).value = 'X'
+            else:
+                Sheet1.range(inicioF + cony, 6).value = infoL.loc[identificados[0], 'D']
+                Sheet1.range(inicioF + cony, 9).value = '=Lista!G'+str(identificados[0]+2)
+
+        cony=cony+1
+
+    workbook.save()
+    #workbook.close()
+    #print(lista_encontrado)
+    try:
+        workbook.sheets.add('Lista')
+    except:
+        print('Hoja ya creada')
+
+    Sheet1 = workbook.sheets['Lista']
+
+    for i in lista_encontrado:
+        Sheet1.range(i+2,2).color = (50, 255, 50)
+
+    PEPES = infoL[infoL['B'].str.contains('FF|PP')]
+
+    porcentaje=(1-(len(lista_encontrado)/ len(PEPES)))*100
+    print(porcentaje)
     workbook.save()
 
     return Equipos, Luminarias, Fugas
@@ -364,8 +375,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
 
     if not PCs.empty:
-        print("Computo")
-        Equipo, Fuga = separar_fugas(PCs)
+        print("Tecnología")
+        Equipo, Fuga = separar_fugasTec(PCs)
         Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
         Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
 
@@ -405,9 +416,9 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
-    #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
-    #print(regusDF)
 
+
+    #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
     Luminaria.fillna(' ', inplace=True)
     Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
     Luminaria.loc[Luminaria['TipoyTam'].str.contains('tubo'), 'Tipytam'] = 'tubos'
@@ -418,8 +429,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Luminarias['Equipo'] = 'Luces '+ Luminaria['Lugar']
     Luminarias['Lugar']=Luminaria['Lugar'] +' '+ Luminaria['LugarEs']
     Luminarias['Ubicacion'] = 'C'+ Luminaria['Circuito'].apply(str)+' '+Luminaria['Tablero'].apply(str)
-    #Luminarias['Potencia Kobo'] = Luminaria['Consumo']
-    Luminarias['Potencia Kobo'] = 'X'
+    Luminarias['Potencia Kobo'] = Luminaria['Consumo']
+    #Luminarias['Potencia Kobo'] = 'X'
 
     Luminarias['Texto']=Luminaria['Adicional']
     Luminarias['Notas'] = Luminaria['Notas']
@@ -452,7 +463,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Equipos.reset_index(inplace=True, drop=True)
     Fugas.reset_index(inplace=True, drop=True)
     Luminarias.reset_index(inplace=True, drop=True)
-    Equipos.drop(Equipos[Equipos.Codigo == 'X'].index, inplace=True)
+    #Equipos.drop(Equipos[Equipos.Codigo == 'X'].index, inplace=True)
     Equipos.reset_index(inplace=True, drop=True)
 
     Luminarias.sort_values(by='Lugar', ascending=True, inplace=True)

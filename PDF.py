@@ -574,7 +574,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
 
         #largoTx=len(tex)
         tex,conteoled,conteoNOled,conteoROI = \
-            variablesLuces(luz[0], luz[9], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso,luz[16]) # Está usando columnas, no renglones para los índices
+            variablesLuces(luz[0], luz[6], luz[10],tex,Tarifa,luz[16],luz[4],conteoNOled,conteoled,conteoROI,uso,luz[16]) # Está usando columnas, no renglones para los índices
         largoTx=sys.getsizeof(tex)
 
 
@@ -817,6 +817,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
 
+
         if ('refrigerador' in nombre_ ) or ("inibar" in nombre_) or ("cava" in nombre_) or("ongelador" in nombre_) or ("Cava" in nombre_):
 
              canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png",50 , 50, 500, 400)
@@ -830,11 +831,14 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
              frame = Frame(60, 80, 480, 330,showBoundary = 0 )
              frame.addFromList(parrafos, canvas)
 
+
+
         else:
             canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
             texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
 # Automatizacion  ######################
+
         #print("Consejos", Consejos)
         #if len(Consejos)<700:
         #    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
@@ -844,6 +848,8 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         #    parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
+
+
         ##LogoRayo
         canvas.drawImage(f"Imagenes/Figuras/2_datos_rayo.png", 550, 780,
                          width=40, height=40)
