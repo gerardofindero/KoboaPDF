@@ -817,7 +817,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         frame = Frame(60, 20, width * 0.35, height * 0.5)
         frame.addFromList(parrafos, canvas)
 
-        if 'refrigerador' in nombre_:
+        if ('refrigerador' in nombre_ ) or ("inibar" in nombre_) or ("cava" in nombre_) or("ongelador" in nombre_) or ("Cava" in nombre_):
 
              canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png",50 , 50, 500, 400)
              texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', 200, height * 0.5, canvas)
@@ -835,7 +835,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
             texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
 
 # Automatizacion  ######################
-        print("Consejos", Consejos)
+        #print("Consejos", Consejos)
         #if len(Consejos)<700:
         #    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
         #elif 1100>=len(Consejos)>=700:

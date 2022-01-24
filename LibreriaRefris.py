@@ -20,12 +20,9 @@ def linkss():
 
 def ClavesRefri(EquiposRefri):
     EquiposR = EquiposRefri
-    EquiposR=EquiposR.dropna(subset=['Pot Compresor'])
+    EquiposR = EquiposR.dropna(subset=['Pot Compresor'])
     EquiposR = EquiposR.fillna(0)
-    Libreria=libreria2()
 
-    Lib = pd.DataFrame(index=['Refrigerador'],
-                            columns=['Marca', 'Codigo', 'Texto'])
     for i in EquiposR.index:
         TempR = (EquiposR['Temp Refri'][0])
         TempC = (EquiposR['Temp Conge'][0])
@@ -36,13 +33,17 @@ def ClavesRefri(EquiposRefri):
         Codigo=EquiposR['Clave'][0]
         Codigo = str(Codigo)+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)+"/"+str(Encendido)
 ####### Detalles      #######################################
+        # Disposicion congelador
+        if "CN" in Codigo:
+            if   "vertical"   in EquiposR["Disposicion"][0]: Codigo+=",CVE"
+            elif "horizontal" in EquiposR["Disposicion"][0]: Codigo+=",CHO"
         # Alarma
         if "inexistente"  in str(EquiposR["Alarma"])    : Codigo += ",AI"
         if "descompuesto" in str(EquiposR["Alarma"])    : Codigo += ",AD"
         # Ventilas
         if "no"           in str(EquiposR["Ventilas"])  : Codigo += ",SV"
         # Porcentaje de prendido
-        if ("prolongado"  in str(EquiposR["Prob Refr"])) \
+        if ("prolongado"  in str(EquiposR["Prob Refr"]))\
         or ("ontiempo"    in str(EquiposR["Prob Refr"])): Codigo += ",PR"
         # Ciclos de deshielo continuos
         if "deshielo"     in str(EquiposR["Prob Refr"]) : Codigo += ",DH"
@@ -67,6 +68,7 @@ def ClavesRefri(EquiposRefri):
         if "si" in str(EquiposR["Tuberias"]): Codigo += "FG"
         # puertas dañadas
         if "puertasdanadas"     in str(EquiposR["Cierre"]): Codigo += "PD"
+####### orientación congelador ############
     return  Codigo
 
 
@@ -79,8 +81,8 @@ def Clasifica(Claves):
 
 def LeeClavesR(Claves,notas,nombre,consumo):
     #print("Claves refrigeracion",Claves)
-    kWh = float(consumo)
-    Texto=''
+    kWh   = float(consumo)
+    Texto = ''
 
     TextoF = notas
     PotencialAhorro=0
@@ -88,7 +90,9 @@ def LeeClavesR(Claves,notas,nombre,consumo):
     lib = libreria2()
     links = linkss()
     PotAhorro['Accion'] = ""
+
     if pd.notna(Claves):
+
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
@@ -99,7 +103,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         TempCom   = float(Datos[3])
         Volumen   = float(Datos[4])
         Encendido = float(Datos[5])/100
-
+        #print(Claves, ClavesSep[0])
         #print("NomCom",NomCom)
         #print("TempCom",TempCom)
         #print("Volumen",Volumen)
@@ -107,40 +111,65 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         #print("TCong",TCong)
         #print("Encendido",Encendido)
 
-        if equipoR=='RF':
-            EQR='refrigerador'
-            Volumen=float(Datos[4])*0.000022
 
+
+
+        Ns = 0
+        if equipoR == "CV":
+            if (TRef < 12): Ns+=1
+        else:
+            if (TRef < 4) or (TCong < -14): Ns += 1
+        if "VN" in Claves: Ns += 1
+        if "SU" in Claves: Ns += 1
+        EncendidoNs = Encendido - (0.07 * Ns)
+
+        Nt = 0
+        if "EM" in Claves: Nt += 1
+        if "DM" in Claves: Nt += 1
+        if "FG" in Claves: Nt += 1
+        if "PD" in Claves: Nt += 1
+
+        if (equipoR=='RF') or (equipoR=="MB"):
+            Volumen = float(Datos[4]) * 0.000022
             percentil = norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
+            percentilNs = norm.cdf((((1 - 0.07 * Ns) * float(kWh) * 6.0) ** 0.1 - (1.738365 + 0.0057272 * Volumen)) / 0.01962684, loc=0,scale=1)
+        if equipoR=="CV":
+            formulaV = (Volumen / 1300.8) + 21.4
+            formulaR = (Volumen / 1300.8) + 51.6
+        if equipoR=="CN":
+            if "CHO" in Claves:
+                formulaV = (Volumen / 8000.35) - 7.58
+                formulaR = (Volumen / 3955.11) - 15.33
+            if "CVE" in Claves:
+                formulaV = (Volumen / 6863.63) - 8.83
+                formulaR = (Volumen / 3432.19) - 17.67
+        if equipoR == "CV":
+            if kWh < formulaV              : percentil = 0.20
+            elif formulaV <= kWh < formulaR: percentil = 0.50
+            else                           : percentil = 0.95
+            if kWh*(1-(Ns*0.07)) < formulaV             : percentilNs = 0.20
+            elif formulaV<= kWh*(1-(Ns*0.07)) < formulaR: percentilNs = 0.50
+            else                                        : percentilNs = 0.95
+            #print("percentil libreria", percentil)
+            #print("percentil Ns libreria", percentilNs)
+        #print("EncendidoNs", EncendidoNs)
+        #print("Ns", Ns)
+        #print("Percentil ori",percentil)
+        #print("Percentil Ns",percentilNs)
+        #print("kwh kwhNs",kWh,kWh*(1-(0.07*Ns)))
 
-            Ns = 0
-            if (TRef < 4) or (TCong <-14): Ns+=1
-            if "VN" in Claves            : Ns+=1
-            if "SU" in Claves            : Ns+=1
-            EncendidoNs=Encendido-(0.07*Ns)
-            percentilNs =  norm.cdf((((1-0.07*Ns)*float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
-            #print("EncendidoNs", EncendidoNs)
-            #print("Ns", Ns)
-            #print("Percentil ori",percentil)
-            #print("Percentil Ns",percentilNs)
-            #print("kwh kwhNs",kWh,kWh*(1-(0.07*Ns)))
-            Nt = 0
-            #if "CN" in Claves: Nt +=1
-            if "EM" in Claves: Nt +=1
-            if "DM" in Claves: Nt +=1
-            if "FG" in Claves: Nt +=1
-            if "PD" in Claves: Nt +=1
-            #print("Nt",Nt)
-            if percentil<0.3:
-                #### Zona verde ####
-                Texto += lib.loc['REF001','Texto'] + lib.loc["REF015","Texto"]
-            elif percentil>=0.90:
-                #### NS a amarillo ####
-                if percentilNs<0.90:
-                    Texto += lib.loc['REF002', 'Texto']
-                    # Temperaturas muy bajas
-                    if Ns > 0:
-                        Texto += lib.loc["REF003", "Texto"]
+        #print("Nt",Nt)
+        if percentil<0.3:
+            #### Zona verde ####
+            Texto += lib.loc['REF001','Texto'] + lib.loc["REF015","Texto"]
+        elif percentil>=0.90:
+            #### NS a amarillo ####
+            if percentilNs<0.90:
+                Texto += lib.loc['REF002', 'Texto']
+                # Temperaturas muy bajas
+                if Ns > 0:
+                    Texto += lib.loc["REF003", "Texto"]
+                    if equipoR!="CV":
                         if TRef >= 4 and TCong < -14:
                             Texto += lib.loc["REF004", "Texto"]
                             PotAhorro['Accion'] += lib.loc["REFpa04", "Texto"]
@@ -150,98 +179,10 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                         elif TRef < 4 and TCong < -14:
                             Texto += lib.loc["REF006", "Texto"]
                             PotAhorro['Accion'] += lib.loc["REFpa06", "Texto"]
-                        # Mala ventilacion
-                        if "VN" in Claves:
-                            if "SV" in Claves:
-                                Texto += lib.loc["REF007", "Texto"]
-                                PotAhorro['Accion'] += lib.loc["REFpa07", "Texto"]
-                            else:
-                                Texto += lib.loc["REF009", "Texto"]
-                                PotAhorro['Accion'] += lib.loc["REFpa07", "Texto"]
-                        if "SU" in Claves:
-                            Texto += lib.loc["REF010", "Texto"]
-                            PotAhorro['Accion'] += lib.loc["REFpa10", "Texto"]
-
-                    if "PR" in Claves:
-                        Texto += "<br />" + lib.loc["REF011", "Texto"]
-                        if "AI" in Claves:
-                            Texto += lib.loc["REF011S02", "Texto"]
-                        elif "AD" in Claves:
-                            Texto += lib.loc["REF011S03", "Texto"]
-                        else:
-                            Texto += lib.loc["REF011S01", "Texto"]
-                            PotAhorro['Accion'] += lib.loc["REFpa11", "Texto"]
-                    Texto += lib.loc["REF015", "Texto"]
-                    PotAhorro['%Ahorro'] = Ns * 0.07
-                    PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                else:
-                    #### NS rojo ####
-                    Texto += lib.loc['REF016', 'Texto']
-                    if (NomCom > 120) and not("CN" in Claves):
-                        Texto+= lib.loc["REF017","Texto"]
-                    elif (NomCom <= 120) and ("CN" in Claves):
-                        Texto+= lib.loc["REF018","Texto"]
-                    elif (NomCom > 120) and ("CN" in Claves):
-                        Texto += lib.loc["REF019","Texto"]
                     else:
-                        Texto = Texto.replace(" La principal causa es que su compresor (motor)","")
-                    if Nt>0:
-                        Texto += lib.loc["REF020","Texto"]
-                        if "FG" in Claves:
-                            Texto += lib.loc["REF021","Texto"]
-                            PotAhorro['%Ahorro'] = 0.50
-                            PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                            PotAhorro['Accion'] += lib.loc["REFpa21", "Texto"]
-                        if "DM" in Claves:
-                            Texto += lib.loc["REF022","Texto"]
-                            PotAhorro['%Ahorro'] = 0.50
-                            PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                            PotAhorro['Accion'] += lib.loc["REFpa22", "Texto"]
-                        if "EM" in Claves:
-                            Texto += lib.loc["REF023","Texto"]
-                            PotAhorro['%Ahorro'] = 0.50
-                            PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                            PotAhorro['Accion'] += lib.loc["REFpa23", "Texto"]
-                        if "PD" in Claves:
-                            Texto += lib.loc["REF024","Texto"]
-                            PotAhorro['%Ahorro'] = 0.50
-                            PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                            PotAhorro['Accion'] += lib.loc["REFpa24", "Texto"]
-
-                    if Nt>1:
-                        Texto += lib.loc["REF025","Texto"] + lib.loc["REF026","Texto"]
-                        PotAhorro['%Ahorro'] = 0.50
-                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                        PotAhorro['Accion'] += lib.loc["REFpa25", "Texto"]
-                        # Mala ventilacion
-                        if "VN" in Claves:
-                            Texto += lib.loc["REF027", "Texto"]
-
-                    elif (Nt == 0) and ("CN" in Claves):
-                        Texto += lib.loc["REF028","Texto"] + lib.loc["REF029","Texto"]
-                        PotAhorro['%Ahorro'] = 0.50
-                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-                        PotAhorro['Accion'] += lib.loc["REFpa29", "Texto"]
-                    elif (Nt == 0) and ((Encendido*(1-0.07*Ns))<0.53):
-                        Texto += lib.loc["REF030","Texto"]
-                    if TempCom > 50:
-                        Texto += lib.loc["REF031","Texto"] + lib.loc["REF032","Texto"]
-
-            else:
-            ########## Escenario amarillo ##########
-                Texto += lib.loc['REF002','Texto']
-                # Temperaturas muy bajas
-                if Ns>0:
-                    Texto += lib.loc["REF003","Texto"]
-                    if   TRef >= 4 and TCong <  -14:
-                        Texto+= lib.loc["REF004","Texto"]
-                        PotAhorro['Accion'] += lib.loc["REFpa04","Texto"]
-                    elif TRef <  4 and TCong >= -14:
-                        Texto+= lib.loc["REF005","Texto"]
-                        PotAhorro['Accion'] += lib.loc["REFpa05", "Texto"]
-                    elif TRef <  4 and TCong <  -14:
-                        Texto+= lib.loc["REF006","Texto"]
-                        PotAhorro['Accion'] += lib.loc["REFpa06", "Texto"]
+                        if TRef < 12:
+                            Texto += lib.loc["CV005", "Texto"]
+                            PotAhorro['Accion'] += lib.loc["CVpa05", "Texto"]
                     # Mala ventilacion
                     if "VN" in Claves:
                         if "SV" in Claves:
@@ -255,29 +196,144 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                         PotAhorro['Accion'] += lib.loc["REFpa10", "Texto"]
 
                 if "PR" in Claves:
-                    Texto += "<br />" + lib.loc["REF011","Texto"]
-                    if   "AI" in Claves:
-                        Texto += lib.loc["REF011S02","Texto"]
+                    Texto += "<br />" + lib.loc["REF011", "Texto"]
+                    if "AI" in Claves:
+                        Texto += lib.loc["REF011S02", "Texto"]
                     elif "AD" in Claves:
-                        Texto += lib.loc["REF011S03","Texto"]
+                        Texto += lib.loc["REF011S03", "Texto"]
                     else:
-                        Texto += lib.loc["REF011S01","Texto"]
+                        Texto += lib.loc["REF011S01", "Texto"]
                         PotAhorro['Accion'] += lib.loc["REFpa11", "Texto"]
-                Texto += lib.loc["REF015","Texto"]
-                PotAhorro['%Ahorro'] = Ns*0.07
+                Texto += lib.loc["REF015", "Texto"]
+                PotAhorro['%Ahorro'] = Ns * 0.07
                 PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+            else:
+                #### NS rojo ####
+                Texto += lib.loc['REF016', 'Texto']
+                if (NomCom > 120) and not("CN" in ClavesSep):
+                    Texto+= lib.loc["REF017","Texto"]
+                elif (NomCom <= 120) and ("CN" in ClavesSep):
+                    Texto+= lib.loc["REF018","Texto"]
+                elif (NomCom > 120) and ("CN" in ClavesSep):
+                    Texto += lib.loc["REF019","Texto"]
+                else:
+                    Texto = Texto.replace(" La principal causa es que su compresor (motor)","")
+                if Nt>0:
+                    Texto += lib.loc["REF020","Texto"]
+                    if "FG" in Claves:
+                        Texto += lib.loc["REF021","Texto"]
+                        PotAhorro['%Ahorro'] = 0.50
+                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                        PotAhorro['Accion'] += lib.loc["REFpa21", "Texto"]
+                    if "DM" in Claves:
+                        Texto += lib.loc["REF022","Texto"]
+                        PotAhorro['%Ahorro'] = 0.50
+                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                        PotAhorro['Accion'] += lib.loc["REFpa22", "Texto"]
+                    if "EM" in Claves:
+                        Texto += lib.loc["REF023","Texto"]
+                        PotAhorro['%Ahorro'] = 0.50
+                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                        PotAhorro['Accion'] += lib.loc["REFpa23", "Texto"]
+                    if "PD" in Claves:
+                        Texto += lib.loc["REF024","Texto"]
+                        PotAhorro['%Ahorro'] = 0.50
+                        PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                        PotAhorro['Accion'] += lib.loc["REFpa24", "Texto"]
 
+                if Nt>1:
+                    if equipoR=="RF":
+                        Texto += lib.loc["REF025","Texto"] + lib.loc["REF026","Texto"]
+                    else:
+                        Texto += lib.loc["MB025","Texto"] + lib.loc["REF026","Texto"]
+                    PotAhorro['%Ahorro'] = 0.50
+                    PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                    if equipoR=="RF":
+                        PotAhorro['Accion'] += lib.loc["REFpa25", "Texto"]
+                    else:
+                        PotAhorro['Accion'] += lib.loc["MBpa25", "Texto"]
+                    # Mala ventilacion
+                    if "VN" in Claves:
+                        Texto += lib.loc["REF027", "Texto"]
 
+                elif (Nt == 0) and ("CN" in ClavesSep):
+                    Texto += lib.loc["REF028","Texto"] + lib.loc["REF029","Texto"]
+                    PotAhorro['%Ahorro'] = 0.50
+                    PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+                    PotAhorro['Accion'] += lib.loc["REFpa29", "Texto"]
+                elif (Nt == 0) and (EncendidoNs<0.53) and ((equipoR=="RF")or(equipoR=="MB")):
+                    Texto += lib.loc["REF030","Texto"]
+                elif (Nt == 0) and (EncendidoNs<0.40) and (equipoR=="CN"):
+                    Texto += lib.loc["REF030","Texto"]
+                elif (Nt == 0) and (EncendidoNs<0.60) and (equipoR=="CV"):
+                    Texto += lib.loc["REF030","Texto"]
+                if TempCom > 50:
+                    Texto += lib.loc["REF031","Texto"] + lib.loc["REF032","Texto"]
 
-            Texto = Texto.replace("/n*", "<br />- ")
-            Texto = Texto.replace("\\n*", "<br />- ")
-            linkBlog = links.loc["[link]","link"]
-            linkGuia = links.loc["[link guia de refrigeradores]","link"]
-            Texto = Texto.replace("[link]",fc.ligarTextolink("link",linkBlog))
-            Texto = Texto.replace("[link guia de refrigeradores]",fc.ligarTextolink("(Guia de compra)",linkGuia))
-            #print("percentil original Refris: ",percentil)
-            #print("percentil Ns Refris: ",percentilNs)
-            #print(Texto)
+        else:
+        ########## Escenario amarillo ##########
+            Texto += lib.loc['REF002','Texto']
+            # Temperaturas muy bajas
+            if Ns>0:
+                Texto += lib.loc["REF003","Texto"]
+                if equipoR != "CV":
+                    if TRef >= 4 and TCong < -14:
+                        Texto += lib.loc["REF004", "Texto"]
+                        PotAhorro['Accion'] += lib.loc["REFpa04", "Texto"]
+                    elif TRef < 4 and TCong >= -14:
+                        Texto += lib.loc["REF005", "Texto"]
+                        PotAhorro['Accion'] += lib.loc["REFpa05", "Texto"]
+                    elif TRef < 4 and TCong < -14:
+                        Texto += lib.loc["REF006", "Texto"]
+                        PotAhorro['Accion'] += lib.loc["REFpa06", "Texto"]
+                else:
+                    if TRef < 12:
+                        Texto += lib.loc["CV005", "Texto"]
+                        PotAhorro['Accion'] += lib.loc["CVpa05", "Texto"]
+                # Mala ventilacion
+                if "VN" in Claves:
+                    if "SV" in Claves:
+                        Texto += lib.loc["REF007", "Texto"]
+                        PotAhorro['Accion'] += lib.loc["REFpa07", "Texto"]
+                    else:
+                        Texto += lib.loc["REF009", "Texto"]
+                        PotAhorro['Accion'] += lib.loc["REFpa07", "Texto"]
+                if "SU" in Claves:
+                    Texto += lib.loc["REF010", "Texto"]
+                    PotAhorro['Accion'] += lib.loc["REFpa10", "Texto"]
+
+            if "PR" in Claves:
+                Texto += "<br />" + lib.loc["REF011","Texto"]
+                if   "AI" in Claves:
+                    Texto += lib.loc["REF011S02","Texto"]
+                elif "AD" in Claves:
+                    Texto += lib.loc["REF011S03","Texto"]
+                else:
+                    Texto += lib.loc["REF011S01","Texto"]
+                    PotAhorro['Accion'] += lib.loc["REFpa11", "Texto"]
+            Texto += lib.loc["REF015","Texto"]
+            PotAhorro['%Ahorro'] = Ns*0.07
+            PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
+
+    if equipoR == "MB":
+        Texto = Texto.replace("Refrigerador","Minibar").replace("refrigerador","minibar")
+        PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador","Minibar").replace("refrigerador","minibar")
+    if equipoR == "CN":
+        Texto = Texto.replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
+        PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
+    if equipoR == "CV":
+        Texto = Texto.replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
+        PotAhorro.loc[0, "Accion"] = PotAhorro.at[0, "Accion"].replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
+        #print(PotAhorro.at[0,"Accion"])
+    Texto = Texto.replace("/n*", "<br />- ")
+    Texto = Texto.replace("\\n*", "<br />- ")
+    linkBlog = links.loc["[link]","link"]
+    linkGuia = links.loc["[link guia de refrigeradores]","link"]
+    Texto = Texto.replace("[link]",fc.ligarTextolink("link",linkBlog))
+    Texto = Texto.replace("[link guia de refrigeradores]",fc.ligarTextolink("(Guia de compra)",linkGuia))
+    #print("percentil original Refris: ",percentil)
+    #print("percentil Ns Refris: ",percentilNs)
+    #print(Texto)
 
     #print("Porcencial de ahorro############# ",PotAhorro.at[0,"Accion"])
     return Texto,TextoF,PotAhorro
