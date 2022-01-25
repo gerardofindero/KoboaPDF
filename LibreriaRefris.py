@@ -19,15 +19,18 @@ def linkss():
     return links
 
 def ClavesRefri(EquiposRefri):
-    EquiposR = EquiposRefri
-    EquiposR = EquiposR.dropna(subset=['Pot Compresor'])
-    EquiposR = EquiposR.fillna(0)
 
+    EquiposR = EquiposRefri
+    #EquiposR = EquiposR.dropna(subset=['Pot Compresor'])
+    #EquiposR = EquiposR.fillna(0)
+    print(EquiposR)
     for i in EquiposR.index:
+
         TempR = (EquiposR['Temp Refri'][0])
         TempC = (EquiposR['Temp Conge'][0])
         NominalComp = int(EquiposR['Pot Compresor'][0])
         TempComp = float(EquiposR['Temp Compresor'][0])
+        print("Temps compresor aqui",TempComp)
         Volumen =int(EquiposR['Volumen'][0])
         Encendido = float(EquiposR["Encendido"][0])
         Codigo=EquiposR['Clave'][0]
@@ -57,17 +60,17 @@ def ClavesRefri(EquiposRefri):
         if (NominalComp > 120) \
         or ("altapotencia" in str(EquiposR["Prob Refr"])) :Codigo += ",CN"
         # empaque
-        if "si" in str(EquiposR["Empaques"]): Codigo += "EM"
+        if "si" in str(EquiposR["Empaques"]): Codigo += ",EM"
         # difusor mal
         if ("potenciaventilador" in str(EquiposR["Prob Comp"] ))\
         or ("tocandolo"          in str(EquiposR["Difusor"]   ))\
         or ("detenido"           in str(EquiposR["Difusor"]   ))\
         or ("rotas"              in str(EquiposR["Difusor"]   ))\
-        or ("otro"               in str(EquiposR["Difusor"]   )): Codigo += "DM"
+        or ("otro"               in str(EquiposR["Difusor"]   )): Codigo += ",DM"
         # tuberias picadas | fugas de refrigerante
-        if "si" in str(EquiposR["Tuberias"]): Codigo += "FG"
+        if "si" in str(EquiposR["Tuberias"]): Codigo += ",FG"
         # puertas dañadas
-        if "puertasdanadas"     in str(EquiposR["Cierre"]): Codigo += "PD"
+        if "puertasdanadas"     in str(EquiposR["Cierre"]): Codigo += ",PD"
 ####### orientación congelador ############
     return  Codigo
 
@@ -143,7 +146,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             if "CVE" in Claves:
                 formulaV = (Volumen / 6863.63) - 8.83
                 formulaR = (Volumen / 3432.19) - 17.67
-        if equipoR == "CV":
+        if equipoR == "CV" or equipoR == "CN":
             if kWh < formulaV              : percentil = 0.20
             elif formulaV <= kWh < formulaR: percentil = 0.50
             else                           : percentil = 0.95

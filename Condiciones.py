@@ -1,7 +1,7 @@
 import pandas as pd
 import Consumo
 from LibreriaLED import CondicionesLuces
-from LibreriaRefris__ import ClavesRefri
+from LibreriaRefris import ClavesRefri
 from LibreriaTV import ClavesClusterTV
 from pathlib         import Path
 
