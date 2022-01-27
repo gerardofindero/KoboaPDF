@@ -128,11 +128,11 @@ def caritaRefri(consumo,Claves):
     if percentil>=0.9:
         if percentilNs>=0.9:
             Ca = 3
-        if percentilNs<0.9:
+        elif percentilNs<0.9:
             Ca = 2
-    if 0.3<=percentil<0.9:
+    elif 0.3<=percentil<0.9:
         Ca = 2
-    if 0.3> percentil:
+    elif percentil<0.3:
         Ca = 1
 
     return Ca
@@ -159,11 +159,11 @@ def caritaMiniB(consumo,Claves):
     if percentil >= 0.9:
         if percentilNs >= 0.9:
             Ca = 3
-        if percentilNs < 0.9:
+        elif percentilNs < 0.9:
             Ca = 2
-    if 0.3 <= percentil < 0.9:
+    elif 0.3 <= percentil < 0.9:
         Ca = 2
-    if 0.3 > percentil:
+    elif percentil < 0.3:
         Ca = 1
 
     return Ca
@@ -195,46 +195,80 @@ def caritaCava(consumo,Claves):
     if percentil >= 0.9:
         if percentilNs >= 0.9:
             Ca = 3
-        if percentilNs < 0.9:
+        elif percentilNs < 0.9:
             Ca = 2
-    if 0.3 <= percentil < 0.9:
+    elif 0.3 <= percentil < 0.9:
         Ca = 2
-    if 0.3 > percentil:
+    elif percentil < 0.3:
         Ca = 1
     return Ca
 
 
 def caritaCongeV(consumo,Claves):
+
     kWh = float(consumo)
     ClavesSep=Claves.split(",")
     Datos= ClavesSep[1].split("/")
+    TRef = float(Datos[0])
+    TCong = float(Datos[1])
     Volumen=float(Datos[4])
     formulaV=(Volumen/6863.63)-8.83
     formulaR=(Volumen/3432.19)-17.67
-
-    if formulaV>kWh:
-        Ca=1
-    if formulaV<kWh<formulaR:
-        Ca=2
-    if formulaR<kWh:
-        Ca=3
+    Ns = 0
+    if (TRef < 4) or (TCong < -14): Ns += 1
+    if "VN" in Claves: Ns += 1
+    if "SU" in Claves: Ns += 1
+    if kWh < formulaV              : percentil = 0.20
+    elif formulaV <= kWh < formulaR: percentil = 0.50
+    else                           : percentil = 0.95
+    if kWh * (1 - (Ns * 0.07)) < formulaV              : percentilNs = 0.20
+    elif formulaV <= kWh * (1 - (Ns * 0.07)) < formulaR: percentilNs = 0.50
+    else                                               : percentilNs = 0.95
+    # print("percentil caritas",percentil)
+    # print("percentil Ns caritas",percentilNs)
+    if percentil >= 0.9:
+        if percentilNs >= 0.9:
+            Ca = 3
+        elif percentilNs < 0.9:
+            Ca = 2
+    elif 0.3 <= percentil < 0.9:
+        Ca = 2
+    elif percentil < 0.3:
+        Ca = 1
     return Ca
 
 def caritaCongeH(consumo,Claves):
     kWh = float(consumo)
     ClavesSep=Claves.split(",")
     Datos= ClavesSep[1].split("/")
+    TRef = float(Datos[0])
+    TCong = float(Datos[1])
     Volumen=float(Datos[4])
     formulaV=(Volumen/8000.35)-7.58
     formulaR=(Volumen/3955.11)-15.33
 
-    if formulaV>kWh:
-        Ca=1
-    if formulaV<kWh<formulaR:
-        Ca=2
-    if formulaR<kWh:
-        Ca=3
-
+    Ns = 0
+    if (TRef < 4) or (TCong < -14): Ns += 1
+    if "VN" in Claves: Ns += 1
+    if "SU" in Claves: Ns += 1
+    if kWh < formulaV              : percentil = 0.20
+    elif formulaV <= kWh < formulaR: percentil = 0.50
+    else                           : percentil = 0.95
+    if kWh * (1 - (Ns * 0.07)) < formulaV              : percentilNs = 0.20
+    elif formulaV <= kWh * (1 - (Ns * 0.07)) < formulaR: percentilNs = 0.50
+    else                                               : percentilNs = 0.95
+    # print("percentil caritas",percentil)
+    # print("percentil Ns caritas",percentilNs)
+    if percentil >= 0.9:
+        if percentilNs >= 0.9:
+            Ca = 3
+        elif percentilNs < 0.9:
+            Ca = 2
+    elif 0.3 <= percentil < 0.9:
+        Ca = 2
+    elif percentil < 0.3:
+        Ca = 1
+    return Ca
 def caritaPlancha(consumo,clave):
     if consumo>33:
         Ca = 3
@@ -242,7 +276,7 @@ def caritaPlancha(consumo,clave):
         Ca = 2
     if 19 > consumo:
         Ca = 1
-
+    print(Ca)
     return Ca
 
 
@@ -310,6 +344,7 @@ def definircarita(Equipo):
             if equipoid == 'RF':
                 Carita = caritaRefri(consumo,clave)
             elif equipoid == 'CN':
+                print("here")
                 Carita = caritaCongeV(consumo,clave)
             elif equipoid == 'MB':
                 Carita = caritaMiniB(consumo,clave)
