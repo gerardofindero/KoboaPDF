@@ -669,7 +669,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
     Aparatos.reset_index()
     #from LibreriaRefris import ClavesRefri
     Codigos=condicionesRefrigeracion(Aparatos)
-    print(Codigos)
+    print(Codigos )
     #Codigos=ClavesRefri(Aparatos)
     Aparatos['Claves']=Codigos
 
