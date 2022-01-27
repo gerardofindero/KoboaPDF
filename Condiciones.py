@@ -1,7 +1,7 @@
 import pandas as pd
 import Consumo
 from LibreriaLED import CondicionesLuces
-from LibreriaRefris import ClavesRefri
+import LibreriaRefris as lr
 from LibreriaTV import ClavesClusterTV
 from pathlib         import Path
 
@@ -166,7 +166,7 @@ def condicionesCluster(EquiposCluster,Nominal,ConsumoTotal,NumdeAparatos, Tolera
 
 
 def condicionesRefrigeracion(EquiposRefri):
-    lib= ClavesRefri(EquiposRefri)
+    lib= lr.ClavesRefri(EquiposRefri)
 
     # EquiposR = EquiposRefri
     # EquiposR=EquiposR.dropna(subset=['Pot Compresor'])

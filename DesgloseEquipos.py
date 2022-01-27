@@ -76,6 +76,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
             if indx == 2:
                 print("Refrigeracion")
                 Datos_RF, Consum, Codigo = refrigerador(Excel,Nocircuito,NomCircuito)
+                print("DesgloceEquipos.py Codigo",Codigo)
                 DatosFun = DatosFun.append(Datos_RF, ignore_index=True)
                 DatosRF = DatosRF.append(Datos_RF)
                 DatosRF['Tablero'].fillna(tablero[0], inplace=True)

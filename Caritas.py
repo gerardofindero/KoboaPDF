@@ -344,7 +344,6 @@ def definircarita(Equipo):
             if equipoid == 'RF':
                 Carita = caritaRefri(consumo,clave)
             elif equipoid == 'CN':
-                print("here")
                 Carita = caritaCongeV(consumo,clave)
             elif equipoid == 'MB':
                 Carita = caritaMiniB(consumo,clave)
