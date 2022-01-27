@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 import funcionesComunes as fc
 from libreriaHielo import recoMaqHie
@@ -23,18 +24,22 @@ def ClavesRefri(EquiposRefri):
     EquiposR = EquiposRefri
     #EquiposR = EquiposR.dropna(subset=['Pot Compresor'])
     #EquiposR = EquiposR.fillna(0)
-    print(EquiposR)
     for i in EquiposR.index:
 
-        TempR = (EquiposR['Temp Refri'][0])
-        TempC = (EquiposR['Temp Conge'][0])
-        NominalComp = int(EquiposR['Pot Compresor'][0])
-        TempComp = float(EquiposR['Temp Compresor'][0])
-        print("Temps compresor aqui",TempComp)
+        if np.isnan(EquiposR['Temp Refri'][0])    : TempR = 100
+        else                                      : TempR = (EquiposR['Temp Refri'][0])
+        if np.isnan(EquiposR['Temp Conge'][0])    : TempC = 100
+        else                                      : TempC =(EquiposR['Temp Conge'][0])
+        if np.isnan(EquiposR['Pot Compresor'][0]) : NominalComp = 100
+        else                                      : NominalComp = int(EquiposR['Pot Compresor'][0])
+        if np.isnan(EquiposR['Temp Compresor'][0]): TempComp = 100
+        else                                      : TempComp = float(EquiposR['Temp Compresor'][0])
         Volumen =int(EquiposR['Volumen'][0])
-        Encendido = float(EquiposR["Encendido"][0])
+        if  np.isnan(EquiposR["Encendido"][0])    : Encendido = 60
+        else                                      : Encendido = float(EquiposR["Encendido"][0])
         Codigo=EquiposR['Clave'][0]
         Codigo = str(Codigo)+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)+"/"+str(Encendido)
+        #print("codigo",Codigo)
 ####### Detalles      #######################################
         # Disposicion congelador
         if "CN" in Codigo:
@@ -83,6 +88,7 @@ def Clasifica(Claves):
 
 
 def LeeClavesR(Claves,notas,nombre,consumo):
+    print("LibreriaRefris.py Claves",Claves)
     #print("Claves refrigeracion",Claves)
     kWh   = float(consumo)
     Texto = ''
@@ -99,7 +105,6 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         ClavesSep=Claves.split(",")
         equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
-        print(Datos)
         TRef      = float(Datos[0])
         TCong     = float(Datos[1])
         NomCom    = float(Datos[2])
