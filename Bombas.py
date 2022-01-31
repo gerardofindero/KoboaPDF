@@ -75,10 +75,10 @@ def bombas (Excel,Nocircuito):
 
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
-        if InfoBomba.filter(regex='espendiente_c_i')[0]=='si':
-            Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='codigofindero_c_i')[0]
-            if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
-                Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
+        #f InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
+       #     Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+        #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
+        #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Bomba de Gravitación', 'Marca'] = 'Bomba Gravitacional'
@@ -104,9 +104,9 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Material'] = InfoDeco.filter(regex='material')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Nombre'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaSup'] = InfoDeco.filter(regex='fugasup')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaTer'] = InfoDeco.filter(regex='fugaTer')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaTXT'] = InfoDeco.filter(regex='fugaTXT')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaSup'] = InfoDeco.filter(regex='fugasSup')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTer'] = InfoDeco.filter(regex='fugasTer')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTXT'] = InfoDeco.filter(regex='fugasTXT')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Medidor'] = InfoDeco.filter(regex='medidor_c_i')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'MedidorURL'] = InfoDeco.filter(regex='medidor_c_i_URL')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'MedidorLEC'] = InfoDeco.filter(regex='medidor_lectura')[0]

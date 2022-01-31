@@ -544,7 +544,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     largo_sign = pdfmetrics.stringWidth('% de tu consumo', 'Montserrat-N', 15)
     texto(porcentaje, 15, gris, 'Montserrat-N', width - margen - largo_pct - largo_sign, height * 0.5 + 25, canvas)
     texto('% de tu consumo', 15, gris, 'Montserrat-N', width - margen - largo_sign, height * 0.5 +25, canvas)
-    texto('Rango aceptable de $50 a $200', 15, gris, 'Montserrat-N', width - margen - largo_sign-100, height * 0.5 , canvas)
+    #texto('Rango aceptable de $50 a $200', 15, gris, 'Montserrat-N', width - margen - largo_sign-100, height * 0.5 , canvas)
 
     canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, 100, 480, 250)
     canvas.setLineWidth(.3)
