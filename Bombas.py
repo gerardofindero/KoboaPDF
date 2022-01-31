@@ -15,38 +15,19 @@ def bombas (Excel,Nocircuito):
     Equipos=Equipos.fillna('X')
     indx=0
     CodigoStandby= Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
-    # Aparatos_C.loc['Tuberia', 'TinacoEx'] = Equipos.filter(regex='tinaco_existencia_c_i')[0]
-    # Aparatos_C.loc['Tuberia', 'TinacoAl'] = Equipos.filter(regex='tinaco_altura_c_i')[0]
     InfoDeco = Equipos.filter(regex='bomba1')
     Bomba = InfoDeco.filter(regex='tipo')[0]
     #zona = InfoDeco.filter(regex='zona_c_i')[0]
-    # if zona=='otro':
-    #     zona = InfoDeco.filter(regex='zona_otro')[0]
-    # InfoDeco = Equipos.filter(regex='tuberia')
-    # Aparatos_C.loc['Tuberia', 'Pastilla'] = InfoDeco.filter(regex='pastilla')[0]
-    # Aparatos_C.loc['Tuberia', 'Codos'] = InfoDeco.filter(regex='codos')[0]
-    #Aparatos_C.loc['Tuberia', 'Jarros'] = InfoDeco.filter(regex='jarrosdeaire')[0]
-    #Aparatos_C.loc['Tuberia', 'Valvulas'] = InfoDeco.filter(regex='valvulas_numero')[0]
-    #Aparatos_C.loc['Tuberia', 'Valvulas Abiertas'] = InfoDeco.filter(regex='valvulas_abiertas')[0]
-    # Aparatos_C.loc['Tuberia', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
-    # Aparatos_C.loc['Tuberia', 'PresionOFF PA'] = InfoDeco.filter(regex='presion_off_pa')[0]
-    # Aparatos_C.loc['Tuberia', 'PresionOFF PB'] = InfoDeco.filter(regex='presion_off_pb')[0]
-    # Aparatos_C.loc['Tuberia', 'PresionOFF PM'] = InfoDeco.filter(regex='presion_off_pm')[0]
-    # Aparatos_C.loc['Tuberia', 'Fuga'] = InfoDeco.filter(regex='fuga')[0]
-    # Aparatos_C.loc['Tuberia', 'Sist. Prezurizador'] = InfoDeco.filter(regex='sistemapresurizador')[0]
-    # Aparatos_C.loc['Tuberia', 'CodigoS'] = 'X'
-    # Aparatos_C.loc['Tuberia', 'CodigoN'] = 'X'
-    # Aparatos_C.loc['Tuberia', 'Clave'] = 'X'
+
 
     if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= Equipos.filter(regex='hidro')
-
         Aparatos_C.loc['Bomba de Presión', 'Zona'] = InfoBomba.filter(regex='zona_c_i')[0]
         if InfoBomba.filter(regex='espendiente_c_i')[0]=='si':
-
             Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='codigofindero_c_i')[0]
             if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
                 Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
+
             Aparatos_C.loc['Bomba de Presión', 'Standby'] = consumoEq(consumoEq(InfoBomba.filter(regex='standby')[0]))
             Aparatos_C.loc['Bomba de Presión', 'Nominal'] = consumoEq(InfoBomba.filter(regex='consumo_c_i')[0])
             Aparatos_C.loc['Bomba de Presión', 'CodigoS'] = CodigoStandby
@@ -71,7 +52,8 @@ def bombas (Excel,Nocircuito):
             Aparatos_C.loc['Bomba de Presión', 'Inspección_Lugar']       = InfoBomba.filter(regex='inspeccion_lugar')[0]
             Aparatos_C.loc['Bomba de Presión', 'PruebasF']               = InfoBomba.filter(regex='pruebafugas')[0]
             Aparatos_C.loc['Bomba de Presión', 'Presurizador']           = InfoBomba.filter(regex='sistemapresurizador_c_i')[0]
-            Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'BP'+','+str(Aparatos_C.loc['Bomba de Presión', 'Nominal'])+','+\
+            Aparatos_C.loc['Bomba de Presión', 'Clave']                  = 'BP'+','+str(
+                                                          Aparatos_C.loc['Bomba de Presión', 'Nominal'])+','+\
                                                           Aparatos_C.loc['Bomba de Presión', 'TinacoEx']+','+\
                                                           Aparatos_C.loc['Bomba de Presión', 'Pastilla']+','+\
                                                           Aparatos_C.loc['Bomba de Presión', 'PresionOFF PB']+','+\
@@ -93,13 +75,11 @@ def bombas (Excel,Nocircuito):
 
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
-
-        if not InfoDeco.filter(regex='nominal').empty and InfoDeco.filter(regex='nominal')[0]!=0:
-            Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
-
-        if not InfoDeco.filter(regex='real').empty and InfoDeco.filter(regex='real')[0]!=0:
-            Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='real')[0]
-
+        #f InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
+       #     Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+        #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
+        #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Bomba de Gravitación', 'Marca'] = 'Bomba Gravitacional'
         Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
@@ -107,17 +87,48 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Delta'] = InfoDeco.filter(regex='delta')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Acceso'] = InfoDeco.filter(regex='acceso')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Flujo'] = InfoDeco.filter(regex='flujo')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = InfoDeco.filter(regex='flujo_segundos')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg'] = InfoDeco.filter(regex='control_pegados')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra'] = InfoDeco.filter(regex='control_cierra')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlContra'] = InfoDeco.filter(regex='control_contrapeso')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlProblemas'] = InfoDeco.filter(regex='control_problemas')[0]
         #Aparatos_C.loc['Bomba de Gravitación', 'Obstaculos'] = InfoDeco.filter(regex='obstaculos_c_i')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'AccesoBomba'] = InfoDeco.filter(regex='accesobomba')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Codos'] = InfoDeco.filter(regex='codos')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Valvulas'] = InfoDeco.filter(regex='valvulas')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abiertas'] = InfoDeco.filter(regex='valvulas_abiertas')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abrirlas'] = InfoDeco.filter(regex='valvulas_abrirlas')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Sarro'] = InfoDeco.filter(regex='sarro')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Termografia'] = InfoDeco.filter(regex='termografia')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Material'] = InfoDeco.filter(regex='material')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Nombre'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        #Aparatos_C.loc['Bomba de Gravitación', 'voz'] = InfoDeco.filter(regex='voz')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaSup'] = InfoDeco.filter(regex='fugasSup')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTer'] = InfoDeco.filter(regex='fugasTer')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTXT'] = InfoDeco.filter(regex='fugasTXT')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Medidor'] = InfoDeco.filter(regex='medidor_c_i')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'MedidorURL'] = InfoDeco.filter(regex='medidor_c_i_URL')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'MedidorLEC'] = InfoDeco.filter(regex='medidor_lectura')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'CodigoN'] = InfoDeco.filter(regex='codigofindero')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
-        Aparatos_C.loc['Bomba de Gravitación', 'Clave'] = 'BG'
+        Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
+        Aparatos_C.loc['Bomba de Presión', 'Clave']     = 'BP'
+                                                          # +','+str(Aparatos_C.loc['Bomba de Gravitación', 'Nominal'])+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Sarro']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Contrapeso']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Termografia']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Dureza']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Flujo']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Longitud']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Diametro']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Codos']+','+ \
+                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Temperatura']
 
     if Bomba == 'recirculacion':
         ##Ahorro 40%
@@ -150,8 +161,4 @@ def bombas (Excel,Nocircuito):
             Aparatos_C.loc['Alberca', 'Clave'] = 'X'
             Aparatos_C.loc['Alberca', 'Existencia'] = 1
 
-        
-    #Aparatos=Aparatos_C.dropna(1,thresh=1)
-
-    #print(Aparatos_C)
     return Aparatos_C

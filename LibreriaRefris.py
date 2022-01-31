@@ -103,7 +103,9 @@ def LeeClavesR(Claves,notas,nombre,consumo):
     if pd.notna(Claves):
 
         ClavesSep=Claves.split(",")
+
         equipoR=ClavesSep[0]
+        print(equipoR)
         Datos= ClavesSep[1].split("/")
         TRef      = float(Datos[0])
         TCong     = float(Datos[1])

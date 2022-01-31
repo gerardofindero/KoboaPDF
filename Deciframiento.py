@@ -223,16 +223,19 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
                         Sheet1.range(7 + cony, 6).value  = PrcTo
                         Sheet1.range(7 + cony, 7).value  = str(PotenciasTotales)
         else:
-            i = i.upper()
-            identificados= infoL[infoL['B'].str.contains(i)].index
-            if not 'QQ' in identificados:
-                if not identificados.empty:
-                    Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
-                    Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
-                    Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
-                    Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
-                    Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
-                    lista_encontrado.append(identificados[0])
+            if isinstance(i, float):
+                continue
+            else:
+                i = i.upper()
+                identificados= infoL[infoL['B'].str.contains(i)].index
+                if not 'QQ' in identificados:
+                    if not identificados.empty:
+                        Sheet1.range(7 + cony, 6).value =   '=Lista!D'+str(identificados[0]+2)
+                        Sheet1.range(7 + cony, 8).value =   '=Lista!K'+str(identificados[0]+2)
+                        Sheet1.range(7 + cony, 7).value =   infoL.loc[identificados[0], 'F']
+                        Sheet1.range(7 + cony, 14).value =  infoL.loc[identificados[0], 'H']
+                        Sheet1.range(7 + cony, 16).value =  infoL.loc[identificados[0], 'H']
+                        lista_encontrado.append(identificados[0])
 
 
         cony=cony+1
@@ -311,7 +314,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
     PEPES = infoL[infoL['B'].str.contains('FF|PP')]
 
     porcentaje=(1-(len(lista_encontrado)/ len(PEPES)))*100
-    print(porcentaje)
+
     workbook.save()
 
     return Equipos, Luminarias, Fugas

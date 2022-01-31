@@ -52,6 +52,9 @@ def fonts():
     pdfmetrics.registerFontFamily('montserrat', normal='Montserrat', bold='Montserrat-B')
 
 
+
+
+##__FUENTES__##################################################################
 def set_fonts(canvas, text, color, type, size, lead=None):
     if isinstance(color, str):
         canvas.setFillColor(color)
@@ -541,7 +544,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     largo_sign = pdfmetrics.stringWidth('% de tu consumo', 'Montserrat-N', 15)
     texto(porcentaje, 15, gris, 'Montserrat-N', width - margen - largo_pct - largo_sign, height * 0.5 + 25, canvas)
     texto('% de tu consumo', 15, gris, 'Montserrat-N', width - margen - largo_sign, height * 0.5 +25, canvas)
-    texto('Rango aceptable de $50 a $200', 15, gris, 'Montserrat-N', width - margen - largo_sign-100, height * 0.5 , canvas)
+    #texto('Rango aceptable de $50 a $200', 15, gris, 'Montserrat-N', width - margen - largo_sign-100, height * 0.5 , canvas)
 
     canvas.drawImage("Imagenes/Figuras/cuadro_luces_1.png", 70, 100, 480, 250)
     canvas.setLineWidth(.3)
@@ -830,22 +833,16 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
                  parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
              frame = Frame(60, 80, 480, 330,showBoundary = 0 )
              frame.addFromList(parrafos, canvas)
-
-
-
         else:
             canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
             texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
-
-# Automatizacion  ######################
-
-        #print("Consejos", Consejos)
-        #if len(Consejos)<700:
-        #    parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-        #elif 1100>=len(Consejos)>=700:
-        #    parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
-        #else:
-        #    parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
+            print("Consejos", Consejos)
+            if len(Consejos)<700:
+               parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
+            elif 1100>=len(Consejos)>=700:
+               parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+            else:
+               parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
         frame = Frame(282, 46, width * 0.442, height * 0.44,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
 

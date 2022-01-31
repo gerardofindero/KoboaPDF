@@ -258,7 +258,7 @@ def separar_fugasTV(Equipo):
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
-    Equipos['Texto'] = Aparatos['index']+' '+Aparatos['Marca']+' '+ Aparatos['Pulgadas'].apply(str) +'´´ '+Aparatos['Nota']
+    Equipos['Texto'] = Aparatos['index']+' '+Aparatos['Marca']+' '+ Aparatos['Pulgadas'].apply(str) +'´´ '+Aparatos['Notas']
     Equipos['Notas'] = Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Equipoextra', "", regex=True)
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Equipoextra2', "", regex=True)
@@ -276,8 +276,8 @@ def separar_fugasTV(Equipo):
     Fugas['Potencia Kobo']   = Fuga['Standby'].apply(str)
     Fugas['Lugar']           = Fuga['Zona']
     Fugas['Ubicacion']       = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
-    Fugas['Texto'] = Fuga['Nota']
-    Fugas['Notas'] = Fuga['Nota']
+    Fugas['Texto'] = Fuga['Notas']
+    Fugas['Notas'] = Fuga['Notas']
     Fugas['Atacable'] = Fuga['Atacable']
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra2', "", regex=True)

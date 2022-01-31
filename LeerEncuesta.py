@@ -111,11 +111,23 @@ def Nombre_Cliente():
 
 
     #NCliente = Cliente_Prueba()
-    #NCliente = "Celia Hamui"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    NCliente = "Marianela Hernandez"
     #NCliente = "Rodolfo Hill"
-    NCliente = "Jorge Mercado"
+=======
+    #NCliente = "Prueba Lista"
+    #NCliente = "Salvador Medina"
+    #NCliente = "Samuel N"
+>>>>>>> Stashed changes
+=======
+    #NCliente = "Prueba Lista"
+    #NCliente = "Salvador Medina"
+    #NCliente = "Samuel N"
+>>>>>>> Stashed changes
+    #NCliente = "Jorge Mercado"
     #NCliente = "Guillermo Casas"
-    #NCliente = "Carmela Oteyza"
+    NCliente = "Marianela Hernandez"
 
     return NCliente
 ####################################################################################
@@ -136,7 +148,15 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
-    Opcion='2'
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+    Opcion='4'
+=======
+    Opcion='3'
+>>>>>>> Stashed changes
+=======
+    Opcion='3'
+>>>>>>> Stashed changes
 #######################
 
 

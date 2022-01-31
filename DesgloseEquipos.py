@@ -60,17 +60,17 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
         if j == 1:
             if indx == 1:
                 print("Cluster")
-                Datos_CL, Consum , Zona = clustertv(Excel,Nocircuito,NomCircuito)
+                Datos_CL , Zona = clustertv(Excel,Nocircuito,NomCircuito)
                 DatosCL = DatosCL.append(Datos_CL)
                 Datos_CL.to_excel(writer,  index=True,startrow=primafila)
                 primafila = primafila+ len(Datos_CL) + 4
                 DatosCL['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCL['Circuito'].fillna(NomCircuito[0], inplace=True)
                 DatosCL['Zona'].fillna(Zona, inplace=True)
-                notass=Datos_CL.loc['Notas','Marca']
-                DatosCL['Nota']=notass
-                Notas_Equipos.loc[primafila]=[tablero[0],NomCircuito[0],'ClusterTV',Zona,notass]
-                Notas_ = Notas_.append(Notas_Equipos)
+                # notass=Datos_CL.loc['Notas','Marca']
+                # DatosCL['Nota']=notass
+                # Notas_Equipos.loc[primafila]=[tablero[0],NomCircuito[0],'ClusterTV',Zona,notass]
+                # Notas_ = Notas_.append(Notas_Equipos)
                 FilaLib += 2
 
             if indx == 2:
