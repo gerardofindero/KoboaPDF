@@ -112,6 +112,8 @@ def Nombre_Cliente():
 
     #NCliente = Cliente_Prueba()
     NCliente = "Marianela Hernandez"
+    #NCliente = "Jorge Mercado"
+    #NCliente = "Carmela Oteyza"
 
     return NCliente
 ####################################################################################
@@ -132,12 +134,7 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
-
     Opcion='4'
-
-    Opcion='3'
-
-    Opcion='3'
 
 #######################
 

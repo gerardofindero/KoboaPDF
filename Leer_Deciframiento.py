@@ -26,7 +26,6 @@ def leer_deciframiento(Cliente):
     #Aparatos.drop([0,1],inplace=True)
     ConsumoFugas=Fugas['K'].sum()
     SolarB=False
-    print(Solar)
     if float(Solar)>0:
         SolarB=True
 

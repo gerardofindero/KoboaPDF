@@ -115,10 +115,10 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     TextoCompleto = '' # Se declara la variable TextoCompleto para introducir textos de 'Lib' (libreria de textos)
     #ENTY = ['nada', 'nada'] # Se declara ENTY que albergará el tipo de entrada y tipo de foco.
     ENTY = EntyTip.split()
-    tipo=''
-    entrada=''
-    Solar=False
-    Sensor=False
+    tipo    = ''
+    entrada = ''
+    Solar   =False
+    Sensor  =False
 
     # Entrada y tipo de entrada vienen dentro de una variable, aquí se separan
     # Numero y tipo (LED, Fluorecente...etc ) vienen dentro de una variable, aquí se separan
@@ -199,8 +199,6 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
         TextoCompleto = TextoCompleto.replace('[NUML]', str(round(int(Numero))))
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(round(int(uso))))
-    #separadodiag=
-
 
     elif  Tecno!= 'led':
         if not 'NO HAY CARS' in tex:
