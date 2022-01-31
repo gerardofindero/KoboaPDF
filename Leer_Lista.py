@@ -12,11 +12,7 @@ def leer_lista(Cliente):
     Dic = ['A', 'B', 'C', 'D', 'I','K','E', 'F', 'G', 'H','J']
     Exx.columns = Dic
     Exx.fillna('0',inplace=True)
-    #print(Exx[Exx['A'].str.contains('Circuito')])
-
-
     infoL=Exx.drop(['A','C','E','G'],axis=1)
     infoL=infoL.drop(0)
 
-    #print(infoL)
     return infoL

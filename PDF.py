@@ -28,7 +28,7 @@ from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
-
+from leerVoltaje import leer_volts
 from libreriaTubosFluorescente import recoTuboFluorescente
 from libreriaLucesSolares import recoSolares
 from libreriaBombasPresurizadoras import recoPresu
@@ -214,7 +214,6 @@ def portada(canvas, width, height):
     canvas.showPage()
 
 def Solar(canvas,tarifa,costo, consumo, SolarS):
-    print(SolarS)
     gris = [65 / 255, 65 / 255, 65 / 255]
     AMA_1 = [235 / 255, 200 / 255, 0 / 255]
     Azul = (0 / 255, 76 / 255, 101 / 255)
@@ -695,7 +694,7 @@ def Dicc_Aparatos(nombre):
 
 
 ###################RECOMENDACIONES #######################################
-def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
+def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     Consejos=nota
     PotAhorro='X'
     ClavesS = Claves.split(',')
@@ -726,14 +725,10 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos, PotAhorro = recoDispensadores(consumo)
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
-
-        #print(PotAhorro.at[0,"Accion"])
     # if ClavesS[0] == 'BP':
     #     Consejos, PotAhorro = recoPresu(Claves,consumo)
     if ClavesS[0] == 'AA':
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
-
-
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
@@ -763,6 +758,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Uso = aparato[7]
         notas = aparato[13]
         Claves=aparato[16]
+        Potencia =aparato[6]
         nombre_=Dicc_Aparatos(aparato[3])
         parrafos = []
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
@@ -807,7 +803,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         parrafos = []
 
         # Automatizacion ######################
-        Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_)
+        Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_,Potencia)
         if not Notas=='X':
             notas=Notas
         if len(notas)<700:
@@ -836,7 +832,6 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         else:
             canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png", width * .47, height * 0.05, width * .45, height * .5)
             texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', width * .555, height * 0.512, canvas)
-            print("Consejos", Consejos)
             if len(Consejos)<700:
                parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
             elif 1100>=len(Consejos)>=700:
@@ -873,6 +868,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         nota = textodeequiposA(nombre,nota)
         Claves= aparato[16]
         Uso = aparato[7]
+        Potencia = aparato[6]
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
@@ -931,7 +927,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     # Automatizacion ######################
 
         if not pd.isna(Claves):
-            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,Potencia)
 
     # Automatizacion  ######################
 
@@ -987,6 +983,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         nota = textodeequiposV(nombre,nota)
         Claves =aparato[16]
         Uso=aparato[7]
+        Potencia = aparato[6]
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
@@ -1034,7 +1031,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
               altura+80, canvas)
         # Automatizacion ######################
         if not pd.isna(Claves):
-            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,Potencia)
         # Automatizacion  ######################
         parrafos = []
 
@@ -1100,7 +1097,7 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
     canvas.showPage()
 
 
-def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
+def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
     """ Crea la hoja que muestra donde esta la fuga, que aparatos hay y si es atacable o no """
     fugas_['D']=fugas_['D'].str.replace('Fuga', '', regex=True)
     fugas_['N'] = 'X'
@@ -1109,13 +1106,8 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje):
     LFugas.sort_values(by=['L'], inplace=True, ascending=False)
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares= LFugas['E'].tolist()
-    vEstEle=False
-    vEstMec=False
-    nSob=100
-    nSub=100
-    tSob=5
-    tSub=5
-    #sepRegAta(fugas_, tarifa, vEstEle, vEstMec, nSob, nSub, tSob, tSub)
+    VFE,VFM,NSub,NSob,TSub,TSob = leer_volts(cliente)
+    sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
     #sepNobAta(fugas_,tarifa)
 
     for lista in Lugares:
@@ -1243,6 +1235,8 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
 
         ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos)
         canvas.showPage()
+
+
 
 def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos):
     if Atacable:
@@ -1639,7 +1633,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)
     print("Generando hojas de Fuga...")
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)
-    hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje)
+    hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje,Cliente)
     print("Generando hoja de Resumen...")
     cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,costo)
     robo='no'

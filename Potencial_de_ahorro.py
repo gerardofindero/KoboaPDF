@@ -113,8 +113,10 @@ def potecial_ahorro(Cliente):
 
     inicioF = len(Fugas) + 13
     Luminarias.reset_index(drop=True,inplace=True)
+
+    print(Luminarias['Tipo'])
     for i in Luminarias.index:
-        if 'halogena' in Luminarias.loc[i,'Tipo']:
+        if 'halogenos' in Luminarias.loc[i,'Tipo']:
             Sheet1.range(inicioF + i, 9).value = 0.6
 
         if 'fluorescente' in Luminarias.loc[i,'Tipo']:

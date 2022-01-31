@@ -17,7 +17,7 @@ def separar_fugas(Equip):
     Fuga.fillna({'Standby': 0}, inplace=True)
     #Aparatos.fillna('x', inplace=True)
     #Fuga.fillna('x', inplace=True)
-    Aparatos.dropna(subset=['Nominal'], inplace=True)
+    #Aparatos.dropna(subset=['Nominal'], inplace=True)
     Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
     Equipos['Codigo'] = Aparatos['CodigoN']
@@ -44,6 +44,45 @@ def separar_fugas(Equip):
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
 
     return Equipos,Fugas
+
+
+def separar_fugasLV(Equip):
+    texto="H"
+    try:
+        texto=Equip.loc[['Notas', 'Marca']]
+        Equip.drop(index='Notas',inplace=True)
+    except:
+        print(" ")
+    Equipos = pd.DataFrame(columns=['Codigo','Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Notas'])
+    Fugas   = pd.DataFrame(columns=['Codigo','Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Atacable','Notas'])
+    Aparatos=Equip.copy()
+    Fuga = Equip.copy()
+    Aparatos.reset_index(inplace=True)
+    Equipos['Codigo'] = Aparatos['CodigoN']
+    Equipos['Equipo'] = Aparatos['index']+' '+Aparatos['Marca']
+    Equipos['Potencia Kobo'] = Aparatos['Nominal']
+    Equipos['Lugar']  = Aparatos['Zona']
+    Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
+    Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
+    Equipos['Notas']  =  Aparatos['Notas']
+    Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
+    Equipos['Claves'] = Aparatos['Clave']
+
+    Fuga.dropna(subset=['Standby'], inplace=True)
+    Fuga = Fuga[Fuga.Standby != 0]
+    Fuga.reset_index(inplace=True)
+    Fugas['Codigo'] = Fuga['CodigoS']
+    Fugas['Equipo']    = 'Fuga '+Fuga['index'] + ' ' + Fuga['Marca'].apply(str)
+    Fugas['Potencia Kobo']   = Fuga['Standby']
+    Fugas['Lugar']     = Fuga['Zona']
+    Fugas['Ubicacion'] = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
+    Fugas['Texto']     = Fuga['index'] + ' ' + Fuga['Marca'].apply(str)+  ' '+Fuga['Notas']
+    Fugas['Notas']     = Fuga['Notas']
+    Fugas['Atacable']  = Fuga['Atacable']
+    Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
+
+    return Equipos,Fugas
+
 
 
 
@@ -89,7 +128,6 @@ def separar_fugasTec(Equip):
     Fugas['Atacable']  = Fuga['Atacable']
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
 
-    print(Equipos)
     return Equipos,Fugas
 
 

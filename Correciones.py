@@ -50,4 +50,30 @@ def Lugar(lugar):
     if lugar == 'cuarto_servicio':
         lugar = 'Cuarto de servicio'
 
+    lugar.replace('recamara','Recámara')
+
+
     return lugar
+
+def FugasCorrec(fugas):
+    fugas['Equipo']=fugas['Equipo'].str.replace('tp_link','TP link',regex=True)
+    fugas['Equipo']=fugas['Equipo'].str.replace('sky','Sky',regex=True)
+    fugas['Equipo']=fugas['Equipo'].str.replace('infinitum','Infinutum',regex=True)
+    fugas['Equipo']=fugas['Equipo'].str.replace('motorola','Motorola',regex=True)
+    fugas['Equipo']=fugas['Equipo'].str.replace('phillips','Phillips',regex=True)
+    fugas['Equipo']=fugas['Equipo'].str.replace('Modem','Módem',regex=True)
+    fugas['Equipo']=fugas['Equipo'].str.replace('Telefono','Teléfono',regex=True)
+
+    return fugas
+
+def EquipoCorrec(equipo):
+    equipo['Equipo']=equipo['Equipo'].str.replace('samsung','Samsung',regex=True)
+    equipo['Equipo']=equipo['Equipo'].str.replace('sub-zero','Sub Zero',regex=True)
+    equipo['Equipo']=equipo['Equipo'].str.replace('maytab','Maytab',regex=True)
+    equipo['Equipo']=equipo['Equipo'].str.replace('samsung','Samsung',regex=True)
+    equipo['Equipo']=equipo['Equipo'].str.replace('sony','Sony',regex=True)
+    equipo['Equipo']=equipo['Equipo'].str.replace('philips','Phillips',regex=True)
+
+
+
+    return equipo
