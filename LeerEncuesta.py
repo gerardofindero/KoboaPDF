@@ -96,8 +96,8 @@ def Cliente_Prueba():
     #equipo='Luces'
 
     #equipo='Tecno'
-    equipo='Refris2'
-
+    #equipo='Refris2'
+    equipo="BP2"
 
     Cliente = 'Bot_'+ equipo
 
@@ -110,10 +110,24 @@ def Cliente_Prueba():
 def Nombre_Cliente():
 
 
-    #NCliente = Cliente_Prueba()
-    NCliente = "Marianela Hernandez"
+
+    NCliente = Cliente_Prueba()
+
+    #NCliente = "Marianela Hernandez"
+    #NCliente = "Rodolfo Hill"
+
+    #NCliente = "Prueba Lista"
+    #NCliente = "Salvador Medina"
+    #NCliente = "Samuel N"
+
+    #NCliente = "Prueba Lista"
+    #NCliente = "Salvador Medina"
+    #NCliente = "Samuel N"
+
     #NCliente = "Jorge Mercado"
-    #NCliente = "Carmela Oteyza"
+    #NCliente = "Guillermo Casas"
+    #NCliente = "Marianela Hernandez"
+
 
     return NCliente
 ####################################################################################
@@ -134,9 +148,11 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
+
+
     Opcion='4'
 
-#######################
+
 
 
 ### Se crea la lista (Esta opción no sirve, el programa es independiente)
@@ -183,6 +199,10 @@ if __name__ == '__main__':
         # from funcionesComunes import dataClima as dc
         # wd = dc(CP="10340",Period="today")
 
-        import libreriaAiresAcondicionados as libAA
-        print(libAA.armarTxt())
+        #import libreriaAiresAcondicionados as libAA
+        #print(libAA.armarTxt())
+        import libreriaBombasPresurizadoras as lbp
+        Claves = "BP,PA,ST,IA,IB-*"
+        reco, PotAhorro = lbp.recoPresu(172,833,Claves,19.2)
+        print(reco)
 
