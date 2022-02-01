@@ -108,6 +108,7 @@ def libreriaLED():
 ## se eligen los textos correpondientes.
 
 def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI,uso,texto): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
+    print(EntyTip)
     aleatorio=random.randint(1, 3)
     #Se lee libreria de textos
     Lib =  libreriaL()
@@ -201,6 +202,8 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(round(int(uso))))
 
     elif  Tecno!= 'led':
+
+
         if not 'NO HAY CARS' in tex:
             Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
         else:
@@ -264,8 +267,8 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             #print('Entrada tipo: ' + str(entrada))
             #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
 
-
-
+        tipo,entrada=BuscarTipoEntrada(EntyTip)
+        print(tipo,entrada)
         ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno,Numero)
         TT=0
         if ConLED != 0:
@@ -354,6 +357,31 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
     return TextoCompleto, conteoled, conteoNOled, conteoROI
 
+def BuscarTipoEntrada(texto):
+    forma_lista='a19','a14','a21','g25','g30','g40',\
+          'vela','flama','par16','par20','par30','par38',\
+          'st','br30','br40','otro','mr16','mr11','jc','ar111',\
+                'tubo','t2','t5','t8','t12','mini','estandar',\
+                'grande','gigante','twin','triple','quad','circular5',\
+                'circular5'
+
+    entrada_lista='e27','e10','e12','e14','e26','e27','e40','b22d','otro','gu_5_3','g4',\
+                  'g9','gu24','g6_35','g8','g53','Ba15s','ba15d','r7s','gu10',\
+                  'gu24','g13','g5','fa8','r17d','gx23','g10qin','g10qex','2gx13'
+    forma='X'
+    entrada='X'
+    for i in forma_lista:
+        if i in(texto):
+            forma=i
+    for i in entrada_lista:
+        if i in(texto):
+            entrada=i
+
+    forma=DiccionarioLuz(forma)
+    entrada=DiccionarioLuzE(entrada)
+
+    return forma, entrada
+
 
 ## 5.
 ## Función para buscar el sustituto LED
@@ -426,25 +454,59 @@ def Caracteristicas(tex):
 ## Función para adecuar las variables de entrada y tipo de entrada para ser filtradas por BuscarLED()
 def DiccionarioLuz(entrada):
     salida = entrada
-    if entrada=='gu_5_3':
-        salida='GU5.3'
+
     if entrada == 'mr16':
         salida = 'MR16'
-    if entrada == 'e26_27':
-        salida = 'E26'
-    if entrada == 'e11_12':
-        salida = 'E12'
-    if entrada == 'e27':
-        salida = 'E26'
     if entrada == 'a19':
         salida = 'A19'
+    if entrada == 'a14':
+        salida = 'A14'
+    if entrada == 'a21':
+        salida = 'A21'
+    if entrada == 'g25':
+        salida = 'G25'
+    if entrada == 'g30':
+        salida = 'G30'
+    if entrada == 'g40':
+        salida = 'G40'
+    if entrada == 'par16':
+        salida = 'PAR16'
     if entrada == 'par20':
         salida = 'PAR20'
+    if entrada == 'par30':
+        salida = 'PAR30'
+    if entrada == 'par38':
+        salida = 'PAR38'
     if entrada == 'vela':
         salida = 'Vela'
-    if entrada == 'e10':
-        salida = 'E10'
+
     return salida
+
+def DiccionarioLuzE(entrada):
+
+    salida = entrada
+    if entrada=='gu_5_3':
+        salida='GU5.3'
+    if entrada=='g4':
+        salida='G4'
+    if entrada=='g9':
+        salida='G9'
+    if entrada=='gu24':
+        salida='GU24'
+    if entrada=='gu10':
+        salida='GU10'
+    if entrada=='g6_35':
+        salida='GY6.35'
+    if entrada=='e27':
+        salida='E27'
+    if entrada=='e26':
+        salida='E26'
+    if entrada=='e12':
+        salida='E14'
+
+    return salida
+
+
 
 def Horaszona(nombre,horas):
     mucho=False

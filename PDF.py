@@ -1139,10 +1139,11 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
         equiposFuga=[]
         equiposFuga1=[]
         todo=[]
+        contador=0
         for index, fugat in atac.iterrows():
 
             if ind > 4:
-                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos)
+                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador)
                 equiposFuga=[]
                 canvas.showPage()
                 consumoT = round(atac['K'].sum(), 1)
@@ -1231,16 +1232,20 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 equiposFuga1.append(' ')
 
             if fugat[13]!='X':
-                Consejos = Consejos+' '+fugat[13]+'<br />'
+                if contador==0:
+                    Consejos = Consejos+' '+fugat[13]+'<br />'
 
-        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos)
+            if 'regulador' in Nfuga or 'Regulador' in Nfuga:
+                contador=contador+1
+
+        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador)
         canvas.showPage()
 
 
 
-def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos):
+def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador):
     if Atacable:
-        Consejos= Consejos+' '+textodeconsejos(equiposFuga,equiposFuga1)
+        Consejos=textodeconsejos(equiposFuga,equiposFuga1,Consejos,contador)
 
     if Atacable:
         if len(Consejos) < 650:
@@ -1249,13 +1254,9 @@ def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos):
             parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
         frame = Frame(330, 40, 200, 350, showBoundary=0)
         frame.addFromList(parrafos, canvas)
-        Lequipos=[]
-
 
     if not Atacable:
         Consejos=noatac(equiposFuga,todo)
-        # Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
-        #          'debido a que pueden afectar tanto tu confort como tu seguridad'
         parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
         frame = Frame(330, 50, 200, 330,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
