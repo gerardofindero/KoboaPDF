@@ -1,7 +1,7 @@
 import pandas as pd
 from Consumo    import consumoEq
 from Consumo    import calc_consumo , consumoEq, temperatura
-
+from libreriaBombasPresurizadoras import crearClavesBP
 def bombas (Excel,Nocircuito):
     Aparatos_C = pd.DataFrame(
         index=['Bomba de Presión', 'Bomba de Gravitación', 'Alberca','Bomba de Recirculación'],
@@ -22,6 +22,7 @@ def bombas (Excel,Nocircuito):
 
     if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= Equipos.filter(regex='hidro')
+        #print("InfoBomba en bombas.py: ",InfoBomba)
         Aparatos_C.loc['Bomba de Presión', 'Zona'] = InfoBomba.filter(regex='zona_c_i')[0]
         if InfoBomba.filter(regex='espendiente_c_i')[0]=='si':
             Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='codigofindero_c_i')[0]
@@ -49,24 +50,26 @@ def bombas (Excel,Nocircuito):
             Aparatos_C.loc['Bomba de Presión', 'Fuga']                   = InfoBomba.filter(regex='fuga')[0]
             Aparatos_C.loc['Bomba de Presión', 'Pastilla']               = InfoBomba.filter(regex='pastilla_c_i')[0]
             Aparatos_C.loc['Bomba de Presión', 'Inspección']             = InfoBomba.filter(regex='inspeccion')[0]
-            Aparatos_C.loc['Bomba de Presión', 'Inspección_Lugar']       = InfoBomba.filter(regex='inspeccion_lugar')[0]
+            Aparatos_C.loc['Bomba de Presión', 'Inspección Lugar']       = InfoBomba.filter(regex='inspeccion_lugar')[0]
             Aparatos_C.loc['Bomba de Presión', 'PruebasF']               = InfoBomba.filter(regex='pruebafugas')[0]
             Aparatos_C.loc['Bomba de Presión', 'Presurizador']           = InfoBomba.filter(regex='sistemapresurizador_c_i')[0]
-            Aparatos_C.loc['Bomba de Presión', 'Clave']                  = 'BP'+','+str(
-                                                          Aparatos_C.loc['Bomba de Presión', 'Nominal'])+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'TinacoEx']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Pastilla']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'PresionOFF PB']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'PresionOFF PA']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Valvulas Verificada']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Valvulas Abiertas']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Jarros']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Fuga']+','+'X'+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Inspección']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'Inspección_Lugar']+','+\
-                                                          Aparatos_C.loc['Bomba de Presión', 'PruebasF']
-
-
+            #Aparatos_C.loc['Bomba de Presión', 'Clave']                  = 'BP'+','+str(
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Nominal'])+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'TinacoEx']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Pastilla']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'PresionOFF PB']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'PresionOFF PA']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Valvulas Verificada']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Valvulas Abiertas']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Jarros']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Fuga']+','+'X'+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Inspección']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'Inspección_Lugar']+','+\
+            #                                              Aparatos_C.loc['Bomba de Presión', 'PruebasF']
+            #print("InfoBomba en Bombas.py: ", Aparatos_C.loc['Bomba de Presión'])
+            #print("ClavesBP en Bombas.py: ", clavesBP(Aparatos_C.loc["Bomba de Presión"]))
+            Aparatos_C.loc['Bomba de Presión', 'Clave'] = 'BP' + crearClavesBP(Aparatos_C.loc["Bomba de Presión"])
+            #print("Aparatos_C.loc['Bomba de Presión', 'Clave']: ",Aparatos_C.loc['Bomba de Presión', 'Clave'])
 
 
 

@@ -695,7 +695,7 @@ def Dicc_Aparatos(nombre):
 
 
 ###################RECOMENDACIONES #######################################
-def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
+def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     Consejos=nota
     PotAhorro='X'
     ClavesS = Claves.split(',')
@@ -726,10 +726,10 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre):
         Consejos, PotAhorro = recoDispensadores(consumo)
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
-
-        #print(PotAhorro.at[0,"Accion"])
-    # if ClavesS[0] == 'BP':
-    #     Consejos, PotAhorro = recoPresu(Claves,consumo)
+    if ClavesS[0] == 'BP':
+        Consejos, PotAhorro = recoPresu(consumo, potencia, Claves,Uso)
+        print("Claves BP: ", Claves)
+        #print("Cosnejos BP: ",Consejos)
     if ClavesS[0] == 'AA':
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
 
@@ -759,6 +759,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
+        potencia = aparato[6]
         dinero =  round(aparato[12])
         Uso = aparato[7]
         notas = aparato[13]
@@ -807,7 +808,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         parrafos = []
 
         # Automatizacion ######################
-        Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_)
+        Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_,potencia)
         if not Notas=='X':
             notas=Notas
         if len(notas)<700:
@@ -868,6 +869,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         carita = aparato[0]
         porcentaje = aparato[11]
         consumo = round(aparato[10])
+        potencia = aparato[6]
         dinero = round(aparato[12])
         nota= aparato[13]
         nota = textodeequiposA(nombre,nota)
@@ -931,7 +933,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     # Automatizacion ######################
 
         if not pd.isna(Claves):
-            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,potencia)
 
     # Automatizacion  ######################
 
@@ -1034,7 +1036,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
               altura+80, canvas)
         # Automatizacion ######################
         if not pd.isna(Claves):
-            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,potencia)
         # Automatizacion  ######################
         parrafos = []
 
