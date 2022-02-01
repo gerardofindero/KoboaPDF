@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from scipy.stats import norm
 import funcionesComunes as fc
+from leerVoltaje import leer_volts
 
 def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
     # A atacable D Nombre N texto Q claves
@@ -25,8 +26,8 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
 
         else:
             Claves = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
-            dfDes.loc[indexReg,'VA'] = Claves[1].astype(int)
-            dfDes.loc[indexReg, 'wC'] = Claves[2].astype(int)
+            dfDes.loc[indexReg, 'VA']  = Claves[1].astype(int)
+            dfDes.loc[indexReg, 'wC']  = Claves[2].astype(int)
             dfDes.loc[indexReg, 'uso'] = Claves[3]
             dfDes.loc[indexReg, 'tol'] = Claves[4]
             dfDes.loc[indexReg, 'tol'] = dfDes.loc[indexReg, 'tol'] == 'T'

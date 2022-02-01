@@ -151,7 +151,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 DatosFun  = DatosFun.append(Datos_Solar, ignore_index=True)
                 Datos_Solar.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_Solar) + 4
-                print(Datos_Solar)
+
 
             if indx == 9:
                 print('Tecnologia')

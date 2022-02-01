@@ -88,7 +88,7 @@ def Clasifica(Claves):
 
 
 def LeeClavesR(Claves,notas,nombre,consumo):
-    print("LibreriaRefris.py Claves",Claves)
+    #print("LibreriaRefris.py Claves",Claves)
     #print("Claves refrigeracion",Claves)
     kWh   = float(consumo)
     Texto = ''

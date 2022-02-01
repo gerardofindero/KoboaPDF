@@ -7,7 +7,7 @@ from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
 from Leer_Deciframiento import leer_solar
 from Carpeta_Clientes import carpeta_clientes
-
+from Correciones import FugasCorrec,EquipoCorrec
 #### Excel
 def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
 
@@ -366,7 +366,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
     if not Lava.empty:
         print("Lava")
-        Equipo,Fuga = separar_fugas(Lava)
+        Equipo,Fuga = separar_fugasLV(Lava)
         Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
@@ -420,6 +420,8 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
 
+    Fugas=FugasCorrec(Fugas)
+    Equipos = EquipoCorrec(Equipos)
 
     #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
     Luminaria.fillna(' ', inplace=True)
