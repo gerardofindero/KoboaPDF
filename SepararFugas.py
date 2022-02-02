@@ -380,7 +380,7 @@ def separar_fugasA(Equip):
 
 
 def separar_fugasR(Equipo):
-
+    print(Equipo['CodigoS'])
     Equipos = pd.DataFrame(columns=['Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto', 'Notas','Claves'])
     Fugas   = pd.DataFrame(columns=['Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Atacable','Notas'])
     Aparatos = Equipo.copy()

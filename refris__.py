@@ -87,7 +87,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                     Aparatos_C.loc['Refrigerador', 'CodigoS'] = StandbyCod
                 else:
                     Aparatos_C.loc['Refrigerador', 'Standby'] = 0
-                    Aparatos_C.loc['Refrigerador', 'CodigoS'] = ' '
+                    Aparatos_C.loc['Refrigerador', 'CodigoS'] = 'X'
 
                 Aparatos_C.loc['Refrigerador', 'Notas'] = Circuito.filter(regex='refrigeracion_notas_c_i')[0]
                 Aparatos_C.loc['Refrigerador', 'Clave'] = 'RF'
@@ -208,6 +208,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Minibar', 'Tipo']           = InfoDeco.filter(regex='tipo')[0]
                 Aparatos_C.loc['Minibar', 'Dispensador']    = InfoDeco.filter(regex='dispensador')[0]
                 Aparatos_C.loc['Minibar', 'Standby'] = 0
+                Aparatos_C.loc['Minibar', 'CodigoS'] = StandbyCod
                 Aparatos_C.loc['Minibar', 'Clave'] = 'MB'
 
                 if InfoDeco.filter(regex='regulador_c_i')[0] != 'ninguno':

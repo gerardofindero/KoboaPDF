@@ -22,7 +22,8 @@ def leer_volts(Cliente):
     TSub = Exx.loc[15,'G']
     TSob = Exx.loc[15,'H']
 
-
+    VFE=False
+    VFM=False
     if Max<135:
         if (Media+(2*(DsEst)))<135:
             VFE=True
