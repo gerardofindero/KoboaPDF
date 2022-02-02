@@ -281,21 +281,22 @@ def caritaPlancha(consumo,clave):
 
 
 def caritaAires(consumo,clave):
-    if consumo>=500:
-        Ca = 3
-    if 200<consumo<300:
-        Ca = 2
-    if  200 >= consumo:
+    if consumo < 200:
         Ca = 1
+    elif 200<=consumo<500:
+        Ca = 2
+    elif consumo >= 500:
+        Ca = 3
+
     return Ca
 
 def caritaBombaP(consumo,clave):
-    if consumo>=90:
-        Ca = 3
-    if 35<consumo<90:
-        Ca = 2
-    if  35 >= consumo:
+    if consumo < 40:
         Ca = 1
+    elif 40 <= consumo <80:
+        Ca = 2
+    elif consumo >= 80:
+        Ca = 3
     return Ca
 
 def caritaBombaG(consumo,clave):
