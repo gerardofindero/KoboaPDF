@@ -91,36 +91,36 @@ def airesA (Excel,Nocircuito,NomCircuito):
 
     Aparatos_C = Aparatos_C.fillna('X')
 
-    Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'AA'+','+str(Aparatos_C.loc['Aire Acondicionado', 'Nominal'])+','\
-                                                    + Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica']+','\
-                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'CP']) + ',' \
-                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'TemperaturaP']) + ',' \
-                                                    + Aparatos_C.loc['Habitacion', 'Pelicula'] + ','\
-                                                    + Aparatos_C.loc['Habitacion', 'Paredes'] + ',' \
-                                                    + Aparatos_C.loc['Condensador', 'Radiacion'] + ',' \
-                                                    + Aparatos_C.loc['Habitacion', 'Filtraciones'] + ',' \
-                                                    + Aparatos_C.loc['Habitacion', 'FiltracionesTXT'] + ',' \
-                                                    + str(Aparatos_C.loc['Evaporador', 'Velocidad']) + ',' \
-                                                    + str(Aparatos_C.loc['Evaporador', 'Alto']) + ',' \
-                                                    + str(Aparatos_C.loc['Evaporador', 'Largo']) + ',' \
-                                                    + str(Aparatos_C.loc['Evaporador', 'Temperatura']) + ',' \
-                                                    + str(Aparatos_C.loc['Habitacion', 'Temperatura']) + ',' \
-                                                    + str(Aparatos_C.loc['Habitacion', 'Alto'] )+ ',' \
-                                                    + str(Aparatos_C.loc['Habitacion', 'Largo']) + ',' \
-                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'Personas']) + ',' \
-                                                    + Aparatos_C.loc['Habitacion', 'Actividad'] + ',' \
-                                                    + Aparatos_C.loc['Habitacion', 'Iluminacion'] + ',' \
-                                                    + Aparatos_C.loc['Habitacion', 'FuentesCalor'] + ',' \
-                                                    + Aparatos_C.loc['Evaporador', 'Limpieza'] + ',' \
-                                                    + Aparatos_C.loc['Condensador', 'Limpieza'] + ',' \
-                                                    + Aparatos_C.loc['Evaporador', 'Ventilador'] + ',' \
-                                                    + Aparatos_C.loc['Condensador', 'Ventilador'] + ',' \
-                                                    + Aparatos_C.loc['Evaporador', 'VentiladorTXT'] + ',' \
-                                                    + Aparatos_C.loc['Condensador', 'VentiladorTXT'] + ',' \
-                                                    + Aparatos_C.loc['Condensador', 'Tuberias'] + ',' \
-                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas'] + ',' \
-                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT'] + ',' \
-                                                    + str(Aparatos_C.loc['Condensador', 'SucTEMP'] )+ ',' \
+    Aparatos_C.loc['Aire Acondicionado', 'Clave'] = 'AA'+'/'+str(Aparatos_C.loc['Aire Acondicionado', 'Nominal'])+'/'\
+                                                    + Aparatos_C.loc['Aire Acondicionado', 'ZonaTermica']+'/'\
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'CP']) + '/' \
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'TemperaturaP']) + '/' \
+                                                    + Aparatos_C.loc['Habitacion', 'Pelicula'] + '/'\
+                                                    + Aparatos_C.loc['Habitacion', 'Paredes'] + '/' \
+                                                    + Aparatos_C.loc['Condensador', 'Radiacion'] + '/' \
+                                                    + Aparatos_C.loc['Habitacion', 'Filtraciones'] + '/' \
+                                                    + Aparatos_C.loc['Habitacion', 'FiltracionesTXT'] + '/' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Velocidad']) + '/' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Alto']) + '/' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Largo']) + '/' \
+                                                    + str(Aparatos_C.loc['Evaporador', 'Temperatura']) + '/' \
+                                                    + str(Aparatos_C.loc['Habitacion', 'Temperatura']) + '/' \
+                                                    + str(Aparatos_C.loc['Habitacion', 'Alto'] )+ '/' \
+                                                    + str(Aparatos_C.loc['Habitacion', 'Largo']) + '/' \
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'Personas']) + '/' \
+                                                    + Aparatos_C.loc['Habitacion', 'Actividad'] + '/' \
+                                                    + Aparatos_C.loc['Habitacion', 'Iluminacion'] + '/' \
+                                                    + Aparatos_C.loc['Habitacion', 'FuentesCalor'] + '/' \
+                                                    + Aparatos_C.loc['Evaporador', 'Limpieza']    + '/' \
+                                                    + Aparatos_C.loc['Condensador', 'Limpieza']   + '/' \
+                                                    + Aparatos_C.loc['Evaporador', 'Ventilador']  + '/' \
+                                                    + Aparatos_C.loc['Condensador', 'Ventilador'] + '/' \
+                                                    + Aparatos_C.loc['Evaporador', 'VentiladorTXT'] + '/' \
+                                                    + Aparatos_C.loc['Condensador', 'VentiladorTXT'] + '/' \
+                                                    + Aparatos_C.loc['Condensador', 'Tuberias'] + '/' \
+                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas'] + '/' \
+                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT'] + '/' \
+                                                    + str(Aparatos_C.loc['Condensador', 'SucTEMP'] )+ '/' \
                                                     + str(Aparatos_C.loc['Condensador', 'DesTEMP'])
 
 

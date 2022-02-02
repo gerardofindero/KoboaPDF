@@ -96,8 +96,8 @@ def Cliente_Prueba():
     #equipo='Luces'
 
     #equipo='Tecno'
-    #equipo='Refris2'
-    equipo="BP2"
+    equipo='Refris2'
+
 
     Cliente = 'Bot_'+ equipo
 
@@ -110,24 +110,11 @@ def Cliente_Prueba():
 def Nombre_Cliente():
 
 
-
-    NCliente = Cliente_Prueba()
-
+    #NCliente = Cliente_Prueba()
     #NCliente = "Marianela Hernandez"
-    #NCliente = "Rodolfo Hill"
-
-    #NCliente = "Prueba Lista"
-    #NCliente = "Salvador Medina"
-    #NCliente = "Samuel N"
-
-    #NCliente = "Prueba Lista"
-    #NCliente = "Salvador Medina"
-    #NCliente = "Samuel N"
-
     #NCliente = "Jorge Mercado"
-    #NCliente = "Guillermo Casas"
-    #NCliente = "Marianela Hernandez"
-
+    NCliente = "Carmela Oteyza"
+    NCliente = "Miguel Gonzalez"
 
     return NCliente
 ####################################################################################
@@ -148,11 +135,9 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
+    Opcion='2'
 
-
-    Opcion='4'
-
-
+#######################
 
 
 ### Se crea la lista (Esta opción no sirve, el programa es independiente)
@@ -188,21 +173,7 @@ if __name__ == '__main__':
 
 ###########################################
     if Opcion == '6':
-        #from libBomGrav import armarTxt
-        #Claves = "600,si,si,si,ninguno,si,alto,abiertas,no,no,figasTXT, flotador,no,si,no,problemas,0.75,5,10,5,21,1.20,plastica"
-        #txt, PotAhorro = armarTxt(100,20,Claves)
-        #print(txt)
 
-
-        #print(PotAhorro.at[0,"Accion"])
-
-        # from funcionesComunes import dataClima as dc
-        # wd = dc(CP="10340",Period="today")
-
-        #import libreriaAiresAcondicionados as libAA
-        #print(libAA.armarTxt())
-        import libreriaBombasPresurizadoras as lbp
-        Claves = "BP,PA,ST,IA,IB-*"
-        reco, PotAhorro = lbp.recoPresu(172,833,Claves,19.2)
-        print(reco)
+        import libreriaAiresAcondicionados as libAA
+        print(libAA.armarTxt())
 

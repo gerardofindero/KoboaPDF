@@ -1,20 +1,32 @@
 import pandas as pd
 from unidecode import unidecode
 
-def textodeconsejos(equipo,equipo1):
-
-    texto=''
-    refris=['refrigerador','congelador','bar','hielos','regulador']
-    oficina=['impresora','fax']
-    conteo =1
-    checa =  any(item in equipo for item in oficina)
-
+def textodeconsejos(equipo,equipo1,Consejos,conta):
+    print(equipo)
+    texto   = Consejos
+    refris  = ['refrigerador','congelador','bar','hielos','regulador']
+    oficina = ['impresora','fax']
+    conteo  = 1
+    checa   =  any(item in equipo for item in oficina)
+    timer='Timer Inteligente de Steren'
     for i in range(len(equipo)):
         equipo[i]=unidecode(equipo[i])
 
     for i in range(len(equipo1)):
         equipo1[i]=unidecode(equipo1[i])
 
+
+    linkA='https://www.amazon.com.mx/Steren-SHOME-100-Tomacorriente-Encendido-Inalámbrico/dp/B07JB9JKFB/ref=' \
+          'sr_1_2?__mk_es_MX=ÅMÅŽÕÑ&crid=NSFMP6DX5PSK&keywords=smart+plug+steren&qid=1643742539&sprefix=smart+plug+steren%2Caps%2C166&sr=8-2'
+    Address = 'Link de compra'
+    LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+
+    if conta>1:
+        texto=texto.replace('{s}','s')
+        texto=texto.replace('{es}','es')
+    else:
+        texto=texto.replace('{s}','')
+        texto=texto.replace('{es}','')
 
     if 'sensor' in equipo:
         texto = texto+' ' +  'Sigue usando tu sensor de movimiento para seguir ahorrando dinero. <br />'
@@ -40,32 +52,36 @@ def textodeconsejos(equipo,equipo1):
         if 'regulador' in equipo:
             if 'bocinas' in equipo:
                 texto = texto+' ' + 'Para los equipos de alta fidelidad NO te recomendamos quitar el regulador. <br />'
+            if len(equipo)>1:
+                texto = texto+' ' + 'Un timer inteligente te puede ayudar a ahorrar energía manteniendo tus ' \
+                                    'dispositivos apagados mientras no los usas.' \
+                        + '<br /> '+  '<br /> '+LinkS + \
+                        '<br /> '+ timer+' <br /> <br />'
 
         check =  any(item in equipo for item in refris)
         if check is False:
-            linkA='https://amzn.to/3sEMbJk'
-            Address = 'Link de compra'
-            LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
 
             if conteo==1:
                 texto = texto+' ' + 'Un timer inteligente te puede ayudar a ahorrar energía manteniendo tus ' \
                                     'dispositivos apagados mientras no los usas.' \
                                     + '<br /> '+  '<br /> '+LinkS + \
-                                    '<br /> '+ ' Timer NINE <br /> <br />'
+                                    '<br /> '+ timer+' <br /> <br />'
             if conteo==2:
                 texto = texto+' ' + 'Un timer inteligente te sería util para reducir tu consumo de energía en esta zona'\
                                     + '<br /> '+  '<br /> '+LinkS + \
-                                    '<br /> '+ ' Timer NINE <br /> <br />'
+                                    '<br /> '+ timer+' <br /> <br />'
             if conteo==3:
                 texto = texto+' ' + 'Te puedes apoyar de un timer inteligente ' \
                                     'para reducir el consumo de energía de tus ' \
                                     'dispositivos.' + '<br /> '+  '<br /> '+LinkS + \
-                                    '<br /> '+ ' Timer NINE <br /> <br />'
+                                    '<br /> '+ timer+' <br /> <br />'
             if conteo==4:
                 texto = texto+' ' + 'Te recomendamos el uso de un timer inteligente para reducir ' \
                                     'el consumo de energía de tus' \
                                     'dispositivos.' + '<br /> '+  '<br /> '+LinkS + \
-                                    '<br /> '+ ' Timer NINE <br /> <br />'
+                                    '<br /> '+ timer+'  <br /> <br />'
+        # else:
+        #     texto=Consejos
 
 
 

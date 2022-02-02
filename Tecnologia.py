@@ -14,11 +14,11 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
     Equipos     = Equipos.fillna('X')
     Zona        = Equipos.filter(regex='zona_c_i')[0]
     if Zona=='otro':
-        Zona        = Equipos.filter(regex='zona_otro_c_i')[0]
+        Zona    = Equipos.filter(regex='zona_otro_c_i')[0]
 
-    Notas       = Equipos.filter(regex='notas_c_i')[0]
-    #stnby      = Circuito.filter(regex='circuito_standby_c_i')[0]
-    stnbyCod    = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
+    Notas         = Equipos.filter(regex='notas_c_i')[0]
+    #stnby        = Circuito.filter(regex='circuito_standby_c_i')[0]
+    stnbyCod      = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     stnbyEq       = Equipos.filter(regex='equipos_standby')
     stnbyEqAppl   = Equipos.filter(regex='equipos_standby_apple_c_i')
     indx=0
@@ -151,8 +151,8 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
                 InfoDeco = Equipos.filter(regex='router1')
                 Nota = Equipos.filter(regex='router_notas_c_i')[0]
                 Aparatos_C.loc['Router', 'Marca']      = InfoDeco.filter(regex='marca_c_i')[0]
-                if Aparatos_C.loc['Router', 'Marca'] == 'otro':
-                    Aparatos_C.loc['Router', 'Marca']      = InfoDeco.filter(regex='marca_otro')[0]
+                # if Aparatos_C.loc['Router', 'Marca'] == 'otro':
+                #     Aparatos_C.loc['Router', 'Marca']      = InfoDeco.filter(regex='marca_otro')[0]
                 Aparatos_C.loc['Router', 'Standby']    = InfoDeco.filter(regex='standby')[0]
                 Aparatos_C.loc['Router', 'CodigoS']    = stnbyCod
                 Aparatos_C.loc['Router', 'Nominal']    = 'NA'

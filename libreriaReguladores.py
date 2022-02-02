@@ -9,13 +9,14 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
 
     indexReg = dfDes.index[dfDes.D.str.contains('regulador|Regulador',case=False)]
     nReg     = len(indexReg)
+    dfDes.loc[indexReg, 'N']=''
     if nReg>0:
         libRegObj=libreriaReguladores()
         if vEstEle and vEstMec:
             if   nReg == 1:
-                dfDes.loc[indexReg,'N']  = libRegObj.libReg.at[1,'Texto'].replace('{s}','').replace('{es}','')
+                dfDes.loc[indexReg,'N']  = libRegObj.libReg.at[1,'Texto']
             elif nReg > 1:
-                dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
+                dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto']
             dfDes.loc[indexReg,'A'] = 'Si'
             """
             for i in indexReg:

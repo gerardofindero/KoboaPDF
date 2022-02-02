@@ -281,13 +281,14 @@ def caritaPlancha(consumo,clave):
 
 
 def caritaAires(consumo,clave):
-    if consumo < 200:
-        Ca = 1
-    elif 200<=consumo<500:
-        Ca = 2
-    elif consumo >= 500:
-        Ca = 3
 
+    if consumo < 70:
+        Ca = 1
+    elif 70<=consumo<120:
+        Ca = 2
+    elif consumo >= 120:
+        Ca = 3
+    print("Consumo: " ,consumo, "Carita",Ca)
     return Ca
 
 def caritaBombaP(consumo,clave):
@@ -342,6 +343,7 @@ def definircarita(Equipo):
             clave = aparato[16]
             consumo = aparato[10]
             equipoid = aparato[16].split(',')[0]
+            equipoi = aparato[16].split('/')[0]
             if equipoid == 'RF':
                 Carita = caritaRefri(consumo,clave)
             elif equipoid == 'CN':
@@ -370,7 +372,7 @@ def definircarita(Equipo):
                 Carita =caritaMicroondas(consumo,clave)
             elif equipoid == 'CF':
                 Carita =caritaCafetera(consumo,clave)
-            elif equipoid == 'AA':
+            elif equipoi == 'AA':
                 Carita =caritaAires(consumo,clave)
             elif equipoid == 'DA':
                 Carita =caritaDispensador(consumo,clave)
