@@ -698,6 +698,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     Consejos=nota
     PotAhorro='X'
     ClavesS = Claves.split(',')
+    ClavesDiag = Claves.split('/')
     Notas='X'
     if ClavesS[0] == 'RF':
         Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
@@ -718,20 +719,15 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     if Claves == 'CF':
         Consejos = armarTxtCaf(nombre,consumo,Uso,'Ninguno')
     if Claves == 'CTV':
-        #from LibClusterTV import recoCTV
-        #[Consejos, PotAhorro] = recoCTV(standby,DAC)
         Consejos = analizarCTV(consumo,Uso,'Ninguno')
     if Claves == 'DA':
         Consejos, PotAhorro = recoDispensadores(consumo)
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
-
     if ClavesS[0] == 'BP':
         Consejos, PotAhorro = recoPresu(consumo, potencia, Claves,Uso)
-        print("Claves BP: ", Claves)
-        #print("Cosnejos BP: ",Consejos)
-
-    if ClavesS[0] == 'AA':
+    if ClavesDiag[0] == 'AA':
+        print('AIRESSSSSSSSSSSSSSSSSSSSSSS')
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')

@@ -83,7 +83,7 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
     txt = ""
     lib, links, ct, aadb = leerLibreria()
     #print(Claves)
-    AA,w,zona,cp,tempp,peli,pare,radi,filt,filtTxt,velocidad,alto,largo,evaTemp,habTemp,largoC,anchoC,nPerso,activi,ilumin,fuentes,evaLim,conLim,evaVen,conVen,evaVenT,conVenT,tuberias,fugas,fugasT,tempSuc,tempDes = Claves.split(",")
+    AA,w,zona,cp,tempp,peli,pare,radi,filt,filtTxt,velocidad,alto,largo,evaTemp,habTemp,largoC,anchoC,nPerso,activi,ilumin,fuentes,evaLim,conLim,evaVen,conVen,evaVenT,conVenT,tuberias,fugas,fugasT,tempSuc,tempDes = Claves.split("/")
     # adecuación de claves númericas
     try   : w         = float(w)
     except: w = 0
@@ -103,31 +103,55 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
     elif kwh >= 120:
         txt+= fc.selecTxt(lib,"AA03")
 
-    if filt=="si" and filtTxt!="":
-        txt+= " "+fc.selecTxt(lib,"AA04").replace("[filtTxt]",filtTxt)
-
-    if tempp < 24:
-        txt+= ' '+fc.selecTxt(lib,"AA05").replace("[tempp]",str(tempp))
-    if hrsUso>hrsNe:
-        txt+=" "+fc.selecTxt(lib,"AA06")
-    elif (hrsUso<=hrsNe) and (kwh>=70):
-        txt+=" "+fc.selecTxt(lib,"AA06S1").replace("[hrsUso]",str(round(hrsUso)))
-
-    if radi=="si":
-        txt += " "+fc.selecTxt(lib,"AA07")
-
-    if peli == "no":
-        link=fc.selecTxt(links,"[nano]")
-        link=fc.ligarTextolink("Filtro de calor",link)
-        txt += " "+fc.selecTxt(lib,"AA08").replace("[nano]",link)
-    if pare == "si":
-        link1=fc.selecTxt(links,"[pintura1]")
-        link2=fc.selecTxt(links,"[pintura2]")
-        link1=fc.ligarTextolink("Pintura 1",link1)
-        link2=fc.ligarTextolink("Pintura 2",link2)
-        txt+= " "+fc.selecTxt(lib,"AA09").replace("[pintura1]",link1).replace("[pintura2]",link2)
+    # if filt=="si" and filtTxt!="":
+    #     txt+= " "+fc.selecTxt(lib,"AA04").replace("[filtTxt]",filtTxt)
+    #
+    # if tempp < 24:
+    #     txt+= ' '+fc.selecTxt(lib,"AA05").replace("[tempp]",str(tempp))
+    # if hrsUso>hrsNe:
+    #     txt+=" "+fc.selecTxt(lib,"AA06")
+    # elif (hrsUso<=hrsNe) and (kwh>=70):
+    #     txt+=" "+fc.selecTxt(lib,"AA06S1").replace("[hrsUso]",str(round(hrsUso)))
+    #
+    # if radi=="si":
+    #     txt += " "+fc.selecTxt(lib,"AA07")
+    #
+    # if peli == "no":
+    #     link=fc.selecTxt(links,"[nano]")
+    #     link=fc.ligarTextolink("Filtro de calor",link)
+    #     txt += " "+fc.selecTxt(lib,"AA08").replace("[nano]",link)
+    # if pare == "si":
+    #     link1=fc.selecTxt(links,"[pintura1]")
+    #     link2=fc.selecTxt(links,"[pintura2]")
+    #     link1=fc.ligarTextolink("Pintura 1",link1)
+    #     link2=fc.ligarTextolink("Pintura 2",link2)
+    #     txt+= " "+fc.selecTxt(lib,"AA09").replace("[pintura1]",link1).replace("[pintura2]",link2)
 
     if kwh>=70:
+        # orinalmente era verde esto :V
+        if filt=="si" and filtTxt!="":
+            txt+= " "+fc.selecTxt(lib,"AA04").replace("[filtTxt]",filtTxt)
+
+        if tempp < 24:
+            txt+= ' '+fc.selecTxt(lib,"AA05").replace("[tempp]",str(tempp))
+        if hrsUso>hrsNe:
+            txt+=" "+fc.selecTxt(lib,"AA06")
+        elif (hrsUso<=hrsNe) and (kwh>=70):
+            txt+=" "+fc.selecTxt(lib,"AA06S1").replace("[hrsUso]",str(round(hrsUso)))
+
+        if radi=="si":
+            txt += " "+fc.selecTxt(lib,"AA07")
+
+        if peli == "no":
+            link=fc.selecTxt(links,"[nano]")
+            link=fc.ligarTextolink("Filtro de calor",link)
+            txt += " "+fc.selecTxt(lib,"AA08").replace("[nano]",link)
+        if pare == "si":
+            link1=fc.selecTxt(links,"[pintura1]")
+            link2=fc.selecTxt(links,"[pintura2]")
+            link1=fc.ligarTextolink("Pintura 1",link1)
+            link2=fc.ligarTextolink("Pintura 2",link2)
+            txt+= " "+fc.selecTxt(lib,"AA09").replace("[pintura1]",link1).replace("[pintura2]",link2)
         # variables sección amarilla
         try   : velocidad = float(velocidad)
         except: velocidad =0

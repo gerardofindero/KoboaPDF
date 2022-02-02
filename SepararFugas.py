@@ -366,7 +366,7 @@ def separar_fugasA(Equip):
     Fuga = Fuga[Fuga.Standby != 0]
     Fuga.reset_index(inplace=True)
     Fugas['Codigo'] = Fuga['CodigoS']
-    Fugas['Equipo']    = 'Aire Acondicionado tipo '+ Fuga['Tecnologia']
+    Fugas['Equipo']    = 'Fuga Aire Acondicionado tipo '+ Fuga['Tecnologia']
     Fugas['Potencia Kobo']   = Fuga['Standby']
     Fugas['Lugar']     = Fuga['Zona']  + ' en el' + Fuga['Ubicacion']
     Fugas['Ubicacion'] = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
