@@ -38,6 +38,8 @@ def leerExcel():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Clusters de TV/libreriaCTV.xlsx",
             sheet_name='variables')
     return [lib,links,variables]
+
+
 def analizarCTV(standby,DAC,listaDispositivos):
     """
 

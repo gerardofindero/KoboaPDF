@@ -14,14 +14,22 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
         libRegObj=libreriaReguladores()
         if vEstEle and vEstMec:
             if   nReg == 1:
-                dfDes.loc[indexReg,'N']  = libRegObj.libReg.at[1,'Texto']
+                Texto  = libRegObj.libReg.at[1,'Texto']
             elif nReg > 1:
-                dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto']
+                Texto = libRegObj.libReg.at[1, 'Texto']
             dfDes.loc[indexReg,'A'] = 'Si'
             """
             for i in indexReg:
                 dfDes.loc[i,'N'] = dfDes.loc[i,'N']+",1,"+str(dfDes.at[i,"K"])+","+fc.selecTxt(libRegObj.libReg,"REGpa01")
             """
+            linkA='https://www.amazon.com.mx/Volteck-AD-270-Adaptador-Supresor-Picos/dp/B0124HMZR2/' \
+                  'ref=sr_1_2?__mk_es_MX=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=R30CP3WL83BB&keywords=supresor+de+picos&qid=1644019250&s=electronics&sprefix=supresor+de+picos%2Celectronics%2C169&sr=1-2'
+            Address = 'Link de compra'
+            LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+
+            Texto = Texto.replace('[LinkPdP]', LinkS)
+
+            dfDes.loc[indexReg, 'N'] = Texto
 
             return dfDes
 

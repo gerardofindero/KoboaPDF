@@ -1,8 +1,31 @@
 import pandas as pd
 from unidecode import unidecode
 
+def leerLibreria():
+    try:
+        fugas   = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Otros equipos y fugas/Otros equipos y fugas.xlsx",
+            sheet_name='Fugas')
+        equipos = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Otros equipos y fugas/Otros equipos y fugas.xlsx",
+            sheet_name='Equipos')
+    except:
+        fugas   = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Otros equipos y fugas/Otros equipos y fugas.xlsx",
+            sheet_name='Fugas')
+        equipos = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Otros equipos y fugas/Otros equipos y fugas.xlsx",
+            sheet_name='Equipos')
+    fugas=fugas.set_index('Codigo')
+    equipos=equipos.set_index('Codigo')
+    return [fugas,equipos]
+
+
+
+
 def textodeconsejos(equipo,equipo1,Consejos,conta):
-    print(equipo)
+    #fug,equi = leerLibreria()
+    #print(fug)
     texto   = Consejos
     refris  = ['refrigerador','congelador','bar','hielos','regulador']
     oficina = ['impresora','fax']
@@ -71,8 +94,7 @@ def textodeconsejos(equipo,equipo1,Consejos,conta):
                                     + '<br /> '+  '<br /> '+LinkS + \
                                     '<br /> '+ timer+' <br /> <br />'
             if conteo==3:
-                texto = texto+' ' + 'Te puedes apoyar de un timer inteligente ' \
-                                    'para reducir el consumo de energía de tus ' \
+                texto = texto+' ' + 'Te puedes apoyar de un timer inteligente para reducir el consumo de energía de tus ' \
                                     'dispositivos.' + '<br /> '+  '<br /> '+LinkS + \
                                     '<br /> '+ timer+' <br /> <br />'
             if conteo==4:
@@ -112,6 +134,7 @@ def textodeequiposA(equipo,nota):
     elif 'horno' in equipo.lower():
         texto = texto+' ' + 'Este equipo es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
+
     elif 'lavajilla' in equipo.lower():
         texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
 
@@ -122,8 +145,7 @@ def textodeequiposA(equipo,nota):
 def textodeequiposV(equipo,nota):
     texto=nota
     if 'laptop' in equipo.lower():
-        texto = texto+' ' + 'Tienes un buen consumo usando tu laptop. Para las laptops te recomendamos desconectarlas ' \
-                            'del enchufe cuando se terminen de usar. ' \
+        texto = texto+' ' + 'Tienes un buen consumo usando tu laptop. Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
     if 'computador' in equipo.lower():
         texto = texto+' ' + 'Tienes un buen consumo usando tu computadora. Recuerda apagar completamente tus equipos de computo ' \
@@ -140,8 +162,7 @@ def textodeequiposV(equipo,nota):
 
 
     elif 'cabello' in equipo.lower():
-        texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
-                            'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
+        texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
     elif 'pelo' in equipo.lower():
         texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
@@ -178,12 +199,11 @@ def noatac(equipo,todo):
     elif 'calentador' in equipo:
         Consejos='Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo '
     elif 'alexa' in todo:
-        Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
-                            'Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
+        Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
     elif 'lutron' in todo:
         Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
                             'Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
-    elif 'modem' in todo:
+    elif 'modem' in todo or 'repetidor' in todo:
         Consejos='En los equipos de comunicación no recomendamos tomar acción o desconectarlos, ' \
                  'debido a que interfieren con tu confort'
     else:

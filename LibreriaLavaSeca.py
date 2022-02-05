@@ -94,6 +94,11 @@ def LeeClavesLavaSeca(Claves,consumo):
             Texto = Texto.replace('["PCMS"]', str(int(100-Percentil*100)))
             Texto = Texto.replace('["PCMSF"]', str(int( Percentil * 100)))
 
+            linkA='https://findero.mx/ahorrar-con-la-secadora-de-ropa/'
+            Address = 'Blog'
+            LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+
+            Texto = Texto.replace('[LINK BLOG SECADORAS]', LinkS)
 
             Texto = Texto.replace('[/n]', '<br />')
 
