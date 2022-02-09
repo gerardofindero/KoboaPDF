@@ -364,6 +364,14 @@ def caritaHielos(consumo,clave):
     if  20 >= consumo:
         Ca = 1
     return Ca
+def caritaCP(consumo,clave):
+    if kWh <= 27:
+        Ca = 1
+    elif 27 < kWh <= 68:
+        Ca = 2
+    elif 68 < kWh:
+        Ca = 3
+    return Ca
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
@@ -406,8 +414,11 @@ def definircarita(Equipo):
                 Carita =caritaAires(consumo,clave)
             elif equipoid == 'DA':
                 Carita =caritaDispensador(consumo,clave)
+            elif equipoid == "CP":
+                Carita = caritaCP(consumo,clave)
             else:
                 Carita =caritaEquipos(consumo, clave)
+
 
         aparato[0]=Carita
 
