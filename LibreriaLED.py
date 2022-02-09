@@ -173,7 +173,8 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         if uso>5 and Numero<10:
             TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
         if Numero>10 and uso<5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
+            if VV>12:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
         if Numero>10 and uso>5:
             TextoCompleto = TextoCompleto + Lib.loc['LUM13', 'Texto']
 
@@ -215,28 +216,35 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             TextoCompleto = Lib.loc['LUM00a', 'Texto']
             conteoNOled  = conteoNOled + 1
         else:
-            TextoCompleto = Lib.loc['LUM00b', 'Texto']
+            if VV<7:
+                TextoCompleto = Lib.loc['LUM00c', 'Texto']
+            else:
+                TextoCompleto = Lib.loc['LUM00b', 'Texto']
 
-        genero=Lugar[len(Lugar)-3]
+        #genero=Lugar[len(Lugar)-3]
+        primerapalabra=Lugar.split(' ')[0]
+        genero=Lugar[len(primerapalabra)-1]
+        print(primerapalabra)
         if genero=='a':
-            Lugar='la '+Lugar
-        if genero=='o':
-            Lugar='el '+Lugar
+            LugarX='la '+Lugar
+        elif genero=='o':
+            LugarX='el '+Lugar
+
         # Reemplaza los 'placeholders' del texto por su valor reportado en campo (la hoja de 'Desciframiento' ya tiene estos valores.
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tecno)
-        TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', Lugar)
+        TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', LugarX)
         TextoCompleto = TextoCompleto.replace('[CAR]', tex)
         TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(uso))
         TextoCompleto = TextoCompleto.replace('.0', "")
         TextoCompleto = TextoCompleto.replace('[...]', "")
-        TextoCompleto = TextoCompleto.replace('Cocina', "la cocina")
-        TextoCompleto = TextoCompleto.replace('cocina', "la cocina")
-        TextoCompleto = TextoCompleto.replace('Recámara', "la recámara")
-        TextoCompleto = TextoCompleto.replace('Recamara', "la recámara")
-        TextoCompleto = TextoCompleto.replace('estudio_oficina', "la oficina")
-        TextoCompleto = TextoCompleto.replace('Sala', "la sala")
-        TextoCompleto = TextoCompleto.replace('Baño', "el baño")
+        TextoCompleto = TextoCompleto.replace('Cocina', "cocina")
+        TextoCompleto = TextoCompleto.replace('cocina', "cocina")
+        TextoCompleto = TextoCompleto.replace('Recámara', "recámara")
+        TextoCompleto = TextoCompleto.replace('Recamara', "recámara")
+        TextoCompleto = TextoCompleto.replace('estudio_oficina', "oficina")
+        TextoCompleto = TextoCompleto.replace('Sala', "sala")
+        TextoCompleto = TextoCompleto.replace('Baño', "baño")
 
         if Numero == 1:
             TextoCompleto = TextoCompleto.replace('1', 'única')

@@ -78,5 +78,22 @@ def leer_solar(Cliente):
     DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
 
 
+def leer_solarKOBO(Cliente):
+    archivo_resultados = carpeta_clientes(Cliente)
+    Exx = pd.read_excel(archivo_resultados, sheet_name='Solar')
+    Dic = ['A', 'B', 'C', 'D', 'E']
+    Exx.columns = Dic
 
+    DSolar = pd.DataFrame(index=['NoModulos','Potencia','inclinacion','orientacion','Medidor','Sombreado','HotSpot'],
+                          columns=['Paneles'])
+
+
+    DSolar.loc['NoModulos', 'Paneles']    = Exx.loc[2, ['B']][0]
+    DSolar.loc['Potencia', 'Paneles']     = Exx.loc[3, ['B']][0]
+    DSolar.loc['Inclinacion', 'Paneles']  = Exx.loc[5, ['B']][0]
+    DSolar.loc['Orientacion', 'Paneles']  = Exx.loc[6, ['B']][0]
+    DSolar.loc['Hotspot', 'Paneles']      = Exx.loc[7, ['B']][0]
+    DSolar.loc['Sombreado', 'Paneles']    = Exx.loc[4, ['B']][0]
+
+    print (DSolar)
     return (DSolar)
