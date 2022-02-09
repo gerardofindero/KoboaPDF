@@ -2,6 +2,7 @@ import pandas as pd
 from Consumo    import consumoEq
 from Consumo    import calc_consumo , consumoEq, temperatura
 from libreriaBombasPresurizadoras import crearClavesBP
+from libreriaBombasAlberca import crearClavesBA
 def bombas (Excel,Nocircuito):
     Aparatos_C = pd.DataFrame(
         index=['Bomba de Presión', 'Bomba de Gravitación', 'Alberca','Bomba de Recirculación'],
@@ -79,7 +80,7 @@ def bombas (Excel,Nocircuito):
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
         #f InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
-       #     Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+        #    Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
         #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
         #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
@@ -118,7 +119,7 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        Aparatos_C.loc['Bomba de Presión', 'Clave']     = 'BP'
+        Aparatos_C.loc['Bomba de Presión', 'Clave']     = 'BG'
                                                           # +','+str(Aparatos_C.loc['Bomba de Gravitación', 'Nominal'])+','+ \
                                                           #  Aparatos_C.loc['Bomba de Gravitación', 'Sarro']+','+ \
                                                           #  Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg']+','+ \
@@ -154,14 +155,25 @@ def bombas (Excel,Nocircuito):
         if InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
             Aparatos_C.loc['Alberca', 'Nombre']  = InfoDeco.filter(regex='nombre')[0]
             Aparatos_C.loc['Alberca', 'CodigoS'] = CodigoStandby
-            Aparatos_C.loc['Alberca', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
-            Aparatos_C.loc['Alberca', 'Solar'] = InfoDeco.filter(regex='solar')[0]
+            try   : Aparatos_C.loc['Alberca', 'Nominal'] = InfoDeco.filter(regex='nominal')[0] # x/W/x potencia
+            except: Aparatos_C.loc['Alberca', 'Nominal'] = 0
+            try   : Aparatos_C.loc["Alberca", 'Gasto'  ] = InfoDeco.filter(regex='gasto'  )[0] # kWh/x/x consumo
+            except: Aparatos_C.loc["Alberca", 'Gasto'  ] = 0
+            try   : Aparatos_C.loc['Alberca', 'Volumen'] = InfoDeco.filter(regex='volumen')[0]  # x/x/V  volumen
+            except: Aparatos_C.loc['Alberca', 'Volumen'] = 0
+            try   : Aparatos_C.loc['Alberca', 'TipoUso'] = InfoDeco.filter(regex='')[0]
+            except: Aparatos_C.loc['Alberca', 'TipoUso'] = ""
+            try   : Aparatos_C.loc['Alberca', 'Solar'  ] = InfoDeco.filter(regex='solar')[0]
+            except: Aparatos_C.loc['Alberca', 'Solar'  ] = ""
+            if "alberca" in Aparatos_C.at['Alberca', 'Nombre']:
+                Aparatos_C.loc['Alberca', 'Clave'] = 'BA' + "," + crearClavesBA(Aparatos_C.loc["Alberca"])
+            else                                              :
+                Aparatos_C.loc['Alberca', 'Clave'] = 'X'
+
             Aparatos_C.loc['Alberca', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
             Aparatos_C.loc['Alberca', 'Marca'] = InfoDeco.filter(regex='marca')[0]
-            Aparatos_C.loc['Alberca', 'Volumen'] = InfoDeco.filter(regex='volumen')[0]
             Aparatos_C.loc['Alberca', 'Notas'] = InfoDeco.filter(regex='notas')[0]
             Aparatos_C.loc['Alberca', 'Atacable'] = 'Si'
-            Aparatos_C.loc['Alberca', 'Clave'] = 'X'
             Aparatos_C.loc['Alberca', 'Existencia'] = 1
 
     return Aparatos_C

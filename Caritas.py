@@ -3,6 +3,7 @@ import numpy as np
 import pandas as pd
 import math
 from scipy.stats import norm
+from libreriaBombasAlberca import leerLibreriaBA
 def caritaLava(consumo,clave):
 
     kWh = float(consumo)
@@ -317,6 +318,33 @@ def caritaBombaR(consumo,clave):
     if  35 >= consumo:
         Ca = 1
     return Ca
+def caritaBombaA(consumo,clave):
+    lib, f = leerLibreriaBA()
+    f.loc[:, "Potencia"] = f.loc[:, "Potencia"].astype(float)
+    ClavesS = clave.split(",")
+
+    kwhc, wc, Vc = ClavesS[1].split("/")
+    kwhc = float(kwhc)
+    wc = float(wc)
+    Vc = float(Vc)
+    f.loc[:, "Diferencia"] = ((f.loc[:, "Potencia"] * 735.5) - wc).abs()  # Comparación de potencia
+    flujo = f.at[f.loc[:, "Diferencia"].idxmin(), "Flujo(m3/h)"]  # flujo aproximado de la bomba
+    if "CO" in clave:
+        n = 9
+        print("CO -> n = 8")
+    else:
+        n = 2
+        print("RE -> n = 2")
+    tq = Vc * n / flujo  # horas al día para recircular el agua n veces, acorde al tipo de uso
+    tw = kwhc * 1000 / wc / 60  # número de horas al día que funciona la bomba (ver Kobo->Caritas)
+    if tw <= tq:
+        Ca = 1
+    elif tw > tq and tw <= tq*1.2:
+        Ca = 2
+    elif tw > tq and tw > tq*1.2:
+        Ca = 3
+
+    return Ca
 
 
 def caritaDispensador(consumo,clave):
@@ -366,6 +394,8 @@ def definircarita(Equipo):
                 Carita =caritaBombaG(consumo,clave)
             elif equipoid == 'BG':
                 Carita =caritaBombaG(consumo,clave)
+            elif equipoid == "BA":
+                Carita = caritaBombaA(consumo,clave)
             elif equipoid == 'PL':
                 Carita =caritaPlancha(consumo,clave)
             elif equipoid == 'MC':

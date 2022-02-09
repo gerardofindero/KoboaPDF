@@ -19,6 +19,7 @@ def leerLibreria():
     link = link.set_index("variable")
     return lib, link
 #def recoPresu(w, kwh, tinaco, pastilla, pb, pa, ver, val, jar, fug1, fug1l, fug2, fug2l, pru):
+
 def crearClavesBP(infoEq):
     """
     Parameters
