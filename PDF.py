@@ -27,6 +27,7 @@ from libreriaReguladores import sepRegAta
 from Caritas import definircarita
 from libreriaClusterTV import analizarCTV
 from LibClusterTV import analizarCTV
+from libreriaCalentadorPortatil import recoCP
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac
 from leerVoltaje import leer_volts
 from libreriaTubosFluorescente import recoTuboFluorescente
@@ -728,6 +729,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
         Consejos, PotAhorro = recoPresu(Claves,consumo,Uso,potencia)
     if ClavesDiag[0] == 'AA':
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
+    if ClavesS[0] == "CP":
+        Consejos = recoCP(consumo)
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
