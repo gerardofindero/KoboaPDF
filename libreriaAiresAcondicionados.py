@@ -174,10 +174,11 @@ def armarTxt(Claves,kwh,DAC, hrsUso):
 
         # BTU
         """
+        v esta en m/s
         calEspAire = 1.012                                          # J/gk
         denAire    = 1.20                                           # kg/m**3
-        flujo      = velocidad*alto*largo*(1/10000)*3600*1.20*(1000) # g/h
-        deltaT     = abs(habTemp-evaTemp)                  # Delta en °C / °K
+        flujo      = velocidad*alto*largo*(1/10000)*3600*1.20*(1000)# g/h
+        deltaT     = abs(habTemp-evaTemp)                           # Delta en °C / °K
         jules_g    = calEspAire*deltaT                              # jules/gramo
         julesT     = flujo*jules_g                                  # jules/hora
         btu        = julesT/1055.06                                 # btu/h

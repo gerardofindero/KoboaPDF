@@ -135,7 +135,9 @@ if __name__ == '__main__':
 ########################
 ## Se elige la opción del programa que se quiere correr
 
-    Opcion='4'
+
+    Opcion='6'
+
 
 #######################
 
@@ -174,6 +176,11 @@ if __name__ == '__main__':
 ###########################################
     if Opcion == '6':
 
-        import libreriaAiresAcondicionados as libAA
-        print(libAA.armarTxt())
+        import libreriaBombasAlberca as lba
+        Claves   = "BA,720/800/60,RE,SS"
+        potencia = 800
+        hrsUso   = 15*7
+        kwh      = 50
+        trash = lba.recoBA(Claves,kwh,hrsUso,potencia)
+        print(trash)
 

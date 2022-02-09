@@ -725,9 +725,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     if ClavesS[0] == 'HL':
         Consejos, PotAhorro = recoMaqHie(consumo)
     if ClavesS[0] == 'BP':
-        Consejos, PotAhorro = recoPresu(consumo, potencia, Claves,Uso)
+        Consejos, PotAhorro = recoPresu(Claves,consumo,Uso,potencia)
     if ClavesDiag[0] == 'AA':
-        print('AIRESSSSSSSSSSSSSSSSSSSSSSS')
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
