@@ -111,6 +111,7 @@ def textodeconsejos(equipo,equipo1,Consejos,conta):
 
 def textodeequiposA(equipo,nota):
     texto=nota
+    equipo=unidecode(equipo)
     if 'laptop' in equipo.lower():
         texto = texto+' ' + 'Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
@@ -125,15 +126,24 @@ def textodeequiposA(equipo,nota):
         texto = texto+' ' + 'Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
-    elif 'calentador' in equipo.lower():
-        texto = texto+' ' + 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
-                            'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
-                            ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
-                            'por más tiempo. <br /> '
+    # elif 'calentador' in equipo.lower():
+    #     texto = texto+' ' + 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
+    #                         'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
+    #                         ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
+    #                         'por más tiempo. <br /> '
 
     elif 'horno' in equipo.lower():
-        texto = texto+' ' + 'Este equipo es de alto consumo por lo que para poder evitar un gasto elevado ' \
+        texto = texto+' ' + 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
+
+    elif 'estufa' in equipo.lower():
+        texto = texto+' ' + 'Tu estufa es de alto consumo por lo que para poder evitar un gasto elevado ' \
+                        'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
+
+    elif 'thermomix' in equipo.lower() or 'termomix' in equipo.lower():
+        texto = texto+' ' + 'Tu equipo Thermomix es de alto consumo por lo que para poder evitar un gasto elevado ' \
+                            'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
+
 
     elif 'lavajilla' in equipo.lower():
         texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
@@ -144,14 +154,15 @@ def textodeequiposA(equipo,nota):
 
 def textodeequiposV(equipo,nota):
     texto=nota
+    equipo=unidecode(equipo)
     if 'laptop' in equipo.lower():
         texto = texto+' ' + 'Tienes un buen consumo usando tu laptop. Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
-    if 'computador' in equipo.lower():
+    elif 'computador' in equipo.lower():
         texto = texto+' ' + 'Tienes un buen consumo usando tu computadora. Recuerda apagar completamente tus equipos de computo ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
 
-    if 'bomba' \
+    elif 'bomba' \
        '' in equipo.lower():
         texto = texto+' ' + 'Revisamos el funcionamiento de tu bomba, No encontramos problemas, tiene un buen funcionamiento y un ' \
                             'consumo de energía eficiente. Recuerda darle mantenimiento de manera regular <br /> '
@@ -168,27 +179,40 @@ def textodeequiposV(equipo,nota):
         texto = texto+' ' + 'El consumo por el uso de tu secadora de cabello es bueno. Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
-    elif 'calentador' in equipo.lower():
-        texto = texto+' ' + 'Tienes un buen uso de tu calentador. Este equipo tiene un consumo elevado por su función' \
-                            ' de calentar el área, Te recomendamos' \
-                            ' cerrar puertas y ventanas cuando lo uses para evitar que el caloe y se tenga que usar ' \
-                            'por más tiempo. <br /> '
+    # elif 'calentador' in equipo.lower():
+    #     texto = texto+' ' + 'Tienes un buen uso de tu calentador. Este equipo tiene un consumo elevado por su función' \
+    #                         ' de calentar el área, Te recomendamos' \
+    #                         ' cerrar puertas y ventanas cuando lo uses para evitar que el caloe y se tenga que usar ' \
+    #                         'por más tiempo. <br /> '
 
     elif 'horno' in equipo.lower():
         texto = texto+' ' + 'Tienes buenos hábitos con tu horno. Este equipo es de alto consumo por lo que para poder' \
                             ' evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
 
+    elif 'estufa' in equipo.lower():
+        texto = texto+' ' + 'El consumo de tu estufa es bueno. Recuerda que es un equipo potente úsalo con moderación.' \
+                            '; apaga el equipo después de su uso.  <br />'
+
+    elif 'thermomix' in equipo.lower() or 'termomix' in equipo.lower():
+        texto = texto+' ' + 'Tu consumo es bueno. Recuerda que tu equipo es de alto consumo usalo con moderación' \
+                            '; apaga el equipo después de su uso.  <br />'
+
+
+
     elif 'belleza' in equipo.lower():
         texto = texto+' ' + 'Algunos de estos equipos de belleza son de alto consumo y se deben utilizar de forma ' \
                             'consciente. En tu caso el uso es muy eficiente, continúa con los buenos hábitos de uso' \
-                            ' y no olvides desconectarlos cuando no se estén utilizando..  <br />'
+                            ' y no olvides desconectarlos cuando no se estén utilizando.  <br />'
 
-    # elif 'sensor' in equipo.lower():
-    #     texto = texto+' ' +  'Sigue usando tu sensor de movimiento para seguir ahorrando dinero. <br />'
+    elif 'cargador' in equipo.lower() or 'cargadores' in equipo.lower():
+        texto = texto+' ' + 'Los cargadores de dispositivos electrónicos no representan un impacto fuerte en tu recibo. ' \
+                            'No olvides desconectarlos una vez que tu dispositivo haya alcanzado la carga completa para ' \
+                            'incrementar aún más tu ahorro.  <br />'
 
     else:
         texto=nota
+    print(texto)
     return texto
 
 def noatac(equipo,todo):
