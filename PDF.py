@@ -614,7 +614,6 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         parrafos.append(Paragraph(cost, Estilos.cuadros_bajo))
         frame = Frame(210, altura, 78, 50)
         frame.addFromList(parrafos, canvas)
-
         parrafoss=[]
         largoTx=sys.getsizeof(tex)
         if largoTx<150:
@@ -808,7 +807,8 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         # Automatizacion ######################
 
         Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_,potencia)
-
+        Consejos = textodeequiposA(nombre,Notas)
+        Consejos = Consejos.replace('X','')
         if not Notas=='X':
             notas=Notas
         if len(notas)<700:
@@ -871,7 +871,6 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         potencia = aparato[6]
         dinero = round(aparato[12])
         nota= aparato[13]
-        nota = textodeequiposA(nombre,nota)
         Claves= aparato[16]
         Uso = aparato[7]
         Potencia = aparato[6]
@@ -935,6 +934,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if not pd.isna(Claves):
 
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,potencia)
+        nota = textodeequiposA(nombre,nota)
 
 
     # Automatizacion  ######################
@@ -988,7 +988,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         consumo = round(aparato[10])
         dinero = round(aparato[12])
         nota = aparato[13]
-        nota = textodeequiposV(nombre,nota)
+
         Claves =aparato[16]
         Uso=aparato[7]
         Potencia = aparato[6]
@@ -1041,7 +1041,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if not pd.isna(Claves):
 
             nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,potencia)
-
+            nota = textodeequiposV(nombre,nota)
         # Automatizacion  ######################
         parrafos = []
 

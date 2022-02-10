@@ -3,7 +3,6 @@ import numpy as np
 
 #def recoTuboFluorescente(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr):
 def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
-
     # :param tipo: tipo de tubo (t2, t5, t12, etc) - str
     tipo=''
     # :param entr: entrada del tubo (g5, etc) - str
@@ -40,7 +39,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
     # """
 
     dscr=texto2
-    dispo=['aislado', 'serie', 'parealelo']
+    dispo=['aislado', 'serie', 'paralelo']
     funcion=['principal','indirecta','nocturna','espejos','estudio','arte','mesas','bodegas']
     temperatura=['calida','fria']
     tubo=False
@@ -61,6 +60,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
                 if j in dispo:
                     disp=j
 
+
                 if 'PL_' in j:
                     largoT=j.replace('PL_','')
                     port=j
@@ -70,6 +70,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
 
                 if j in temperatura:
                     temp=j
+                    print(temp)
 
 
 
@@ -100,8 +101,12 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
 
     if tubo==True:
         lf=libreriaTubosFluorescentes()
+        print('Entra a Libreria de tubos fluorescentes')
+        print("disp:" ,disp)
         lf.setData(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
+        print("lf.detr: ",lf.detr)
         reco = lf.buildText()
+        print(reco)
 
     else:
         reco=Completo
@@ -120,7 +125,7 @@ class libreriaTubosFluorescentes:
         self.lmXwt12   = 80 * 0.78
         try:
             self.libTxt = pd.read_excel(
-                f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
+                f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias_.xlsx",
                 sheet_name='Textos')
             self.dbTubos=pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
@@ -133,7 +138,7 @@ class libreriaTubosFluorescentes:
                 sheet_name='Panel LED')
         except:
             self.libTxt = pd.read_excel(
-                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias_.xlsx",
                 sheet_name='Textos')
             self.dbTubos=pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
@@ -202,6 +207,7 @@ class libreriaTubosFluorescentes:
             return texto
 
     def setData(self,tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu,DAC,wt,kwh,dscr):
+            #print("setdat detr: ", detr)
             self.tipo       = tipo
             self.entr       = entr
             self.dist       = disp
@@ -212,6 +218,7 @@ class libreriaTubosFluorescentes:
             self.difu       = difu
             self.temp       = temp
             self.lntb       = lntb
+            self.Lntb       = float(lntb.replace("largo_",""))
             self.caji       = caji
             self.caln       = caln
             self.plta       = plta
@@ -228,13 +235,15 @@ class libreriaTubosFluorescentes:
 
 
     def RTL(self):
+        print("ENTRE A REEMPALZO DE TIRA LED")
         # LUMENES POR METRO CON BASE EN LONGITUD DEL CAJILLO O LONGITUD DE LOS TUBOS
         if self.caji:
             lmXm = self.lumT/float(self.caln)
             lng  = self.caln
         else:
-            lmXm = self.lumT/ (self.ntub*self.tubL)
-            lng  = self.tubL*self.ntub
+            #print(self.lntb, self.tubL)
+            lmXm = float(self.lumT)/ (float(self.ntub)*float(self.Lntb))
+            lng  = self.Lntb*self.ntub
         # FILTRO DE LUMENES POR METRO
         #selc=((self.dbTiras['Lm/m']/100)>(lmXm*0.9))&((self.dbTiras['Lm/m']/100)<(lmXm*1.35))
         selc = ((self.dbTiras['Lm/m'] / 100) > (lmXm * 0.5)) & ((self.dbTiras['Lm/m'] / 100) < (lmXm * 2.0))
@@ -294,6 +303,7 @@ class libreriaTubosFluorescentes:
             print('No hay recomendacion')
 
     def RTbL(self):
+        print("ETRE A REEMPLAZO DE TIRA TUBO LED")
         self.rec=self.dbTubos.loc[self.filtro,:].reset_index(drop=True).copy()
         kwhAhorroBimestral=(self.w_t - (self.rec.at[0, 'Potencia Tubo LED [W]'] * self.ntub))*24*60*(self.hrsUso/168)/1000
         ahorroBimestral = kwhAhorroBimestral*self.DAC
@@ -307,7 +317,9 @@ class libreriaTubosFluorescentes:
                                                 'roi':roiRTbL,
                                                 'accion':'compra'},
                                                 ignore_index=True)
+        print(self.sustitutos)
     def RPL(self):
+        print("ENTRE A REEMPLAZO DE PLACA LED")
         lmXp = self.lumT / self.plnu
         wXp  = self.w_t  / self.plnu
         plar = self.plta.max()
@@ -356,6 +368,7 @@ class libreriaTubosFluorescentes:
                       (self.dbTubos.Entrada == self.entr) & \
                       (self.dbTubos.Longitud == self.lntb) & \
                       (self.dbTubos.Color == self.temp)
+
         #self.lumT = (self.dbTubos.loc[self.filtro, 'Lum/W típicos']*self.w_t).iat[0]
         if   self.tipo == 't12':
             self.lumT = self.w_t * self.lmXwt12
@@ -363,59 +376,72 @@ class libreriaTubosFluorescentes:
             self.lumT = self.w_t * self.lmXwt8
         elif (self.tipo == 't5') or (self.tipo=='t2'):
             self.lumT = self.w_t * self.lmXwt5
-        try:
+        #try:
+        if len(self.dbTubos.loc[self.filtro, 'Longitud'])<1:
+            print("No hay un tubo led en la base de datos equivalente")
+        else:
             self.tubL = float(self.dbTubos.loc[self.filtro, 'Longitud'].iat[0].replace('largo_',''))
-
-            # if 'RTbL' in tipRem:
             self.RTbL()
-            if 'RTL'  in tipRem:
-               self.RTL()
-            if 'RPL'  in tipRem:
-               self.RPL()
-            reco=self.sustitutos.sort_values(by=['roi']).reset_index(drop=True).copy().iloc[:2]
-            txt=''
-            if len(reco)>0 :
-                if (reco['roi']<=3).any():
-                    reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
-                    txt = self.libTxt.loc['LUM18','Texto']
-                elif (self.sustitutos['roi']<3).any() and self.detr:
-                    txt = self.libTxt.loc['LUM19', 'Texto']
-                elif (self.sustitutos['roi']<3).any() and (not self.detr):
-                    txt = self.libTxt.loc['LUM20', 'Texto']
+        # if 'RTbL' in tipRem:
 
-                if len(reco)==1:
-                    recomendacion='Te dejamos esta opción de reemplazo:'
-                    recomendacion = recomendacion + self.ligarTextolink(
-                        reco.at[0,'tipo'],reco.at[0,'link']) + ' c/u $' + str(reco.at[0,'costo'])
-                    txt = txt.replace('[recomendacion]',recomendacion)
-                else:
-                    recomendacion = 'Te dejamos estas opciones de reemplazo:'
-                    recomendacion = recomendacion + self.ligarTextolink(
-                        reco.at[0, 'tipo'] + ' opción 1' ,reco.at[0, 'link']) + ' c/u $' + str(reco.at[0, 'costo'])
-                    recomendacion = recomendacion + self.ligarTextolink(
-                        reco.at[1, 'tipo'] + ' opción 2' ,reco.at[1, 'link']) + ' c/u $' + str(reco.at[1, 'costo'])
-                    txt = txt.replace('[recomendacion]',recomendacion)
+        if 'RTL'  in tipRem:
+           self.RTL()
+        if 'RPL'  in tipRem:
+           self.RPL()
+        reco=self.sustitutos.sort_values(by=['roi']).reset_index(drop=True).copy().iloc[:2]
+        print(reco.roi<3)
+        txt=''
+        if len(reco)>0 :
+            print("reco")
+            if (reco['roi']<=3).any():
+                reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
+                txt = self.libTxt.loc['LUM18','Texto']
+                print("txt: reco roi<3: ", txt)
+            elif (self.sustitutos['roi']<3).any() and self.detr:
+                txt = self.libTxt.loc['LUM19', 'Texto']
+            elif (self.sustitutos['roi']<3).any() and (not self.detr):
+                txt = self.libTxt.loc['LUM20', 'Texto']
 
-                return txt
+            if len(reco)==1:
+                recomendacion='Te dejamos esta opción de reemplazo:'
+                recomendacion = recomendacion + self.ligarTextolink(
+                    reco.at[0,'tipo'],reco.at[0,'link']) + ' c/u $' + str(reco.at[0,'costo'])
+                txt = txt.replace('[recomendacion]',recomendacion)
             else:
-                return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
-        except:
+                recomendacion = 'Te dejamos estas opciones de reemplazo:'
+                recomendacion = recomendacion + self.ligarTextolink(
+                    reco.at[0, 'tipo'] + ' opción 1' ,reco.at[0, 'link']) + ' c/u $' + str(reco.at[0, 'costo'])
+                recomendacion = recomendacion + self.ligarTextolink(
+                    reco.at[1, 'tipo'] + ' opción 2' ,reco.at[1, 'link']) + ' c/u $' + str(reco.at[1, 'costo'])
+                txt = txt.replace('[recomendacion]',recomendacion)
+
+            return txt
+        else:
             return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
+        #except:
+        #    print("Trone y entre al except")
+        #    return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
     def buildText(self):
+        #print("Entre a build text")
         txt=''
         if len(self.diasUso)!=0:
             # LUMN15
             txt = txt + self.libTxt.loc['LUM36','Texto']
+        #print("self.diasUso: ",self.diasUso ,"txt: ", txt)
         # else:
         #     # LUM16
         #     txt = txt + self.libTxt.loc['LUM16','Texto'].replace('[horasUso]',str(int(self.hrsUso)))
         if self.detr:
             # LUM17
             txt = txt +self.libTxt.loc['LUM17','Texto']
+        #print("detr: ",self.detr,"txt: ", txt)
+        #print("caji: ",self.caji)
         if self.caji:
             # cajillo  True
             txt = txt + self.recRem(['RTL'])
+
         else:
+            #print("func: ", self.func)
             # Funcion
             if self.func == 'arte':
                 txt = txt + 'FUNCIÓN PRINCIMAL ES ARTE\n SOLICITO APOYO DE UN HUMANO'
@@ -423,8 +449,11 @@ class libreriaTubosFluorescentes:
 
                 txt = txt + self.recRem(['RTL','RTbL'])
             else:
+                #print("funcion else")
                 # Dispoisicion
+                print("distribución: ", self.dist)
                 if   self.dist =='serie':
+                    print("dist: ", self.dist)
                     txt = txt + self.recRem(['RTL', 'RTbL'])
                 elif self.dist =='paralelo':
                     txt = txt + self.recRem(['RTbL', 'RPL'])
