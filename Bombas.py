@@ -24,7 +24,11 @@ def bombas (Excel,Nocircuito):
     if Bomba=='presurizadora_hidroneumatico':
         InfoBomba= Equipos.filter(regex='hidro')
         #print("InfoBomba en bombas.py: ",InfoBomba)
-        Aparatos_C.loc['Bomba de Presión', 'Zona'] = InfoBomba.filter(regex='zona_c_i')[0]
+        if InfoBomba.filter(regex='zona_c_i')[0]=='otro':
+            Aparatos_C.loc['Bomba de Presión', 'Zona'] = InfoBomba.filter(regex='zona_otro_c_i')[0]
+        else:
+            Aparatos_C.loc['Bomba de Presión', 'Zona'] = InfoBomba.filter(regex='zona_c_i')[0]
+
         if InfoBomba.filter(regex='espendiente_c_i')[0]=='si':
             Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoBomba.filter(regex='codigofindero_c_i')[0]
             if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':

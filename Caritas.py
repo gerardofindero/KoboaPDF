@@ -162,9 +162,9 @@ def caritaMiniB(consumo,Claves):
             Ca = 3
         elif percentilNs < 0.9:
             Ca = 2
-    elif 0.3 <= percentil < 0.9:
+    elif 0.4 <= percentil < 0.9:
         Ca = 2
-    elif percentil < 0.3:
+    elif percentil < 0.4:
         Ca = 1
 
     return Ca
@@ -277,7 +277,7 @@ def caritaPlancha(consumo,clave):
         Ca = 2
     if 19 > consumo:
         Ca = 1
-    print(Ca)
+    # print(Ca)
     return Ca
 
 
@@ -289,7 +289,7 @@ def caritaAires(consumo,clave):
         Ca = 2
     elif consumo >= 120:
         Ca = 3
-    print("Consumo: " ,consumo, "Carita",Ca)
+    # print("Consumo: " ,consumo, "Carita",Ca)
     return Ca
 
 def caritaBombaP(consumo,clave):
@@ -331,10 +331,10 @@ def caritaBombaA(consumo,clave):
     flujo = f.at[f.loc[:, "Diferencia"].idxmin(), "Flujo(m3/h)"]  # flujo aproximado de la bomba
     if "CO" in clave:
         n = 9
-        print("CO -> n = 8")
+
     else:
         n = 2
-        print("RE -> n = 2")
+
     tq = Vc * n / flujo  # horas al día para recircular el agua n veces, acorde al tipo de uso
     tw = kwhc * 1000 / wc / 60  # número de horas al día que funciona la bomba (ver Kobo->Caritas)
     if tw <= tq:
