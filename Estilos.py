@@ -306,6 +306,15 @@ azul_2_chico2 = ParagraphStyle(name='Azul 2 chico',
                                   leading=7,
                                   textColor=azul_1
                                   )
+
+azul_2_chico3 = ParagraphStyle(name='Azul 2 chico',
+                               fontName='montserrat-B',
+                               fontSize=10,
+                               leading=10,
+                               textColor=azul_1
+                               )
+
+
 azul_2_grande = ParagraphStyle(name='Azul 2 grande',
                                   fontName='montserrat',
                                   fontSize=23,

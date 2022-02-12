@@ -230,9 +230,11 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     x=0
     y=80
     w, h = Image.open(f"Imagenes/Figuras/Psolar.png").size
-    canvas.drawImage(f"Imagenes/Figuras/Psolar.png", x + 55, y + 5, w * factor, h * factor)
+    canvas.drawImage(f"Imagenes/Figuras/Psolar.png", x + 55, y + -45, w * factor, h * factor)
     w, h = Image.open(f"Imagenes/Figuras/PsolarA.png").size
     canvas.drawImage(f"Imagenes/Figuras/PsolarA.png", x + 10, y + 450, w * factor, h * factor)
+    w, h = Image.open(f"Imagenes/Figuras/solar_gris.png").size
+    canvas.drawImage(f"Imagenes/Figuras/solar_gris.png", x + 80, y + 370, w * 0.9, h * factor)
 
     parrafo_frame("<b>${:,}</b>".format(round((cobrada-totalBimestre)*tarifa)), Estilos.azul_1_grande, x + 430, y + 380, .15, .15, canvas)
     parrafo_frame("<b>{:,}kWh</b>".format(round(cobrada-totalBimestre)), Estilos.azul_1_grande, x + 430, y + 415, .15, .15, canvas)
@@ -240,15 +242,23 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     parrafo_frame("<b>{:,}kWh</b>".format(round(cobrada)), Estilos.azul_1_grande, x + 290, y + 415, .15, .15, canvas)
     parrafo_frame("<b>${:,}</b>".format(round(costo)), Estilos.azul_1_grande, x + 290, y + 380, .15, .15, canvas)
 
-    parrafo_frame("<b>{:,}kWh</b>".format(round(totalSemana)), Estilos.azul_1_grande1, 410, 335, .2, .15, canvas)
-    parrafo_frame("<b>{:,}kWh</b>".format(round(totalBimestre)), Estilos.azul_1_grande1, 410, 285, .2, .15, canvas)
+    parrafo_frame("<b>{:,}kWh</b>".format(round(totalSemana)), Estilos.azul_1_grande1, 410, 285, .2, .15, canvas)
+    parrafo_frame("<b>{:,}kWh</b>".format(round(totalBimestre)), Estilos.azul_1_grande1, 410, 235, .2, .15, canvas)
     parrafos = []
+
     notasA = 'Tus paneles Solares están produciendo lo suficiente pero creemos que podrían tener una mayor producción, ' \
              'algún factor no deja sacarles el máximo provecho'
     notasB = 'Tus paneles Solares tienen un buen desempeño, producen la energía esperada tomando en cuenta la temporada del año'
-    notasC = 'Tus paneles solares se encuentran muy por debajo de lo esperado, algún factor no deja que funcionen correctamente'
+    notasC = 'La producción de energía de tus paneles solares se encuentra debajo de lo esperado para esta época del año'
+    notasD = 'Tus paneles solares se encuentran muy por debajo de lo esperado, algún factor no deja que funcionen correctamente'
 
-    parrafos.append(Paragraph(notasB, Estilos.azul_1_grande2))
+    NoSolar = "-Tu sistema voltaico cuenta con [No] módulos solares de [POT]W <br />"
+    Sombras = '-Tu sistema de paneles presenta algunos sombreados que pueden reducir su producción en algunos momentos del día. <br />'
+    inclina = "-La inclinación de tus paneles no permiten aprovechar al máximo la luz del sol. <br />"
+
+    TextoSol=NoSolar
+
+    parrafos.append(Paragraph(notasC, Estilos.azul_1_grande2))
     frame = Frame(60, 450, 190, 200)
     frame.addFromList(parrafos, canvas)
     notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F1'])+'W'
@@ -258,39 +268,27 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     notasBB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F2']) +'kWh'
     notasBC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F2']) +'kWh'
 
-    # notasAA = 'Pico máximo: ' + str(0) + 'W'
-    # notasAB = 'Producción máxima en un día: ' + str(0) + 'kWh'
-    # notasAC = 'Producción mínima en un día: ' + str(0) + 'kWh'
-    # notasBA = 'Pico máximo: ' + str(0) + 'W'
-    # notasBB = 'Producción máxima en un día: ' + str(0) + 'kWh'
-    # notasBC = 'Producción mínima en un día: ' + str(0) + 'kWh'
-
-    # if not SolarS.loc['MaxW','F3']!= np.nan:
-    #     # notasAA = 'Pico máximo: ' + str(SolarS.loc['MaxW','F3'])+'W'
-    #     # notasAB = 'Producción máxima en un día: '+str(SolarS.loc['MaxkWh','F3']) +'kWh'
-    #     # notasAC = 'Producción mínima en un día: '+str(SolarS.loc['Min','F3']) +'kWh'
-    #
-    #     notasAA = 'Pico máximo: ' + str(0)+'W'
-    #     notasAB = 'Producción máxima en un día: '+str(0) +'kWh'
-    #     notasAC = 'Producción mínima en un día: '+str(0) +'kWh'
-
     parrafos.append(Paragraph(notasAA, Estilos.azul_2_chico2))
-    frame = Frame(300, 150, 190, 200)
+    frame = Frame(300, 100, 190, 200)
     frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasAB, Estilos.azul_2_chico2))
-    frame = Frame(300, 120, 190, 200)
+    frame = Frame(300, 70, 190, 200)
     frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasAC, Estilos.azul_2_chico2))
-    frame = Frame(300, 90, 190, 200)
+    frame = Frame(300, 40, 190, 200)
     frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasBA, Estilos.azul_2_chico2))
-    frame = Frame(300, 20, 190, 200)
+    frame = Frame(300, -30, 190, 200)
     frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasBB, Estilos.azul_2_chico2))
-    frame = Frame(300, -10, 190, 200)
+    frame = Frame(300, -60, 190, 200)
     frame.addFromList(parrafos, canvas)
     parrafos.append(Paragraph(notasBC, Estilos.azul_2_chico2))
-    frame = Frame(300, -40, 190, 200)
+    frame = Frame(300, -90, 190, 200)
+    frame.addFromList(parrafos, canvas)
+
+    parrafos.append(Paragraph(TextoSol, Estilos.azul_2_chico3))
+    frame = Frame(130, 320, 400, 200)
     frame.addFromList(parrafos, canvas)
 
 
@@ -298,10 +296,10 @@ def Solar(canvas,tarifa,costo, consumo, SolarS):
     canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
     texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
     texto('PRODUCCIÓN SOLAR', 36, AMA_1, 'Montserrat-B', 60, height - 130, canvas)
-    texto('Producción de energía solar semanal', 12, Azul, 'Montserrat-B', 145, 440, canvas)
-    texto('Producción de energía solar bimestral', 12, Azul, 'Montserrat-B', 145, 390, canvas)
-    texto('Producción solar #1', 12, Azul, 'Montserrat-B', 145, 340, canvas)
-    texto('Producción solar #2', 12, Azul, 'Montserrat-B', 145, 200, canvas)
+    texto('Producción de energía solar semanal', 12, Azul, 'Montserrat-B', 145, 390, canvas)
+    texto('Producción de energía solar bimestral', 12, Azul, 'Montserrat-B', 145, 350, canvas)
+    texto('Producción solar #1', 12, Azul, 'Montserrat-B', 145, 290, canvas)
+    texto('Producción solar #2', 12, Azul, 'Montserrat-B', 145, 150, canvas)
     costado(canvas)
     canvas.showPage()
 
@@ -708,6 +706,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
         Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
     if ClavesS[0] == 'MB':
         Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
+        print(Consejos)
     if ClavesS[0] == 'TV':
         Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
@@ -807,7 +806,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         # Automatizacion ######################
 
         Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,notas,nombre_,potencia)
-        Consejos = textodeequiposA(nombre,Notas)
+        #Consejos = textodeequiposA(nombre,Notas)
         Consejos = Consejos.replace('X','')
         if not Notas=='X':
             notas=Notas
@@ -822,7 +821,7 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         frame.addFromList(parrafos, canvas)
 
 
-        if ('refrigerador' in nombre_ ) or ("inibar" in nombre_) or ("cava" in nombre_) or("ongelador" in nombre_) or ("Cava" in nombre_):
+        if ('refrigerador' in nombre_ ) or ("minibar" in nombre_) or ("cava" in nombre_) or("congelador" in nombre_) or ("Cava" in nombre_):
 
              canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png",50 , 50, 500, 400)
              texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', 200, height * 0.5, canvas)
@@ -1050,8 +1049,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         else:
             if len(nota)<180:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo))
-            elif 180\
-                    <=len(nota)<350:
+            elif 180 <=len(nota)<300:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo2))
             else:
                 parrafos.append(Paragraph(str(nota), Estilos.cuadros_bajo3))

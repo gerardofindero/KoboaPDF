@@ -35,6 +35,8 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Ambiente', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Ambiente', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
                 Aparatos_C.loc['Ambiente', 'Clave'] = 'CP'
+
+
             if indx == 4:
                 InfoDeco = Circuito.filter(regex='calefaccion_fija')
 

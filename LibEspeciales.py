@@ -212,7 +212,7 @@ def textodeequiposV(equipo,nota):
 
     else:
         texto=nota
-    print(texto)
+
     return texto
 
 def noatac(equipo,todo):

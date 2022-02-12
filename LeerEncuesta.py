@@ -111,11 +111,11 @@ def Nombre_Cliente():
 
 
     #NCliente = Cliente_Prueba()
-    #NCliente = "Marianela Hernandez"
-    #NCliente = "Jorge Mercado"
-    #NCliente = "Carmela Oteyza"
+    #NCliente = "Manuel Azuara"
+    #NCliente = "Federico Rios"
+    NCliente = "Miguel Gonzalez"
     #NCliente = "Guillermo Casas"
-    NCliente = "Rebeca Tabachnik"
+    #NCliente = "Rebeca Tabachnik"
 
     return NCliente
 ####################################################################################
@@ -164,6 +164,7 @@ if __name__ == '__main__':
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
+
         if solar:
             datosSolar = leer_solar(NCliente)
 

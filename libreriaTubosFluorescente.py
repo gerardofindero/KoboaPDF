@@ -56,7 +56,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
                 if 'largo_' in j:
                     largoT=j.replace('largo_','')
                     lntb=j
-                    print(j)
+
                 if j in dispo:
                     disp=j
 
@@ -70,7 +70,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
 
                 if j in temperatura:
                     temp=j
-                    print(temp)
+
 
 
 
@@ -101,12 +101,11 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
 
     if tubo==True:
         lf=libreriaTubosFluorescentes()
-        print('Entra a Libreria de tubos fluorescentes')
-        print("disp:" ,disp)
+
         lf.setData(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
-        print("lf.detr: ",lf.detr)
+
         reco = lf.buildText()
-        print(reco)
+
 
     else:
         reco=Completo
@@ -303,7 +302,6 @@ class libreriaTubosFluorescentes:
             print('No hay recomendacion')
 
     def RTbL(self):
-        print("ETRE A REEMPLAZO DE TIRA TUBO LED")
         self.rec=self.dbTubos.loc[self.filtro,:].reset_index(drop=True).copy()
         kwhAhorroBimestral=(self.w_t - (self.rec.at[0, 'Potencia Tubo LED [W]'] * self.ntub))*24*60*(self.hrsUso/168)/1000
         ahorroBimestral = kwhAhorroBimestral*self.DAC
@@ -317,7 +315,7 @@ class libreriaTubosFluorescentes:
                                                 'roi':roiRTbL,
                                                 'accion':'compra'},
                                                 ignore_index=True)
-        print(self.sustitutos)
+
     def RPL(self):
         print("ENTRE A REEMPLAZO DE PLACA LED")
         lmXp = self.lumT / self.plnu
@@ -389,14 +387,14 @@ class libreriaTubosFluorescentes:
         if 'RPL'  in tipRem:
            self.RPL()
         reco=self.sustitutos.sort_values(by=['roi']).reset_index(drop=True).copy().iloc[:2]
-        print(reco.roi<3)
+
         txt=''
         if len(reco)>0 :
             print("reco")
             if (reco['roi']<=3).any():
                 reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
                 txt = self.libTxt.loc['LUM18','Texto']
-                print("txt: reco roi<3: ", txt)
+
             elif (self.sustitutos['roi']<3).any() and self.detr:
                 txt = self.libTxt.loc['LUM19', 'Texto']
             elif (self.sustitutos['roi']<3).any() and (not self.detr):
@@ -451,9 +449,9 @@ class libreriaTubosFluorescentes:
             else:
                 #print("funcion else")
                 # Dispoisicion
-                print("distribución: ", self.dist)
+
                 if   self.dist =='serie':
-                    print("dist: ", self.dist)
+
                     txt = txt + self.recRem(['RTL', 'RTbL'])
                 elif self.dist =='paralelo':
                     txt = txt + self.recRem(['RTbL', 'RPL'])
