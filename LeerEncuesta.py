@@ -111,11 +111,13 @@ def Nombre_Cliente():
 
 
     #NCliente = Cliente_Prueba()
-    #NCliente = "Manuel Azuara"
+    NCliente = "Manuel Azuara"
     #NCliente = "Federico Rios"
-    NCliente = "Miguel Gonzalez"
+    #NCliente = "Miguel Gonzalez"
     #NCliente = "Guillermo Casas"
     #NCliente = "Rebeca Tabachnik"
+    #NCliente = 'Leon Cukiert'
+    #NCliente = 'Maria Elena'
 
     return NCliente
 ####################################################################################
@@ -161,14 +163,15 @@ if __name__ == '__main__':
         print("________________________________")
         print(f"Generando Reporte de {NCliente}")
         datosSolar=pd.DataFrame()
+        KoboS=pd.DataFrame()
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
 
         if solar:
-            datosSolar = leer_solar(NCliente)
+            datosSolar,KoboS = leer_solar(NCliente)
 
-        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,voltaje,ahorro,Ndatos)
+        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,KoboS,voltaje,ahorro,Ndatos)
 
 
 ###########Para hacer pruebas################

@@ -146,29 +146,26 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
                 TextoCompleto = TextoCompleto + Lib.loc['LUM14b', 'Texto']
             if aleatorio==3:
                 TextoCompleto = TextoCompleto + Lib.loc['LUM14c', 'Texto']
+
         if Tecno =='tira':
             TextoCompleto = TextoCompleto + Lib.loc['LUM18', 'Texto']
+
+        if conteoled == 1:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07f', 'Texto']
+
+        if conteoled == 2:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07d', 'Texto']
+
+        if conteoled == 3:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07c', 'Texto']
+
+        if conteoled == 4:
+            TextoCompleto = TextoCompleto + Lib.loc['LUM07b', 'Texto']
 
         if conteoled == 5:
             TextoCompleto = TextoCompleto + Lib.loc['LUM07a', 'Texto']
             conteoled = 2
-        if conteoled == 4:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07b', 'Texto']
-            conteoled = conteoled + 1
-        if conteoled == 3:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07c', 'Texto']
-            conteoled = conteoled + 1
-        if conteoled == 2:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07d', 'Texto']
-            conteoled = conteoled + 1
-        if conteoled == 1:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07f', 'Texto']
-            conteoled = conteoled + 1
-
-        # elif conteoled <= 5:
-        #     TextoCompleto = TextoCompleto + Lib.loc[14+(conteoled-1), 'Texto']
-        #     conteoled = conteoled + 1
-        #     if conteoled==5:
+        conteoled = conteoled + 1
 
         if uso>5 and Numero<10:
             TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
@@ -328,11 +325,11 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             if Tecno == 'fluorescente':
                 TT = 40
             if Tecno == 'incandescente':
-                TT = 70
+                TT = 85
             if Tecno == 'halogena':
-                TT = 60
+                TT = 80
             if Tecno == 'halogenos':
-                TT = 60
+                TT = 80
             TextoCompleto = TextoCompleto.replace('del [T]%', 'alrededor del [T]%')
             TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
     #

@@ -118,8 +118,8 @@ def airesA (Excel,Nocircuito,NomCircuito):
                                                     + Aparatos_C.loc['Evaporador', 'VentiladorTXT'] + '/' \
                                                     + Aparatos_C.loc['Condensador', 'VentiladorTXT'] + '/' \
                                                     + Aparatos_C.loc['Condensador', 'Tuberias'] + '/' \
-                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas'] + '/' \
-                                                    + Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT'] + '/' \
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteFugas']) + '/' \
+                                                    + str(Aparatos_C.loc['Aire Acondicionado', 'RefrigeranteTXT']) + '/' \
                                                     + str(Aparatos_C.loc['Condensador', 'SucTEMP'] )+ '/' \
                                                     + str(Aparatos_C.loc['Condensador', 'DesTEMP'])
 

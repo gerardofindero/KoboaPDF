@@ -159,8 +159,9 @@ def bombas (Excel,Nocircuito):
         if InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
             Aparatos_C.loc['Alberca', 'Nombre']  = InfoDeco.filter(regex='nombre')[0]
             Aparatos_C.loc['Alberca', 'CodigoS'] = CodigoStandby
-            try   : Aparatos_C.loc['Alberca', 'Nominal'] = InfoDeco.filter(regex='nominal')[0] # x/W/x potencia
+            try   :Aparatos_C.loc['Alberca', 'Nominal'] = consumoEq(InfoDeco.filter(regex='nominal')[0]) # x/W/x potencia
             except: Aparatos_C.loc['Alberca', 'Nominal'] = 0
+
             try   : Aparatos_C.loc["Alberca", 'Gasto'  ] = InfoDeco.filter(regex='gasto'  )[0] # kWh/x/x consumo
             except: Aparatos_C.loc["Alberca", 'Gasto'  ] = 0
             try   : Aparatos_C.loc['Alberca', 'Volumen'] = InfoDeco.filter(regex='volumen')[0]  # x/x/V  volumen
