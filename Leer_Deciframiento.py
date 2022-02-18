@@ -73,10 +73,13 @@ def leer_solar(Cliente):
     DSolar.loc['Min', 'F3']         = Exx.loc[5, ['L']][0]
 
     DSolar.loc['Medidor', 'Total'] = Exx.loc[14, ['L']][0]
-    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[11, ['L']][0]
+    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[12, ['L']][0]
 
     DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
-    return DSolar
+
+    Kobo = leer_solarKOBO(Cliente)
+
+    return DSolar, Kobo
 
 def leer_solarKOBO(Cliente):
     archivo_resultados = carpeta_clientes(Cliente)

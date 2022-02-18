@@ -92,8 +92,8 @@ titulos5 = ParagraphStyle(name='Titlulos',
 
 titulos6 = ParagraphStyle(name='Titlulos',
                                   fontName='Montserrat-B',
-                                  fontSize=18,
-                                  leading=00,
+                                  fontSize=15,
+                                  leading=15,
                                   textColor=azul_1
                                   )
 

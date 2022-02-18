@@ -76,6 +76,7 @@ def crearClavesBP(infoEq):
 def recoPresu(kwh,potencia,Claves,hrsUso):
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     PotAhorro.loc[0,"Accion"] =""
+    print(Claves)
     fgTXT = Claves.split("-")[-1]
 
     lib, link = leerLibreria()
