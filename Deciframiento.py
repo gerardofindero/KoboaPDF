@@ -420,11 +420,9 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
         Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
 
 
-    Fugas=FugasCorrec(Fugas)
-    Equipos = EquipoCorrec(Equipos)
-
     #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
     Luminaria.fillna(' ', inplace=True)
+    FugaL = Luminaria.copy()
     Ldicc=['mr16','mr11','espiral','bombilla','vela','globo','cacahuate','flama','par']
     Luminaria.loc[Luminaria['TipoyTam'].str.contains('tubo'), 'Tipytam'] = 'tubos'
     Luminaria.loc[Luminaria['TipoyTam'].isin(Ldicc), 'Tipytam'] = 'focos'
@@ -440,6 +438,27 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Luminarias['Texto']=Luminaria['Adicional']
     Luminarias['Notas'] = Luminaria['Notas']
     Luminarias['Tipo'] = Luminaria['Tecnologia']
+    Fug=pd.DataFrame()
+    FugaL = FugaL[FugaL.Standby != 'X']
+    FugaL = FugaL[FugaL.Standby != 0]
+    FugaL.reset_index(inplace=True)
+    Fug['Codigo'] = FugaL['CodigoS']
+    Fug['Equipo']    = 'Fuga Luces'+ FugaL['Lugar']
+    Fug['Potencia Kobo']   = FugaL['Standby']
+    Fug['Lugar']     = FugaL['Lugar']   +' '+ Luminaria['LugarEs']
+    Fug['Ubicacion'] = 'C' + FugaL['Circuito'].apply(str) + ' ' + FugaL['Tablero'].apply(str)
+    Fug['Texto']     = FugaL['Notas']
+    Fug['Notas']     = FugaL['Notas']
+    Fug['Atacable']  = 'Si'
+
+
+    Fugas   = Fugas.append(Fug,sort=False)[Fugas.columns.tolist()]
+
+    Fugas=FugasCorrec(Fugas)
+    Equipos = EquipoCorrec(Equipos)
+    Equipos['Codigo']= Equipos['Codigo'].str.upper()
+    Equipos= Equipos.dropna(subset=['Codigo'])
+    Equipos=Equipos[ Equipos['Codigo'].str.contains( 'FF' )==False]
 
     Tdos=pd.DataFrame()
     eq=Equipos[['Ubicacion','Equipo','Lugar','Texto']]

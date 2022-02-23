@@ -76,6 +76,16 @@ def textodeconsejos(equipo,equipo1,Consejos,conta,potencia):
         if 'bifasica' in equipo1:
             texto = texto+' ' + 'Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
 
+        if 'trifasico' in equipo:
+            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
+        if 'trifasico' in equipo1:
+            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
+        if 'trifasica' in equipo:
+            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
+        if 'trifasica' in equipo1:
+            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
+
+
         if 'laptop' in equipo:
             texto = texto+' ' + 'Desconecta tu laptop de la corriente mientras no la uses para ahorrar energía. <br />'
         if 'computadora' in equipo:
@@ -234,6 +244,11 @@ def textodeequiposV(equipo,nota):
         texto = texto+' ' + 'Tienes un buen consumo usando tu computadora. Recuerda apagar completamente tus equipos de computo ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
 
+    elif 'computo' in equipo.lower():
+        texto = texto+' ' + 'Tienes un buen consumo usando tu equipo de computo. Recuerda apagar completamente tus equipos. ' \
+                            'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro de energía. <br /> '
+
+
     elif 'bomba' \
        '' in equipo.lower():
         texto = texto+' ' + 'Revisamos el funcionamiento de tu bomba, No encontramos problemas, tiene un buen funcionamiento y un ' \
@@ -284,6 +299,9 @@ def textodeequiposV(equipo,nota):
                             ' energía (¡y lo hemos medido cientos de veces!). El único momento en que el cargador ' \
                             'toma energía, es cuando tiene un equipo conectado y está cargando su batería. ' \
                             'En tu caso, puedes quitarte de la preocupación de estar desconectando cargadores.'
+
+    elif 'cpap' in equipo.lower() or 'bipap' in equipo.lower():
+        texto = texto+' ' + 'Este dispositivo, a pesar de utilizarse todas las noches, tiene un consumo muy eficiente de energía.'
 
     else:
         texto=nota

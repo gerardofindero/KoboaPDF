@@ -18,6 +18,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
     CodStnby = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     Notas= Circuito.filter(regex='calentador_calentadores_notas_c_i')[0]
     indx=0
+    Circuito= Equipos.fillna('X')
     for i in Tipo:
         if i == 1:
             if indx == 3:
@@ -69,7 +70,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Boiler Electrico', 'Atacable'] = 'Si'
 
                 if InfoDeco.filter(regex='espendiente_c_i')[0] == 'si':
-                    Aparatos_C.loc['Boiler Electricon', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                    Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
                     if InfoDeco.filter(regex='codigofindero2_c_i')[0]!='X':
                         Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0] \
                                                                    + InfoDeco.filter(regex='codigofindero2_c_i')[0]
@@ -82,6 +83,10 @@ def calentadores(Excel,Nocircuito, NomCircuito):
 
             if indx == 2:
                 InfoDeco = Circuito.filter(regex='boiler_gas')
+                if InfoDeco.filter(regex='espendiente_c_i')[0] == 'si':
+                    Aparatos_C.loc['Boiler de Gas', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                else:
+                    Aparatos_C.loc['Boiler de Gas', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
                 #Aparatos_C.loc['Boiler de Gas', 'Zona'] = InfoDeco.filter(regex='zona')[0]
                 Aparatos_C.loc['Boiler de Gas', 'Standby'] =  consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Boiler de Gas', 'Marca'] = InfoDeco.filter(regex='marca')[0]
@@ -127,4 +132,5 @@ def calentadores(Excel,Nocircuito, NomCircuito):
 
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()
+    print(Aparatos)
     return Aparatos

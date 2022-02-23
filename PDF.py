@@ -550,7 +550,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     texto('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
     texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
     canvas.drawImage(f"Imagenes/icono_luces.png", 60, height - 295, width=115, height=115)
-    canvas.drawImage(f"Imagenes/cara_{carita}.png", 490, 590, width=60, height=60)
+    canvas.drawImage(f"Imagenes/cara_{carita}_c.png", 490, 590, width=60, height=60)
     parrafos = []
     notasC = 'Como parte de nuestros servicios, encontramos las luminarias “problemáticas" para enfocar ' \
              'esfuerzos en las que vale la pena reemplazar.'
@@ -1046,9 +1046,9 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         if len(nombre)<30:
             texto(nombre.upper(), 23, azul_1, 'Montserrat-B', 60,altura+190, canvas)
         elif len(nombre)>=30 and len(nombre)<40:
-            texto(nombre.upper(), 20, azul_1, 'Montserrat-B', 60, altura + 170, canvas)
+            texto(nombre.upper(), 20, azul_1, 'Montserrat-B', 60, altura + 190, canvas)
         elif len(nombre)>=40:
-            texto(nombre.upper(), 15, azul_1, 'Montserrat-B', 60, altura + 170, canvas)
+            texto(nombre.upper(), 15, azul_1, 'Montserrat-B', 60, altura + 190, canvas)
 
         if len(lugar)<30:
             texto(lugar.upper(), 18, azul_1, 'Montserrat-B', 60,altura+170, canvas)
@@ -1119,12 +1119,14 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
     canvas.showPage()
 
 def por_A_fugas(Fugas):
+    pd.set_option("display.max_rows", None, "display.max_columns", None)
     SumaT=Fugas['K'].sum()
     totalf=len(Fugas)
     Atacc=Fugas[Fugas['A'].str.contains('Si')]
     SumaA=Atacc['K'].sum()
     totalA=len(Atacc)
     porA=SumaA/SumaT
+
     return porA
 
 def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
@@ -1157,14 +1159,14 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
 def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
     """ Crea la hoja que muestra donde esta la fuga, que aparatos hay y si es atacable o no """
     fugas_['D']=fugas_['D'].str.replace('Fuga', '', regex=True)
-    fugas_['N'] = 'X'
+    #fugas_['N'] = 'X'
     LFugas=fugas_.copy()
     LFugas = LFugas.loc[LFugas['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     LFugas.sort_values(by=['L'], inplace=True, ascending=False)
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares= LFugas['E'].tolist()
     VFE,VFM,NSub,NSob,TSub,TSob = leer_volts(cliente)
-    sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
+    #sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
     #sepNobAta(fugas_,tarifa)
 
     for lista in Lugares:
@@ -1200,7 +1202,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
         for index, fugat in atac.iterrows():
 
             if ind > 4:
-                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia)
+                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia,textoC,clave)
                 equiposFuga=[]
                 canvas.showPage()
                 consumoT = round(atac['K'].sum(), 1)
@@ -1223,7 +1225,8 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             porciento = round(fugat[11] * 100, 1)
             potencia  = fugat[9]
             horaS     = fugat[7]
-            #Consejos  = Consejos+''+ fugat[13]
+            textoC  =  fugat[13]
+            clave   = fugat[16]
             parrafos  = []
             parrafos.append(Paragraph(Nfuga, Estilos.negroB))
             frame = Frame(50, altura, 250, 50)
@@ -1288,21 +1291,25 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             except:
                 equiposFuga1.append(' ')
 
-            if fugat[13]!='X':
-                if contador==0:
-                    Consejos = Consejos+' '+fugat[13]+'<br />'
+            # if fugat[13]!='X':
+            #     if contador==0:
+            #         Consejos = Consejos+' '+fugat[13]+'<br />'
 
             if 'regulador' in Nfuga or 'Regulador' in Nfuga:
                 contador=contador+1
 
-        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia)
+        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia,textoC,clave)
         canvas.showPage()
 
 
 
-def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia):
+def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia,texto,clave):
+    print(texto)
     if Atacable:
-        Consejos=textodeconsejos(equiposFuga,equiposFuga1,Consejos,contador,potencia)
+        if clave=='AMN':
+            Consejos= texto
+        else:
+            Consejos=textodeconsejos(equiposFuga,equiposFuga1,Consejos,contador,potencia)
 
     if Atacable:
         if len(Consejos) < 650:
@@ -1313,7 +1320,10 @@ def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,c
         frame.addFromList(parrafos, canvas)
 
     if not Atacable:
-        Consejos=noatac(equiposFuga,todo)
+        if clave=='AMN':
+            Consejos=texto
+        else:
+            Consejos=noatac(equiposFuga,todo)
         parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
         frame = Frame(330, 50, 200, 330,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
