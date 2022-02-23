@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import random
 from libreriaLucesSolares import recoSolares
 from libreriaSenMov import recoSensores
@@ -546,15 +547,19 @@ def Horaszona(nombre,horas):
 ######################################################################################################
 def UnirLuces(df):
     pd.set_option("display.max_rows", None, "display.max_columns", None)
-
+    df['A'] = df['A'].str.replace('tira','led')
+    df['L']=df['L'].astype(float).round(3)
     ## Juntar luces con mismo PP
     Pepes = pd.unique(df['B'])
+    zonas =  pd.unique(df['E'])
 
-    for i in Pepes:
-        dfxpepes=df[df["B"] == i]
+    for i in zonas:
+        dfxpepes=df[df["E"] == i]
+
         if len(dfxpepes)>1:
             ## Checar si tienen el mismo porcentaje
             PorC = pd.unique(dfxpepes['L'])
+
             if len(PorC)==1:
                 dfx=dfxpepes.copy()
                 ## Juntar focos de tecnologías iguales
@@ -562,10 +567,13 @@ def UnirLuces(df):
                 dfx=sumariguales1(dfx,'incandescente')
                 dfx=sumariguales1(dfx,'fluorescente')
                 dfx=sumariguales1(dfx,'led')
+                dfx=sumariguales1(dfx,'tira')
+
 
 
                 ## Asignar los porcentajes por tecnología
                 dfx = distporc(dfx)
+
 
                 ## Separar y asignar los porcentajes por tecnología
                 df=separatecno(df,dfxpepes,dfx,'halogena')
@@ -575,6 +583,7 @@ def UnirLuces(df):
 
 
     zonas=pd.unique(df['E'])
+
     for i in zonas:
         dfxzona=df[df["E"] == i]
         df,dfxzona=sumariguales(dfxzona,df,'halogena')
@@ -589,6 +598,8 @@ def UnirLuces(df):
             df.loc[j,"Y"] =sumaDzona
             df.loc[j,"Z"] =sumazona
 
+
+    # df['L']=df['L']/100
     return df
 
 
@@ -616,6 +627,7 @@ def separatecno(df,dfxpepes,dfx,tipo):
 
 
 def sumariguales1(dflocal,tipo):
+
     tipoxzona=dflocal[dflocal['A'].str.contains(tipo)]
     if len(tipoxzona) >1:
         dff=tipoxzona.A.str.split(expand=True)
@@ -634,6 +646,7 @@ def sumariguales1(dflocal,tipo):
 
 #### Sumar los focos de la misma tecnología por zona
 def sumariguales(dfxzona,df,tipo):
+
     tipoxzona=dfxzona[dfxzona['A'].str.contains(tipo)]
     if len(tipoxzona) >1:
         dff=tipoxzona.A.str.split(expand=True)

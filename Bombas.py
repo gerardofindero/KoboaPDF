@@ -170,15 +170,19 @@ def bombas (Excel,Nocircuito):
             except: Aparatos_C.loc['Alberca', 'TipoUso'] = ""
             try   : Aparatos_C.loc['Alberca', 'Solar'  ] = InfoDeco.filter(regex='solar')[0]
             except: Aparatos_C.loc['Alberca', 'Solar'  ] = ""
-            if "alberca" in Aparatos_C.at['Alberca', 'Nombre']:
-                Aparatos_C.loc['Alberca', 'Clave'] = 'BA' + "," + crearClavesBA(Aparatos_C.loc["Alberca"])
-            else                                              :
-                Aparatos_C.loc['Alberca', 'Clave'] = 'X'
+
 
             Aparatos_C.loc['Alberca', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
             Aparatos_C.loc['Alberca', 'Marca'] = InfoDeco.filter(regex='marca')[0]
             Aparatos_C.loc['Alberca', 'Notas'] = InfoDeco.filter(regex='notas')[0]
             Aparatos_C.loc['Alberca', 'Atacable'] = 'Si'
             Aparatos_C.loc['Alberca', 'Existencia'] = 1
+
+            if "alberca" in Aparatos_C.at['Alberca', 'Nombre']:
+                Aparatos_C.loc['Alberca', 'Clave'] = 'BA' + "," + crearClavesBA(Aparatos_C.loc["Alberca"])
+            else                                              :
+                Aparatos_C.loc['Alberca', 'Clave'] = 'X'
+                Aparatos_C=Aparatos_C.rename(index={'Alberca': 'Jacuzzi'})
+
 
     return Aparatos_C

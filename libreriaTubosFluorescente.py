@@ -30,7 +30,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
     # :param plta: lista con largo y ancho de placa ([largo, ancho]) - list de int o float
     plta=[0,0]
     # :param plnu: numero de placas - int o float
-    plnu=0
+    plnu=1
     # :param DAC:
     # :param wt:
     # :param kwh:
@@ -63,7 +63,8 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
 
                 if 'PL_' in j:
                     largoT=j.replace('PL_','')
-                    port=j
+
+                    port=largoT
 
                 if j in funcion:
                     func=j
@@ -234,7 +235,7 @@ class libreriaTubosFluorescentes:
 
 
     def RTL(self):
-        print("ENTRE A REEMPALZO DE TIRA LED")
+        #print("ENTRE A REEMPALZO DE TIRA LED")
         # LUMENES POR METRO CON BASE EN LONGITUD DEL CAJILLO O LONGITUD DE LOS TUBOS
         if self.caji:
             lmXm = self.lumT/float(self.caln)
@@ -302,6 +303,7 @@ class libreriaTubosFluorescentes:
             print('No hay recomendacion')
 
     def RTbL(self):
+
         self.rec=self.dbTubos.loc[self.filtro,:].reset_index(drop=True).copy()
         kwhAhorroBimestral=(self.w_t - (self.rec.at[0, 'Potencia Tubo LED [W]'] * self.ntub))*24*60*(self.hrsUso/168)/1000
         ahorroBimestral = kwhAhorroBimestral*self.DAC
@@ -317,24 +319,27 @@ class libreriaTubosFluorescentes:
                                                 ignore_index=True)
 
     def RPL(self):
-        print("ENTRE A REEMPLAZO DE PLACA LED")
+        #print("ENTRE A REEMPLAZO DE PLACA LED")
         lmXp = self.lumT / self.plnu
         wXp  = self.w_t  / self.plnu
-        plar = self.plta.max()
-        panc = self.plta.min()
+        plar = pd.Series(self.plta).max()
+        panc = pd.Series(self.plta).min()
+        #print("FILPLA: ", self.port)
         if self.port == 'sobresale':
             filPla =  self.dbPanel.loc[:,'Sobresale']=='si'
         elif self.port == 'colgante':
             filPla = self.dbPanel.loc[:,'Colgar']=='si'
         elif self.port == 'introduce':
             filPla = self.dbPanel.loc[:,'Empotrar']=='si'
+
         filPla = filPla & (self.dbPanel['Largo Panel [cm]']==plar) & (self.dbPanel['Ancho Panel [cm]']==panc)
         #filPla = filPla & (self.dbPanel['Lumenes Panel [Lm]']>(lmXp*0.9)) & (self.dbPanel['Lumenes Panel [Lm]']<(lmXp*1.35))
         filPla = filPla & (self.dbPanel['Lumenes Panel [Lm]'] > (lmXp * 0.5)) & (self.dbPanel['Lumenes Panel [Lm]'] < (lmXp * 2))
         opcPla = self.dbPanel.loc[filPla,:].reset_index().copy()
         #print(opcPla['Lumenes Panel [Lm]'],'\n',opcPla['Potencia Panel [W]'])
         opcPla['kwhAhorroBimestral'] = (wXp-opcPla['Potencia Panel [W]'])*24*60*(self.hrsUso/7/24)*self.plnu/1000
-        opcPla['ahorro'] = opcPla *self.DAC
+        #print(opcPla['ahorro'])
+        opcPla['ahorro'] = opcPla['kwhAhorroBimestral'] *self.DAC
         opcPla['roi']    = opcPla['Costo Panel LED']*self.plnu/opcPla['ahorro']/6
         opcPla=opcPla.loc[opcPla['ahorro']>=0,:].reset_index(drop=True).copy()
         if len(opcPla) < 5:
@@ -366,7 +371,7 @@ class libreriaTubosFluorescentes:
                       (self.dbTubos.Entrada == self.entr) & \
                       (self.dbTubos.Longitud == self.lntb) & \
                       (self.dbTubos.Color == self.temp)
-
+        #print("FILTRO recRem: ", self.tipo,self.entr,self.lntb,self.temp)
         #self.lumT = (self.dbTubos.loc[self.filtro, 'Lum/W típicos']*self.w_t).iat[0]
         if   self.tipo == 't12':
             self.lumT = self.w_t * self.lmXwt12
@@ -390,7 +395,6 @@ class libreriaTubosFluorescentes:
 
         txt=''
         if len(reco)>0 :
-            print("reco")
             if (reco['roi']<=3).any():
                 reco=reco.loc[reco['roi']<=3,:].reset_index(drop=True).copy()
                 txt = self.libTxt.loc['LUM18','Texto']

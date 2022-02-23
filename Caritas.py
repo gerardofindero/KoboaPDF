@@ -364,12 +364,13 @@ def caritaHielos(consumo,clave):
     if  20 >= consumo:
         Ca = 1
     return Ca
+
 def caritaCP(consumo,clave):
-    if kWh <= 27:
+    if consumo <= 27:
         Ca = 1
-    elif 27 < kWh <= 68:
+    elif 27 < consumo <= 68:
         Ca = 2
-    elif 68 < kWh:
+    elif 68 < consumo:
         Ca = 3
     return Ca
 

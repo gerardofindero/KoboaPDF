@@ -111,9 +111,9 @@ def Nombre_Cliente():
 
 
     #NCliente = Cliente_Prueba()
-    NCliente = "Manuel Azuara"
+    NCliente = "Guillermo Casas"
     #NCliente = "Federico Rios"
-    #NCliente = "Miguel Gonzalez"
+    #NCliente = "San Simon"
     #NCliente = "Guillermo Casas"
     #NCliente = "Rebeca Tabachnik"
     #NCliente = 'Leon Cukiert'

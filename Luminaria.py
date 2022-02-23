@@ -29,7 +29,7 @@ def iluminacion (Excel,Nocircuito):
     AccesoN=['necesita_remoci_n_de_estructuras__p__ej_','con_andamios','luces_indirectas_de_dif_cil_acceso__p__e',
              'dentro_de_alberca','otro']
     AccesoS=['a_la_mano','con_escalera_mediana__1_5_m','con_escalera_larga__1_5_m']
-
+    CodStandby  = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     listaTubos=['t2','t5','t8','t12']
     # Aparatos_C.loc[NombreVar, 'Datos' ]=''
 ####Lum1
@@ -72,6 +72,7 @@ def iluminacion (Excel,Nocircuito):
                     Aparatos_C.loc[NombreVar, 'Total']        = InfoLum.filter(regex='total')[0]
                     Aparatos_C.loc[NombreVar, 'Forma' ] = 'F'
                     Aparatos_C.loc[NombreVar, 'CodigoN'] = CodN
+                    Aparatos_C.loc[NombreVar, 'CodigoS'] =CodStandby
                     Aparatos_C.loc[NombreVar, 'Consumo'] = Consumo
 
 
@@ -90,7 +91,6 @@ def iluminacion (Excel,Nocircuito):
                         Aparatos_C.loc[NombreVar, 'DondeDetalle'] = InfoLum.filter(regex='donde_detalle')[0]
                         Aparatos_C.loc[NombreVar, 'Cajillo']      = InfoLum.filter(regex='cajillo')[0]
                         Aparatos_C.loc[NombreVar, 'Varios']       = InfoLum.filter(regex='varios')[0]
-
                         Aparatos_C.loc[NombreVar, 'TipoyTam']     = InfoLum.filter(regex='tipoytam')[0]
                         if Aparatos_C.loc[NombreVar, 'TipoyTam'] == 'otro':
                             Aparatos_C.loc[NombreVar, 'TipoyTam']     = InfoLum.filter(regex='tipoytam_otro_c_i')[0]
@@ -115,10 +115,14 @@ def iluminacion (Excel,Nocircuito):
                             Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info'] +','+InfoLum.filter(regex='adicional')[0]
                         Aparatos_C.loc[NombreVar, 'Funcion']      = InfoLum.filter(regex='funcion')[0]
                         if not InfoLum.filter(regex='funcion')[0] == 'X':
-                            Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info'] +','+InfoLum.filter(regex='funcion')[0]+'/'
-                        if 'cajillo' in InfoLum.filter(regex='donde_c_i')[0]:
-                            Aparatos_C.loc[NombreVar, 'Info']         = '/CAJ_si_'+str(InfoLum.filter(regex='cajillo')[0])+'/'
+                            Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info'] +','+InfoLum.filter(regex='funcion')[0]
+                        if not InfoLum.filter(regex='color')[0] == 'X':
+                            Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info'] +','+InfoLum.filter(regex='color')[0]
 
+                        if 'cajillo' in InfoLum.filter(regex='donde_c_i')[0]:
+                            Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+'/CAJ_si_'+str(InfoLum.filter(regex='cajillo_c_i')[0])
+                        # print(Aparatos_C.loc[NombreVar, 'Info']  )
+                        #Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+'/'
 
 
 
@@ -127,7 +131,13 @@ def iluminacion (Excel,Nocircuito):
                                 Aparatos_C.loc[NombreVar, 'Disposicion']  = Aparatos_C.loc[NombreVar, 'Funcion']  +','+InfoLum.filter(regex='disposicion')[0]
                                 Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex='disposicion')[0]
                             if not InfoLum.filter(regex='deterioro')[0] == 'X':
-                                Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+',/DET_'+InfoLum.filter(regex='deterioro')[0]+'/'
+                                Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+',DET_'+InfoLum.filter(regex='deterioro')[0]
+                            if not InfoLum.filter(regex='tubos')[0]  == 'X':
+                                Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex='tubos')[0]
+                            if not InfoLum.filter(regex='portalamp')[0]  == 'X':
+                                Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+',PL_'+InfoLum.filter(regex='portalamp')[0]+'/'
+
+
 
                         #Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
                         Aparatos_C.loc[NombreVar, 'Adecuaciones'] = InfoLum.filter(regex='adecuaciones')[0]
@@ -141,14 +151,14 @@ def iluminacion (Excel,Nocircuito):
                             AnchoPL   = 'portalamp'+str(l+1)+'_ancho'
                             Portalamp = 'portalamp'+str(l+1)+'_c_i'
                             #CantidadPL= 'portalamp'+str(l+1)+'_cantidad'
-
                             cantidad = 'cantidad' +str(l+1)
                             funcion  = 'funcion' +str(l+1)
                             adicional= 'adicional' +str(l+1)
                             tipoytam = 'tipoytam' +str(l+1)
                             entrada  = 'entrada' +str(l+1)
                             disposicion  = 'disposicion' +str(l+1)
-                            numero  = 'numero' +str(l+1)
+                            color  = 'color' +str(l+1)
+                            Ntubos = 'tubos'+str(l+1)
 
                             if not InfoLum.filter(regex=tipoytam)[0] == 'X':
                                 if InfoLum.filter(regex=tipoytam)[0] in listaTubos:
@@ -168,6 +178,10 @@ def iluminacion (Excel,Nocircuito):
                             if not InfoLum.filter(regex=funcion)[0] == 'X':
                                 Aparatos_C.loc[NombreVar, 'Funcion']      = Aparatos_C.loc[NombreVar, 'Funcion']  +','+InfoLum.filter(regex=funcion)[0]
                                 Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex=funcion)[0]
+                            if not InfoLum.filter(regex=color)[0] == 'X':
+                                Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex=color)[0]
+
+
 
                             if k== 'fluorescente':
                                 if not InfoLum.filter(regex=disposicion)[0] == 'X':
@@ -184,6 +198,8 @@ def iluminacion (Excel,Nocircuito):
                                                         +'_'+str(InfoLum.filter(regex=LargoPL)[0])+'_'+str(InfoLum.filter(regex=AnchoPL)[0])
                                         Aparatos_C.loc[NombreVar, 'Info']               = Aparatos_C.loc[NombreVar, 'Info']+','+datosPortalamp
                                 #Aparatos_C.loc[NombreVar, 'PortalampCJ']        = InfoLum.filter(regex='cajillo_c_i')[0]
+                                if not InfoLum.filter(regex=Ntubos)[0] == 'X':
+                                    Aparatos_C.loc[NombreVar, 'Info']  = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex=Ntubos)[0]
 
                             if not InfoLum.filter(regex=cantidad)[0] == 'X':
                                 Aparatos_C.loc[NombreVar, 'Cantidad' ]    = str(Aparatos_C.loc[NombreVar, 'Cantidad' ])+','+str(InfoLum.filter(regex=cantidad)[0])

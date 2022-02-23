@@ -35,7 +35,8 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
 
         else:
             Claves = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
-            dfDes.loc[indexReg, 'VA']  = Claves[1].astype(int)
+            #dfDes.loc[indexReg, 'VA']  = Claves[1].astype(int)
+            dfDes.loc[indexReg, 'VA']  = 0
             dfDes.loc[indexReg, 'wC']  = Claves[2].astype(int)
             dfDes.loc[indexReg, 'uso'] = Claves[3]
             dfDes.loc[indexReg, 'tol'] = Claves[4]
