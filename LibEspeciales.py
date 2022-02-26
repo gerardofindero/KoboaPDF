@@ -1,5 +1,6 @@
 import pandas as pd
 from unidecode import unidecode
+import random
 
 def leerLibreria():
     try:
@@ -23,120 +24,193 @@ def leerLibreria():
 
 
 
-def textodeconsejos(equipo,equipo1,Consejos,conta,potencia):
+def textodeconsejos(clave):
     #fug,equi = leerLibreria()
-    #print(fug)
-    texto   = Consejos
-    refris  = ['refrigerador','congelador','bar','hielos','regulador']
-    oficina = ['impresora','fax']
-    excepciones =['microondas','laptop','computadora','consola','decodificador']
-    conteo  = 1
-    checa   =  any(item in equipo for item in oficina)
-    timer='Timer Inteligente'
-    for i in range(len(equipo)):
-        equipo[i]=unidecode(equipo[i])
+    contador=0
+    textoCompleto=''
+    Conta=''
+    claveSR=clave[~clave.D.str.contains("Regulador")]
+    sumaP=claveSR['K'].sum()
+    conteo=random.randrange(4)
+    #print('====================> HOJA Inicio')
 
-    for i in range(len(equipo1)):
-        equipo1[i]=unidecode(equipo1[i])
-
-
-
-    linkA='https://www.amazon.com.mx/Steren-SHOME-100-Tomacorriente-Encendido-Inalámbrico/dp/B07JB9JKFB/ref=' \
-          'sr_1_2?__mk_es_MX=ÅMÅŽÕÑ&crid=NSFMP6DX5PSK&keywords=smart+plug+steren&qid=1643742539&sprefix=smart+plug+steren%2Caps%2C166&sr=8-2'
-    Address = 'Link de compra'
-    LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-
-    if conta>1:
-        texto=texto.replace('{s}','s')
-        texto=texto.replace('{es}','es')
-    else:
-        texto=texto.replace('{s}','')
-        texto=texto.replace('{es}','')
-
-    if 'sensor' in equipo:
-        texto = texto+' ' +  'Sigue usando tu sensor de movimiento para seguir ahorrando dinero. <br />'
-    elif checa is True:
-        texto = texto+' ' +  'Para equipos de oficina puedes mantener tus equipos apagados hasta ' \
-                             'el momento en que los vayas a usar para ahorrar energía. <br />'
-
-    else:
-        if 'microondas' in equipo:
-            texto = texto+' ' + 'Desconecta el microondas cuando no se use para ahorrar energía. <br /> '
-
-        if 'decodificador' in equipo:
-            texto = texto + ' ' + 'Puedes apagar los decodificadores en los horarios en que no usas tu TV.  <br /><br />'
-        if 'consola' in equipo:
-            texto = texto+' ' + 'Lo mejor es mantener completamente apagada la consola, muchas veces se queda en modo espera. <br />'
-        if 'bifasico' in equipo:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-        if 'bifasico' in equipo1:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-        if 'bifasica' in equipo:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-        if 'bifasica' in equipo1:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-
-        if 'trifasico' in equipo:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-        if 'trifasico' in equipo1:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-        if 'trifasica' in equipo:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-        if 'trifasica' in equipo1:
-            texto = texto+' ' + 'Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. <br /><br />'
-
-
-        if 'laptop' in equipo:
-            texto = texto+' ' + 'Desconecta tu laptop de la corriente mientras no la uses para ahorrar energía. <br />'
-        if 'computadora' in equipo:
-            texto = texto+' ' + 'Desconecta completamente tu equipo de cómputo mientras no lo uses para ahorrar energía. <br />'
-        if 'puerta' in equipo or 'porton' in equipo:
-            texto = texto+' ' + 'Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br />'
-
+    for index, claves in clave.iterrows():
+        equipo     = claves[3]
+        textoE      = claves[13]
+        clave      = claves[16]
+        refris  = ['refrigerador','congelador','bar','hielos','regulador']
+        oficina = ['impresora','fax']
+        checa   =  any(item in equipo for item in oficina)
+        timer='Timer Inteligente'
+        equipo=unidecode(equipo.lower())
+        linkA='https://www.amazon.com.mx/Steren-SHOME-100-Tomacorriente-Encendido-Inalámbrico/dp/B07JB9JKFB/ref=' \
+              'sr_1_2?__mk_es_MX=ÅMÅŽÕÑ&crid=NSFMP6DX5PSK&keywords=smart+plug+steren&qid=1643742539&sprefix=smart+plug+steren%2Caps%2C166&sr=8-2'
+        Address = 'Link de compra'
+        LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
+        #print(equipo,clave)
         if 'regulador' in equipo:
-            if 'bocinas' in equipo:
-                texto = texto+' ' + 'Para los equipos de alta fidelidad NO te recomendamos quitar el regulador. <br />'
-            if len(equipo)>1:
-                texto = texto+' ' + 'Un timer inteligente te puede ayudar a ahorrar energía manteniendo tus ' \
-                                    'dispositivos apagados mientras no los usas.' \
-                        + '<br /> '+  '<br /> '+LinkS + \
-                        '<br /> '+ timer+' <br /> <br />'
+            contador=contador+1
 
-        check =  any(item in equipo for item in refris)
-        doblecheck =all(item in excepciones for item in equipo)
+        if clave== 'AMN':
+            if not 'AMN/' in Conta:
+                textoCompleto = textoCompleto + '-'+textoE +'<br /> <br />'
+                Conta=Conta+'AMN/ '
+        else:
+            if 'sensor' in equipo:
+                if not 'SR' in Conta:
+                    texto =  '-Sigue usando tu sensor de movimiento para seguir ahorrando dinero. <br /><br />'
+                    Conta=Conta+'SR/ '
+                    textoCompleto = textoCompleto + texto
 
-        if check is False:
-
-            if not doblecheck:
-            # if potencia<=4:
-            #     texto = texto+' ' + 'En este caso te recomendamos desconectar tu equipo mientras no se encuentre en uso'
-            #     #texto=texto.replace('[NOM]',equipo)
-            #
-            # else:
-                if conteo==1:
-                    texto = texto+' ' + 'Un timer inteligente te puede ayudar a ahorrar energía manteniendo tus ' \
-                                        'dispositivos apagados mientras no los usas.' \
-                                        + '<br /> '+  '<br /> '+LinkS + \
-                                        '<br /> '+ timer+' <br /> <br />'
-                if conteo==2:
-                    texto = texto+' ' + 'Un timer inteligente te sería util para reducir tu consumo de energía en esta zona'\
-                                        + '<br /> '+  '<br /> '+LinkS + \
-                                        '<br /> '+ timer+' <br /> <br />'
-                if conteo==3:
-                    texto = texto+' ' + 'Te puedes apoyar de un timer inteligente para reducir el consumo de energía de tus ' \
-                                        'dispositivos.' + '<br /> '+  '<br /> '+LinkS + \
-                                        '<br /> '+ timer+' <br /> <br />'
-                if conteo==4:
-                    texto = texto+' ' + 'Te recomendamos el uso de un timer inteligente para reducir ' \
-                                        'el consumo de energía de tus' \
-                                        'dispositivos.' + '<br /> '+  '<br /> '+LinkS + \
-                                        '<br /> '+ timer+'  <br /> <br />'
-            # else:
-            #     texto=Consejos
+            if checa is True:
+                if not 'TC' in Conta:
+                    texto =  '-Para equipos de oficina puedes mantener tus equipos apagados hasta ' \
+                                         'el momento en que los vayas a usar para ahorrar energía.<br /> <br />'
+                    Conta=Conta+'TC/ '
+                    textoCompleto = textoCompleto + texto
 
 
+            if 'microondas' in equipo:
+                if not 'MC' in Conta:
+                    texto = '-Desconecta el microondas cuando no se use para ahorrar energía. <br /><br /> '
+                    Conta=Conta+'MC/ '
+                    textoCompleto = textoCompleto + texto
 
-    return texto
+            if 'decodificador' in equipo:
+                if not 'DC' in Conta:
+                    texto = '-Puedes apagar los decodificadores en los horarios en que no usas tu TV.  <br /><br />'
+                    Conta=Conta+'DC/'
+                    textoCompleto = textoCompleto + texto
+
+            if 'consola' in equipo:
+                if not 'CN' in Conta:
+                    texto = '-Lo mejor es mantener completamente apagada la consola, muchas veces se queda en modo espera. <br /><br />'
+                    Conta=Conta+'CN/'
+                    textoCompleto = textoCompleto + texto
+
+            if 'recirculacion' in equipo:
+                if not 'BRC' in Conta:
+                    texto = texto = '-Un timer inteligente te ayudará a ahorrar energía manteniendo tu bomba apagada ' \
+                                    'mientras no la usas.'  +  '<br /> '+LinkS + '<br /> '+ timer+' <br /> <br />'
+                    Conta=Conta+'BRC / '
+                    textoCompleto = textoCompleto + texto
+
+
+            elif 'bifasico' in equipo:
+                if not 'BF' in Conta:
+                    texto = '-Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. ' \
+                            'Otra alternativa es colocar pastillas inteligentes y de esa manera programar los horarios de encendido y apagado' \
+                            ' pero depende de la instalación eléctrica y de una buena señal de internet <br /><br />'
+
+                    Conta=Conta+'BF/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'bifasica' in equipo:
+                if not 'BF' in Conta:
+                    texto = '-Para reducir el gasto de tu equipo bifásico, puedes apagar las pastillas cuando no lo uses. ' \
+                            'Otra alternativa es colocar pastillas inteligentes y de esa manera programar los horarios de encendido y apagado' \
+                            ' pero depende de la instalación eléctrica y de una buena señal de internet <br /><br />'
+
+                    Conta=Conta+'BF/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'trifasico' in equipo:
+                if not 'TF' in Conta:
+                    texto = '-Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. ' \
+                            'Otra alternativa es colocar pastillas inteligentes y de esa manera programar los horarios de encendido y apagado' \
+                            ' pero depende de la instalación eléctrica y de una buena señal de internet <br /><br />'
+                    Conta=Conta+'TF/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'trifasica' in equipo:
+                if not 'TF' in Conta:
+                    texto = '-Para reducir el gasto de tu equipo trifásico, puedes apagar las pastillas cuando no lo uses. ' \
+                            'Otra alternativa es colocar pastillas inteligentes y de esa manera programar los horarios de encendido y apagado' \
+                            ' pero depende de la instalación eléctrica y de una buena señal de internet <br /><br />'
+
+                    Conta=Conta+'TF/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'aires' in equipo:
+                if not 'AR' in Conta:
+                    texto = '-Para reducir el gasto de tu aire acondicionado, puedes apagar las pastillas cuando no lo uses. <br /><br />'
+                    Conta=Conta+'AR/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'laptop' in equipo:
+                if not 'LP' in Conta:
+                    texto =  '-Desconecta tu laptop de la corriente mientras no la uses para ahorrar energía. <br /><br />'
+                    Conta=Conta+'LP/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'computadora' in equipo:
+                if not 'PC' in Conta:
+                    texto =  '-Desconecta completamente tu equipo de cómputo mientras no lo uses para ahorrar energía. <br /><br />'
+                    Conta=Conta+'PC/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'puerta' in equipo or 'porton' in equipo:
+                if not 'PT' in Conta:
+                    texto =  '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /><br />'
+                    Conta=Conta+'PT/'
+                    textoCompleto = textoCompleto + texto
+
+            elif 'bocinas' in equipo:
+                if not 'BC' in Conta:
+                    Conta=Conta+'BC/'
+                    if 'regulador' in equipo:
+                        texto = '-Para los equipos de alta fidelidad NO te recomendamos quitar el regulador. <br /><br />'
+                    if not 'NA' in Conta:
+                        texto =  '-Un timer inteligente te puede ayudar a ahorrar energía manteniendo tus ' \
+                                            'dispositivos apagados mientras no los usas.' \
+                                + '<br /> '+LinkS + \
+                                '<br /> '+ timer+' <br /> <br />'
+                        Conta=Conta+'NA/'
+                        textoCompleto = textoCompleto + texto
+            else:
+                check =  any(item in equipo for item in refris)
+                # doblecheck =all(item in excepciones for item in equipo)
+                if not check:
+                    if sumaP<=4:
+                        texto = '-Al ser un gasto pequeño, te recomendamos desconectar tu equipo mientras no se encuentre en uso. <br /> <br />'
+                        textoCompleto = textoCompleto + texto
+                    else:
+                        if not 'NA' in Conta:
+                            if conteo==1:
+                                texto = '-Un timer inteligente te puede ayudar a ahorrar energía manteniendo tus ' \
+                                                    'dispositivos apagados mientras no los usas.' \
+                                                    +  '<br /> '+LinkS + \
+                                                    '<br /> '+ timer+' <br /> <br />'
+
+                            if conteo==2:
+                                texto =  '-Un timer inteligente te sería util para reducir tu consumo de energía en esta zona'\
+                                                    + '<br /> '+LinkS + \
+                                                    '<br /> '+ timer+' <br /> <br />'
+                            if conteo==3:
+                                texto = '-Te puedes apoyar de un timer inteligente para reducir el consumo de energía de tus ' \
+                                                    'dispositivos.' + '<br /> '+LinkS + \
+                                                    '<br /> '+ timer+' <br /> <br />'
+                            if conteo==0:
+                                texto =  '-Te recomendamos el uso de un timer inteligente para reducir ' \
+                                                    'el consumo de energía de tus' \
+                                                    'dispositivos.' + '<br /> '+ LinkS + \
+                                                    '<br /> '+ timer+'  <br /> <br />'
+
+                            Conta=Conta+'NA / '
+
+                            textoCompleto = textoCompleto + texto
+
+
+    textoCompleto = textoCompleto.replace('X ','')
+
+    if contador>1:
+        textoCompleto=textoCompleto.replace('{s}','s')
+        textoCompleto=textoCompleto.replace('{es}','es')
+    else:
+        textoCompleto=textoCompleto.replace('{s}','')
+        textoCompleto=textoCompleto.replace('{es}','')
+
+    return textoCompleto
 
 def textodeequiposR(equipo,nota):
 
@@ -147,11 +221,18 @@ def textodeequiposR(equipo,nota):
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
 
 
+
     elif 'horno' in equipo.lower():
         texto = texto+' ' + 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso. ' \
                             'Puedes cambiar a un horno de gas para ahorrar en energía electrica, también puedes usar tu estufa para ' \
                             'cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
+
+    elif 'parrila' in equipo.lower():
+        texto = texto+' ' + 'Una parrilla elétrica es un equipo de alta potencia por lo que para poder evitar un gasto elevado ' \
+                            'lo más eficiente es ser consciente de sus encendidos, úsala con moderación. ' \
+                            'Puedes usar tu estufa de gas para cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
+
 
     elif 'estufa' in equipo.lower():
         texto = texto+' ' + 'Tu estufa es de alto consumo por lo que para poder evitar un gasto elevado ' \
@@ -167,6 +248,16 @@ def textodeequiposR(equipo,nota):
                             'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
                             ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
                             'por más tiempo. <br /> '
+
+    elif 'gravitacion' in equipo.lower():
+        texto = texto+' ' + 'La bomba tiene un consumo completamente fuera de lo normal en comparacion con otros de nuestros clientes. ' \
+                            'Esto se debe que se prende por periodos largos de tiempo durante el día. ' \
+                            'No encontramos porblemas con los controles ni encontramos fugas <br /> '
+
+    elif 'biodigestor' in equipo.lower():
+        texto = texto+' ' + 'Nuestra recomendación es que al ser un equipo que se mantiene funcionando todo el tiempo, se apague durante los momentos en los que no haya nadie en la casa.' \
+                            'Otra alternativa sería programarlo, con un timer en las pastillas o si es posible desde el mismo equipo, para que se mantenga apagado durante el tiempo que no se necesite o' \
+                            'periodos en donde no sea tan necesario que se limpie tan seguido '
 
 
     elif 'lavajilla' in equipo.lower():
@@ -308,27 +399,101 @@ def textodeequiposV(equipo,nota):
 
     return texto
 
-def noatac(equipo,todo):
-    equipo=str(equipo)
-    todo=str(todo)
-    if 'refrigerador' in equipo:
-        Consejos='Lamentablemente es difícil reducir el consumo de standby de un refrigerador sin reemplazarlo'
-    elif 'calentador' in equipo:
-        Consejos='Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo '
-    elif 'alexa' in todo:
-        Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
-    elif 'lutron' in todo:
-        Consejos= 'Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
-                            'Si no llegas a usarlos te recomendamos desconectarlos. <br /> '
-    elif 'modem' in todo or 'repetidor' in todo:
-        Consejos='En los equipos de comunicación no recomendamos tomar acción o desconectarlos, ' \
-                 'debido a que interfieren con tu confort'
-    elif 'puerta' in equipo or 'porton' in equipo:
-        Consejos= 'Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br />'
+def noatac(equipos):
+    ConsejosCompletos=''
+    Conta=''
 
-    elif 'puerta' in equipo or 'porton' in equipo:
-        Consejos= 'Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br />'
-    else:
-        Consejos='En los equipos de comunicación y seguridad no recomendamos tomar acción o desconectarlos, ' \
-                 'debido a que pueden afectar tanto tu confort como tu seguridad'
-    return Consejos
+
+    for index, claves in equipos.iterrows():
+        equipo     = claves[3]
+        potencia   = claves[9]
+        texto      = claves[13]
+        clave      = claves[16]
+        equipo=unidecode(equipo.lower())
+
+
+        if 'refrigerador' in equipo:
+            if not 'RF' in Conta:
+                if not 'regulador' in equipo:
+                    Consejos='-Lamentablemente es difícil reducir el consumo de standby de un refrigerador ' \
+                             'sin reemplazarlo. <br /> <br />'
+                    Conta = Conta+'RF /'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'congelador' in equipo:
+            if not 'CN' in Conta:
+                if not 'regulador' in equipo:
+                    Consejos='-Lamentablemente es difícil reducir el consumo de standby de un congelador ' \
+                             'sin reemplazarlo. <br /> <br />'
+                    Conta = Conta+'CN /'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'calentador' in equipo and not 'CL' in Conta:
+            Consejos='-Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo. <br /> <br />'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+            Conta = Conta+'CL /'
+
+        elif 'alexa' in equipo:
+            Consejos= '-Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
+                      'Si no llegas a usarlos te recomendamos desconectarlos. <br /> <br />'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'lutron' in equipo:
+            Consejos= '-Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
+                                'Si no llegas a usarlos te recomendamos desconectarlos. <br /> <br />'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'sensor' in equipo:
+            if not 'SN' in Conta:
+                Consejos= 'Te recomendamos mantener tu sensor encendido ya que esto te está ahorrando mucha más energía de la que consume.  <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+                Conta = Conta+'SN /'
+
+        elif 'camara' in equipo:
+            if not 'SG' in Conta:
+                Consejos='-En los equipos de seguridad no recomendamos tomar acción o desconectarlos, ' \
+                         'debido a que pueden afectar tanto tu confort como tu seguridad <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+                Conta = Conta+'SG /'
+
+
+        elif 'modem' in equipo or 'repetidor' in equipo:
+            if not 'MD' in Conta:
+                Consejos='-En los equipos de comunicación no recomendamos tomar acción o desconectarlos, ' \
+                     'debido a que interfieren con tu confort. <br /> <br />'
+                Conta = Conta+'MD /'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'puerta' in equipo or 'porton' in equipo:
+            Consejos= '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /> <br />'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'puerta' in equipo or 'porton' in equipo:
+            Consejos= '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /> <br />'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+
+        elif 'seguridad' in equipo and not 'SG' in Conta:
+            Consejos='-En los equipos de seguridad no recomendamos tomar acción o desconectarlos, ' \
+                     'debido a que pueden afectar tanto tu confort como tu seguridad <br /> <br />'
+            Conta = Conta+'SG /'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+
+        else:
+            if not 'NA' in Conta:
+                Consejos='-Lamentablemente por su naturaleza tu equipo no se puede desconectar. <br /> <br />'
+                Conta = Conta+'NA /'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+        if 'regulador' in equipo:
+            if not 'RG' in Conta:
+                Consejos= '-El voltaje en tu vivienda es muy variable, no te recomendamos retirar los reguladores, pero si quieres ' \
+                          'evitar su gasto individual te sugerimos colocar un regulador por fase en tu interruptor general. <br /> <br /> '
+                Conta = Conta +'RG /'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+        if clave=='AMN':
+            Consejos='-'+texto+' <br /> <br />'
+            ConsejosCompletos=ConsejosCompletos+Consejos
+
+
+    return ConsejosCompletos

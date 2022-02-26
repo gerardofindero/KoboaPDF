@@ -198,8 +198,8 @@ Lumi4 = ParagraphStyle(name='Cuadros',
                                 )
 Lumi5 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=6,
-                                leading=8,
+                                fontSize=5,
+                                leading=5,
                                 textColor=gris
                                 )
 
@@ -224,7 +224,7 @@ aparatos2 = ParagraphStyle(name='Aparatos',
 aparatos3 = ParagraphStyle(name='Aparatos',
                                 fontName='montserrat',
                                 alignment=TA_JUSTIFY,
-                                fontSize=11,
+                                fontSize=12,
                                 leading=15,
                                 textColor=gris
                                 )

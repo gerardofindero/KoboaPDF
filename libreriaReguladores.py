@@ -18,12 +18,14 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
             elif nReg > 1:
                 Texto = libRegObj.libReg.at[1, 'Texto']
             dfDes.loc[indexReg,'A'] = 'Si'
+            dfDes.loc[indexReg, 'Q'] = 'AMN'
             """
             for i in indexReg:
                 dfDes.loc[i,'N'] = dfDes.loc[i,'N']+",1,"+str(dfDes.at[i,"K"])+","+fc.selecTxt(libRegObj.libReg,"REGpa01")
             """
-            linkA='https://www.amazon.com.mx/Volteck-AD-270-Adaptador-Supresor-Picos/dp/B0124HMZR2/' \
-                  'ref=sr_1_2?__mk_es_MX=%C3%85M%C3%85%C5%BD%C3%95%C3%91&crid=R30CP3WL83BB&keywords=supresor+de+picos&qid=1644019250&s=electronics&sprefix=supresor+de+picos%2Celectronics%2C169&sr=1-2'
+            linkA='https://www.amazon.com.mx/Belkin-SurgeCube-Surge-Protector-Outlet/dp/B00006BBAB/ref=pd_sbs_1/135-' \
+                  '4016538-4850424?pd_rd_w=CSABY&pf_rd_p=cdd4cd33-b322-4c46-8aae-9c4cb6183db6&pf_rd_r=S690W0X6TVR0S0434' \
+                  'DM1&pd_rd_r=88be42cc-ec6c-48b0-9547-3b4b6659336b&pd_rd_wg=m0QhU&pd_rd_i=B00006BBAB&psc=1'
             Address = 'Link de compra'
             LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
 
@@ -35,9 +37,10 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
 
         else:
             Claves = dfDes.loc[indexReg,'Q'].str.split(',',expand=True)
-            #dfDes.loc[indexReg, 'VA']  = Claves[1].astype(int)
-            dfDes.loc[indexReg, 'VA']  = 0
-            dfDes.loc[indexReg, 'wC']  = Claves[2].astype(int)
+            print(Claves)
+            dfDes.loc[indexReg, 'VA']  = Claves[1]
+            #dfDes.loc[indexReg, 'VA']  = 0
+            dfDes.loc[indexReg, 'wC']  = Claves[2]
             dfDes.loc[indexReg, 'uso'] = Claves[3]
             dfDes.loc[indexReg, 'tol'] = Claves[4]
             dfDes.loc[indexReg, 'tol'] = dfDes.loc[indexReg, 'tol'] == 'T'
@@ -49,6 +52,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nReg > 1:
                         dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
                     dfDes.loc[indexReg, 'A'] = 'Si'
+                    dfDes.loc[indexReg, 'Q'] = 'AMN'
                     """
                     for i in indexReg:
                         dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
@@ -63,6 +67,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nReg > 1:
                         dfDes.loc[indexReg, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{', '').replace('}', '')
                     dfDes.loc[indexReg, 'A'] = 'Si'
+                    dfDes.loc[indexReg, 'Q'] = 'AMN'
                     """
                     for i in indexReg:
                         dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
@@ -86,6 +91,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nElec > 1:
                         dfDes.loc[indexElec, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{s} regulador{es}', nomsRegs)
                     dfDes.loc[indexElec, 'A'] = 'Si'
+                    dfDes.loc[indexElec, 'Q'] = 'AMN'
                     """
                     for i in indexElec:
                         dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
@@ -121,6 +127,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                         #             dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
 
                         dfDes.loc[i,'A'] = 'Si'
+                        dfDes.loc[i,'Q'] = 'AMN'
 
 
                 if vEstMec:
@@ -130,6 +137,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                     elif nMeca > 1:
                         dfDes.loc[indexMeca, 'N'] = libRegObj.libReg.at[1, 'Texto'].replace('{s} regulador{es}', nomsRegs)
                     dfDes.loc[indexElec, 'A'] = 'Si'
+                    dfDes.loc[indexElec, 'Q'] = 'AMN'
                     """
                     for i in indexMeca:
                         dfDes.loc[i, 'N'] = dfDes.loc[i, 'N'] + ",1," + str(dfDes.at[i, "K"]) + "," + fc.selecTxt(libRegObj.libReg, "REGpa01")
@@ -161,6 +169,7 @@ def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
                         #         potAtxt = fc.selecTxt(libRegObj.libReg, "REGpa03").replace("[recomendacion]",fc.ligarTextolink("Regulador",libRegObj.sustitutos.at[0, "link"]))
                         #         dfDes.loc[i, 'N'] = libRegObj.txt + "," + str(porAhorro) + "," + str(libRegObj.sustitutos.at[0, 'kwhAhorroBimestral']) + "," + potAtxt
                         dfDes.loc[i, 'A'] = 'Si'
+                        dfDes.loc[i, 'Q'] = 'AMN'
 
                 return dfDes.loc[:, 'A':'Q'].copy()
 
@@ -273,7 +282,7 @@ class libreriaReguladores:
         elif VA is None:
             print('VA es nula')
         elif not isinstance(VA,(int,float)):
-            print('VA no es nuemrica')
+            print('VA no es numerica')
         else:
             val_VA=True
 

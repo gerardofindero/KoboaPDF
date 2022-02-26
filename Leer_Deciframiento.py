@@ -98,5 +98,5 @@ def leer_solarKOBO(Cliente):
     DSolar.loc['Hotspot', 'Paneles']      = Exx.loc[7, ['B']][0]
     DSolar.loc['Sombreado', 'Paneles']    = Exx.loc[4, ['B']][0]
 
-    print (DSolar)
+
     return (DSolar)
