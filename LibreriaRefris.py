@@ -325,10 +325,16 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             PotAhorro['%Ahorro'] = Ns*0.07
             PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
 
+    if equipoR == "RF":
+        Texto = Texto.replace("[TEMPR]",str(int(TRef)))
+        Texto = Texto.replace("[TEMPC]",str(int(TCong)))
+
     if equipoR == "MB":
+        Texto = Texto.replace("[equipo]","minibar")
         Texto = Texto.replace("Refrigerador","Minibar").replace("refrigerador","minibar")
         PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador","Minibar").replace("refrigerador","minibar")
     if equipoR == "CN":
+        Texto = Texto.replace("[TEMPC]",str(int(TCong)))
         Texto = Texto.replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
         PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
     if equipoR == "CV":

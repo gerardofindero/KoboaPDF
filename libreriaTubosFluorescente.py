@@ -14,7 +14,7 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
     # :param func: funcion de la iluminación (principal, nocturna, espejos etc) - str
     func=''
     # :param ntub: número de tuobos fluorescente - int o float
-    ntub=0.0001
+
     # :param detr: Señales de deterioro en los tubos (True, False) - bool
     detr=False
     # :param difu: Si los tubos fluorescentes tienen difusor (True, False) - bool
@@ -102,14 +102,36 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
 
     if tubo==True:
         lf=libreriaTubosFluorescentes()
+        reco=''
+        uso=(kwh*1000)/(wt*60)
+        reco = reco + lf.libTxt.loc['LUM38', 'Texto']
+
+        if uso>5 and ntub<10:
+            reco = reco + lf.libTxt.loc['LUM23', 'Texto']
+        if ntub>10 and uso<5:
+            if kwh>12:
+                reco = reco + lf.libTxt.loc['LUM24', 'Texto']
+        if ntub>10 and uso>5:
+            reco = reco + lf.libTxt.loc['LUM25', 'Texto']
+
+
+
+
 
         lf.setData(tipo, entr, disp, port, func, ntub, detr, difu, temp, lntb, caji, caln, plta, plnu, DAC,wt,kwh,dscr)
 
-        reco = lf.buildText()
+        reco = reco+lf.buildText()
 
 
+        if '[NS]' in reco:
+            reco=reco.replace('[NS]','')
+            reco=reco+'[NS]'
+        reco=reco.replace('[horasUso]',str(int(uso)))
+        print('Watt',wt)
+        print('kWh',kwh)
     else:
         reco=Completo
+
     return reco
 
 
@@ -228,7 +250,7 @@ class libreriaTubosFluorescentes:
             self.DAC        = DAC                          # Tarifa Dac vigente
             self.kwh_t      = kwh                          # kWh de la luminaria
             self.hrsUso     = kwh * 1000 / wt*60            # horas que estuvo en uso la luminaría asumiento que unicamente son tubos fluorescentes
-            self.w_ff       = wt/ntub              # watts por tubo
+            self.w_ff       = wt/ntub                       # watts por tubo
             #self.lm_ff      = self.w_ff * self.ganLumiPro # lumenes por tubo
             #self.lm_t       = wt*self.ganLumiDes          # lumenes totales
             self.dias(dscr)                                # Detecta que dias seutilizarón degun la descripcción del deciframiento
@@ -419,13 +441,14 @@ class libreriaTubosFluorescentes:
 
             return txt
         else:
-            return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
+            return '\n[NS]'
         #except:
         #    print("Trone y entre al except")
         #    return '\n[NO SE ENCONTRO NINGUN SUSTITUTO VIABLE]'
     def buildText(self):
         #print("Entre a build text")
         txt=''
+
         if len(self.diasUso)!=0:
             # LUMN15
             txt = txt + self.libTxt.loc['LUM36','Texto']

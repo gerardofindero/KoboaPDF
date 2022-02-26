@@ -42,7 +42,8 @@ def recoBA(Claves,kWh,hrsUso,W):
 
     txt = ""
     ClavesS=Claves.split(",")
-
+    print("Clave completa:",ClavesS)
+    print("Clave[1]",ClavesS[1])
     kwhc, wc, Vc = ClavesS[1].split("/")
     kwhc = float(kwhc)
     wc   = float(wc)

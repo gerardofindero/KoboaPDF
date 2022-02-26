@@ -33,6 +33,7 @@ from leerVoltaje import leer_volts
 from libreriaTubosFluorescente import recoTuboFluorescente
 from libreriaLucesSolares import recoSolares
 from libreriaBombasPresurizadoras import recoPresu
+from libreriaBombasAlberca import recoBA
 #from libreriaClusterTV import armarTexto
 import libreriaClusterTV as CTV
 import libreriaClusterTV as CTV
@@ -515,9 +516,16 @@ def potencial_ahorro(canvas, width, height,consumo_bimestral, tarifaf,costo, aho
 def iluminacion(canvas, width, height, luces,Tarifa):
     """ Se crean las páginas en donde se muestra el consumo de luz a detalle """
     Luces = luces.copy()
-    Luces=UnirLuces(Luces)
+    Luces = UnirLuces(Luces)
+    new = Luces["A"].str.split(" ", n = 1, expand = True)
+    Luces["ZZ"]= new[1]
+    Luces["ZZ"]=Luces["ZZ"].str.replace('led','aaa')
+    Luces['Z']=Luces['Z']*1000
     Luces = Luces.loc[Luces['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
+    Luces.sort_values(by=['ZZ'], inplace=True, ascending=False)
     Luces.sort_values(by=['Z'], inplace=True, ascending=False)
+    Luces['Z']=Luces['Z']/1000
+    #Luces.sort_values(by=['L'], inplace=True, ascending=False)
     TotalC=Luces['K'].sum() # Suma de consumos de lueces en el consumo total de casa (KWh)
     TotalP=Luces['L'].sum() # Suma de porcentaje total de luces en el consumo total de casa (%)
     TotalD = Luces['M'].sum() # Suma de costo de luces en el costo total de casa ($)
@@ -594,8 +602,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
     altura=266
     i=0
     Luces['D']=Luces['D'].str.replace('Luces ','')
-
-    luzz=''
+    contazona=0
     repetido=''
     for index, luz in Luces.iterrows():
         i=i+1
@@ -603,7 +610,9 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             repetido=luz[4]
             luzz=luz[4]
             porc=str(round(luz[18]*100,1))+' %'
+            #porc=str(round(luz[11]*100,1))+' %'
             cost='$ '+str(round(luz[17]))
+            #cost='$ '+str(round(luz[12]))
             lineacorta=False
         else:
             luzz=''
@@ -655,10 +664,18 @@ def iluminacion(canvas, width, height, luces,Tarifa):
         frame.addFromList(parrafos, canvas)
         parrafoss=[]
         largoTx=sys.getsizeof(tex)
-        if largoTx<150:
+        contazona=contazona+1
+        if lineacorta:
+            tex=tex[0].lower() + tex[1:]
+            tex='También, '+tex
+
+        if 'http' in tex:
+            largoTx=largoTx-150
+
+        if largoTx<160:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
             frame = Frame(258, altura - 15, 290, 65)
-        elif 150<=largoTx<250:
+        elif 160<=largoTx<=250:
             parrafoss.append(Paragraph(tex, Estilos.Lumi2))
             frame = Frame(258, altura -12, 290, 65)
         elif largoTx>250 and largoTx<=350:
@@ -681,12 +698,14 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             altura=altura-50
         cont=0
 
-        if i==4 or i==14 or i==24:
+        if i==4 or i==14 or i==24 or i==34:
             largo= len(luces)-4
             if i==14:
                 largo = len(luces) - 15
             if i==24:
                 largo = len(luces) - 24
+            if i==34:
+                largo = len(luces) - 34
             altura = 500
             canvas.showPage()
             largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 'Montserrat-B', 12)
@@ -715,7 +734,8 @@ def Dicc_Aparatos(nombre):
                   'aire acondicionado', 'cafetera', 'lavadora', 'secadora', 'plancha', 'lavavajillas', 'horno',
                   'cocina', 'pelo', 'laptop', 'monitor', 'congelador', 'minibar', 'campana', 'microondas', 'triturador', 'cava',
                   'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor','entretenimiento','cargador','karcher','belleza',
-                  'lampara','jardin','ventilador','impresora','tostadora','tetera','licuadora','freidora','tostador','computo','alimentos']
+                  'lampara','jardin','ventilador','impresora','tostadora','tetera','licuadora','freidora','tostador',
+                  'computo','alimentos','parrilla','batidora','induccion','elevador']
 
     for a in abreviados:
         if a in nombre_:
@@ -748,7 +768,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     if ClavesS[0] == 'MB':
         Consejos,Notas,PotAhorro = LeeClavesR(Claves,nota,nombre,consumo)
     if ClavesS[0] == 'TV':
-        Consejos = LeeClavesTV(Claves, Uso, consumo, DAC)
+        Consejos = LeeClavesTV(Claves, Uso, consumo, DAC,potencia)
     if ClavesS[0] == 'LV' or ClavesS[0] == 'SC':
         Consejos = LeeClavesLavaSeca(Claves, consumo)
     if Claves == 'PL':
@@ -767,6 +787,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
         Consejos, PotAhorro = recoPresu(consumo, potencia, Claves,Uso)
     if ClavesDiag[0] == 'AA':
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
+    if ClavesDiag[0] == 'BA':
+        Consejos  =  recoBA(Claves,consumo,DAC, Uso)
     if ClavesS[0] == "CP":
         Consejos = recoCP(consumo)
     # if ClavesS[0] == 'X':
@@ -777,6 +799,7 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     recoTubosFluorescentes en libreriaTubosFluorecente
     recoTirasLed en libreriaTirasLED
     """
+
     return Consejos,Notas
 
 
@@ -807,11 +830,11 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         canvas.line(60, height - 50, largo_encabezado + 60, height - 50)
         texto('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
 
-        if len(nombre)<30:
+        if len(nombre)<20:
             texto(nombre.upper(), 36, azul_1, 'Montserrat-B', 60,height-130, canvas)
-        elif len(nombre)>=30 and len(nombre)<40:
+        elif len(nombre)>=20 and len(nombre)<30:
             texto(nombre.upper(), 28, azul_1, 'Montserrat-B', 60, height-130, canvas)
-        elif len(nombre)>=40:
+        elif len(nombre)>=30:
             texto(nombre.upper(), 24, azul_1, 'Montserrat-B', 60,height-130, canvas)
 
         if len(lugar)<30:
@@ -1159,6 +1182,7 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
 def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
     """ Crea la hoja que muestra donde esta la fuga, que aparatos hay y si es atacable o no """
     fugas_['D']=fugas_['D'].str.replace('Fuga', '', regex=True)
+    fugas_['N'] = np.where(fugas_['Q']!='AMN', 'X',fugas_['N'])
     #fugas_['N'] = 'X'
     LFugas=fugas_.copy()
     LFugas = LFugas.loc[LFugas['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
@@ -1166,7 +1190,8 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares= LFugas['E'].tolist()
     VFE,VFM,NSub,NSob,TSub,TSob = leer_volts(cliente)
-    #sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
+    sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
+    #if clave=='AMN':
     #sepNobAta(fugas_,tarifa)
 
     for lista in Lugares:
@@ -1180,139 +1205,84 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
 
 
 def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
-    Lequipos = []
-    Ltoler=[]
-    Lconsumo=[]
-
     if not atac.empty:
-        consumoT = round(atac['K'].sum(), 1)
-        costoT = round(atac['M'].sum())
-        porcientoT = round((atac['L'].sum()) * 100, 1)
-        detalles_fugas(canvas, width, height, lista, idx, costoT, consumoT, porcientoT)
-        altura = 350
-        canvas.line(50, altura + 50, 300, altura + 50)
-        ind=1
-        np=0
-        repetido=False
-        Consejos=''
-        equiposFuga=[]
-        equiposFuga1=[]
-        todo=[]
+        Numhojas=int(len(atac)/5)+1
         contador=0
-        for index, fugat in atac.iterrows():
+        parrafos = []
+        fugas=atac.copy()
+        for i in range(Numhojas):
+            atac=fugas.iloc[:4,:]
+            fugas=fugas.iloc[4:,:]
+            if Atacable:
+                Consejos=textodeconsejos(atac)
+            if not Atacable:
+                Consejos=noatac(atac)
+            disenohojaFuga(canvas, width, height,atac,lista,idx,Atacable,voltaje,parrafos)
+            ponerRecom(Atacable,canvas,parrafos,Consejos)
+            canvas.showPage()
 
-            if ind > 4:
-                ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia,textoC,clave)
-                equiposFuga=[]
-                canvas.showPage()
-                consumoT = round(atac['K'].sum(), 1)
-                costoT = round(atac['M'].sum())
-                porcientoT = round((atac['L'].sum()) * 100, 1)
-                detalles_fugas(canvas, width, height, lista, idx, costoT, consumoT, porcientoT)
-                altura = 350
-                canvas.line(50, altura + 50, 300, altura + 50)
-                parrafos = []
-                notasA = 'Continuación...'
-                parrafos.append(Paragraph(notasA, Estilos.azul_2_chico2))
-                frame = Frame(45, altura+30, 100, 50)
-                frame.addFromList(parrafos, canvas)
-                ind = 1
-                np=np+1
 
-            Nfuga     = fugat[3]
-            costo     = round(fugat[12])
-            consumo   = round(fugat[10], 1)
-            porciento = round(fugat[11] * 100, 1)
-            potencia  = fugat[9]
-            horaS     = fugat[7]
-            textoC  =  fugat[13]
-            clave   = fugat[16]
-            parrafos  = []
-            parrafos.append(Paragraph(Nfuga, Estilos.negroB))
-            frame = Frame(50, altura, 250, 50)
+
+def disenohojaFuga(canvas, width, height,atac,lista,idx,Atacable,voltaje,parrafos):
+    # notasA = 'Continuación...'
+    # parrafos.append(Paragraph(notasA, Estilos.azul_2_chico2))
+
+    consumoT = round(atac['K'].sum(), 1)
+    costoT = round(atac['M'].sum())
+    porcientoT = round((atac['L'].sum()) * 100, 1)
+    detalles_fugas(canvas, width, height, lista, idx, costoT, consumoT, porcientoT)
+    altura = 350
+    canvas.line(50, altura + 50, 300, altura + 50)
+    for index, fugat in atac.iterrows():
+        Nfuga     = fugat[3]
+        costo     = round(fugat[12])
+        consumo   = round(fugat[10], 1)
+        parrafos.append(Paragraph(Nfuga, Estilos.negroB))
+        frame = Frame(50, altura, 250, 50)
+        frame.addFromList(parrafos, canvas)
+        potencia = fugat[9]
+        parrafos.append(Paragraph(Nfuga, Estilos.negroB))
+        frame = Frame(50, altura, 250, 50)
+        frame.addFromList(parrafos, canvas)
+        if len(Nfuga)<40:
+            parrafo_frame("Potencia", Estilos.base2, 50, altura - 55, .2, .1, canvas)
+            parrafo_frame("Consumo", Estilos.base2, 150, altura - 55, .2, .1, canvas)
+            parrafo_frame("Costo", Estilos.base2, 250, altura - 55, .2, .1, canvas)
+            parrafos.append(Paragraph(str(potencia) + ' W', Estilos.cuadros_bajo2))
+            frame = Frame(50, altura - 35, 62, 50)
             frame.addFromList(parrafos, canvas)
-            potencia = fugat[9]
-            horaS =fugat[7]
-            Consejo=fugat[13]
-            parrafos = []
-            parrafos.append(Paragraph(Nfuga, Estilos.negroB))
-            frame = Frame(50, altura, 250, 50)
+            parrafos.append(Paragraph(str(consumo) + ' kWh', Estilos.cuadros_bajo2))
+            frame = Frame(150, altura - 35, 70, 50)
             frame.addFromList(parrafos, canvas)
-
-            if len(Nfuga)<40:
-                parrafo_frame("Potencia", Estilos.base2, 50, altura - 55, .2, .1, canvas)
-                parrafo_frame("Consumo", Estilos.base2, 150, altura - 55, .2, .1, canvas)
-                parrafo_frame("Costo", Estilos.base2, 250, altura - 55, .2, .1, canvas)
-                parrafos.append(Paragraph(str(potencia) + ' W', Estilos.cuadros_bajo2))
-                frame = Frame(50, altura - 35, 62, 50)
-                frame.addFromList(parrafos, canvas)
-                parrafos.append(Paragraph(str(consumo) + ' kWh', Estilos.cuadros_bajo2))
-                frame = Frame(150, altura - 35, 70, 50)
-                frame.addFromList(parrafos, canvas)
-                parrafos.append(Paragraph('$ ' + str(costo), Estilos.cuadros_bajo2))
-                frame = Frame(250, altura - 35, 60, 50)
-                frame.addFromList(parrafos, canvas)
-                canvas.line(50, altura - 20, 300, altura - 20)
-            else:
-                parrafo_frame("Potencia", Estilos.base2, 50, altura - 70, .2, .1, canvas)
-                parrafo_frame("Consumo", Estilos.base2, 150, altura - 70, .2, .1, canvas)
-                parrafo_frame("Costo", Estilos.base2, 250, altura - 70, .2, .1, canvas)
-                parrafos.append(Paragraph(str(potencia) + ' W', Estilos.cuadros_bajo2))
-                frame = Frame(50, altura - 50, 62, 50)
-                frame.addFromList(parrafos, canvas)
-                parrafos.append(Paragraph(str(consumo) + ' kWh', Estilos.cuadros_bajo2))
-                frame = Frame(150, altura - 50, 70, 50)
-                frame.addFromList(parrafos, canvas)
-                parrafos.append(Paragraph('$ ' + str(costo), Estilos.cuadros_bajo2))
-                frame = Frame(250, altura - 50, 60, 50)
-                frame.addFromList(parrafos, canvas)
-                canvas.line(50, altura - 25, 300, altura - 25)
-                altura=altura-5
-
-
-            ind = ind + 1
-            altura = altura - 80
-            if voltaje==1:
-                voltaje=True
-            else:
-                voltaje= False
-
-            Lequipos.append(Nfuga)
-            Ltoler.append(False)
-            Lconsumo.append(potencia)
-
-            #dfCTV= pd.DataFrame(list(zip(Lequipos, Ltoler,Lconsumo,potencia)),columns =['disp', 'tol','cons','standby'])
-            Soloequipo=Nfuga.split()
-            equiposFuga.append(Soloequipo[0].lower())
-            todo.append(Nfuga.lower())
-
-            try:
-                equiposFuga1.append(Soloequipo[1].lower())
-            except:
-                equiposFuga1.append(' ')
-
-            # if fugat[13]!='X':
-            #     if contador==0:
-            #         Consejos = Consejos+' '+fugat[13]+'<br />'
-
-            if 'regulador' in Nfuga or 'Regulador' in Nfuga:
-                contador=contador+1
-
-        ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia,textoC,clave)
-        canvas.showPage()
-
-
-
-def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,contador,potencia,texto,clave):
-    print(texto)
-    if Atacable:
-        if clave=='AMN':
-            Consejos= texto
+            parrafos.append(Paragraph('$ ' + str(costo), Estilos.cuadros_bajo2))
+            frame = Frame(250, altura - 35, 60, 50)
+            frame.addFromList(parrafos, canvas)
+            canvas.line(50, altura - 20, 300, altura - 20)
         else:
-            Consejos=textodeconsejos(equiposFuga,equiposFuga1,Consejos,contador,potencia)
+            parrafo_frame("Potencia", Estilos.base2, 50, altura - 70, .2, .1, canvas)
+            parrafo_frame("Consumo", Estilos.base2, 150, altura - 70, .2, .1, canvas)
+            parrafo_frame("Costo", Estilos.base2, 250, altura - 70, .2, .1, canvas)
+            parrafos.append(Paragraph(str(potencia) + ' W', Estilos.cuadros_bajo2))
+            frame = Frame(50, altura - 50, 62, 50)
+            frame.addFromList(parrafos, canvas)
+            parrafos.append(Paragraph(str(consumo) + ' kWh', Estilos.cuadros_bajo2))
+            frame = Frame(150, altura - 50, 70, 50)
+            frame.addFromList(parrafos, canvas)
+            parrafos.append(Paragraph('$ ' + str(costo), Estilos.cuadros_bajo2))
+            frame = Frame(250, altura - 50, 60, 50)
+            frame.addFromList(parrafos, canvas)
+            canvas.line(50, altura - 25, 300, altura - 25)
+            altura=altura-5
+        altura = altura - 80
+
+
+def ponerRecom(Atacable,canvas,parrafos,Consejos):
 
     if Atacable:
-        if len(Consejos) < 650:
+        largoC=len(Consejos)
+        if 'Link' in Consejos:
+            largoC=largoC-500
+        if  largoC< 350:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
         else:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
@@ -1320,10 +1290,6 @@ def ponerRecom(Atacable,Consejos,equiposFuga,equiposFuga1,todo,canvas,parrafos,c
         frame.addFromList(parrafos, canvas)
 
     if not Atacable:
-        if clave=='AMN':
-            Consejos=texto
-        else:
-            Consejos=noatac(equiposFuga,todo)
         parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
         frame = Frame(330, 50, 200, 330,showBoundary = 0 )
         frame.addFromList(parrafos, canvas)
@@ -1443,7 +1409,7 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,Total):
             frame.addFromList(parrafos, canvas)
 
         parrafos.append(Paragraph(str(consumo) + ' kWh', Estilos.cuadros_bajo2))
-        frame = Frame(320, altura , 80, 50)
+        frame = Frame(320, altura , 100, 50)
         frame.addFromList(parrafos, canvas)
         parrafos.append(Paragraph(str(porciento) + ' %', Estilos.cuadros_bajo2))
         frame = Frame(420, altura , 80, 50)
