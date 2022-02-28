@@ -26,7 +26,7 @@ class libreriaTirasLED:
             columns=['tipo', 'cantidad', 'costo', 'link', 'kwhAhorroBimestral', 'ahorroBimestral', 'roi', 'accion'])
         try:
             self.libTxt = pd.read_excel(
-                f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
+                f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias_.xlsx",
                 sheet_name='Textos')
             self.dbTiras = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",
@@ -34,7 +34,7 @@ class libreriaTirasLED:
 
         except:
             self.libTxt = pd.read_excel(
-                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias.xlsx",
+                f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias_.xlsx",
                 sheet_name='Textos')
             self.dbTiras = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Iluminación/Base Tubos Fluorescentes Plus.xlsx",

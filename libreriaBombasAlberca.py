@@ -23,16 +23,16 @@ def leerLibreriaBA():
 
 def crearClavesBA(infoEq):
     Codigo = ""
-    if np.isnan(infoEq["Gasto"][0])  : Codigo += "/0"
-    else                             : Codigo += "/" + infoEq["Gasto"  ][0]
-    if np.isnan(infoEq["Nominal"][0]): Codigo += "/0"
-    else                             : Codigo += "/" + infoEq["Nominal"][0]
-    if np.isnan(infoEq["Volumen"][0]): Codigo += "/0"
-    else                             : Codigo += "/" + infoEq["Volumen"][0]
-    if "si" in infoEq["TipoUso"][0]  : Codigo += ",CO" # Uso Comercial
-    else                             : Codigo += ",RE" # Uso residencial, Default si no se especifica
-    if "si" in infoEq["Solar"][0]    : Codigo += ",CS"
-    else                             : Codigo += ",SS"
+    if np.isnan(infoEq["Gasto"])  : Codigo += "/0"
+    else                          : Codigo += "/" + str(infoEq["Gasto"  ])
+    if np.isnan(infoEq["Nominal"]): Codigo += "/0"
+    else                          : Codigo += "/" + str(infoEq["Nominal"])
+    if np.isnan(infoEq["Volumen"]): Codigo += "/0"
+    else                          : Codigo += "/" + str(infoEq["Volumen"])
+    if "si" in infoEq["TipoUso"]  : Codigo += ",CO" # Uso Comercial
+    else                          : Codigo += ",RE" # Uso residencial, Default si no se especifica
+    if "si" in infoEq["Solar"]    : Codigo += ",CS"
+    else                          : Codigo += ",SS"
     return Codigo
 
 def recoBA(Claves,kWh,hrsUso,W):
@@ -42,7 +42,8 @@ def recoBA(Claves,kWh,hrsUso,W):
 
     txt = ""
     ClavesS=Claves.split(",")
-
+    print("Clave completa:",ClavesS)
+    print("Clave[1]",ClavesS[1])
     kwhc, wc, Vc = ClavesS[1].split("/")
     kwhc = float(kwhc)
     wc   = float(wc)

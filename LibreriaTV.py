@@ -74,14 +74,14 @@ def EncontrarRemplazo(reemplazo,Pulgadas):
     return Filtro2['P'][0]
 
 
-def LeeClavesTV(Claves,Uso,Consumo,DAC):
+def LeeClavesTV(Claves,Uso,Consumo,DAC,PotenciaE):
     Texto=''
     lib, precios, reemplazos =libreria2()
     if pd.notna(Claves):
         ClavesSep=Claves.split(",")
         Tolerancia = ClavesSep[1]
         Datos= ClavesSep[2].split("/")
-        Potencia=float(Datos[0])
+        Potencia=PotenciaE
         Standby = float(Datos[1])
         Pulgadas=float(Datos[2])
         #Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
@@ -112,9 +112,10 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
         # print("_________________")
         # print(Percentil)
         # print(uso)
-
+#<<<<<<< HEAD
+#=======
         uniones=0
-
+#>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
         if Percentil < 0.9:
             Texto = Texto + ' ' + lib.loc['TV01A', 'Texto'] # Tu TV es de tecnología eficiente.
             uniones=1
@@ -131,7 +132,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
             else:
                 #ClaveLib='TV02C'
                 ClaveLib=''
-                Texto = Texto + ClaveLib + lib.loc['TV02C', 'Texto'] + 'TV04B' + lib.loc['TV04B', 'Texto']
+                Texto = Texto + ClaveLib + lib.loc['TV02C', 'Texto']  + lib.loc['TV04B', 'Texto']
 
         if uso>=3.5:
             #ClaveLib='TV03B'
@@ -144,13 +145,13 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC):
             Texto = Texto +ClaveLib+ lib.loc['TV03A','Texto']
 
         if uso < 1:
-
-            Texto = Texto +'TV03C'+ lib.loc['TV03C','Texto']
-
+#<<<<<<< HEAD
+            #Texto = Texto + lib.loc['TV03C','Texto'] # Quitar eventualmente si el programa corre bien.
+#=======
             #ClaveLib='TV03C'
             ClaveLib=''
             Texto = Texto +ClaveLib+ lib.loc['TV03C','Texto']
-
+#>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
         if Standby>1:
             #ClaveLib='TV05A'

@@ -76,6 +76,7 @@ def crearClavesBP(infoEq):
 def recoPresu(kwh,potencia,Claves,hrsUso):
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     PotAhorro.loc[0,"Accion"] =""
+    print(Claves)
     fgTXT = Claves.split("-")[-1]
 
     lib, link = leerLibreria()
@@ -138,7 +139,7 @@ def recoPresu(kwh,potencia,Claves,hrsUso):
         if "NT" in Claves:
             txt += lib.at["PRE009","Texto"]
 
-    txt = txt.replace("*","<br />- ")
+    #txt = txt.replace("*","<br />- ")
     timer  = fc.ligarTextolink("link a timer",link.at["[timer]","link"])
     bomVar = fc.ligarTextolink("link a bomba",link.at["[bomVar]","link"])
     txt = txt.replace("[timer]",timer)
@@ -146,6 +147,5 @@ def recoPresu(kwh,potencia,Claves,hrsUso):
     txt = txt.replace("[hrsUso]",str(round(hrsUso)))
     txt = txt.replace("[w]",str(round(potencia)))
     txt = txt.replace("[fgTXT]",fgTXT)
-    print(PotAhorro.loc[0,"Accion"])
     PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("[bomVar]", bomVar)
     return [txt, PotAhorro]

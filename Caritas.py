@@ -81,7 +81,7 @@ def caritaEquipos(consumo,clave):
     return Ca
 
 
-def caritaTV(consumo,clave):
+def caritaTV(consumo,clave,potenciaE):
     kWh = float(consumo)
     DatosTV=clave.split(',')
     DAtosTV=DatosTV[2].split('/')
@@ -90,16 +90,21 @@ def caritaTV(consumo,clave):
     PotTeorica = math.exp(2.958131 + 0.039028 * pulgadas)
     XX = np.log(potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
     Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
-    uso=(kWh*1000)/(potencia*60)
 
-    if uso >= 3.5:
+    if potenciaE>=0:
+        potenciaE=1
+    uso=(kWh*1000)/(potenciaE*60)
+
+    if kWh>45:
         Ca=3
     else:
         Ca=1
-    if Percentil >= 0.9:
-        Ca=2
-    if kWh>45:
-        Ca = 3
+        if Percentil >= 0.9:
+            Ca=2
+
+
+
+
 
     # elif (1 <= uso < 3.5) or (Percentil >= 0.9):
     #         Ca = 2
@@ -162,9 +167,9 @@ def caritaMiniB(consumo,Claves):
             Ca = 3
         elif percentilNs < 0.9:
             Ca = 2
-    elif 0.3 <= percentil < 0.9:
+    elif 0.4 <= percentil < 0.9:
         Ca = 2
-    elif percentil < 0.3:
+    elif percentil < 0.4:
         Ca = 1
 
     return Ca
@@ -191,8 +196,7 @@ def caritaCava(consumo,Claves):
     if kWh * (1 - (Ns * 0.07)) < formulaV      : percentilNs = 0.20
     elif formulaV<= kWh*(1-(Ns*0.07)) <formulaR: percentilNs = 0.50
     else                                       : percentilNs = 0.95
-    #print("percentil caritas",percentil)
-    #print("percentil Ns caritas",percentilNs)
+
     if percentil >= 0.9:
         if percentilNs >= 0.9:
             Ca = 3
@@ -225,8 +229,7 @@ def caritaCongeV(consumo,Claves):
     if kWh * (1 - (Ns * 0.07)) < formulaV              : percentilNs = 0.20
     elif formulaV <= kWh * (1 - (Ns * 0.07)) < formulaR: percentilNs = 0.50
     else                                               : percentilNs = 0.95
-    # print("percentil caritas",percentil)
-    # print("percentil Ns caritas",percentilNs)
+
     if percentil >= 0.9:
         if percentilNs >= 0.9:
             Ca = 3
@@ -258,8 +261,7 @@ def caritaCongeH(consumo,Claves):
     if kWh * (1 - (Ns * 0.07)) < formulaV              : percentilNs = 0.20
     elif formulaV <= kWh * (1 - (Ns * 0.07)) < formulaR: percentilNs = 0.50
     else                                               : percentilNs = 0.95
-    # print("percentil caritas",percentil)
-    # print("percentil Ns caritas",percentilNs)
+
     if percentil >= 0.9:
         if percentilNs >= 0.9:
             Ca = 3
@@ -277,7 +279,7 @@ def caritaPlancha(consumo,clave):
         Ca = 2
     if 19 > consumo:
         Ca = 1
-    print(Ca)
+
     return Ca
 
 
@@ -289,7 +291,7 @@ def caritaAires(consumo,clave):
         Ca = 2
     elif consumo >= 120:
         Ca = 3
-    print("Consumo: " ,consumo, "Carita",Ca)
+
     return Ca
 
 def caritaBombaP(consumo,clave):
@@ -318,6 +320,8 @@ def caritaBombaR(consumo,clave):
     if  35 >= consumo:
         Ca = 1
     return Ca
+
+
 def caritaBombaA(consumo,clave):
     lib, f = leerLibreriaBA()
     f.loc[:, "Potencia"] = f.loc[:, "Potencia"].astype(float)
@@ -331,10 +335,10 @@ def caritaBombaA(consumo,clave):
     flujo = f.at[f.loc[:, "Diferencia"].idxmin(), "Flujo(m3/h)"]  # flujo aproximado de la bomba
     if "CO" in clave:
         n = 9
-        print("CO -> n = 8")
+
     else:
         n = 2
-        print("RE -> n = 2")
+
     tq = Vc * n / flujo  # horas al día para recircular el agua n veces, acorde al tipo de uso
     tw = kwhc * 1000 / wc / 60  # número de horas al día que funciona la bomba (ver Kobo->Caritas)
     if tw <= tq:
@@ -364,6 +368,7 @@ def caritaHielos(consumo,clave):
     if  20 >= consumo:
         Ca = 1
     return Ca
+
 def caritaCP(consumo,clave):
     if consumo <= 27:
         Ca = 1
@@ -378,6 +383,7 @@ def definircarita(Equipo):
         if pd.notna(aparato[16]):
             clave = aparato[16]
             consumo = aparato[10]
+            potencia = aparato[6]
             equipoid = aparato[16].split(',')[0]
             equipoi = aparato[16].split('/')[0]
             if equipoid == 'RF':
@@ -391,7 +397,7 @@ def definircarita(Equipo):
             elif equipoid == 'HL':
                 Carita = caritaHielos(consumo,clave)
             elif equipoid == 'TV':
-                Carita = caritaTV(consumo,clave)
+                Carita = caritaTV(consumo,clave,potencia)
             elif equipoid == 'LV':
                 Carita =caritaLava(consumo,clave)
             elif equipoid == 'SC':

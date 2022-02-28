@@ -138,6 +138,7 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
     if Equipos.filter(regex='lavadora_reguladorSN')[0]=='si':
         InfoDeco = Circuito.filter(regex='lavadora')
         Aparatos_C.loc['Regulador Lavadora', 'CodigoS'] = CodStandby
+        Aparatos_C.loc['Regulador Lavadora', 'Consumo'] = 0
         Aparatos_C.loc['Regulador Lavadora', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_standby')[0])
         Aparatos_C.loc['Regulador Lavadora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador Lavadora', 'Existencia'] = 1

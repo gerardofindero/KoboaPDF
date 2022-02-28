@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import random
 from libreriaLucesSolares import recoSolares
 from libreriaSenMov import recoSensores
@@ -108,7 +109,7 @@ def libreriaLED():
 ## se eligen los textos correpondientes.
 
 def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled, conteoROI,uso,texto): # Variables se jalan de archivo de Excel en pestaña Desciframiento.
-    print(EntyTip)
+
     aleatorio=random.randint(1, 3)
     #Se lee libreria de textos
     Lib =  libreriaL()
@@ -127,8 +128,8 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     Tecno = str(NumyTip.split()[1]) # Se saca la tecnología del tipo de foco (e.g. incandescente, halógena, etc...)
     if Numero==0:
         Numero=0.001
-    Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
-
+    #Watts = float(Watts)/float(Numero) # Se sacan los watts por foco.
+    print('XXXXXXXXXXXX>',NumyTip)
     TextoSolar=''
     if 'NOC' in texto:
         TextoSolar = recoSolares('nocturna','Si',VV,Watts,DAC)
@@ -146,47 +147,49 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
                 TextoCompleto = TextoCompleto + Lib.loc['LUM14b', 'Texto']
             if aleatorio==3:
                 TextoCompleto = TextoCompleto + Lib.loc['LUM14c', 'Texto']
-        if Tecno =='tira':
-            TextoCompleto = TextoCompleto + Lib.loc['LUM18', 'Texto']
+            if Numero>=99:
+                TextoCompleto = Lib.loc['LUM30', 'Texto']
 
-        if conteoled == 5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07a', 'Texto']
-            conteoled = 2
-        if conteoled == 4:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07b', 'Texto']
-            conteoled = conteoled + 1
-        if conteoled == 3:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07c', 'Texto']
-            conteoled = conteoled + 1
-        if conteoled == 2:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07d', 'Texto']
-            conteoled = conteoled + 1
-        if conteoled == 1:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM07f', 'Texto']
+
+
+        if Numero<99:
+            if conteoled == 1:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM07f', 'Texto']
+
+            if conteoled == 2:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM07d', 'Texto']
+
+            if conteoled == 3:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM07c', 'Texto']
+
+            if conteoled == 4:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM07b', 'Texto']
+
+            if conteoled == 5:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM07a', 'Texto']
+                conteoled = 2
             conteoled = conteoled + 1
 
-        # elif conteoled <= 5:
-        #     TextoCompleto = TextoCompleto + Lib.loc[14+(conteoled-1), 'Texto']
-        #     conteoled = conteoled + 1
-        #     if conteoled==5:
+            if Tecno=='tira':
+                TextoCompleto = Lib.loc['LUM18', 'Texto']
 
-        if uso>5 and Numero<10:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
-        if Numero>10 and uso<5:
-            if VV>12:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
-        if Numero>10 and uso>5:
-            TextoCompleto = TextoCompleto + Lib.loc['LUM13', 'Texto']
+            if uso>5 and Numero<10:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM11', 'Texto']
+            if Numero>10 and uso<5:
+                if VV>12:
+                    TextoCompleto = TextoCompleto + Lib.loc['LUM12', 'Texto']
+            if Numero>10 and uso>5:
+                TextoCompleto = TextoCompleto + Lib.loc['LUM13', 'Texto']
 
-        if Sensor==False and Solar==False:
-            if aleatorio==1:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM16a', 'Texto']
-        if Sensor==False and Solar==False:
-            if aleatorio==2:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM16b', 'Texto']
-        if Sensor==False and Solar==False:
-            if aleatorio==3:
-                TextoCompleto = TextoCompleto + Lib.loc['LUM16c', 'Texto']
+            if Sensor==False and Solar==False:
+                if aleatorio==1:
+                    TextoCompleto = TextoCompleto + Lib.loc['LUM16a', 'Texto']
+            if Sensor==False and Solar==False:
+                if aleatorio==2:
+                    TextoCompleto = TextoCompleto + Lib.loc['LUM16b', 'Texto']
+            if Sensor==False and Solar==False:
+                if aleatorio==3:
+                    TextoCompleto = TextoCompleto + Lib.loc['LUM16c', 'Texto']
 
     ##### Tira LEDS
         if 'tira' in tex:
@@ -203,8 +206,6 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(round(int(uso))))
 
     elif  Tecno!= 'led':
-
-
         if not 'NO HAY CARS' in tex:
             Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
         else:
@@ -224,17 +225,22 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         #genero=Lugar[len(Lugar)-3]
         primerapalabra=Lugar.split(' ')[0]
         genero=Lugar[len(primerapalabra)-1]
-        print(primerapalabra)
         if genero=='a':
             LugarX='la '+Lugar
         elif genero=='o':
             LugarX='el '+Lugar
+        else:
+            LugarX='el '+Lugar
+
 
         # Reemplaza los 'placeholders' del texto por su valor reportado en campo (la hoja de 'Desciframiento' ya tiene estos valores.
+        TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
+
+        if Numero == 1:
+            TextoCompleto = TextoCompleto.replace('1', 'una única')
         TextoCompleto = TextoCompleto.replace('[Tecnologia]', Tecno)
         TextoCompleto = TextoCompleto.replace('[Lugar_iluminación]', LugarX)
         TextoCompleto = TextoCompleto.replace('[CAR]', tex)
-        TextoCompleto = TextoCompleto.replace('[NUML]', str(Numero))
         TextoCompleto = TextoCompleto.replace('[horasUso]', str(uso))
         TextoCompleto = TextoCompleto.replace('.0', "")
         TextoCompleto = TextoCompleto.replace('[...]', "")
@@ -247,19 +253,21 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
         TextoCompleto = TextoCompleto.replace('Baño', "baño")
 
         if Numero == 1:
-            TextoCompleto = TextoCompleto.replace('1', 'única')
+
             TextoCompleto = TextoCompleto.replace('(s)', '')
             TextoCompleto = TextoCompleto.replace('(un)', 'un')
             TextoCompleto = TextoCompleto.replace('(n)', '')
             TextoCompleto = TextoCompleto.replace('(es)','')
-            TextoCompleto = TextoCompleto.replace('halogenos','halogeno')
+            TextoCompleto = TextoCompleto.replace('halogenos','halogena')
 
         else:
             TextoCompleto = TextoCompleto.replace('(s)','s')
             TextoCompleto = TextoCompleto.replace('(un)', '')
             TextoCompleto = TextoCompleto.replace('(n)', 'n')
             TextoCompleto = TextoCompleto.replace('(es)', 'es')
-            TextoCompleto = TextoCompleto.replace('halogenoss', 'halogenos')
+            TextoCompleto = TextoCompleto.replace('halogenoss', 'halogenas')
+
+
 
         # TEXTOS DE RETORNO DE INVERSION (Seguimos con focos que no son LED).
         ## Para las luminarias que cuentan con entrada y tipo de entrada se busca en la base de datos de las luminarias
@@ -276,18 +284,14 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
 
         tipo,entrada=BuscarTipoEntrada(EntyTip)
-        print(tipo,entrada)
         ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno,Numero)
         TT=0
-        if ConLED != 0:
-
-            #print('Potencia c LED: '+ str(ConLED))
-            #print('Precio; '+ str(Precio))
-            #print('Link: '+ Link)
+        if ConLED != 0 and VV>15:
             #Formulas
             TT = int(((1 - (float(ConLED) / Watts))*100)-10)
             ROI = abs((Numero * Precio) / ((TT/100) * VV * DAC)) # Calcula retorno de inversion en bimestres.
-
+            if ROI <=2:
+                ROI=2
             ## Se elige el texto correspondiente de la libreria de textos para el ROI correspondiente
             if ROI <= 18: # Cuando el ROI es en un periodo corto.
                 TextoROI = Lib.loc['LUM02', 'Texto']
@@ -302,13 +306,9 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
                     TextoROI = Lib.loc['LUM03c', 'Texto']
 
             ## Se sustituye la variable ROI por el texto correspondiente
-            TextoCompleto = TextoCompleto  + TextoROI
-            TextoCompleto = TextoCompleto.replace('[ROI]', str(int(ROI)))
             TextoCompleto = TextoCompleto.replace('[NUML]', str(round(Numero, 0)))
-            TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
-            TextoCompleto = TextoCompleto.replace('[...]', '')
             if Numero == 1:
-                TextoCompleto = TextoCompleto.replace('1', 'única')
+                TextoCompleto = TextoCompleto.replace('1', 'una única')
                 TextoCompleto = TextoCompleto.replace('(s)', '')
                 TextoCompleto = TextoCompleto.replace('(un)', 'un')
                 TextoCompleto = TextoCompleto.replace('(n)', '')
@@ -319,6 +319,13 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
                 TextoCompleto = TextoCompleto.replace('(un)', '')
                 TextoCompleto = TextoCompleto.replace('(n)', 'n')
                 TextoCompleto = TextoCompleto.replace('(es)', 'es')
+
+
+            TextoCompleto = TextoCompleto  + TextoROI
+            TextoCompleto = TextoCompleto.replace('[ROI]', str(int(ROI)))
+            TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
+            TextoCompleto = TextoCompleto.replace('[...]', '')
+
 
             Address = 'Link de compra'
             LinkS = '<link href="' + str(Link) + '"color="blue">' + Address + ' </link>'
@@ -333,11 +340,11 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             if Tecno == 'fluorescente':
                 TT = 40
             if Tecno == 'incandescente':
-                TT = 70
+                TT = 85
             if Tecno == 'halogena':
-                TT = 60
+                TT = 80
             if Tecno == 'halogenos':
-                TT = 60
+                TT = 80
             TextoCompleto = TextoCompleto.replace('del [T]%', 'alrededor del [T]%')
             TextoCompleto = TextoCompleto.replace('[T]', str(round(TT, 1)))
     #
@@ -352,9 +359,22 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     #TextoCompleto = TextoCompleto + '' +TextoSensor
 
 
+
+
     if 'DACCS' in tex:
         TextoCompleto = TextoCompleto+ Lib.loc['LUM06b', 'Texto']
 
+    TextoCompleto = TextoCompleto.replace('[NUML]', str(int(Numero)))
+    if Numero == 1:
+        TextoCompleto = TextoCompleto.replace('1', 'un único')
+        TextoCompleto = TextoCompleto.replace('[s]', '')
+
+    else:
+        TextoCompleto = TextoCompleto.replace('[s]','s')
+
+    TextoCompleto = TextoCompleto.replace('[NS]','Nuestro sistema no pudo encontrar un sustituto para esta luminaria,'
+                                                 ' pero no te preocupes si deses cambiarla te ayudaremos personalmente a '
+                                                 'encontrar el sustituto ideal para que ahorres. ')
     TextoCompleto = TextoCompleto.replace('[...]','')
     TextoCompleto = TextoCompleto.replace('[/n]','<br />')
 
@@ -403,18 +423,39 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
     ## Se va filtrando la base de datos con la información del excel y se elige la opción TOP choice
     Filtro1 = LIB.loc[LIB['F'] == tipo]
     Filtro2 = Filtro1.loc[Filtro1['G'] == entrada]
+
     if tec=='fluorescente':
         Filtro3 = Filtro2[Filtro2['J'] < mx]
         Filtro4 = Filtro3[Filtro3['J'] > mn]
     else:
         Filtro3 = Filtro2[Filtro2['I'] < mx]# Parece estar aquí el error de que no encontraba focos porque H se refiere a la potencia en LED, no en equivalente halógeno/incandescente.
         Filtro4 = Filtro3[Filtro3['I'] > mn] # Parece estar aquí el error de que no encontraba focos
+    Filtro5 = Filtro4.loc[Filtro4['M'] == color]
 
-    # Filtro5 = Filtro4.loc[Filtro4['M'] == color]
-    # Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
-    # Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
-    # Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
-    Filtro = Filtro4.loc[Filtro4['AA'] =='Top choice']
+    if not Filtro5.empty:
+        Filtro6 = Filtro5.loc[Filtro5['O'] == dim]
+    else:
+        Filtro6 = Filtro5
+
+    if not Filtro6.empty:
+        Filtro7 = Filtro6.loc[Filtro6['Q'] == intel]
+    else:
+        Filtro7 = Filtro6
+
+    if not Filtro7.empty:
+        Filtro8 = Filtro7.loc[Filtro7['P'] == fila]
+    else:
+        Filtro8 = Filtro7
+
+    if Filtro8.empty:
+        Filtro8=Filtro7
+
+    Filtro = Filtro8.loc[Filtro8['AA'] =='Top choice']
+
+
+
+    if  Filtro.empty:
+        Filtro = Filtro8
 
     if not Filtro.empty:
         return Filtro['H'].values[0],Filtro['W'].values[0],Filtro['V'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
@@ -433,7 +474,7 @@ def Caracteristicas(tex):
     Car3 = ''
     Car4 = ''
 
-    if 'cálida' in tex:
+    if 'calida' in tex:
         Car1 = 'Cálida'
     elif 'fria' in tex:
         Car1 = 'Fria'
@@ -554,15 +595,19 @@ def Horaszona(nombre,horas):
 ######################################################################################################
 def UnirLuces(df):
     pd.set_option("display.max_rows", None, "display.max_columns", None)
-
+    #df['A'] = df['A'].str.replace('tira','led')
+    df['L']=df['L'].astype(float).round(5)
     ## Juntar luces con mismo PP
     Pepes = pd.unique(df['B'])
+    zonas =  pd.unique(df['E'])
 
-    for i in Pepes:
-        dfxpepes=df[df["B"] == i]
+    for i in zonas:
+        dfxpepes=df[df["E"] == i]
+        # dfxpepes.sort_values(by=['Z'], inplace=True, ascending=False)
         if len(dfxpepes)>1:
             ## Checar si tienen el mismo porcentaje
             PorC = pd.unique(dfxpepes['L'])
+
             if len(PorC)==1:
                 dfx=dfxpepes.copy()
                 ## Juntar focos de tecnologías iguales
@@ -570,10 +615,13 @@ def UnirLuces(df):
                 dfx=sumariguales1(dfx,'incandescente')
                 dfx=sumariguales1(dfx,'fluorescente')
                 dfx=sumariguales1(dfx,'led')
+                dfx=sumariguales1(dfx,'tira')
+
 
 
                 ## Asignar los porcentajes por tecnología
                 dfx = distporc(dfx)
+
 
                 ## Separar y asignar los porcentajes por tecnología
                 df=separatecno(df,dfxpepes,dfx,'halogena')
@@ -583,6 +631,7 @@ def UnirLuces(df):
 
 
     zonas=pd.unique(df['E'])
+
     for i in zonas:
         dfxzona=df[df["E"] == i]
         df,dfxzona=sumariguales(dfxzona,df,'halogena')
@@ -597,6 +646,8 @@ def UnirLuces(df):
             df.loc[j,"Y"] =sumaDzona
             df.loc[j,"Z"] =sumazona
 
+
+    # df['L']=df['L']/100
     return df
 
 
@@ -624,25 +675,32 @@ def separatecno(df,dfxpepes,dfx,tipo):
 
 
 def sumariguales1(dflocal,tipo):
+
     tipoxzona=dflocal[dflocal['A'].str.contains(tipo)]
     if len(tipoxzona) >1:
         dff=tipoxzona.A.str.split(expand=True)
         dff[0] = dff[0].astype(int)
         sumaFocos=dff[0].sum()
         nuevototal= str(sumaFocos) +' '+  str(tipo)
+        # sumaDin=tipoxzona['M'].sum()
+        # sumakWh=tipoxzona['K'].sum()
         primero=True
         for j in tipoxzona['A'].index:
             if primero==False:
                 dflocal.drop(index=j,inplace=True)
             else:
                 dflocal.loc[j,'A']=nuevototal
+                # dflocal.loc[j,'K']=sumakWh
+                # dflocal.loc[j,'M']=sumaDin
             primero=False
-
+    dflocal.sort_values(by=['M'],inplace=True)
     return dflocal
 
 #### Sumar los focos de la misma tecnología por zona
 def sumariguales(dfxzona,df,tipo):
+
     tipoxzona=dfxzona[dfxzona['A'].str.contains(tipo)]
+
     if len(tipoxzona) >1:
         dff=tipoxzona.A.str.split(expand=True)
         dff[0] = dff[0].astype(int)

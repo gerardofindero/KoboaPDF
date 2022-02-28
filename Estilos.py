@@ -92,8 +92,8 @@ titulos5 = ParagraphStyle(name='Titlulos',
 
 titulos6 = ParagraphStyle(name='Titlulos',
                                   fontName='Montserrat-B',
-                                  fontSize=18,
-                                  leading=00,
+                                  fontSize=15,
+                                  leading=15,
                                   textColor=azul_1
                                   )
 
@@ -198,8 +198,8 @@ Lumi4 = ParagraphStyle(name='Cuadros',
                                 )
 Lumi5 = ParagraphStyle(name='Cuadros',
                                 fontName='montserrat',
-                                fontSize=6,
-                                leading=8,
+                                fontSize=5,
+                                leading=5,
                                 textColor=gris
                                 )
 
@@ -224,7 +224,7 @@ aparatos2 = ParagraphStyle(name='Aparatos',
 aparatos3 = ParagraphStyle(name='Aparatos',
                                 fontName='montserrat',
                                 alignment=TA_JUSTIFY,
-                                fontSize=11,
+                                fontSize=12,
                                 leading=15,
                                 textColor=gris
                                 )
@@ -306,6 +306,15 @@ azul_2_chico2 = ParagraphStyle(name='Azul 2 chico',
                                   leading=7,
                                   textColor=azul_1
                                   )
+
+azul_2_chico3 = ParagraphStyle(name='Azul 2 chico',
+                               fontName='montserrat-B',
+                               fontSize=10,
+                               leading=10,
+                               textColor=azul_1
+                               )
+
+
 azul_2_grande = ParagraphStyle(name='Azul 2 grande',
                                   fontName='montserrat',
                                   fontSize=23,

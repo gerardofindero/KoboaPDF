@@ -14,7 +14,7 @@ def leer_deciframiento(Cliente):
     ExL.columns = Dic
     Consumo=Exx.loc[1,['C']]
     Costo=Exx.loc[1,['D']]
-    Solar =ExL.loc[14, ['L']]
+    Solar =ExL.loc[13, ['L']]
     Voltaje = Exx.loc[1, ['G']]
     Exx.dropna(subset=['C'],inplace=True)
     #Exx.fillna(0,inplace=True)
@@ -73,10 +73,13 @@ def leer_solar(Cliente):
     DSolar.loc['Min', 'F3']         = Exx.loc[5, ['L']][0]
 
     DSolar.loc['Medidor', 'Total'] = Exx.loc[14, ['L']][0]
-    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[11, ['L']][0]
+    DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[12, ['L']][0]
 
     DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
 
+    Kobo = leer_solarKOBO(Cliente)
+
+    return DSolar, Kobo
 
 def leer_solarKOBO(Cliente):
     archivo_resultados = carpeta_clientes(Cliente)
@@ -95,5 +98,5 @@ def leer_solarKOBO(Cliente):
     DSolar.loc['Hotspot', 'Paneles']      = Exx.loc[7, ['B']][0]
     DSolar.loc['Sombreado', 'Paneles']    = Exx.loc[4, ['B']][0]
 
-    print (DSolar)
+
     return (DSolar)

@@ -171,11 +171,11 @@ def dataClima(CP,Country="mexico",DefaultPeriod=True,StartDate="",EndDate="",Per
     #print(os.listdir(path))
     #print(fileName in os.listdir(path))
     if (fileName) in os.listdir(path):
-        print("LEYENDO INFORMACIÓN CLIMATICA DESDE LA RUTA-> ",path)
+        #print("LEYENDO INFORMACIÓN CLIMATICA DESDE LA RUTA-> ",path)
         df = pd.read_csv(path+"/"+fileName)
 
     else:
-        print(' - CORRIENDO QUERY AL URL: ', ApiQuery,"\n")
+        #print(' - CORRIENDO QUERY AL URL: ', ApiQuery,"\n")
         r = requests.get(ApiQuery)
         df = pd.read_csv(StringIO(r.text))
         df["feelslike"] = df["feelslike"].interpolate(method="linear", limit_direction="both")

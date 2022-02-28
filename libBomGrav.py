@@ -87,6 +87,13 @@ def armarTxt(kwh,hrsUso,Claves):
     nCodos      = float(nCodos)
     temperatura = float(temperatura)
     flujo       = float(flujo)
+    # w = 754
+    # diametro =1.5
+    # longitud = 999999999999999
+    # nCodos   = 999999999
+    # altura   = 3
+    # temperatura = NameError
+    # flujo = NA
 
     # Se agrega texto y se hacen operaciones acorde al kwh obtenido
     # Linea de apertura
