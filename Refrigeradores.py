@@ -66,7 +66,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Refrigerador', 'Pot Compresor'] =Watt
                 try: Aparatos_C.loc['Refrigerador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except: Aparatos_C.loc['Refrigerador', 'Temp Compresor'] =100
+                except: Aparatos_C.loc['Refrigerador', 'Temp Compresor'] =10
                 Aparatos_C.loc['Refrigerador', 'Prob Refr']   = InfoDeco.filter(regex='problemas_c_i')[0]
 
                 Aparatos_C.loc['Refrigerador', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]

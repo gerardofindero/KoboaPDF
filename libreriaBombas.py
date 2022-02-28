@@ -43,6 +43,22 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import funcionesComunes as fc
 
+def crearClavesBG(infEq):
+    """
+    :param infEq: Q/Z/L/nC90/D/T
+    :return:
+    """
+    print("Creando claves de BG")
+    claves = ""
+    claves += "/"+str(60/infEq["FlujoSegundos"][0]); if infEq["FlujoSegundos"][0] == 0: print("Q: 0")
+    claves += "/"+str(infEq["Delta"][0])           ; if infEq["Delta"][0] == 0: print("Delta: 0m")
+    claves += "/"+str(infEq["Longitud"][0])        ; if infEq["Longitud"][0] == 0: print("Longitud: 0m")
+    claves += "/"+str(infEq["Codos"][0])           ; if infEq["Codos"][0] == 0: print("Número de codos: 0")
+    claves += "/"+str(infEq["Diametro"][0]*0.0254) ; if infEq["Diametro"][0] == 0: print("Diamtero: 0in")
+    claves += "/"+str(infEq["Temperatura"][0])     ; if infEq["Temperatura"][0] == 0: print("Temperatura del agua: 0")
+
+
+    return claves
 
 class libreriaBombasGravitacionales:
     def __init__(self):
@@ -68,16 +84,14 @@ class libreriaBombasGravitacionales:
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
                 sheet_name='libreriaBombas')
 
-    #def valData(self,hrsUso=None,w=None,Q=None,
-    #            nC90=None,Hdescarga=None,
-    #            material=None,longT=None,diametroInt=None):
-    #    self.val = True
     
-    def setData(self, hrsUso=None,w=None, kwh=None,
-                Q1   = None, Q2 = None, Q3 = None,
-                wQ_r1=None, wQ_r2=None, wQ_r3=None,
-                ac=None, control=None, elecB=None, con=None, termo=None, durCis=None, durTin=None,
-                Z=None, Q=None, L=None, D=None, nC90=None, material=None, T=None):
+    #def setData(self, hrsUso=None,w=None, kwh=None,
+    #            Q1   = None, Q2 = None, Q3 = None,
+    #            wQ_r1=None, wQ_r2=None, wQ_r3=None,
+    #            ac=None, control=None, elecB=None, con=None, termo=None, durCis=None, durTin=None,
+    #            Z=None, Q=None, L=None, D=None, nC90=None, material=None, T=None):
+
+    def setData(self, Claves,consumo,hrsUso,potencia):
         """
         :param hrsUso   : horas de uso a la semana
         :param w        : potencia de la bomba
@@ -91,7 +105,7 @@ class libreriaBombasGravitacionales:
         :param con      : contrapeso
         :param termo    : termografía
         :param durCis   : dureza cisterna
-        :param durTin   :  dureza tinaco
+        :param durTin   : dureza tinaco
         :param Z        : Cabezal estatico en metros
         :param Q        : Caudal en litros por min
         :param L        : longitud Tuberia en m
@@ -100,9 +114,19 @@ class libreriaBombasGravitacionales:
         :param T        : temperatura en °C
         :param material : material de tuberia
         """
+
+        ClavesS=Claves.split(",")
+        # Q/Z/L/nC90/D/T
+        Q, Z, L, nc90, D, T = ClavesS[1].split("/")
+        self.Z    = float(Z)
+        self.Q    = float(Q)
+        self.L    = float(L)
+        self.D    = float(D)
+        self.nc90 = float(nc90)
+
         self.hrsUso  = hrsUso
-        self.w       = w
-        self.kwh     = kwh
+        self.w       = potencia
+        self.kwh     = consumo
         self.wQ_r1   = wQ_r1
         self.wQ_r2   = wQ_r2
         self.wQ_r3   = wQ_r3
@@ -119,11 +143,7 @@ class libreriaBombasGravitacionales:
         self.durCis  = durCis
         self.durTin  = durTin
 
-        self.Z    = Z
-        self.Q    = Q
-        self.L    = L
-        self.D    = D
-        self.nc90 = T
+
         self.material = material
 
         self.txt = ''
@@ -142,10 +162,10 @@ class libreriaBombasGravitacionales:
         self.dbB['Qp']=0
         self.dbB['Hp']=0
         # descomentar para revizar graficas y ver el punto de operacion con cada bomba
-       # print(self.cur.loc[10:40,:])
-        #demo=self.cur.set_index(['Q(L/min)'],drop=True,inplace=False)
-        #demo.plot()
-        #plt.show()
+        # print(self.cur.loc[10:40,:])
+        # demo=self.cur.set_index(['Q(L/min)'],drop=True,inplace=False)
+        # demo.plot()
+        # plt.show()
         ms = self.cur.columns[1:-2]
         print(ms)
 
@@ -164,11 +184,11 @@ class libreriaBombasGravitacionales:
 
     def armarTxt(self):
         txt = ''
-        if self.kwh < 22:
+        if self.kwh <= 22:
             txt =txt + fc.selecTxt(self.lib,'BOM01')
-        elif (self.kwh>=22) and (self.kwh<60):
+        elif (self.kwh>22) and (self.kwh<=60):
             txt = txt + fc.selecTxt(self.lib, 'BOM02')
-        elif self.kwh >= 60:
+        elif self.kwh > 60:
             txt = txt + fc.selecTxt(self.lib, 'BOM03')
         if self.ac=='Si':
             txt = txt + fc.selecTxt(self.lib, 'BOM04')
