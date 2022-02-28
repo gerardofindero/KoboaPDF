@@ -30,7 +30,7 @@ def ClavesRefri(EquiposRefri):
         else                                      : TempR = (EquiposR['Temp Refri'][0])
         if np.isnan(EquiposR['Temp Conge'][0])    : TempC = 100
         else                                      : TempC =(EquiposR['Temp Conge'][0])
-        if np.isnan(EquiposR['Pot Compresor'][0]) : NominalComp = 100
+        if np.isnan(EquiposR['Pot Compresor'][0]) : NominalComp = 10
         else                                      : NominalComp = int(EquiposR['Pot Compresor'][0])
         if np.isnan(EquiposR['Temp Compresor'][0]): TempComp = 100
         else                                      : TempComp = float(EquiposR['Temp Compresor'][0])
