@@ -3,6 +3,7 @@ from Consumo    import consumoEq
 from Consumo    import calc_consumo , consumoEq, temperatura
 from libreriaBombasPresurizadoras import crearClavesBP
 from libreriaBombasAlberca import crearClavesBA
+from libreriaBombas import crearClavesBG
 def bombas (Excel,Nocircuito):
     Aparatos_C = pd.DataFrame(
         index=['Bomba de Presión', 'Bomba de Gravitación', 'Alberca','Bomba de Recirculación'],
@@ -83,23 +84,40 @@ def bombas (Excel,Nocircuito):
         #    Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
         #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
         #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
+        # Q (segundos en llenar un litro-> se convierte a litros por minuto en claves)
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = InfoDeco.filter(regex='flujo_segundos')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = 0
+        # Z
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'Delta'] = InfoDeco.filter(regex='delta')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'Delta'] = 0
+        # L
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'Longitud'] = InfoDeco.filter(regex='longitud')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'Longitud'] = 0
+        # nC90
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'Codos'] = InfoDeco.filter(regex='codos')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'Codos'] = 0
+        # D en pulgadas se convierte a metros en las claves
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = 0
+        # T
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'Temperatura'] = 20
+
         Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Bomba de Gravitación', 'Marca'] = 'Bomba Gravitacional'
-        Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Longitud'] = InfoDeco.filter(regex='longitud')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Delta'] = InfoDeco.filter(regex='delta')[0]
+
         Aparatos_C.loc['Bomba de Gravitación', 'Acceso'] = InfoDeco.filter(regex='acceso')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Flujo'] = InfoDeco.filter(regex='flujo')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = InfoDeco.filter(regex='flujo_segundos')[0]
+
         Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg'] = InfoDeco.filter(regex='control_pegados')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra'] = InfoDeco.filter(regex='control_cierra')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'ControlContra'] = InfoDeco.filter(regex='control_contrapeso')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'ControlProblemas'] = InfoDeco.filter(regex='control_problemas')[0]
         #Aparatos_C.loc['Bomba de Gravitación', 'Obstaculos'] = InfoDeco.filter(regex='obstaculos_c_i')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
+
         Aparatos_C.loc['Bomba de Gravitación', 'AccesoBomba'] = InfoDeco.filter(regex='accesobomba')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Codos'] = InfoDeco.filter(regex='codos')[0]
+
         Aparatos_C.loc['Bomba de Gravitación', 'Valvulas'] = InfoDeco.filter(regex='valvulas')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abiertas'] = InfoDeco.filter(regex='valvulas_abiertas')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abrirlas'] = InfoDeco.filter(regex='valvulas_abrirlas')[0]
@@ -119,20 +137,10 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        Aparatos_C.loc['Bomba de Presión', 'Clave']     = 'BG'
-                                                          # +','+str(Aparatos_C.loc['Bomba de Gravitación', 'Nominal'])+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Sarro']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Contrapeso']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Termografia']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Dureza']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Flujo']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Longitud']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Diametro']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Codos']+','+ \
-                                                          #  Aparatos_C.loc['Bomba de Gravitación', 'Temperatura']
+        Aparatos_C.loc['Bomba de Gravitación', 'Clave']     = 'BG' + crearClavesBA(Aparatos_C.loc["Bomba de Gravitación"])
+
+
+
 
     if Bomba == 'recirculacion':
         ##Ahorro 40%

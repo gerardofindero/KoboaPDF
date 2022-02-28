@@ -731,6 +731,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
         Consejos  =  laa.armarTxt(Claves,consumo,DAC, Uso)
     if ClavesS[0] == "CP":
         Consejos = recoCP(consumo)
+    #if ClavesS[0] == "BG":
+
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
