@@ -265,9 +265,9 @@ def escenario(InfoEquipos, num):
     Consumo         = InfoEsc.filter(regex='noreportada_consumo')[0]
 
     if pendiente== 'si':
-        print(InfoEsc.filter(regex='codigofindero2').empty)
-        if not InfoEsc.filter(regex='codigofindero2')[0]=='X':
-            CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]+','+InfoEsc.filter(regex='codigofindero2_c_i')[0]
+        print(InfoEsc.filter(regex='codigofindero2_c_i'))
+        if not InfoEsc.filter(regex='codigofindero2_c_i')[0]=='X':
+            CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]
         else:
             CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]
     else:
