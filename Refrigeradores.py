@@ -65,7 +65,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 PotCompresor=InfoDeco.filter(regex='compresor_potencia')[0]
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Refrigerador', 'Pot Compresor'] =Watt
-                try: Aparatos_C.loc['Refrigerador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
+                try   : Aparatos_C.loc['Refrigerador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
                 except: Aparatos_C.loc['Refrigerador', 'Temp Compresor'] =10
                 Aparatos_C.loc['Refrigerador', 'Prob Refr']   = InfoDeco.filter(regex='problemas_c_i')[0]
 
@@ -146,7 +146,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Congelador', 'Pot Compresor'] = Watt
                 try:   Aparatos_C.loc['Congelador', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except:Aparatos_C.loc['Congelador', 'Temp Compresor'] = 100
+                except:Aparatos_C.loc['Congelador', 'Temp Compresor'] = 10
                 try:   Aparatos_C.loc['Congelador', 'Encendido'] = InfoDeco.filter(regex="encendido_c_i")[0]
                 except:Aparatos_C.loc['Congelador', 'Encendido'] = 60
                 Aparatos_C.loc['Congelador', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]
@@ -221,8 +221,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Aparatos_C.loc['Minibar', 'Pot Compresor'] = Watt
                 Aparatos_C.loc['Minibar', 'Notas'] = notass
 
-                try: Aparatos_C.loc['Minibar', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except: Aparatos_C.loc['Minibar', 'Temp Compresor'] = 100
+                try   : Aparatos_C.loc['Minibar', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
+                except: Aparatos_C.loc['Minibar', 'Temp Compresor'] = 10
                 Aparatos_C.loc['Minibar', 'Prob Refr'] = InfoDeco.filter(regex='problemas_c_i')[0]
                 Aparatos_C.loc['Minibar', 'Prob Comp']      = InfoDeco.filter(regex='compresor_problema')[0]
                 Aparatos_C.loc['Minibar', 'Prob Descr']     = InfoDeco.filter(regex='compresor_problema_descrp')[0]
@@ -287,7 +287,7 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Cava', 'Pot Compresor'] = Watt
                 try:   Aparatos_C.loc['Cava', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except:Aparatos_C.loc['Cava', 'Temp Compresor'] = 100
+                except:Aparatos_C.loc['Cava', 'Temp Compresor'] = 10
                 Aparatos_C.loc['Cava', 'Difusor']   = InfoDeco.filter(regex='ventilador_c_i')[0]
                 Aparatos_C.loc['Cava', 'Tuberias']  = InfoDeco.filter(regex='tuberias')[0]
                 Aparatos_C.loc['Cava', 'Prob Refr'] = InfoDeco.filter(regex='problemas_c_i')[0]
@@ -436,8 +436,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 PotCompresor=InfoDeco.filter(regex='compresor_potencia')[0]
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Refrigerador2', 'Pot Compresor'] =Watt
-                try: Aparatos_C.loc['Refrigerador2', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except: Aparatos_C.loc['Refrigerador2', 'Temp Compresor'] =100
+                try   : Aparatos_C.loc['Refrigerador2', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
+                except: Aparatos_C.loc['Refrigerador2', 'Temp Compresor'] =10
                 Aparatos_C.loc['Refrigerador2', 'Prob Refr']   = InfoDeco.filter(regex='problemas_c_i')[0]
 
                 Aparatos_C.loc['Refrigerador2', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]
@@ -515,10 +515,12 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 PotCompresor = InfoDeco.filter(regex='compresor_potencia')[0]
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Congelador2', 'Pot Compresor'] = Watt
+
                 try:   Aparatos_C.loc['Congelador2', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except:Aparatos_C.loc['Congelador2', 'Temp Compresor'] = 100
+                except:Aparatos_C.loc['Congelador2', 'Temp Compresor'] = 10
                 try:   Aparatos_C.loc['Congelador2', 'Encendido'] = InfoDeco.filter(regex="encendido_c_i")[0]
                 except:Aparatos_C.loc['Congelador2', 'Encendido'] = 60
+
                 Aparatos_C.loc['Congelador2', 'Prob Comp']   = InfoDeco.filter(regex='compresor_problema')[0]
                 Aparatos_C.loc['Congelador2', 'Prob Descr']  = InfoDeco.filter(regex='compresor_problema_descrp')[0]
                 Aparatos_C.loc['Congelador2', 'Empaques']    = InfoDeco.filter(regex='empaques')[0]
@@ -576,7 +578,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Minibar2', 'Pot Compresor'] = Watt
                 Aparatos_C.loc['Minibar2', 'Notas'] = notass
-                Aparatos_C.loc['Minibar2', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
+                try   : Aparatos_C.loc['Minibar2', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
+                except: Aparatos_C.loc['Minibar2', 'Temp Compresor'] = 10
                 Aparatos_C.loc['Minibar2', 'Prob Comp'] = InfoDeco.filter(regex='compresor_problema')[0]
                 Aparatos_C.loc['Minibar2', 'Prob Descr'] = InfoDeco.filter(regex='compresor_problema_descrp')[0]
                 Aparatos_C.loc['Minibar2', 'Empaques'] = InfoDeco.filter(regex='empaques')[0]
@@ -628,8 +631,10 @@ def refrigerador(Excel,Nocircuito,NomCircuito):
                 PotCompresor = InfoDeco.filter(regex='compresor_potencia')[0]
                 Watt = consumoEq(PotCompresor)
                 Aparatos_C.loc['Cava2', 'Pot Compresor'] = Watt
+
+
                 try:   Aparatos_C.loc['Cava2', 'Temp Compresor'] = InfoDeco.filter(regex='compresor_temp')[0]
-                except:Aparatos_C.loc['Cava2', 'Temp Compresor'] = 100
+                except:Aparatos_C.loc['Cava2', 'Temp Compresor'] = 10
                 Aparatos_C.loc['Cava2', 'Difusor']   = InfoDeco.filter(regex='ventilador_c_i')[0]
                 Aparatos_C.loc['Cava2', 'Tuberias']  = InfoDeco.filter(regex='tuberias')[0]
                 Aparatos_C.loc['Cava2', 'Prob Refr'] = InfoDeco.filter(regex='problemas_c_i')[0]
