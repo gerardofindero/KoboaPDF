@@ -410,7 +410,6 @@ def separar_fugasR(Equipo):
     Fugas['Texto']          = Fuga['Notas']
     Fugas['Notas']          = Fuga['Notas']
     Fugas['Atacable']       = 'Si'
-
     return Equipos, Fugas
 
 

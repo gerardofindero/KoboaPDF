@@ -12,7 +12,6 @@ def cocina(Excel,Nocircuito, NomCircuito):
     InfoEquipos = Columnas[Columnas.str.contains("cocina", case=False)]
     Equipos = Circuito[InfoEquipos]
     Equipos = Equipos.fillna('X')
-    #print(Equipos)
     stnby = Circuito.filter(regex='circuito_standby_c_i')[0]
     stnbyCod = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     CodigoN  = Equipos.filter(regex='cocina_electrodomesticos_codigofindero_c_i')[0]
@@ -136,8 +135,6 @@ def cocina(Excel,Nocircuito, NomCircuito):
 
             if indx == 4:
                 InfoDeco = Equipos.filter(regex='licuadora')
-                print(InfoDeco)
-
                 try:
                     Aparatos_C.loc['Licuadora','Nominal']   = consumoEq(InfoDeco.filter(regex='consumo')[0])
                     Aparatos_C.loc['Licuadora','Standby']   = consumoEq(InfoDeco.filter(regex='standby')[0])
@@ -307,11 +304,8 @@ def cocina(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Otro', 'Clave'] = 'X'
                 Aparatos_C.loc['Otro', 'Notas'] = Equipos.filter(regex='cocina_notas_c_i')[0]
         indx = indx + 1
-    #Aparatos_C.loc['Notas', 'Marca'] = Equipos.filter(regex='cocina_notas_c_i')[0]
-    #Aparatos_C.loc['Notas', 'Existencia'] = 1
+
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()
-    #print(Aparatos)
-
 
     return Aparatos

@@ -28,11 +28,7 @@ def solar(Excel,Nocircuito, Nomcircuito):
     Aparatos_C.loc['Modulos', 'Interconexion'] = Equipos.filter(regex='interconexion_c_i')[0]
     Aparatos_C.loc['Modulos', 'Inter_Derivado'] = Equipos.filter(regex='interconexion_derivado_c_i')[0]
     Aparatos_C.loc['Modulos', 'Inter_Notas'] = Equipos.filter(regex='interconexion_notas_c_i')[0]
-
-
     Aparatos_C.loc['Modulos', 'Existencia'] = 1
-
-    print(Equipos)
 
     return Aparatos_C
     #print(CS)
