@@ -1,33 +1,16 @@
 import pandas as pd
-from pandas import ExcelWriter
 
-from pathlib         import Path
-# from refris__  import refrigerador
 from Refrigeradores  import refrigerador
 from Cluster         import clustertv
 from Especiales      import especiales
-#from Iluminacion    import iluminacion
 from Tecnologia      import tecnologia
 from Luminaria       import iluminacion
 from Bombas          import bombas
 from Lavanderia      import lavanderia
 from Cocina          import cocina
 from Calentadores    import calentadores
-from Comunicaciones  import comunicaciones
-from Computo         import computo
-from Seguridad       import seguridad
 from Solar           import solar
 from AiresA          import airesA
-from PDF             import CrearPDF
-from Deciframiento   import Archivo
-from Hipervinculos   import hipervinculos
-from Ahorro          import potencial_ahorro
-from Leer_Deciframiento import leer_deciframiento, leer_solar
-
-
-
-
-
 
 def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,writer):
     indx = 0
@@ -76,7 +59,6 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
             if indx == 2:
                 print("Refrigeracion")
                 Datos_RF, Consum, Codigo = refrigerador(Excel,Nocircuito,NomCircuito)
-                print("DesgloceEquipos.py Codigo",Codigo)
                 DatosFun = DatosFun.append(Datos_RF, ignore_index=True)
                 DatosRF = DatosRF.append(Datos_RF)
                 DatosRF['Tablero'].fillna(tablero[0], inplace=True)

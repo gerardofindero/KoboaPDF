@@ -796,12 +796,6 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
-    """
-    funciones a integrar
-    recoTubosFluorescentes en libreriaTubosFluorecente
-    recoTirasLed en libreriaTirasLED
-    """
-
     return Consejos,Notas
 
 
@@ -834,9 +828,9 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
         if len(nombre)<20:
             texto(nombre.upper(), 36, azul_1, 'Montserrat-B', 60,height-130, canvas)
-        elif len(nombre)>=20 and len(nombre)<30:
+        elif len(nombre)>=20 and len(nombre)<25:
             texto(nombre.upper(), 28, azul_1, 'Montserrat-B', 60, height-130, canvas)
-        elif len(nombre)>=30:
+        elif len(nombre)>=25:
             texto(nombre.upper(), 24, azul_1, 'Montserrat-B', 60,height-130, canvas)
 
         if len(lugar)<30:
@@ -877,12 +871,16 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Consejos = textodeequiposR(nombre,notas)
         Consejos,Notas=Recomendaciones(Claves,consumo,tarifa,Uso,Consejos,nombre_,potencia)
         Consejos = Consejos.replace('X','')
+        largo=len(Notas)
+        if 'link' in Notas:
+            largoN=largo-300
         if not Notas=='X':
             notas=Notas
-        if len(notas)<700:
+
+        if largo<700:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos2))
-        elif 1000>=len(notas)>=700:
-            parrafos.append(Paragraph(str(notas), Estilos.aparatos4))
+        elif 1000>=largo>=700:
+            parrafos.append(Paragraph(str(notas), Estilos.aparatos3))
         else:
             parrafos.append(Paragraph(str(notas), Estilos.aparatos5))
 
@@ -894,12 +892,16 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
 
              canvas.drawImage(f"Imagenes/Figuras/Figuras-03.png",50 , 50, 500, 400)
              texto('¿QUÉ HACER?', 22, (255, 255, 255), 'Montserrat-B', 200, height * 0.5, canvas)
-             if len(Consejos)<1200:
+             largoC = len(Consejos)
+             if 'link' in Consejos:
+                 largoC=largoC-300
+
+             if largoC<1200:
                  parrafos.append(Paragraph(Consejos, Estilos.aparatos2))
-             elif 1700>=len(Consejos)>=1200:
-                 parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+             elif 1700>=largoC>=1200:
+                 parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
              else:
-                 parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
+                 parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
              frame = Frame(60, 80, 480, 330,showBoundary = 0 )
              frame.addFromList(parrafos, canvas)
         else:

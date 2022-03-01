@@ -3,7 +3,7 @@ from Consumo    import consumoEq
 from Consumo    import calc_consumo , consumoEq, temperatura
 from libreriaBombasPresurizadoras import crearClavesBP
 from libreriaBombasAlberca import crearClavesBA
-from libreriaBombas import crearClavesBG
+#from libreriaBombas import crearClavesBG
 def bombas (Excel,Nocircuito):
     Aparatos_C = pd.DataFrame(
         index=['Bomba de Presión', 'Bomba de Gravitación', 'Alberca','Bomba de Recirculación'],

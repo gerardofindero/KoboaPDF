@@ -1,10 +1,5 @@
 import pandas as pd
-from Consumo    import calc_consumo
-from Ahorro import  ahorro_luces
-from Consumo    import calc_consumo , consumoEq
 from Correciones import Lugar
-import numpy as np
-
 
 def palabras(DT):
     DT=pd.DataFrame()
@@ -31,7 +26,7 @@ def iluminacion (Excel,Nocircuito):
     AccesoS=['a_la_mano','con_escalera_mediana__1_5_m','con_escalera_larga__1_5_m']
     CodStandby  = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     listaTubos=['t2','t5','t8','t12']
-    # Aparatos_C.loc[NombreVar, 'Datos' ]=''
+
 ####Lum1
 
     esc=True
@@ -57,7 +52,6 @@ def iluminacion (Excel,Nocircuito):
                     Aparatos_C.loc[NombreVar, 'Datos']         = ''
                     Aparatos_C.loc[NombreVar, 'Tecnologia']   = k
                     Aparatos_C.loc[NombreVar, 'Lugar']        = Lugar(lugar)
-                    #Aparatos_C.loc[NombreVar, 'LugarES']      =lugar_especifico
                     Aparatos_C.loc[NombreVar, 'Fuga']         = fuga
                     Aparatos_C.loc[NombreVar, 'FugaDET']      = fugadetalles
                     Aparatos_C.loc[NombreVar, 'Standby']      = standby
@@ -75,18 +69,10 @@ def iluminacion (Excel,Nocircuito):
                     Aparatos_C.loc[NombreVar, 'CodigoS'] =CodStandby
                     Aparatos_C.loc[NombreVar, 'Consumo'] = Consumo
 
-
-
-                    # if InfoLum.filter(regex='otrospendientes')[0]=='si':
-                    #     Aparatos_C.loc[NombreVar, 'CodigoN']      = Aparatos_C.loc[NombreVar, 'CodigoN']+', '+InfoLum.filter(regex='otroscodigos')[0]
-                    #     Aparatos_C.loc[NombreVar, 'Notas']        = str(Aparatos_C.loc[NombreVar, 'Notas'])+\
-                    #                                                  '. Otros codigos: '+InfoLum.filter(regex='otroscodigos')[0]
-
                     if k=='tira':
                         Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
 
                     if k!='led' and k!='tira' :
-                        #Aparatos_C.loc[NombreVar, 'Gasto']        = InfoLum.filter(regex='gasto')[0]
                         Aparatos_C.loc[NombreVar, 'Donde']        = InfoLum.filter(regex='donde_c_i')[0]
                         Aparatos_C.loc[NombreVar, 'DondeDetalle'] = InfoLum.filter(regex='donde_detalle')[0]
                         Aparatos_C.loc[NombreVar, 'Cajillo']      = InfoLum.filter(regex='cajillo')[0]
@@ -121,10 +107,6 @@ def iluminacion (Excel,Nocircuito):
 
                         if 'cajillo' in InfoLum.filter(regex='donde_c_i')[0]:
                             Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+'/CAJ_si_'+str(InfoLum.filter(regex='cajillo_c_i')[0])
-                        # print(Aparatos_C.loc[NombreVar, 'Info']  )
-                        #Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+'/'
-
-
 
                         if k== 'fluorescente':
                             if not InfoLum.filter(regex='disposicion')[0] == 'X':
@@ -137,9 +119,6 @@ def iluminacion (Excel,Nocircuito):
                             if not InfoLum.filter(regex='portalamp')[0]  == 'X':
                                 Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+',PL_'+InfoLum.filter(regex='portalamp')[0]+'/'
 
-
-
-                        #Aparatos_C.loc[NombreVar, 'Acceso']       = InfoLum.filter(regex='acceso')[0]
                         Aparatos_C.loc[NombreVar, 'Adecuaciones'] = InfoLum.filter(regex='adecuaciones')[0]
                         Aparatos_C.loc[NombreVar, 'Apagador']     = InfoLum.filter(regex='apagador')[0]
                         Aparatos_C.loc[NombreVar, 'Cantidad' ]    = str(Aparatos_C.loc[NombreVar, 'Numero'])
@@ -150,7 +129,6 @@ def iluminacion (Excel,Nocircuito):
                             LargoPL   = 'portalamp'+str(l+1)+'_largo'
                             AnchoPL   = 'portalamp'+str(l+1)+'_ancho'
                             Portalamp = 'portalamp'+str(l+1)+'_c_i'
-                            #CantidadPL= 'portalamp'+str(l+1)+'_cantidad'
                             cantidad = 'cantidad' +str(l+1)
                             funcion  = 'funcion' +str(l+1)
                             adicional= 'adicional' +str(l+1)
@@ -212,15 +190,8 @@ def iluminacion (Excel,Nocircuito):
                             Aparatos_C.loc[NombreVar, 'Datos']=Aparatos_C.loc[NombreVar, 'Datos'].replace(' ',',')
                     else:
                         Aparatos_C.loc[NombreVar, 'Datos']='YA ES LED'
-
-                    #print(Aparatos_C.loc[NombreVar, 'Acceso'])
                     if Aparatos_C.loc[NombreVar, 'Acceso'] in  AccesoN :
                         Aparatos_C.loc[NombreVar, 'Datos']=Aparatos_C.loc[NombreVar, 'Datos']+','+'DACCS'
-
-
-
-
-
         j=j+1
         if j<4:
             existencia='esce'+str(j+1)+'_existencia_c_i'
@@ -264,10 +235,10 @@ def escenario(InfoEquipos, num):
     pendiente       = InfoEsc.filter(regex='espendiente_c_i')[0]
     Consumo         = InfoEsc.filter(regex='noreportada_consumo')[0]
 
+
     if pendiente== 'si':
-        print(InfoEsc.filter(regex='codigofindero2_c_i'))
         if not InfoEsc.filter(regex='codigofindero2_c_i')[0]=='X':
-            CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]
+            CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0] + ', ' +str(InfoEsc.filter(regex='codigofindero2_c_i')[0])
         else:
             CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]
     else:

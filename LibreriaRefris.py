@@ -22,29 +22,31 @@ def linkss():
 def ClavesRefri(EquiposRefri):
 
     EquiposR = EquiposRefri
-    #EquiposR = EquiposR.dropna(subset=['Pot Compresor'])
-    #EquiposR = EquiposR.fillna(0)
     for i in EquiposR.index:
-
-        if np.isnan(EquiposR['Temp Refri'][0])    : TempR = 100
-        else                                      : TempR = (EquiposR['Temp Refri'][0])
-        if np.isnan(EquiposR['Temp Conge'][0])    : TempC = 100
-        else                                      : TempC =(EquiposR['Temp Conge'][0])
-        if np.isnan(EquiposR['Pot Compresor'][0]) : NominalComp = 10
-        else                                      : NominalComp = int(EquiposR['Pot Compresor'][0])
-        if np.isnan(EquiposR['Temp Compresor'][0]): TempComp = 10
-        else                                      : TempComp = float(EquiposR['Temp Compresor'][0])
-        Volumen =int(EquiposR['Volumen'][0])
-        if  np.isnan(EquiposR["Encendido"][0])    : Encendido = 60
-        else                                      : Encendido = float(EquiposR["Encendido"][0])
-        Codigo=EquiposR['Clave'][0]
+        if np.isnan(EquiposR['Temp Refri'])    : TempR = 100
+        else                                      : TempR = (EquiposR['Temp Refri'])
+        if np.isnan(EquiposR['Temp Conge'])    : TempC = 100
+        else                                      : TempC =(EquiposR['Temp Conge'])
+        if np.isnan(EquiposR['Pot Compresor']) : NominalComp = 10
+        else                                      : NominalComp = int(EquiposR['Pot Compresor'])
+        if np.isnan(EquiposR['Temp Compresor']): TempComp = 10
+        else                                      : TempComp = float(EquiposR['Temp Compresor'])
+        Volumen =int(EquiposR['Volumen'])
+        if  np.isnan(EquiposR["Encendido"])    : Encendido = 60
+        else                                      : Encendido = float(EquiposR["Encendido"])
+        #Codigo=EquiposR['Clave']
+        Codigo=""
         Codigo = str(Codigo)+','+str(TempR)+'/'+str(TempC)+'/'+ str(NominalComp) + '/'+str(TempComp) + '/'+str(Volumen)+"/"+str(Encendido)
-        #print("codigo",Codigo)
 ####### Detalles      #######################################
         # Disposicion congelador
-        if "CN" in Codigo:
-            if   "vertical"   in EquiposR["Disposicion"][0]: Codigo+=",CVE"
-            elif "horizontal" in EquiposR["Disposicion"][0]: Codigo+=",CHO"
+        #if "CN" in Codigo:
+        try:
+            if   "vertical"   in EquiposR["Disposicion"]: Codigo+=",CVE"
+            elif "horizontal" in EquiposR["Disposicion"]: Codigo+=",CHO"
+        except:
+            Codigo+=""
+
+
         # Alarma
         if "inexistente"  in str(EquiposR["Alarma"])    : Codigo += ",AI"
         if "descompuesto" in str(EquiposR["Alarma"])    : Codigo += ",AD"
@@ -63,7 +65,7 @@ def ClavesRefri(EquiposRefri):
 ####### Causas tecnica ######################################
         # compresor a alta potencia
         if (NominalComp > 120) \
-        or ("altapotencia" in str(EquiposR["Prob Refr"])) :Codigo += ",CN"
+        or ("altapotencia" in str(EquiposR["Prob Refr"])) :Codigo += ",NC"
         # empaque
         if "si" in str(EquiposR["Empaques"]): Codigo += ",EM"
         # difusor mal
@@ -88,11 +90,8 @@ def Clasifica(Claves):
 
 
 def LeeClavesR(Claves,notas,nombre,consumo):
-    #print("LibreriaRefris.py Claves",Claves)
-    #print("Claves refrigeracion",Claves)
     kWh   = float(consumo)
     Texto = ''
-
     TextoF = notas
     PotencialAhorro=0
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
@@ -105,7 +104,6 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         ClavesSep=Claves.split(",")
 
         equipoR=ClavesSep[0]
-        print(equipoR)
         Datos= ClavesSep[1].split("/")
         TRef      = float(Datos[0])
         TCong     = float(Datos[1])
@@ -113,17 +111,6 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         TempCom   = float(Datos[3])
         Volumen   = float(Datos[4])
         Encendido = float(Datos[5])/100
-        #print(Claves, ClavesSep[0])
-        #print("NomCom",NomCom)
-        #print("TempCom",TempCom)
-        #print("Volumen",Volumen)
-        #print("TRef",TRef)
-        #print("TCong",TCong)
-        #print("Encendido",Encendido)
-
-
-
-
         Ns = 0
         if equipoR == "CV":
             if (TRef < 12): Ns+=1
@@ -160,15 +147,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             if kWh*(1-(Ns*0.07)) < formulaV             : percentilNs = 0.20
             elif formulaV<= kWh*(1-(Ns*0.07)) < formulaR: percentilNs = 0.50
             else                                        : percentilNs = 0.95
-            #print("percentil libreria", percentil)
-            #print("percentil Ns libreria", percentilNs)
-        #print("EncendidoNs", EncendidoNs)
-        #print("Ns", Ns)
-        #print("Percentil ori",percentil)
-        #print("Percentil Ns",percentilNs)
-        #print("kwh kwhNs",kWh,kWh*(1-(0.07*Ns)))
 
-        #print("Nt",Nt)
         if percentil<0.3:
             #### Zona verde ####
             Texto += lib.loc['REF001','Texto'] + lib.loc["REF015","Texto"]
@@ -220,11 +199,11 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             else:
                 #### NS rojo ####
                 Texto += lib.loc['REF016', 'Texto']
-                if (NomCom > 120) and not("CN" in ClavesSep):
+                if (NomCom > 120) and not("NC" in ClavesSep):
                     Texto+= lib.loc["REF017","Texto"]
-                elif (NomCom <= 120) and ("CN" in ClavesSep):
+                elif (NomCom <= 120) and ("NC" in ClavesSep):
                     Texto+= lib.loc["REF018","Texto"]
-                elif (NomCom > 120) and ("CN" in ClavesSep):
+                elif (NomCom > 120) and ("NC" in ClavesSep):
                     Texto += lib.loc["REF019","Texto"]
                 else:
                     Texto = Texto.replace(" La principal causa es que su compresor (motor)","")
@@ -266,7 +245,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                     if "VN" in Claves:
                         Texto += lib.loc["REF027", "Texto"]
 
-                elif (Nt == 0) and ("CN" in ClavesSep):
+                elif (Nt == 0) and ("NC" in ClavesSep):
                     Texto += lib.loc["REF028","Texto"] + lib.loc["REF029","Texto"]
                     PotAhorro['%Ahorro'] = 0.50
                     PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
@@ -340,16 +319,12 @@ def LeeClavesR(Claves,notas,nombre,consumo):
     if equipoR == "CV":
         Texto = Texto.replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
         PotAhorro.loc[0, "Accion"] = PotAhorro.at[0, "Accion"].replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
-        #print(PotAhorro.at[0,"Accion"])
+
     Texto = Texto.replace("/n*", "<br />- ")
     Texto = Texto.replace("\\n*", "<br />- ")
     linkBlog = links.loc["[link]","link"]
     linkGuia = links.loc["[link guia de refrigeradores]","link"]
     Texto = Texto.replace("[link]",fc.ligarTextolink("link",linkBlog))
     Texto = Texto.replace("[link guia de refrigeradores]",fc.ligarTextolink("(Guia de compra)",linkGuia))
-    #print("percentil original Refris: ",percentil)
-    #print("percentil Ns Refris: ",percentilNs)
-    #print(Texto)
 
-    #print("Porcencial de ahorro############# ",PotAhorro.at[0,"Accion"])
     return Texto,TextoF,PotAhorro

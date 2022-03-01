@@ -5,7 +5,6 @@ import pandas as pd
 import xlwings
 from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
-from Leer_Deciframiento import leer_solar
 from Carpeta_Clientes import carpeta_clientes
 from Correciones import FugasCorrec,EquipoCorrec
 #### Excel
@@ -32,7 +31,6 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
             workbook.sheets.add('Solar')
         except:
             print('Hoja ya creada')
-        print(Solar)
         Sheet1 = workbook.sheets['Solar']
         Sheet1.range('A1').color = gris
         Sheet1.range('A1').value = 'Solar'
@@ -267,7 +265,8 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
                 identificados= infoL[infoL['B'].str.contains(k)].index
                 if not identificados.empty:
                     PorcentajesTotales =  PorcentajesTotales + 'Lista!D'+ str(identificados[0]+2)+'+'
-                    PotenciasTotales =  PotenciasTotales + str(infoL.loc[identificados[0], 'F'])+','
+                    PotenciasTotales =  PotenciasTotales + str(infoL.loc[identificados[0], 'F']) + ','
+
                     NotasTotales =  str(NotasTotales)+ str(infoL.loc[identificados[0], 'H'])
                     HorasT= str(HorasT)+str(infoL.loc[identificados[0], 'J'])
                     cont=cont+1
@@ -276,10 +275,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
             Sheet1.range(inicioL + cony, 6).value  ='='+ PorcentajesTotales+'0'
             Sheet1.range(inicioL + cony, 7).value  = PotenciasTotales[:-1]
             Sheet1.range(inicioL + cony, 16).value = NotasTotales
-            #Sheet1.range(inicioL + cony, 8).value = str(round(HorasT/cont,1))
-
         cony = cony + 1
-
 
     cony = 0
     inicioF = len(Equipos) + len(Luminarias) + 13
@@ -299,8 +295,7 @@ def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
         cony=cony+1
 
     workbook.save()
-    #workbook.close()
-    #print(lista_encontrado)
+
     try:
         workbook.sheets.add('Lista')
     except:
@@ -453,7 +448,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
 
     Fugas   = Fugas.append(Fug,sort=False)[Fugas.columns.tolist()]
-
+    Fugas=Fugas.dropna(subset=['Ubicacion'])
     Fugas=FugasCorrec(Fugas)
     Equipos = EquipoCorrec(Equipos)
     Equipos['Codigo']= Equipos['Codigo'].str.upper()
