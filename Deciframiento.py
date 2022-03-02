@@ -452,7 +452,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Fugas=FugasCorrec(Fugas)
     Equipos = EquipoCorrec(Equipos)
     Equipos['Codigo']= Equipos['Codigo'].str.upper()
-    Equipos= Equipos.dropna(subset=['Codigo'])
+    #Equipos= Equipos.dropna(subset=['Codigo'])
     Equipos=Equipos[ Equipos['Codigo'].str.contains( 'FF' )==False]
 
     Tdos=pd.DataFrame()

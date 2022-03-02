@@ -137,6 +137,26 @@ def textodeconsejos(clave):
                     Conta=Conta+'AR/'
                     textoCompleto = textoCompleto + texto
 
+            elif 'secadora' in equipo:
+                if not 'regulador' in equipo:
+                    if not 'SC' in Conta:
+                        texto = '-Para reducir el gasto de tu secadora, lo más sencillo es desconectarla cuando no lo uses. ' \
+                                'Si lo deseas puedes colocar un timer inteligente para prenderla y apagarla desde tu celular. Te dejamos el link para comprarlo.  '
+                        texto = texto + LinkS +'  <br /> <br />'
+
+                        Conta=Conta+'SC/'
+                        textoCompleto = textoCompleto + texto
+
+            elif 'lavadora' in equipo:
+                if not 'regulador' in equipo:
+                    if not 'LV' in Conta:
+                        texto = '-Te recomendamos desconectar tu lavadora cuando no lo uses para reducir el gasto constante de tu lavadora, ' \
+                                ', pero si lo deseas puedes colocar un timer inteligente para prenderla y apagarla desde tu celular. Te dejamos el link para comprarlo.  '
+                        texto = texto+ LinkS + '  <br /> <br />'
+                        Conta=Conta+'LV/'
+                        textoCompleto = textoCompleto + texto
+
+
             elif 'laptop' in equipo:
                 if not 'LP' in Conta:
                     texto =  '-Desconecta tu laptop de la corriente mientras no la uses para ahorrar energía. <br /><br />'
@@ -249,6 +269,13 @@ def textodeequiposR(equipo,nota):
                             ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
                             'por más tiempo. <br /> '
 
+    elif 'calefaccion' in equipo.lower():
+        texto = texto+' ' + 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
+                            'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
+                            ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
+                            'por más tiempo. En tiempos de calor este consumo disminuirá drasticamente. <br /> '
+
+
     elif 'gravitacion' in equipo.lower():
         texto = texto+' ' + 'La bomba tiene un consumo completamente fuera de lo normal en comparacion con otros de nuestros clientes. ' \
                             'Esto se debe que se prende por periodos largos de tiempo durante el día. ' \
@@ -262,6 +289,11 @@ def textodeequiposR(equipo,nota):
 
     elif 'lavajilla' in equipo.lower():
         texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
+
+    elif 'jacuzzi' in equipo.lower():
+        texto = texto+' ' + 'El gasto elevado se debe a un uso prolongado de la bomba. Te recomendamos usar este equipo de forma moderada' \
+                            ' ya que la bomba que utiliza es de alto consumo. <br />'
+
 
     else:
         texto=nota
@@ -412,88 +444,106 @@ def noatac(equipos):
         equipo=unidecode(equipo.lower())
 
 
-        if 'refrigerador' in equipo:
-            if not 'RF' in Conta:
-                if not 'regulador' in equipo:
-                    Consejos='-Lamentablemente es difícil reducir el consumo de standby de un refrigerador ' \
-                             'sin reemplazarlo. <br /> <br />'
-                    Conta = Conta+'RF /'
-                    ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'congelador' in equipo:
-            if not 'CN' in Conta:
-                if not 'regulador' in equipo:
-                    Consejos='-Lamentablemente es difícil reducir el consumo de standby de un congelador ' \
-                             'sin reemplazarlo. <br /> <br />'
-                    Conta = Conta+'CN /'
-                    ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'calentador' in equipo and not 'CL' in Conta:
-            Consejos='-Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo. <br /> <br />'
-            ConsejosCompletos=ConsejosCompletos+Consejos
-            Conta = Conta+'CL /'
-
-        elif 'alexa' in equipo:
-            Consejos= '-Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
-                      'Si no llegas a usarlos te recomendamos desconectarlos. <br /> <br />'
-            ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'lutron' in equipo:
-            Consejos= '-Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
-                                'Si no llegas a usarlos te recomendamos desconectarlos. <br /> <br />'
-            ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'sensor' in equipo:
-            if not 'SN' in Conta:
-                Consejos= 'Te recomendamos mantener tu sensor encendido ya que esto te está ahorrando mucha más energía de la que consume.  <br /> <br />'
-                ConsejosCompletos=ConsejosCompletos+Consejos
-                Conta = Conta+'SN /'
-
-        elif 'camara' in equipo:
-            if not 'SG' in Conta:
-                Consejos='-En los equipos de seguridad no recomendamos tomar acción o desconectarlos, ' \
-                         'debido a que pueden afectar tanto tu confort como tu seguridad <br /> <br />'
-                ConsejosCompletos=ConsejosCompletos+Consejos
-                Conta = Conta+'SG /'
-
-
-        elif 'modem' in equipo or 'repetidor' in equipo:
-            if not 'MD' in Conta:
-                Consejos='-En los equipos de comunicación no recomendamos tomar acción o desconectarlos, ' \
-                     'debido a que interfieren con tu confort. <br /> <br />'
-                Conta = Conta+'MD /'
-                ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'puerta' in equipo or 'porton' in equipo:
-            Consejos= '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /> <br />'
-            ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'puerta' in equipo or 'porton' in equipo:
-            Consejos= '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /> <br />'
-            ConsejosCompletos=ConsejosCompletos+Consejos
-
-        elif 'seguridad' in equipo and not 'SG' in Conta:
-            Consejos='-En los equipos de seguridad no recomendamos tomar acción o desconectarlos, ' \
-                     'debido a que pueden afectar tanto tu confort como tu seguridad <br /> <br />'
-            Conta = Conta+'SG /'
-            ConsejosCompletos=ConsejosCompletos+Consejos
-
-        else:
-            if not 'NA' in Conta:
-                Consejos='-Lamentablemente por su naturaleza tu equipo no se puede desconectar. <br /> <br />'
-                Conta = Conta+'NA /'
-                ConsejosCompletos=ConsejosCompletos+Consejos
-
-        if 'regulador' in equipo:
-            if not 'RG' in Conta:
-                Consejos= '-El voltaje en tu vivienda es muy variable, no te recomendamos retirar los reguladores, pero si quieres ' \
-                          'evitar su gasto individual te sugerimos colocar un regulador por fase en tu interruptor general. <br /> <br /> '
-                Conta = Conta +'RG /'
-                ConsejosCompletos=ConsejosCompletos+Consejos
-
         if clave=='AMN':
             Consejos='-'+texto+' <br /> <br />'
             ConsejosCompletos=ConsejosCompletos+Consejos
+        else:
+            if 'refrigerador' in equipo:
+                if not 'RF' in Conta:
+                    if not 'regulador' in equipo:
+                        Consejos='-Lamentablemente es difícil reducir el consumo de standby de un refrigerador ' \
+                                 'sin tener que reemplazarlo o afectar alguna de sus caracteristicas. <br /> <br />'
+                        Conta = Conta+'RF /'
+                        ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'congelador' in equipo:
+                if not 'CN' in Conta:
+                    if not 'regulador' in equipo:
+                        Consejos='-Es difícil reducir el consumo de standby de un congelador' \
+                                 'sin reemplazarlo. <br /> <br />'
+                        Conta = Conta+'CN /'
+                        ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'cava' in equipo:
+                if not 'CV' in Conta:
+                    if not 'regulador' in equipo:
+                        Consejos='-No es fácil reducir el consumo de standby de tu cava sin afectar su buen funcionamiento ' \
+                                 '. <br /> <br />'
+                        Conta = Conta+'CV /'
+                        ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'calentador' in equipo and not 'CL' in Conta:
+                Consejos='-Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo. <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+                Conta = Conta+'CL /'
+
+            elif 'alexa' in equipo:
+                Consejos= '-Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
+                          'Si no llegas a usarlos te recomendamos desconectarlos. <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'lutron' in equipo:
+                Consejos= '-Es difícil desconectar los dispositivos inteligentes ya que afectan a tu comodidad. ' \
+                                    'Si no llegas a usarlos te recomendamos desconectarlos. <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'sensor' in equipo:
+                if not 'SN' in Conta:
+                    Consejos= 'Te recomendamos mantener tu sensor encendido ya que esto te está ahorrando mucha más energía de la que consume.  <br /> <br />'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+                    Conta = Conta+'SN /'
+
+            elif 'camara' in equipo:
+                if not 'SG' in Conta:
+                    Consejos='-En los equipos de seguridad no recomendamos tomar acción o desconectarlos, ' \
+                             'debido a que pueden afectar tanto tu confort como tu seguridad <br /> <br />'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+                    Conta = Conta+'SG /'
+
+
+            elif 'modem' in equipo or 'repetidor' in equipo:
+                if not 'MD' in Conta:
+                    Consejos='-En los equipos de comunicación no recomendamos tomar acción o desconectarlos, ' \
+                         'debido a que interfieren con tu confort. <br /> <br />'
+                    Conta = Conta+'MD /'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'puerta' in equipo or 'porton' in equipo:
+                Consejos= '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'puerta' in equipo or 'porton' in equipo:
+                Consejos= '-Por tu comodidad no te recomendamos realizar ninguna acción a tu puerta eléctrica. <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+            elif 'seguridad' in equipo and not 'SG' in Conta:
+                Consejos='-En los equipos de seguridad no recomendamos tomar acción o desconectarlos, ' \
+                         'debido a que pueden afectar tanto tu confort como tu seguridad <br /> <br />'
+                Conta = Conta+'SG /'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+            elif 'lavadora' in equipo and not 'SG' in Conta:
+                Consejos='-Lamentablemente encontramos díficil que puedas desconectar tu lavadora o que puedas colocar un timer <br /> <br />'
+                Conta = Conta+'LV /'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+            elif 'secadora' in equipo and not 'SG' in Conta:
+                Consejos='-Lamentablemente encontramos díficil que puedas desconectar tu secadora o que puedas colocar un timer <br /> <br />'
+                Conta = Conta+'SC /'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+
+            else:
+                if not 'NA' in Conta:
+                    Consejos='-Lamentablemente por su naturaleza tu equipo no se puede desconectar. <br /> <br />'
+                    Conta = Conta+'NA /'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+
+            if 'regulador' in equipo:
+                if not 'RG' in Conta:
+                    Consejos= '-El voltaje en tu vivienda es muy variable, no te recomendamos retirar los reguladores, pero si quieres ' \
+                              'evitar su gasto individual te sugerimos colocar un regulador por fase en tu interruptor general. <br /> <br /> '
+                    Conta = Conta +'RG /'
+                    ConsejosCompletos=ConsejosCompletos+Consejos
+
+
 
 
     return ConsejosCompletos

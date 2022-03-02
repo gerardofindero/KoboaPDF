@@ -18,7 +18,10 @@ def especiales(Excel,Nocircuito, NomCircuito):
 
 #############################Equipo Especial 1###############################################
     if Circuito.filter(regex='equipos_especial1_espendiente_c_i')[0] == 'si':
-        Aparatos_C.loc['Especial1', 'Equipo'] = Circuito.filter(regex='equipos_especial1_nombre_c_i')[0]
+        if Circuito.filter(regex='equipos_especial1_c_i')[0] =='otro':
+            Aparatos_C.loc['Especial1', 'Equipo'] = Circuito.filter(regex='equipos_especial1_nombre_c_i')[0]
+        else:
+            Aparatos_C.loc['Especial1', 'Equipo'] = Circuito.filter(regex='equipos_especial1_c_i')[0]
         InfoDeco = Circuito.filter(regex='especial1')
         InfoDeco= InfoDeco.fillna('X')
         if InfoDeco.filter(regex='zona_c_i')[0]!='otro':
@@ -60,7 +63,10 @@ def especiales(Excel,Nocircuito, NomCircuito):
 #############################Equipo Especial 2###############################################
     if Circuito.filter(regex='equipos_especial2_existencia_c_i')[0]=='si':
         if Circuito.filter(regex='equipos_especial2_espendiente_c_i')[0] == 'si':
-            Aparatos_C.loc['Especial2', 'Equipo'] = Circuito.filter(regex='equipos_especial2_nombre_c_i')[0]
+            if Circuito.filter(regex='equipos_especial2_c_i')[0] =='otro':
+                Aparatos_C.loc['Especial2', 'Equipo'] = Circuito.filter(regex='equipos_especial2_nombre_c_i')[0]
+            else:
+                Aparatos_C.loc['Especial2', 'Equipo'] = Circuito.filter(regex='equipos_especial2_c_i')[0]
             InfoDeco = Circuito.filter(regex='especial2')
             InfoDeco= InfoDeco.fillna('X')
             if InfoDeco.filter(regex='zona_c_i')[0]!='otro':
@@ -102,7 +108,10 @@ def especiales(Excel,Nocircuito, NomCircuito):
 ############################Equipo Especial 1###############################################
     if Circuito.filter(regex='equipos_especial3_c_i')[0] == 'si':
         if Circuito.filter(regex='equipos_especial3_espendiente_c_i')[0] == 'si':
-            Aparatos_C.loc['Especial3', 'Equipo'] = Circuito.filter(regex='equipos_especial3_nombre_c_i')[0]
+            if Circuito.filter(regex='equipos_especial3_c_i')[0] =='otro':
+                Aparatos_C.loc['Especial3', 'Equipo'] = Circuito.filter(regex='equipos_especial3_nombre_c_i')[0]
+            else:
+                Aparatos_C.loc['Especial3', 'Equipo'] = Circuito.filter(regex='equipos_especial3_c_i')[0]
             InfoDeco = Circuito.filter(regex='especial3')
             InfoDeco= InfoDeco.fillna('X')
             if InfoDeco.filter(regex='zona_c_i')[0]!='otro':
@@ -145,5 +154,5 @@ def especiales(Excel,Nocircuito, NomCircuito):
     TotalConsumo = 5 #calc_consumo(Aparatos_C)
     Aparatos = Aparatos_C[Aparatos_C['Equipo'].notna()]
     Aparatos.reset_index()
-
+    print(Aparatos)
     return Aparatos , TotalConsumo

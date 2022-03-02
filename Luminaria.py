@@ -106,9 +106,10 @@ def iluminacion (Excel,Nocircuito):
                             Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info'] +','+InfoLum.filter(regex='color')[0]
 
                         if 'cajillo' in InfoLum.filter(regex='donde_c_i')[0]:
-                            Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+'/CAJ_si_'+str(InfoLum.filter(regex='cajillo_c_i')[0])
+                            Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+',CAJ_si_'+str(InfoLum.filter(regex='cajillo_c_i')[0])
 
                         if k== 'fluorescente':
+
                             if not InfoLum.filter(regex='disposicion')[0] == 'X':
                                 Aparatos_C.loc[NombreVar, 'Disposicion']  = Aparatos_C.loc[NombreVar, 'Funcion']  +','+InfoLum.filter(regex='disposicion')[0]
                                 Aparatos_C.loc[NombreVar, 'Info']         = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex='disposicion')[0]
@@ -118,6 +119,9 @@ def iluminacion (Excel,Nocircuito):
                                 Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex='tubos')[0]
                             if not InfoLum.filter(regex='portalamp')[0]  == 'X':
                                 Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+',PL_'+InfoLum.filter(regex='portalamp')[0]+'/'
+                            if not InfoLum.filter(regex='fluorescentes_tubos_c_i')[0]  == 'X':
+                                Aparatos_C.loc[NombreVar, 'Info' ]       = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex='fluorescentes_tubos_c_i')[0]+'/'
+
 
                         Aparatos_C.loc[NombreVar, 'Adecuaciones'] = InfoLum.filter(regex='adecuaciones')[0]
                         Aparatos_C.loc[NombreVar, 'Apagador']     = InfoLum.filter(regex='apagador')[0]
@@ -137,6 +141,7 @@ def iluminacion (Excel,Nocircuito):
                             disposicion  = 'disposicion' +str(l+1)
                             color  = 'color' +str(l+1)
                             Ntubos = 'tubos'+str(l+1)
+                            largo = 'fluorescentes_tubos'+str(l+1)
 
                             if not InfoLum.filter(regex=tipoytam)[0] == 'X':
                                 if InfoLum.filter(regex=tipoytam)[0] in listaTubos:
@@ -174,10 +179,12 @@ def iluminacion (Excel,Nocircuito):
                                         Aparatos_C.loc[NombreVar, 'PortalampA']         = InfoLum.filter(regex=AnchoPL)[0]
                                         datosPortalamp= 'PL_'+InfoLum.filter(regex=Portalamp)[0]+'_'+str(InfoLum.filter(regex=CantidadPL)[0])\
                                                         +'_'+str(InfoLum.filter(regex=LargoPL)[0])+'_'+str(InfoLum.filter(regex=AnchoPL)[0])
+
                                         Aparatos_C.loc[NombreVar, 'Info']               = Aparatos_C.loc[NombreVar, 'Info']+','+datosPortalamp
                                 #Aparatos_C.loc[NombreVar, 'PortalampCJ']        = InfoLum.filter(regex='cajillo_c_i')[0]
-                                if not InfoLum.filter(regex=Ntubos)[0] == 'X':
-                                    Aparatos_C.loc[NombreVar, 'Info']  = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex=Ntubos)[0]
+                                if not InfoLum.filter(regex=largo)[0] == 'X':
+                                    Aparatos_C.loc[NombreVar, 'Info']  = Aparatos_C.loc[NombreVar, 'Info']+','+InfoLum.filter(regex=largo)[0]
+
 
                             if not InfoLum.filter(regex=cantidad)[0] == 'X':
                                 Aparatos_C.loc[NombreVar, 'Cantidad' ]    = str(Aparatos_C.loc[NombreVar, 'Cantidad' ])+','+str(InfoLum.filter(regex=cantidad)[0])
@@ -225,6 +232,7 @@ def escenario(InfoEquipos, num):
         lugar = InfoEsc.filter(regex='lugar_extra')[0]
     else:
         lugar = InfoEsc.filter(regex='lugar')[0]
+
     lugar_especifico  = InfoEsc.filter(regex='donde_c_i')[0]
     tec             = InfoEsc.filter(regex='tecnologia')[0]
     fuga            = InfoEsc.filter(regex='fugaluces')[0]
