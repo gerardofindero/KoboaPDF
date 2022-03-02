@@ -7,7 +7,7 @@ from Leer_Deciframiento import leer_deciframiento, leer_solar,leer_potencial,lee
 from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
-
+from Carpeta_Clientes import carpeta_clientes_Imagenes
 
 
 ####################  FUNCIONES ###################################
@@ -177,7 +177,8 @@ if __name__ == '__main__':
 
 ###########Para hacer pruebas################
     if Opcion == '5':
-        leer_resumen(NCliente)
+        archivo_resultados = carpeta_clientes_Imagenes(NCliente)
+        print(archivo_resultados)
 
 ###########################################
     if Opcion == '6':
