@@ -138,6 +138,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
     #if TextoSensor!='X':
     #    Sensor=True
 
+
     # Textos al reporte cuando el foco ya es LED.
     if Tecno =='led' or Tecno=='tira':
         if Tecno =='led':
@@ -207,7 +208,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
 
     elif  Tecno!= 'led':
         if not 'NO HAY CARS' in tex:
-            Car1,Car2,Car3,Car4 = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
+            Car1,Car2,Car3,Car4,volt = Caracteristicas(tex) # Se buscan las caracteristicas de las luminarias según el Kobo y se adecúan para que puedan ser comparadas en
         else:
             Car1=''
         # la base de datos de luminarias
@@ -258,7 +259,7 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             TextoCompleto = TextoCompleto.replace('(un)', 'un')
             TextoCompleto = TextoCompleto.replace('(n)', '')
             TextoCompleto = TextoCompleto.replace('(es)','')
-            TextoCompleto = TextoCompleto.replace('halogenos','halogena')
+            TextoCompleto = TextoCompleto.replace('halogenos','halógena')
 
         else:
             TextoCompleto = TextoCompleto.replace('(s)','s')
@@ -284,7 +285,13 @@ def variablesLuces(NumyTip, Watts,VV,tex,DAC,EntyTip,Lugar,conteoNOled,conteoled
             #Se usa la función de BuscarLED para encontrar el consumo, precio y link de los equivalentes en LED
 
         tipo,entrada=BuscarTipoEntrada(EntyTip)
-        ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno,Numero)
+
+        ConLED, Precio, Link = BuscarLED(tipo, entrada, Watts,Car1,Car2,Car3,Car4,Tecno,Numero,volt)
+        if Link=='' and VV>=7:
+            TextoCompleto = TextoCompleto+'Lamentablemente no encontramos un sustituto en nuestra base ' \
+                                          'de datos para las caracteristicas de tu luminaria, ' \
+                                          'pero con gusto podemos ayudarte a encontrar el reemplazo ideal.'
+
         TT=0
         if ConLED != 0 and VV>15:
             #Formulas
@@ -413,7 +420,9 @@ def BuscarTipoEntrada(texto):
 
 ## 5.
 ## Función para buscar el sustituto LED
-def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta función se jala desde PDF.py
+def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero,voltaje): # Esta función se jala desde PDF.py
+    print(tipo,entrada,potencia,color,voltaje)
+
     ## Se lee la base de datos
     LIB = libreriaLED() # ESTA CREO QUE ESTA DECLARADA SOLO COM 'Libreria' EN LA FUNCION QUE LA IMPORTA
     ## Para buscar por potencia equivalente se  usa un rango de +-20% en el foco orginal
@@ -447,15 +456,20 @@ def BuscarLED(tipo,entrada,potencia,color,dim,intel,fila,tec,numero): # Esta fun
     else:
         Filtro8 = Filtro7
 
-    if Filtro8.empty:
-        Filtro8=Filtro7
+    if not Filtro7.empty:
+        Filtro9 = Filtro8.loc[Filtro8['T'] == voltaje]
+    else:
+        Filtro9 = Filtro8
 
-    Filtro = Filtro8.loc[Filtro8['AA'] =='Top choice']
+    if Filtro9.empty:
+        Filtro9=Filtro8
+
+    Filtro = Filtro9.loc[Filtro9['AA'] =='Top choice']
 
 
 
     if  Filtro.empty:
-        Filtro = Filtro8
+        Filtro = Filtro9
 
     if not Filtro.empty:
         return Filtro['H'].values[0],Filtro['W'].values[0],Filtro['V'].values[0] # Regresa 1) Potencia en LED ('conLED'), 2) Precio, y 3) Link de compra
@@ -496,7 +510,14 @@ def Caracteristicas(tex):
     else:
         Car4 = 'No'
 
-    return  Car1, Car2, Car3, Car4
+    if 'voltaje_12' in tex:
+        volt=12
+    if 'voltaje_240' in tex:
+        volt=240
+    else:
+        volt=127
+
+    return  Car1, Car2, Car3, Car4,volt
 
 
 ## 7.

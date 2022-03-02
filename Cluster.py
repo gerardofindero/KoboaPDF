@@ -297,8 +297,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Aparatos_C.loc['Regulador', 'Notas']        = 'Los equipos que se conectan son: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['Regulador', 'Atacable']     = 'Si'
         Aparatos_C.loc['Regulador', 'Existencia']   = 1
-
-
+        Aparatos_C.loc['Regulador', 'Max_Potencia'] =PotenciaMAx_Reg(Aparatos_C,Aparatos_C.loc['Regulador', 'Equipos'] )
 
     if Circuito.filter(regex='clustertv_regulador2_existencia_c_i')[0]=='si':
         InfoDeco = EquiposCTV.filter(regex='regulador2')
@@ -314,6 +313,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Aparatos_C.loc['Regulador2', 'Notas']       = 'Los equipos que se conectan son: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['Regulador2', 'Atacable']     = 'Si'
         Aparatos_C.loc['Regulador2', 'Existencia'] = 1
+        Aparatos_C.loc['Regulador2', 'Max_Potencia'] =PotenciaMAx_Reg(Aparatos_C,Aparatos_C.loc['Regulador2', 'Equipos'] )
 
 
     if Circuito.filter(regex='clustertv_regulador3_existencia_c_i')[0]=='si':
@@ -330,6 +330,7 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Aparatos_C.loc['Regulador3', 'Notas']        = 'Los equipos que se conectan son: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['Regulador3', 'Atacable']     = 'Si'
         Aparatos_C.loc['Regulador3', 'Existencia']   = 1
+        Aparatos_C.loc['Regulador3', 'Max_Potencia'] =PotenciaMAx_Reg(Aparatos_C,Aparatos_C.loc['Regulador3', 'Equipos'] )
 
     if Circuito.filter(regex='clustertv_nobreak1_existencia_c_i')[0]=='si':
         InfoDeco = EquiposCTV.filter(regex='nobreak1')
@@ -381,42 +382,76 @@ def clustertv(Excel,Nocircuito,NomCircuito):
         Aparatos_C.loc['NoBreak3', 'Existencia']   = 1
 
 
-
-    # Aparatos_C.loc['Notas', 'Marca'] ='Sin notas'
-    # Aparatos_C.loc['Notas', 'Existencia'] = 1
-
-    # if not pd.isna(Circuito.filter(regex='clustertv_notas_c_i')[0]):
-    #     Textocompleto=Circuito.filter(regex='clustertv_notas_c_i')[0]
-    #     Info_C.loc['Notas', 'Info']      = Textocompleto
-    #     Aparatos_C.loc['Notas', 'Marca'] = Textocompleto
-    #     Aparatos_C.loc['Notas', 'Existencia'] = 1
-
-    #
-    # if not pd.isna(Aparatos_C.loc['Regulador1', 'Clave']):
-    #     if 'otro1' in Aparatos_C.loc['Regulador1', 'Clave']:
-    #         Aparatos_C.loc['Regulador1', 'Clave']=Aparatos_C.loc['Regulador1', 'Clave'].replace('otro1',Aparatos_C.loc['Equipoextra', 'Marca'])
-    #     if 'otro2' in Aparatos_C.loc['Regulador1', 'Clave']:
-    #         Aparatos_C.loc['Regulador1', 'Clave']=Aparatos_C.loc['Regulador1', 'Clave'].replace('otro2',Aparatos_C.loc['Equipoextra2', 'Marca'])
-    #     if 'otro3' in Aparatos_C.loc['Regulador1', 'Clave']:
-    #         Aparatos_C.loc['Regulador1', 'Clave']=Aparatos_C.loc['Regulador1', 'Clave'].replace('otro3', Aparatos_C.loc['Equipoextra3', 'Marca'])
-    #
-    # if not pd.isna(Aparatos_C.loc['Regulador2', 'Clave']):
-    #     if 'otro1' in Aparatos_C.loc['Regulador2', 'Clave']:
-    #         Aparatos_C.loc['Regulador2', 'Clave']=Aparatos_C.loc['Regulador2', 'Clave'].replace('otro1',Aparatos_C.loc['Equipoextra', 'Marca'])
-    #     if 'otro2' in Aparatos_C.loc['Regulador2', 'Clave']:
-    #         Aparatos_C.loc['Regulador2', 'Clave']=Aparatos_C.loc['Regulador2', 'Clave'].replace('otro2',Aparatos_C.loc['Equipoextra2', 'Marca'])
-    #     if 'otro3' in Aparatos_C.loc['Regulador2', 'Clave']:
-    #         Aparatos_C.loc['Regulador2', 'Clave']=Aparatos_C.loc['Regulador2', 'Clave'].replace('otro3', Aparatos_C.loc['Equipoextra3', 'Marca'])
-
     Aparatos = Aparatos_C[Aparatos_C['Existencia'].notna()]
     Aparatos.reset_index()
-    #TotConsumo = calc_consumo(Aparatos_C)
-    #Info_C.loc['Consumo Total', 'Info'] = TotConsumo
-    EquiposC = Aparatos.fillna(0)
-    # if EquiposC.loc['Equipo Ahorro','Marca']!=0:
-    #     Multis=1
     zona=Zona
-    #Info_C.loc['Consumo Total', 'Info'] = TotConsumo
+
 
     return Aparatos, zona
 
+def PotenciaMAx_Reg(Aparatos_C,Equipos):
+    Equipos_Conectados=(Equipos.split())
+    PotenciaMax=0
+    Aparatos_C=Aparatos_C.fillna('X')
+    for i in (Equipos_Conectados):
+        if i=='tv':
+            if not Aparatos_C.loc['TV', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Nominal']
+            if not Aparatos_C.loc['TV', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Standby']
+        if i=='decodificador':
+            if not Aparatos_C.loc['Decodificador1', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador1', 'Standby']
+        if i=='modem':
+            if not Aparatos_C.loc['Modem', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Modem', 'Standby']
+        if i=='decodificador2':
+            if not Aparatos_C.loc['Decodificador2', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador2', 'Standby']
+        if i=='decodificador3':
+            if not Aparatos_C.loc['Decodificador3', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador3', 'Standby']
+        if i=='repetidor':
+            if not Aparatos_C.loc['Repetidor', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Repetidor', 'Standby']
+        if i=='bluray':
+            if not Aparatos_C.loc['Bluray', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bluray', 'Nominal']
+            if not Aparatos_C.loc['Bluray', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bluray', 'Standby']
+        if i=='bocina':
+            if not Aparatos_C.loc['Bocina', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bocina', 'Nominal']
+            if not Aparatos_C.loc['Bocina', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bocina', 'Standby']
+        if i=='consola':
+            if not Aparatos_C.loc['Consola', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Nominal']
+            if not Aparatos_C.loc['Consola', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Standby']
+        if i=='consola2':
+            if not Aparatos_C.loc['Consola2', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola2', 'Nominal']
+            if not Aparatos_C.loc['Consola2', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola2', 'Standby']
+
+        if i=='eqextra':
+            if not Aparatos_C.loc['EquipoExtra', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra', 'Nominal']
+            if not Aparatos_C.loc['EquipoExtra', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra', 'Standby']
+
+        if i=='eqextra2':
+            if not Aparatos_C.loc['EquipoExtra2', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra2', 'Nominal']
+            if not Aparatos_C.loc['EquipoExtra2', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra2', 'Standby']
+
+        if i=='eqextra3':
+            if not Aparatos_C.loc['EquipoExtra3', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra3', 'Nominal']
+            if not Aparatos_C.loc['EquipoExtra3', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra3', 'Standby']
+
+    PotenciaMax=PotenciaMax+PotenciaMax*0.1
+    return PotenciaMax

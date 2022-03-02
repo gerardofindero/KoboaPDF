@@ -735,7 +735,7 @@ def Dicc_Aparatos(nombre):
                   'cocina', 'pelo', 'laptop', 'monitor', 'congelador', 'minibar', 'campana', 'microondas', 'triturador', 'cava',
                   'hielos', 'sonido', 'dispensador', 'boiler','xbox','vapor','entretenimiento','cargador','karcher','belleza',
                   'lampara','jardin','ventilador','impresora','tostadora','tetera','licuadora','freidora','tostador',
-                  'computo','alimentos','parrilla','batidora','induccion','elevador']
+                  'computo','alimentos','parrilla','batidora','induccion','elevador','calefaccion']
 
     for a in abreviados:
         if a in nombre_:
@@ -1194,7 +1194,7 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares= LFugas['E'].tolist()
     VFE,VFM,NSub,NSob,TSub,TSob = leer_volts(cliente)
-    #sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
+    sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
     #if clave=='AMN':
     #sepNobAta(fugas_,tarifa)
 
