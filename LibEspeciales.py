@@ -43,8 +43,9 @@ def textodeconsejos(clave):
         checa   =  any(item in equipo for item in oficina)
         timer='Timer Inteligente'
         equipo=unidecode(equipo.lower())
-        linkA='https://www.amazon.com.mx/Steren-SHOME-100-Tomacorriente-Encendido-Inalámbrico/dp/B07JB9JKFB/ref=' \
-              'sr_1_2?__mk_es_MX=ÅMÅŽÕÑ&crid=NSFMP6DX5PSK&keywords=smart+plug+steren&qid=1643742539&sprefix=smart+plug+steren%2Caps%2C166&sr=8-2'
+        linkA="https://www.amazon.com.mx/Sengled-compatibles-requerido-electrodom%E9sticos-certificado/dp/B08FJ5LHSN/ref="\
+              "sr_1_1?__mk_es_M=%C5M%C5%99%D5%D1&crid=38UNBNY6KWNQW&dchild=1&keywords=sengled+enchufe&qid=1633391443&sprefix=Sengled+enchu%2Chi%2C190&sr=8-1"
+
         Address = 'Link de compra'
         LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
         #print(equipo,clave)
