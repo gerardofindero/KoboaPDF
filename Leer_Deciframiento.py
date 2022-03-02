@@ -100,3 +100,7 @@ def leer_solarKOBO(Cliente):
 
 
     return (DSolar)
+
+
+def Imagenes(Cliente):
+    archivo_resultados = carpeta_clientes(Cliente)

@@ -30,18 +30,11 @@ from LibClusterTV import analizarCTV
 from libreriaCalentadorPortatil import recoCP
 from LibEspeciales import textodeconsejos,textodeequiposA,textodeequiposV,noatac,textodeequiposR
 from leerVoltaje import leer_volts
-from libreriaTubosFluorescente import recoTuboFluorescente
-from libreriaLucesSolares import recoSolares
 from libreriaBombasPresurizadoras import recoPresu
 from libreriaBombasAlberca import recoBA
-#from libreriaClusterTV import armarTexto
-import libreriaClusterTV as CTV
-import libreriaClusterTV as CTV
-from reportlab import platypus
-from  reportlab.lib.styles import ParagraphStyle as PS
-from reportlab.platypus import SimpleDocTemplate
 import libreriaAiresAcondicionados as laa
 from Tarifa import leer_cargo_fijo
+from Carpeta_Clientes import carpeta_clientes_Imagenes
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
@@ -1300,52 +1293,49 @@ def ponerRecom(Atacable,canvas,parrafos,Consejos):
 
 
 
-def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje):
+def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje,Cliente):
     costado(canvas)
+    imagenDir = carpeta_clientes_Imagenes(Cliente)
+    graficas_voltaje = Image.open(imagenDir)
+    print(graficas_voltaje)
     gris = [65 / 255, 65 / 255, 65 / 255]
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     largo_encabezado = pdfmetrics.stringWidth('PÉRDIDAS DE ENERGÍA Y MEDICIÓN DE VOLTAJE', 'Montserrat-B', 12)
     canvas.line(60, height - 50, 60 + largo_encabezado, height - 50)
     texto('PÉRDIDAS DE ENERGÍA Y MEDICIÓN DE VOLTAJE', 12, gris, 'Montserrat-B', 60, height - 65, canvas)
     texto('TU VOLTAJE',25,azul_1,'Montserrat-B',70,height - 120, canvas)
-    if len(graficas_voltaje) == 1:
-        texto('Aquí te mostramos la gráfica del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
-        canvas.drawImage(graficas_voltaje[0], 60, height * 0.375, width =width * 0.8, height =height * .35)
-    elif len(graficas_voltaje) == 2:
-        texto('Aquí te mostramos las gráficas del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
-        mult = 1.15
-        ancho = (width * 0.36) * mult
-        alto = (height * 0.2) * mult
-        canvas.drawImage(graficas_voltaje[0], 40, 370, width=ancho, height=alto)
-        canvas.drawImage(graficas_voltaje[1], 40 + ancho + 30, 370, width=ancho, height=alto)
-    elif len(graficas_voltaje) == 3:
-        texto('Aquí te mostramos las gráficas del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
-        canvas.drawImage(graficas_voltaje[0], width * 0.35 - 15, height * 0.55, width=width * 0.35, height=height * 0.2)
-        canvas.drawImage(graficas_voltaje[1], 60, height * 0.35, width=width * 0.35, height=height * 0.2)
-        canvas.drawImage(graficas_voltaje[2], width * (1 - 0.35) - 60, height * 0.35, width=width * 0.35, height=height * 0.2)
+    #
+    texto('Aquí te mostramos la gráfica del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
+    canvas.drawImage(imagenDir, 60, height * 0.375, width =width * 0.8, height =height * .35)
+    # elif len(graficas_voltaje) == 2:
+    #     texto('Aquí te mostramos las gráficas del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
+    #     mult = 1.15
+    #     ancho = (width * 0.36) * mult
+    #     alto = (height * 0.2) * mult
+    #     #canvas.drawImage(graficas_voltaje[0], 40, 370, width=ancho, height=alto)
+    #     #canvas.drawImage(graficas_voltaje[1], 40 + ancho + 30, 370, width=ancho, height=alto)
+    # elif len(graficas_voltaje) == 3:
+    #     texto('Aquí te mostramos las gráficas del voltaje durante el período de medición:', 12, gris, 'Montserrat-N', 70, height - 200, canvas)
+    #     #canvas.drawImage(graficas_voltaje[0], width * 0.35 - 15, height * 0.55, width=width * 0.35, height=height * 0.2)
+    #     #canvas.drawImage(graficas_voltaje[1], 60, height * 0.35, width=width * 0.35, height=height * 0.2)
+    #     #canvas.drawImage(graficas_voltaje[2], width * (1 - 0.35) - 60, height * 0.35, width=width * 0.35, height=height * 0.2)
     canvas.drawImage(f"Imagenes/Figuras/recuadro2.png",30, height*0.075,width=width*0.9,height=height*0.25)
-    bajo = nivel_voltaje[0]
-    alto = nivel_voltaje[1]
-    if bajo or alto:
+    if nivel_voltaje ==3:
         color = "rojo"
     else:
         color = "verde"
-    if bajo:
+    if nivel_voltaje ==2:
         picos_bajos = "picos bajos"
     else:
         picos_bajos = ""
 
-    if alto:
+    if nivel_voltaje ==1:
         picos_altos = "picos altos"
     else:
         picos_altos = ""
 
-    if bajo and alto:
-        y = " y "
-    else:
-        y = ""
     mensaje = {}
-    mensaje["rojo"] = f"Tu suministro de voltaje tiene {picos_bajos}{y}{picos_altos}. Es"\
+    mensaje["rojo"] = f"Tu suministro de voltaje tiene picos bajos. Es"\
             " necesario proteger ciertos equipos. Ya estamos reportando"\
             " las variaciones de voltaje con la CFE para que lo atiendan y no"\
             " te dañen tus equipos.<br/><br/>"\
@@ -1677,7 +1667,8 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     robo='no'
     revisar='no'
     nivel=1
-
+    graficas_voltaje=[1,2,3]
+    voltaje(width, height, canvas, graficas_voltaje, color_voltaje,Cliente)
     medidor(canvas, width, height, robo, revisar, nivel, color_voltaje)
     estrategia_ahorro(canvas,width,height,0)
     notas(canvas)
