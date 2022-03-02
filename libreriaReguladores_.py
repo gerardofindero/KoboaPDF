@@ -5,7 +5,6 @@ import funcionesComunes as fc
 from leerVoltaje import leer_volts
 
 def leerLibReg():
-
     #self.txt=''
     #self.val     = False
     #self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link','kwhAhorroBimestral','ahorroBimestral', 'roi','accion'])
@@ -61,24 +60,29 @@ def crearClavesReg():
 
 
 
-def armarTxtF(Claves):
+def armarTxtF(Claves,kwh,potencia):
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     dbReg, lib, dbPro = leerLibReg()
     txt=""
 
     if "EL" in Claves:
         if "EE" in Claves:
             txt+=lib.at["REG01F","Texto"]
+            PotAhorro = potAho(Claves, kwh, potencia, lib)
         else:
             if "TO" in Claves:
                 txt += lib.at["REG02F","Texto"]
+                PotAhorro = potAho(Claves, kwh, potencia, lib)
             else:
                 txt += lib.at["REG03F","Texto"]
     elif "MC" in Claves:
         if "EM" in Claves:
             txt += lib.at["REG04F","Texto"]
+            PotAhorro = potAho(Claves, kwh, potencia, lib)
         else:
             if "TO" in Claves:
                 txt += lib.at["REG05F","Texto"]
+                PotAhorro = potAho(Claves, kwh, potencia, lib)
             else:
                 txt += lib.at["REG06F","Texto"]
     linkSP = dbPro.at["[linkSP]","link"]
@@ -86,32 +90,33 @@ def armarTxtF(Claves):
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Protector de voltaje",linkPV))
 
-    return txt
+    return [txt, PotAhorro]
 
-def armarTxtE(kwh):
+def armarTxtE(Claves,kwh,potencia):
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     dbReg, lib, dbPro = leerLibReg()
     txt = ""
     if kwh <= 7:
         txt+=lib.at["REG01E","Texto"]
     else:
         txt+= lib.at["REG02E","Texto"]
+        PotAhorro = potAho(Claves, kwh, potencia, lib)
     linkSP = dbPro.at["[linkSP]","link"]
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
-    return txt
 
+    return [txt,PotAhorro]
 
-    return txt
-def checkProtector(Claves):
-    if 'elec' in Claves:
-        if (nSob<7) and (tSob<0.17):
-            return False
-        else:
-            return True
-    if 'meca' in Claves:
-        if ((nSob+nSub)<7) and ((tSub+tSob)<0.17):
-            return False
-        else:
-            return True
+def potAho(Claves,kwh,potencia,lib):
+    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+    if "EL" in Claves:
+        PotAhorro.loc[0,"%Ahorro"] = 1
+        PotAhorro.loc[0,"kwhAhorrado"] = kwh
+        PotAhorro.loc[0,"Accion"] = lib.at["REG01Fpa"]
+    elif "MC" in Claves:
+        PotAhorro.loc[0, "%Ahorro"] = 1-(2/potencia)
+        PotAhorro.loc[0, "kwhAhorrado"] = kwh*PotAhorro.at[0, "%Ahorro"]
+        PotAhorro.loc[0, "Accion"] = lib.at["REG02Fpa"]
+    return PotAhorro
 
 def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
     # A atacable D Nombre N texto Q claves
