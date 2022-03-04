@@ -1,6 +1,7 @@
 import pandas as pd
 from unidecode import unidecode
 import random
+from libreriaReguladores_ import armarTxt_NAtac,armarTxt_Atac
 
 def leerLibreria():
     try:
@@ -48,8 +49,7 @@ def textodeconsejos(clave):
         Address = 'Link de compra'
         LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
         #print(equipo,clave)
-        if 'regulador' in equipo:
-            contador=contador+1
+
 
         if clave== 'AMN':
             if not 'AMN/' in Conta:
@@ -94,6 +94,12 @@ def textodeconsejos(clave):
                                     'mientras no la usas.'  +  '<br /> '+LinkS + '<br /> '+ timer+' <br /> <br />'
                     Conta=Conta+'BRC / '
                     textoCompleto = textoCompleto + texto
+
+            elif 'regulador' in equipo:
+                if not 'RG/' in Conta:
+                    textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave)
+                    Conta = Conta + 'RG/ '
+                    contador = contador + 1
 
 
             elif 'bifasico' in equipo:
@@ -156,6 +162,20 @@ def textodeconsejos(clave):
                         Conta=Conta+'LV/'
                         textoCompleto = textoCompleto + texto
 
+            elif 'hielos' in equipo:
+                if not 'regulador' in equipo:
+                    if not 'LV' in Conta:
+                        texto = '-Te recomendamos desconectar tu máquina de hielos cuando no lo uses para reducir este gasto, con prender tu equipo un par de horas antes es suficiente para tener hielo suficiente, ' \
+                                'si lo deseas puedes colocar un timer inteligente para prenderla y apagarla desde tu celular. Te dejamos el link para comprarlo.  '
+                        texto = texto+ LinkS + '  <br /> <br />'
+                        Conta=Conta+'LV/'
+                        textoCompleto = textoCompleto + texto
+
+            elif 'cafetera' in equipo:
+                if not 'LP' in Conta:
+                    texto =  '-Desconecta tu cafetera de la corriente mientras no la uses para ahorrar energía. <br /><br />'
+                    Conta=Conta+'LP/'
+                    textoCompleto = textoCompleto + texto
 
             elif 'laptop' in equipo:
                 if not 'LP' in Conta:
@@ -231,6 +251,10 @@ def textodeconsejos(clave):
         textoCompleto=textoCompleto.replace('{es}','')
 
     return textoCompleto
+
+
+
+
 
 def textodeequiposR(equipo,nota):
 
@@ -472,6 +496,8 @@ def noatac(equipos):
                         Conta = Conta+'CV /'
                         ConsejosCompletos=ConsejosCompletos+Consejos
 
+
+
             elif 'calentador' in equipo and not 'CL' in Conta:
                 Consejos='-Lamentablemente no es posible eliminar el consumo de este equipo sin reemplazarlo. <br /> <br />'
                 ConsejosCompletos=ConsejosCompletos+Consejos
@@ -538,8 +564,7 @@ def noatac(equipos):
 
             if 'regulador' in equipo:
                 if not 'RG' in Conta:
-                    Consejos= '-El voltaje en tu vivienda es muy variable, no te recomendamos retirar los reguladores, pero si quieres ' \
-                              'evitar su gasto individual te sugerimos colocar un regulador por fase en tu interruptor general. <br /> <br /> '
+                    Consejos= armarTxt_NAtac(clave)
                     Conta = Conta +'RG /'
                     ConsejosCompletos=ConsejosCompletos+Consejos
 

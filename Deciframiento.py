@@ -350,69 +350,69 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
         print("Refri")
         Equipo,Fuga = separar_fugasR(Refri)
-        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
-        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo],sort=False)[Equipos.columns.tolist()]
+        Fugas   = pd.concat([Fugas,Fuga],sort=False)[Fugas.columns.tolist()]
 
     if not Clust.empty:
         print("Cluster")
         Equipo, Fuga = separar_fugasTV(Clust)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Lava.empty:
         print("Lava")
         Equipo,Fuga = separar_fugasLV(Lava)
-        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
-        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo],sort=False)[Equipos.columns.tolist()]
+        Fugas   = pd.concat([Fugas,Fuga],sort=False)[Fugas.columns.tolist()]
 
     if not Coci.empty:
         print("Cocina")
         Equipo,Fuga = separar_fugasC(Coci)
-        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
-        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo],sort=False)[Equipos.columns.tolist()]
+        Fugas   = pd.concat([Fugas,Fuga],sort=False)[Fugas.columns.tolist()]
 
 
     if not PCs.empty:
         print("Tecnología")
         Equipo, Fuga = separar_fugasTec(PCs)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Comu.empty:
         print("Comunicaciones")
         Equipo, Fuga = separar_fugas(Comu)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Cal.empty:
         print("Calefaccion")
         Equipo, Fuga = separar_fugasCal(Cal)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Bomba.empty:
         print("Bomba")
         Equipo, Fuga = separar_fugasBB(Bomba)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Segu.empty:
         print("Seguridad")
         Equipo, Fuga = separar_fugas(Segu)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Aire.empty:
         print("Aires Acondicionados")
         Equipo, Fuga = separar_fugasA(Aire)
-        Equipos = Equipos.append(Equipo, sort=False)[Equipos.columns.tolist()]
-        Fugas = Fugas.append(Fuga, sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo], sort=False)[Equipos.columns.tolist()]
+        Fugas = pd.concat([Fugas,Fuga], sort=False)[Fugas.columns.tolist()]
 
     if not Esp.empty:
         print("Especial")
         Equipo,Fuga = separar_fugasE(Esp)
-        Equipos = Equipos.append(Equipo,sort=False)[Equipos.columns.tolist()]
-        Fugas   = Fugas.append(Fuga,sort=False)[Fugas.columns.tolist()]
+        Equipos = pd.concat([Equipos,Equipo],sort=False)[Equipos.columns.tolist()]
+        Fugas   = pd.concat([Fugas,Fuga],sort=False)[Fugas.columns.tolist()]
 
 
     #regusDF= Fugas.loc[Fugas['Equipo'].str.contains('Regulador')]
@@ -447,7 +447,7 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Fug['Atacable']  = 'Si'
 
 
-    Fugas   = Fugas.append(Fug,sort=False)[Fugas.columns.tolist()]
+    Fugas   = pd.concat([Fugas,Fug],sort=False)[Fugas.columns.tolist()]
     Fugas=Fugas.dropna(subset=['Ubicacion'])
     Fugas=FugasCorrec(Fugas)
     Equipos = EquipoCorrec(Equipos)
@@ -457,11 +457,11 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
 
     Tdos=pd.DataFrame()
     eq=Equipos[['Ubicacion','Equipo','Lugar','Texto']]
-    Tdos= Tdos.append(eq)
+    Tdos= pd.concat([Tdos,eq])
     eq = Luminarias[['Ubicacion', 'Equipo', 'Lugar', 'Texto']]
-    Tdos = Tdos.append(eq)
+    Tdos = pd.concat([Tdos,eq])
     eq = Fugas[['Ubicacion', 'Equipo', 'Lugar', 'Texto']]
-    Tdos = Tdos.append(eq)
+    Tdos = pd.concat([Tdos,eq])
     Tdos =Tdos[['Ubicacion', 'Equipo', 'Lugar', 'Texto']]
     Tdos.columns=['Ubicacion', 'Equipo', 'Lugar', 'Notas']
 
@@ -499,12 +499,12 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Luminarias['Codigo']=Luminarias['Codigo'].str.upper()
     #Equipos = Equipos[~Equipos['Codigo'].str.contains('FF', regex=False, na=False)]
 
-    j=0
-    for i in Fugas.index:
-        j = j + 1
-        num = 'FG' + str(j)
-        Fugas.loc[i, 'Claves'] = num
-
+    # j=0
+    # for i in Fugas.index:
+    #     j = j + 1
+    #     num = 'FG' + str(j)
+    #     Fugas.loc[i, 'Claves'] = num
+    #Fugas=Fugas.fillna('X')
 
 
 

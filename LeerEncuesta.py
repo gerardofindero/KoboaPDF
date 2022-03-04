@@ -8,7 +8,7 @@ from DesgloseEquipos import definirequipos
 from Condiciones import condicionesLuces
 from Potencial_de_ahorro import potecial_ahorro
 from Carpeta_Clientes import carpeta_clientes_Imagenes
-
+from leerVoltaje import leer_volts
 
 ####################  FUNCIONES ###################################
 def abrirexcel(Cliente):
@@ -18,6 +18,8 @@ def abrirexcel(Cliente):
     return Excel,Cliente
 
 def Crear_Kobo(NCliente):
+    voltaje = leer_volts(NCliente)
+
     Excel, Cliente=abrirexcel(NCliente)
     Ilum  = pd.DataFrame()
     Clust = pd.DataFrame()
@@ -53,26 +55,26 @@ def Crear_Kobo(NCliente):
             Tablero = Excel.loc[i, ['tablero_otro_c_i']]
         Datosa.loc[i + largoD, ['Tablero']] = Tablero.values
         Datos, fila, filaLib, Fugas, ilum, clust, coci,esp,lava,refri,bomba,pcs,cal,aires,solar,notass\
-            = definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer)
+            = definirequipos(Excel, int(Nocircuito),Circuito,Tablero,fila,filaLib,writer,voltaje)
 
-        Ilum  =  Ilum.append(ilum)
-        Clust =  Clust.append(clust)
-        Coci  =  Coci.append(coci)
+        Ilum  =  pd.concat([Ilum,ilum])
+        Clust =  pd.concat([Clust,clust])
+        Coci  =  pd.concat([Coci,coci])
         #Comu  =  Comu.append(comu)
-        Esp   =  Esp.append(esp)
-        Lava  =  Lava.append(lava)
-        Refri =  Refri.append(refri)
-        Bomba =  Bomba.append(bomba)
-        PCs   =  PCs.append(pcs)
-        Cal = Cal.append(cal)
+        Esp   =  pd.concat([Esp,esp])
+        Lava  =  pd.concat([Lava,lava])
+        Refri =  pd.concat([Refri,refri])
+        Bomba =  pd.concat([Bomba,bomba])
+        PCs   =  pd.concat([PCs,pcs])
+        Cal   =  pd.concat([Cal,cal])
         #Segu = Segu.append(segu)
-        Aire = Aire.append(aires)
-        Solar =Solar.append(solar)
-        Nota=Nota.append(notass)
-        Datosa =Datosa.append(Datos, ignore_index=True)
+        Aire  =  pd.concat([Aire,aires])
+        Solar =  pd.concat([Solar,solar])
+        Nota  =  pd.concat([Nota,notass])
+        Datosa = pd.concat([Datosa,Datos], ignore_index=True)
         Circuito = Excel.loc[i, ['circuito_c_i']]
         Datosa.loc[i+largoD, ['Circuito']] = Circuito.values
-        FugasT = FugasT.append(Fugas, ignore_index=True)
+        FugasT = pd.concat([FugasT,Fugas], ignore_index=True)
     writer.save()
     Tluz=condicionesLuces(Ilum)
     Archivo(Cliente,Ilum,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,Tluz,Solar)

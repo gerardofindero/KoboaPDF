@@ -12,7 +12,7 @@ from Calentadores    import calentadores
 from Solar           import solar
 from AiresA          import airesA
 
-def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,writer):
+def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,writer,voltaje):
     indx = 0
     Columnas = Excel.columns
     InfoEquipos = Columnas[Columnas.str.contains("equipos_c_i", case=False)]
@@ -43,24 +43,20 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
         if j == 1:
             if indx == 1:
                 print("Cluster")
-                Datos_CL , Zona = clustertv(Excel,Nocircuito,NomCircuito)
-                DatosCL = DatosCL.append(Datos_CL)
+                Datos_CL , Zona = clustertv(Excel,Nocircuito,NomCircuito,voltaje)
+                DatosCL = pd.concat([DatosCL,Datos_CL])
                 Datos_CL.to_excel(writer,  index=True,startrow=primafila)
                 primafila = primafila+ len(Datos_CL) + 4
                 DatosCL['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCL['Circuito'].fillna(NomCircuito[0], inplace=True)
                 DatosCL['Zona'].fillna(Zona, inplace=True)
-                # notass=Datos_CL.loc['Notas','Marca']
-                # DatosCL['Nota']=notass
-                # Notas_Equipos.loc[primafila]=[tablero[0],NomCircuito[0],'ClusterTV',Zona,notass]
-                # Notas_ = Notas_.append(Notas_Equipos)
                 FilaLib += 2
 
             if indx == 2:
                 print("Refrigeracion")
-                Datos_RF, Consum, Codigo = refrigerador(Excel,Nocircuito,NomCircuito)
-                DatosFun = DatosFun.append(Datos_RF, ignore_index=True)
-                DatosRF = DatosRF.append(Datos_RF)
+                Datos_RF, Consum, Codigo = refrigerador(Excel,Nocircuito,NomCircuito,voltaje)
+                DatosFun = pd.concat([DatosFun, Datos_RF], ignore_index=True)
+                DatosRF = pd.concat([DatosRF,Datos_RF])
                 DatosRF['Tablero'].fillna(tablero[0], inplace=True)
                 DatosRF['Circuito'].fillna(NomCircuito[0], inplace=True)
                 Datos_RF.to_excel(writer, index=True,startrow=primafila)
@@ -71,7 +67,7 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
             if indx == 3:
                 print("Iluminacion ")
                 Datos_IL= iluminacion(Excel,Nocircuito)
-                DatosIlu = DatosIlu.append(Datos_IL)
+                DatosIlu = pd.concat([DatosIlu,Datos_IL])
                 DatosIlu['Tablero'].fillna(tablero[0], inplace=True)
                 DatosIlu['Circuito'].fillna(NomCircuito[0], inplace=True)
                 Datos_IL.to_excel(writer,  index=True,startrow=primafila)
@@ -80,13 +76,13 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
                 notass.columns=['Tablero','Circuito', 'Equipo','Lugar','Notas']
                 notass=notass.dropna(subset=['Notas'])
                 Notas_Equipos= notass
-                Notas_ = Notas_.append(Notas_Equipos)
+                Notas_ = pd.concat([Notas_,Notas_Equipos])
 
             if indx == 4:
                 print("Bombas")
                 Datos_Bb = bombas(Excel, Nocircuito)
-                DatosBb = DatosBb.append(Datos_Bb)
-                DatosFun = DatosFun.append(Datos_Bb, ignore_index=True)
+                DatosBb = pd.concat([DatosBb,Datos_Bb])
+                DatosFun = pd.concat([DatosFun,Datos_Bb], ignore_index=True)
                 Datos_Bb.to_excel(writer, index=True, startrow=primafila)
                 DatosBb['Tablero'].fillna(tablero[0], inplace=True)
                 DatosBb['Circuito'].fillna(NomCircuito[0], inplace=True)
@@ -95,53 +91,51 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
             if indx == 5:
                 print("Cocina")
                 Datos_CN = cocina(Excel, Nocircuito,NomCircuito)
-                DatosCoc = DatosCoc.append(Datos_CN)
+                DatosCoc = pd.concat([DatosCoc,Datos_CN])
                 DatosCoc['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCoc['Circuito'].fillna(NomCircuito[0], inplace=True)
-                #notass = Datos_CN.loc['Notas', 'Marca']
-                #DatosCoc['Notas'] = notass
-                DatosFun = DatosFun.append(Datos_CN, ignore_index=True)
+                DatosFun = pd.concat([DatosFun,Datos_CN], ignore_index=True)
                 Datos_CN.to_excel(writer, index=True ,startrow=primafila)
                 primafila = primafila+len(Datos_CN) + 4
 
             if indx == 6:
                 print("Lavanderia")
-                Datos_LV = lavanderia(Excel, Nocircuito,NomCircuito)
-                DatosLava = DatosLava.append(Datos_LV)
+                Datos_LV = lavanderia(Excel, Nocircuito,NomCircuito,voltaje)
+                DatosLava = pd.concat([DatosLava,Datos_LV])
                 DatosLava['Tablero'].fillna(tablero[0], inplace=True)
                 DatosLava['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun = DatosFun.append(Datos_LV, ignore_index=True)
+                DatosFun = pd.concat([DatosFun,Datos_LV], ignore_index=True)
                 Datos_LV.to_excel(writer, index=True ,startrow=primafila)
                 primafila = primafila+len(Datos_LV) + 4
 
             if indx == 7:
                 print("Calentadores")
                 Datos_Cal = calentadores(Excel, Nocircuito,NomCircuito)
-                DatosCal = DatosCal.append(Datos_Cal)
+                DatosCal = pd.concat([DatosCal,Datos_Cal])
                 DatosCal['Tablero'].fillna(tablero[0], inplace=True)
                 DatosCal['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun  = DatosFun.append(Datos_Cal, ignore_index=True)
+                DatosFun  = pd.concat([DatosFun,Datos_Cal], ignore_index=True)
                 Datos_Cal.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_Cal) + 4
 
             if indx == 8:
                 print("Solar")
                 Datos_Solar=solar(Excel, Nocircuito, NomCircuito)
-                DatosSol = DatosSol.append(Datos_Solar)
+                DatosSol = pd.concat([DatosSol,Datos_Solar])
                 DatosSol['Tablero'].fillna(tablero[0], inplace=True)
                 DatosSol['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun  = DatosFun.append(Datos_Solar, ignore_index=True)
+                DatosFun  = pd.concat([DatosFun,Datos_Solar], ignore_index=True)
                 Datos_Solar.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_Solar) + 4
 
 
             if indx == 9:
                 print('Tecnologia')
-                Datos_PC = tecnologia(Excel, Nocircuito, NomCircuito)
-                DatosPC = DatosPC.append(Datos_PC)
+                Datos_PC = tecnologia(Excel, Nocircuito, NomCircuito,voltaje)
+                DatosPC = pd.concat([DatosPC,Datos_PC])
                 DatosPC['Tablero'].fillna(tablero[0], inplace=True)
                 DatosPC['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun = DatosFun.append(Datos_PC, ignore_index=True)
+                DatosFun = pd.concat([DatosFun,Datos_PC], ignore_index=True)
                 Datos_PC.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_PC) + 4
 
@@ -149,20 +143,20 @@ def definirequipos(Excel, Nocircuito,NomCircuito,tablero,primafila,FilaLib,write
             if indx == 10:
                 print('Aires Acondicionados')
                 Datos_Aires = airesA(Excel, Nocircuito, NomCircuito)
-                DatosAire = DatosSegu.append(Datos_Aires)
+                DatosAire = pd.concat([DatosSegu,Datos_Aires])
                 DatosAire['Tablero'].fillna(tablero[0], inplace=True)
                 DatosAire['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun = DatosFun.append(Datos_Aires, ignore_index=True)
+                DatosFun = pd.concat([DatosFun,Datos_Aires], ignore_index=True)
                 Datos_Aires.to_excel(writer, index=True, startrow=primafila)
                 primafila = primafila + len(Datos_Aires) + 4
 
             if indx == 11:
                 print("Especiales")
                 Datos_ES, Consum = especiales(Excel, Nocircuito,NomCircuito)
-                DatosES=DatosES.append(Datos_ES)
+                DatosES=pd.concat([DatosES,Datos_ES])
                 DatosES['Tablero'].fillna(tablero[0], inplace=True)
                 DatosES['Circuito'].fillna(NomCircuito[0], inplace=True)
-                DatosFun = DatosFun.append(Datos_ES, ignore_index=True)
+                DatosFun = pd.concat([DatosFun,Datos_ES], ignore_index=True)
                 Datos_ES.to_excel(writer, index=True,startrow=primafila)
                 primafila = primafila+len(Datos_ES) + 4
 

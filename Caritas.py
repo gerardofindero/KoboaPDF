@@ -320,6 +320,7 @@ def caritaBombaR(consumo,clave):
     if  35 >= consumo:
         Ca = 1
     return Ca
+
 def caritaRegulador(consumo):
     if consumo <= 7:
         Ca = 1
