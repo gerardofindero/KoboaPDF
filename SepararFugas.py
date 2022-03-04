@@ -42,6 +42,7 @@ def separar_fugas(Equip):
     Fugas['Notas']     = Fuga['Notas']
     Fugas['Atacable']  = Fuga['Atacable']
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
+    Fugas['Claves']         = Fuga['Clave']
 
     return Equipos,Fugas
 
@@ -80,6 +81,7 @@ def separar_fugasLV(Equip):
     Fugas['Notas']     = Fuga['Notas']
     Fugas['Atacable']  = Fuga['Atacable']
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
+    Fugas['Claves']         = Fuga['Clave']
 
     return Equipos,Fugas
 
@@ -127,6 +129,7 @@ def separar_fugasTec(Equip):
     Fugas['Notas']     = Fuga['Notas']
     Fugas['Atacable']  = Fuga['Atacable']
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
+    Fugas['Claves']         = Fuga['Clave']
 
     return Equipos,Fugas
 
@@ -215,6 +218,7 @@ def separar_fugasC(Equip):
     Fugas['Equipo']    = Fugas['Equipo'].replace('!', "" ,regex=True)
     Fugas['Texto']     = Fugas['Texto'].replace('!', "",regex=True)
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "",regex=True)
+    Fugas['Claves']         = Fuga['Clave']
 
 
 
@@ -265,6 +269,7 @@ def separar_fugasE(Equip):
     Fugas['Notas'] = Fuga['Notas']
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('!', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Otro', "", regex=True)
+    Fugas['Claves']         = Fuga['Clave']
     return Equipos,Fugas
 
 
@@ -320,6 +325,7 @@ def separar_fugasTV(Equipo):
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra2', "", regex=True)
     Fugas['Equipo'] = Fugas['Equipo'].str.replace('Equipoextra3', "", regex=True)
+    Fugas['Claves']         = Fuga['Clave']
 
     #Fugas['Potencia Kobo'] = Fugas['Potencia Kobo'].str.replace('0.001', "NM", regex=True)
     #Aparatos.drop(Aparatos[Aparatos.Equipos.str.contains('Nota')].index, inplace=True)
@@ -409,7 +415,8 @@ def separar_fugasR(Equipo):
     Fugas['Ubicacion']      = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
     Fugas['Texto']          = Fuga['Notas']
     Fugas['Notas']          = Fuga['Notas']
-    Fugas['Atacable']       = 'Si'
+    Fugas['Atacable']       = Fuga['Atacable']
+    Fugas['Claves']         = Fuga['Claves']
     return Equipos, Fugas
 
 

@@ -1,8 +1,9 @@
 import pandas as pd
 from Consumo    import calc_consumo , consumoEq
 from LibreriaLavaSeca import ClavesLavaSeca
+from libreriaReguladores_ import Atac_Mec
 
-def lavanderia(Excel,Nocircuito, NomCircuito):
+def lavanderia(Excel,Nocircuito, NomCircuito,voltaje):
     Aparatos_C = pd.DataFrame(
         index=['Lavadora', 'Secadora', 'Lavasecadora', 'Plancha', 'PlanchaV','Regulador'],
         columns=[ 'Marca','Standby', 'Nominal','Existencia','Atacable','Zona','Notas','CodigoN'
@@ -142,10 +143,10 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Regulador Lavadora', 'Standby'] = consumoEq(InfoDeco.filter(regex='regulador_standby')[0])
         Aparatos_C.loc['Regulador Lavadora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador Lavadora', 'Existencia'] = 1
-        Aparatos_C.loc['Regulador Lavadora ', 'Notas'] = Notass
-        Aparatos_C.loc['Regulador Lavadora', 'Clave'] = 'RG'
-        Aparatos_C.loc['Regulador Lavadora', 'Zona'] = 'Cuarto de lavado'
-        Aparatos_C.loc['Regulador Lavadora', 'Atacable'] = 'Si'
+        Aparatos_C.loc['Regulador Lavadora ', 'Notas']   = Notass
+        Aparatos_C.loc['Regulador Lavadora', 'Clave']   = 'RG,Regulador Lavadora,MC'
+        Aparatos_C.loc['Regulador Lavadora', 'Zona']     = 'Cuarto de lavado'
+        Aparatos_C.loc['Regulador Lavadora', 'Atacable'] = Atac_Mec(voltaje)
 
     if Equipos.filter(regex='secadora_reguladorSN')[0]=='si':
         InfoDeco = Circuito.filter(regex='secadora')
@@ -154,9 +155,9 @@ def lavanderia(Excel,Nocircuito, NomCircuito):
         Aparatos_C.loc['Regulador Secadora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador Secadora', 'Existencia'] = 1
         Aparatos_C.loc['Regulador Secadora', 'Notas'] = Notass
-        Aparatos_C.loc['Regulador Secadora', 'Clave'] = 'RG'
+        Aparatos_C.loc['Regulador Secadora', 'Clave'] = 'RG,Regulador Secadora,MC'
         Aparatos_C.loc['Regulador Secadora', 'Zona'] = 'Cuarto de lavado'
-        Aparatos_C.loc['Regulador Secadora', 'Atacable'] = 'Si'
+        Aparatos_C.loc['Regulador Secadora', 'Atacable'] = Atac_Mec(voltaje)
 
     # if Equipos.filter(regex='mismo_regulador_c_i')[0] == 'si':
     #     Aparatos_C.loc['Regulador Lavado', 'CodigoS'] = CodStandby

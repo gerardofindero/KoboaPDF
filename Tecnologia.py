@@ -1,8 +1,8 @@
 import pandas as pd
 from Consumo    import calc_consumo , consumoEq
+from libreriaReguladores_ import Atac_Elec
 
-
-def tecnologia(Excel,Nocircuito, NomCircuito):
+def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
     Aparatos_C = pd.DataFrame()
         # index=['Computadora','Laptop','Modem','Repetidor','Equipos Apple','Extra','Impresora','Regulador','Nobreak','Monitor','Switch','Router','HDD', 'Otro','Notas'],
         # columns=['Marca','Standby','Nominal', 'Zona','Existencia','Atacable','Notas','CodigoN','CodigoS','Clave'])
@@ -346,7 +346,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
 
     InfoDeco = Equipos.filter(regex='regulador1')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['Regulador', 'Clave']      = 'RG'
+        Aparatos_C.loc['Regulador', 'Clave']    = 'RG,Regulador Equipos electronicos,TO,EL'
         Aparatos_C.loc['Regulador', 'Zona']       = Zona
         Aparatos_C.loc['Regulador', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -358,11 +358,11 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
             Aparatos_C.loc['Regulador', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['Regulador', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['Regulador', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-        Aparatos_C.loc['Regulador', 'Atacable']     = 'Si'
+        Aparatos_C.loc['Regulador', 'Atacable']     = Atac_Elec(voltaje)
 
     InfoDeco = Equipos.filter(regex='regulador2')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['Regulador2', 'Clave']      = 'RG'
+        Aparatos_C.loc['Regulador2', 'Clave'] = 'RG,Regulador2 Equipos electronicos,TO,EL'
         Aparatos_C.loc['Regulador2', 'Zona']       = Zona
         Aparatos_C.loc['Regulador2', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador2', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -374,11 +374,11 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
             Aparatos_C.loc['Regulador2', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['Regulador2', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['Regulador2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-        Aparatos_C.loc['Regulador2', 'Atacable']     = 'Si'
+        Aparatos_C.loc['Regulador2', 'Atacable']     = Atac_Elec(voltaje)
 
         InfoDeco = Equipos.filter(regex='regulador3')
         if InfoDeco.filter(regex='existencia')[0]=='si':
-            Aparatos_C.loc['Regulador3', 'Clave']      = 'RG'
+            Aparatos_C.loc['Regulador3', 'Clave']     = 'RG,Regulador3 Equipos electronicos,TO,EL'
             Aparatos_C.loc['Regulador3', 'Zona']       = Zona
             Aparatos_C.loc['Regulador3', 'Marca']      = InfoDeco.filter(regex='marca')[0]
             Aparatos_C.loc['Regulador3', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -390,11 +390,11 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Regulador3', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
             Aparatos_C.loc['Regulador3', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
             Aparatos_C.loc['Regulador3', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-            Aparatos_C.loc['Regulador3', 'Atacable']     = 'Si'
+            Aparatos_C.loc['Regulador3', 'Atacable']     = Atac_Elec(voltaje)
 
         InfoDeco = Equipos.filter(regex='nobreak1')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['NoBreak', 'Clave']      = 'RG'
+        Aparatos_C.loc['NoBreak', 'Clave']      = 'NB'
         Aparatos_C.loc['NoBreak', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['NoBreak', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -410,7 +410,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
 
     InfoDeco = Equipos.filter(regex='nobreak2')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['NoBreak2', 'Clave']      = 'RG'
+        Aparatos_C.loc['NoBreak2', 'Clave']      = 'NB'
         Aparatos_C.loc['NoBreak2', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak2', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['NoBreak2', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -426,7 +426,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito):
 
         InfoDeco = Equipos.filter(regex='nobreak3')
         if InfoDeco.filter(regex='existencia')[0]=='si':
-            Aparatos_C.loc['NoBreak3', 'Clave']      = 'RG'
+            Aparatos_C.loc['NoBreak3', 'Clave']      = 'NB'
             Aparatos_C.loc['NoBreak3', 'Zona']       = Zona
             Aparatos_C.loc['NoBreak3', 'Marca']      = InfoDeco.filter(regex='marca')[0]
             Aparatos_C.loc['NoBreak3', 'Standby']    = InfoDeco.filter(regex='standby')[0]

@@ -154,5 +154,4 @@ def especiales(Excel,Nocircuito, NomCircuito):
     TotalConsumo = 5 #calc_consumo(Aparatos_C)
     Aparatos = Aparatos_C[Aparatos_C['Equipo'].notna()]
     Aparatos.reset_index()
-    print(Aparatos)
     return Aparatos , TotalConsumo

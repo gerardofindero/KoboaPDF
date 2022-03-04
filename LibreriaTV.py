@@ -150,7 +150,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC,PotenciaE):
 #=======
             #ClaveLib='TV03C'
             ClaveLib=''
-            Texto = Texto +ClaveLib+ lib.loc['TV03C','Texto']
+            #Texto = Texto +ClaveLib+ lib.loc['TV03C','Texto']
 #>>>>>>> e25999acc0ec11a21c08fa7654b464c1fc1b5133
 
         if Standby>1:

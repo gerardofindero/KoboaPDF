@@ -5,13 +5,14 @@ import funcionesComunes as fc
 from leerVoltaje import leer_volts
 
 def leerLibReg():
+
     #self.txt=''
     #self.val     = False
     #self.sustitutos = pd.DataFrame(columns=['tipo', 'cantidad', 'costo', 'link','kwhAhorroBimestral','ahorroBimestral', 'roi','accion'])
     try:
         libReg = pd.read_excel(
             f"../../../Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
-            sheet_name='libreriaReguladore')
+            sheet_name='libreriaReguladoresN')
         dbReg = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
             sheet_name='data')
@@ -24,7 +25,7 @@ def leerLibReg():
             sheet_name='data')
         libReg = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
-            sheet_name='libreriaReguladores')
+            sheet_name='libreriaReguladoresN')
         dbPro = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Reguladores/libreria_reguladores.xlsx",
             sheet_name='protectorVoltaje')
@@ -52,72 +53,110 @@ def leerLibReg():
 def crearClavesReg():
     # EL uso electrico
     # MC uso mecanico
+    # EE voltaje electronico estable
+    # EM voltaje mecanico estable
     # TO todos los equipos conectados al regulador son de amplia tolerancia
-    # Estructura: de claves - aparato ,nombre         , uso, tolerancia
-    # ejemplo                    "RG  ,Regulador Refri, MC , TO"
+    # Estructura: de claves - aparato ,nombre         , uso, tolerancia, voltaje estable
+    # ejemplo                    "RG  ,Regulador Refri, MC , TO, EM"
     Claves = ""
     return Claves
 
 
 
-def armarTxtF(Claves,kwh,potencia):
-    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+def armarTxt_NAtac(Claves):
+
     dbReg, lib, dbPro = leerLibReg()
     txt=""
+    clavesS = Claves.split(",")
+    nombre =  clavesS[1]
 
     if "EL" in Claves:
-        if "EE" in Claves:
-            txt+=lib.at["REG01F","Texto"]
-            PotAhorro = potAho(Claves, kwh, potencia, lib)
-        else:
-            if "TO" in Claves:
-                txt += lib.at["REG02F","Texto"]
-                PotAhorro = potAho(Claves, kwh, potencia, lib)
-            else:
-                txt += lib.at["REG03F","Texto"]
-    elif "MC" in Claves:
-        if "EM" in Claves:
-            txt += lib.at["REG04F","Texto"]
-            PotAhorro = potAho(Claves, kwh, potencia, lib)
-        else:
-            if "TO" in Claves:
-                txt += lib.at["REG05F","Texto"]
-                PotAhorro = potAho(Claves, kwh, potencia, lib)
-            else:
-                txt += lib.at["REG06F","Texto"]
+        txt += lib.at["REG03F","PropuestaFF"]
+    if "MC" in Claves:
+        txt += lib.at["REG06F","PropuestaFF"]
+
     linkSP = dbPro.at["[linkSP]","link"]
     linkPV = dbPro.at["[linkPV]","link"]
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Protector de voltaje",linkPV))
+    txt = txt.replace("[nombre]",nombre)
+    return txt
 
-    return [txt, PotAhorro]
 
-def armarTxtE(Claves,kwh,potencia):
-    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
+def armarTxt_Atac(Claves):
+    dbReg, lib, dbPro = leerLibReg()
+    txt = ""
+    clavesS = Claves.split(",")
+    nombre = clavesS[1]
+
+    if "EL" in Claves:
+        txt += lib.loc["REG01", "PropuestaFF"]
+        if "TO" in Claves:
+            txt += lib.loc["REG02F", "PropuestaFF"]
+
+    if "MC" in Claves:
+        txt += lib.loc["REG04F","PropuestaFF"]
+
+    linkSP = dbPro.loc["[linkSP]","link"]
+    linkPV = dbPro.loc["[linkPV]","link"]
+    txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
+    txt = txt.replace("[linkSP]",fc.ligarTextolink("Protector de voltaje",linkPV))
+    txt = txt.replace("[nombre]",nombre)
+
+    return txt
+
+
+
+def armarTxtE(kwh):
     dbReg, lib, dbPro = leerLibReg()
     txt = ""
     if kwh <= 7:
         txt+=lib.at["REG01E","Texto"]
     else:
         txt+= lib.at["REG02E","Texto"]
-        PotAhorro = potAho(Claves, kwh, potencia, lib)
     linkSP = dbPro.at["[linkSP]","link"]
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
+    return txt
 
-    return [txt,PotAhorro]
 
-def potAho(Claves,kwh,potencia,lib):
-    PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
-    if "EL" in Claves:
-        PotAhorro.loc[0,"%Ahorro"] = 1
-        PotAhorro.loc[0,"kwhAhorrado"] = kwh
-        PotAhorro.loc[0,"Accion"] = lib.at["REG01Fpa"]
-    elif "MC" in Claves:
-        PotAhorro.loc[0, "%Ahorro"] = 1-(2/potencia)
-        PotAhorro.loc[0, "kwhAhorrado"] = kwh*PotAhorro.at[0, "%Ahorro"]
-        PotAhorro.loc[0, "Accion"] = lib.at["REG02Fpa"]
-    return PotAhorro
+def Atac_Mec(voltaje):
+    rango = voltaje[0]
+    nSub = voltaje[1]
+    nSob = voltaje[2]
+    tSub = voltaje[3]
+    tSob = voltaje[4]
+    if rango:
+        Atac = 'Si'
+    else:
+        Atac = 'No'
 
+    if (nSob < 7) and (tSob < 0.17):
+        Atac = 'Si'
+
+    return Atac
+
+
+
+def Atac_Elec(voltaje):
+    rango = voltaje[0]
+    nSub = voltaje[1]
+    nSob = voltaje[2]
+    tSub = voltaje[3]
+    tSob = voltaje[4]
+    if rango:
+        Atac = 'Si'
+    else:
+        Atac = 'No'
+    if ((nSob + nSub) < 7) and ((tSub + tSob) < 0.17):
+        Atac = 'Si'
+
+
+    return Atac
+
+
+
+##################################################################################################################
+##################################################################################################################
 def sepRegAta(dfDes,DAC,vEstEle,vEstMec,nSob,nSub,tSob,tSub):
     # A atacable D Nombre N texto Q claves
 

@@ -35,6 +35,7 @@ from libreriaBombasAlberca import recoBA
 import libreriaAiresAcondicionados as laa
 from Tarifa import leer_cargo_fijo
 from Carpeta_Clientes import carpeta_clientes_Imagenes
+from libreriaReguladores_ import armarTxtE
 
 locale.setlocale(locale.LC_ALL, 'es_ES')
 logging.basicConfig(filename="logger.log", level=logging.INFO, format='%(asctime)s %(levelname)s:  %(message)s \n',
@@ -784,8 +785,10 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
         Consejos  =  recoBA(Claves,consumo,DAC, Uso)
     if ClavesS[0] == "CP":
         Consejos = recoCP(consumo)
-    #if ClavesS[0] == "BG":
+    if ClavesS[0] == "RG":
+        Consejos = armarTxtE(consumo)
 
+    #if ClavesS[0] == "BG":
     # if ClavesS[0] == 'X':
     #     Consejos = analizarCTV(consumo,Uso,'Ninguno')
 
@@ -1187,7 +1190,7 @@ def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
     LFugas = LFugas.drop_duplicates(subset=['E'], keep='first')
     Lugares= LFugas['E'].tolist()
     VFE,VFM,NSub,NSob,TSub,TSob = leer_volts(cliente)
-    sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
+    #sepRegAta(fugas_, tarifa, VFE, VFM, NSob, NSub, TSob, TSub)
     #if clave=='AMN':
     #sepNobAta(fugas_,tarifa)
 

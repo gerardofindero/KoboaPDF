@@ -27,10 +27,10 @@ def leer_volts(Cliente):
     if Max<135:
         if (Media+(2*(DsEst)))<135:
             VFE=True
-            if Min>105:
-                if 105 < (Media+(2*(DsEst))):
+            if Min>115:
+                if 115 < (Media+(2*(DsEst))):
                     if (Media-(2*(DsEst)))>105:
                         VFM=True
 
-
-    return VFE,VFM,NSub,NSob,TSub,TSob
+    voltaje=[VFE,VFM,NSub,NSob,TSub,TSob]
+    return voltaje
