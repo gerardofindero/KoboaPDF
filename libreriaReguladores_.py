@@ -118,9 +118,9 @@ def armarTxtE(kwh):
 def reemplazo(uso,standby,wC,dbReg):
     wC = wC *1.20
     if "EL" == uso:
-        filt = (dbReg.uso == "elec") & ( dbReg.w<=wC ) & ( dbReg.standby<standby )
+        filt = (dbReg.uso == "elec") & ( dbReg.w >= wC ) & ( dbReg.standby<standby )
     elif "MC" == uso:
-        filt = (dbReg.uso == "meca") & (dbReg.w <= wC) & (dbReg.standby < standby)
+        filt = (dbReg.uso == "meca") & (dbReg.w >= wC) & (dbReg.standby < standby)
     if filt.sum()>0:
         rec = dbReg.loc[dbReg.index[filt][0],:].reset_index(drop=True).copy()
         roi = True
