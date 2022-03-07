@@ -359,6 +359,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
         Aparatos_C.loc['Regulador', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['Regulador', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['Regulador', 'Atacable']     = Atac_Elec(voltaje)
+        Aparatos_C.loc['Regulador', 'Max_Potencia'] = PotenciaMAx_Reg(Aparatos_C, Aparatos_C.loc['Regulador', 'Equipos'])
 
     InfoDeco = Equipos.filter(regex='regulador2')
     if InfoDeco.filter(regex='existencia')[0]=='si':
@@ -447,3 +448,60 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
     # Aparatos_C.loc['HDD', 'Standby'] = InfoDeco.filter(regex='standby')[0]
 
     return Aparatos_C
+
+
+def PotenciaMAx_Reg(Aparatos_C,Equipos):
+    Equipos_Conectados=(Equipos.split())
+    PotenciaMax=0
+    Aparatos_C=Aparatos_C.fillna('X')
+    for i in (Equipos_Conectados):
+        if i=='laptop':
+            if not Aparatos_C.loc['Laptop', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Nominal']
+            if not Aparatos_C.loc['Laptop', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Standby']
+
+        if i=='computadora':
+            if not Aparatos_C.loc['Computadora', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Nominal']
+            if not Aparatos_C.loc['Computadora', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Standby']
+
+        if i=='modem':
+            if not Aparatos_C.loc['Modem', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador1', 'Standby']
+        if i=='repetidor':
+            if not Aparatos_C.loc['Repetidor', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Modem', 'Standby']
+        if i=='router':
+            if not Aparatos_C.loc['Router', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador2', 'Standby']
+        if i=='conmutador':
+            if not Aparatos_C.loc['Conmutador', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador3', 'Standby']
+        if i=='camara':
+            if not Aparatos_C.loc['Camara', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Repetidor', 'Standby']
+        if i=='puerta':
+            if not Aparatos_C.loc['Puerta', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bluray', 'Nominal']
+            if not Aparatos_C.loc['Puerta', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bluray', 'Standby']
+        if i=='impresora':
+            if not Aparatos_C.loc['Bocina', 'Nominal']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bocina', 'Nominal']
+            if not Aparatos_C.loc['Bocina', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Bocina', 'Standby']
+        if i=='telefono':
+            if not Aparatos_C.loc['Consola', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Standby']
+        if i=='cerca':
+            if not Aparatos_C.loc['Consola2', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola2', 'Standby']
+        if i=='hdd':
+            if not Aparatos_C.loc['EquipoExtra', 'Standby']=='X':
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra', 'Standby']
+
+
+    PotenciaMax=PotenciaMax+PotenciaMax*0.1
+    return PotenciaMax

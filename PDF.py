@@ -1671,7 +1671,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     revisar='no'
     nivel=1
     graficas_voltaje=[1,2,3]
-    voltaje(width, height, canvas, graficas_voltaje, color_voltaje,Cliente)
+    #voltaje(width, height, canvas, graficas_voltaje, color_voltaje,Cliente)
     medidor(canvas, width, height, robo, revisar, nivel, color_voltaje)
     estrategia_ahorro(canvas,width,height,0)
     notas(canvas)
