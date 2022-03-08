@@ -72,6 +72,8 @@ def armarTxt_Atac(voltaje, Claves, standby, wC):
         if "EE" in Claves:
             txt += lib.at["NB04F","Texto"]
         else:
+            [dbReg, libReg, dbPro] = lr.leerLibReg()
+            roi2, rec2 = lr.reemplazo("elec", standby, wC, dbReg)
             txt += lib.at["NB05F","Texto"]
     elif "NR" in Claves:
         if standby <= 15:
@@ -87,7 +89,7 @@ def armarTxt_Atac(voltaje, Claves, standby, wC):
     if roi:
         txt = txt.replace("[recoNB]",fc.ligarTextolink("No Break recomendado",dbUPS.at[0,"link"]))
     if (not "NR" in Claves) and (not "EE" in Claves):
-        txt = txt.replace("[recoREG]",fc.ligarTextolink("Regulador recomendado",""))
+        txt = txt.replace("[recoREG]",fc.ligarTextolink("Regulador recomendado",rec2.at[0,"link"]))
     return txt
 
 def armarTxtE(Claves,standby):
