@@ -117,6 +117,7 @@ def armarTxtE(kwh):
 
 def reemplazo(uso,standby,wC,dbReg):
     wC = wC *1.20
+    standby = standby*0.80
     if "EL" == uso:
         filt = (dbReg.uso == "elec") & ( dbReg.w >= wC ) & ( dbReg.standby<standby )
     elif "MC" == uso:
