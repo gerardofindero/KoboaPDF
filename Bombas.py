@@ -88,6 +88,7 @@ def bombas (Excel,Nocircuito):
         #    Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
         #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
         #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
+
         # Q (segundos en llenar un litro-> se convierte a litros por minuto en claves)
         try   : Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = InfoDeco.filter(regex='flujo_segundos')[0]
         except: Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = 0

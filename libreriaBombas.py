@@ -58,7 +58,31 @@ def crearClavesBG(infEq):
     claves += "/"+str(infEq["Temperatura"][0])     ; if infEq["Temperatura"][0] == 0: print("Temperatura del agua: 0")
 
 
+
     return claves
+
+def leerLibreriaBG():
+    try:
+        cur = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/curBom.xlsx")
+        dbB = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/Base de datos de bombas gravitacionales.xlsx",
+            sheet_name='Base de datos')
+        lib = pd.read_excel(
+            f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
+            sheet_name='libreriaBombas')
+    except:
+        cur = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/curBom.xlsx")
+        dbB = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/Base de datos de bombas gravitacionales.xlsx",
+            sheet_name='Base de datos')
+        lib = pd.read_excel(
+            f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
+            sheet_name='libreriaBombas')
+    lib = lib.set_index("lib")
+
+    return [lib, dbB, cur]
 
 class libreriaBombasGravitacionales:
     def __init__(self):
@@ -123,7 +147,8 @@ class libreriaBombasGravitacionales:
         self.L    = float(L)
         self.D    = float(D)
         self.nc90 = float(nc90)
-
+        self.T    = float(T)
+        """
         self.hrsUso  = hrsUso
         self.w       = potencia
         self.kwh     = consumo
@@ -145,7 +170,7 @@ class libreriaBombasGravitacionales:
 
 
         self.material = material
-
+"""
         self.txt = ''
 
         #self.Qm3s    = Q/100/60 # Qm3s (Q de la casa)=>litros/min (1m3/1000L)(1min/60s) -> m3/s
@@ -288,7 +313,7 @@ def est_vis(T):
 
 def estH(Z,Q,L,D,nC90,material,T):
     """
-    Estimación de cabezal en funcion de ...
+    Estimación de cabezal
     :param Z: Cabezal estatico en metros
     :param Q: Caudal  en m3/s
     :param L: longitud Tuberia en m
