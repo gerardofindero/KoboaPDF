@@ -330,6 +330,8 @@ def caritaRegulador(consumo):
     return Ca
 
 
+
+
 def caritaBombaA(consumo,clave):
     lib, f = leerLibreriaBA()
     f.loc[:, "Potencia"] = f.loc[:, "Potencia"].astype(float)
@@ -384,6 +386,13 @@ def caritaCP(consumo,clave):
         Ca = 2
     elif 68 < consumo:
         Ca = 3
+    return Ca
+
+def caritaNB(Claves,potencia):
+    if ("NR" in Claves) and (potencia<=15):
+        Ca = 1
+    else:
+        Ca = 2
     return Ca
 
 def definircarita(Equipo):
