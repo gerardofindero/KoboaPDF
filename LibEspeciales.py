@@ -37,6 +37,7 @@ def textodeconsejos(clave):
 
     for index, claves in clave.iterrows():
         equipo     = claves[3]
+        Standby =  claves[9]
         textoE      = claves[13]
         clave      = claves[16]
         refris  = ['refrigerador','congelador','bar','hielos','regulador']
@@ -98,7 +99,7 @@ def textodeconsejos(clave):
 
             elif 'regulador' in equipo:
                 if not 'RG/' in Conta:
-                    textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave)
+                    textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave,Standby)
                     Conta = Conta + 'RG/ '
                     contador = contador + 1
 
@@ -470,8 +471,10 @@ def noatac(equipos):
 
 
         if clave=='AMN':
-            Consejos='-'+texto+' <br /> <br />'
-            ConsejosCompletos=ConsejosCompletos+Consejos
+            if not 'AM' in Conta:
+                Consejos='-'+texto+' <br /> <br />'
+                ConsejosCompletos=ConsejosCompletos+Consejos
+                Conta=Conta+'AM /'
         else:
             if 'refrigerador' in equipo:
                 if not 'RF' in Conta:

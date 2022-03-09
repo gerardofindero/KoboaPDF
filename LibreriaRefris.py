@@ -309,6 +309,8 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         Texto = Texto.replace("[TEMPC]",str(int(TCong)))
 
     if equipoR == "MB":
+        Texto = Texto.replace("[TEMPR]", str(int(TRef)))
+        Texto = Texto.replace("[TEMPC]", str(int(TCong)))
         Texto = Texto.replace("[equipo]","minibar")
         Texto = Texto.replace("Refrigerador","Minibar").replace("refrigerador","minibar")
         PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador","Minibar").replace("refrigerador","minibar")
@@ -317,6 +319,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         Texto = Texto.replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
         PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
     if equipoR == "CV":
+        Texto = Texto.replace("[TEMPR]", str(int(TRef)))
         Texto = Texto.replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
         PotAhorro.loc[0, "Accion"] = PotAhorro.at[0, "Accion"].replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
 

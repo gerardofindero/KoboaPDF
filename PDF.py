@@ -664,8 +664,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             tex='También, '+tex
 
         if 'http' in tex:
-            largoTx=largoTx-150
-
+            largoTx=largoTx-100
         if largoTx<160:
             parrafoss.append(Paragraph(tex, Estilos.Lumi))
             frame = Frame(258, altura - 15, 290, 65)
@@ -1682,7 +1681,8 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     try:
         canvas.save()
         print(" ")
-        print("SE HA CREADO CON EXITO EL PDF DEL CLIENTE")
+        # print("SE HA CREADO CON EXITO EL PDF DEL CLIENTE")
+
 
     except Exception as e:
         print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")

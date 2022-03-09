@@ -144,9 +144,11 @@ def lavanderia(Excel,Nocircuito, NomCircuito,voltaje):
         Aparatos_C.loc['Regulador Lavadora', 'Marca'] = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador Lavadora', 'Existencia'] = 1
         Aparatos_C.loc['Regulador Lavadora ', 'Notas']   = Notass
-        Aparatos_C.loc['Regulador Lavadora', 'Clave']   = 'RG,Regulador Lavadora,MC'
         Aparatos_C.loc['Regulador Lavadora', 'Zona']     = 'Cuarto de lavado'
-        Aparatos_C.loc['Regulador Lavadora', 'Atacable'] = Atac_Mec(voltaje)
+        Aparatos_C.loc['Regulador Lavadora', 'Max_Potencia'] = Aparatos_C.loc['Lavadora','Nominal']
+        Aparatos_C.loc['Regulador Lavadora', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc['Regulador Lavadora', 'Standby'],
+                                                            Aparatos_C.loc['Regulador Lavadora', 'Max_Potencia'])
+        Aparatos_C.loc['Regulador Lavadora', 'Clave'] = 'RG,Regulador Lavadora,MC' + ',' + str(Aparatos_C.loc['Regulador Lavadora', 'Max_Potencia'])
 
     if Equipos.filter(regex='secadora_reguladorSN')[0]=='si':
         InfoDeco = Circuito.filter(regex='secadora')
@@ -157,7 +159,12 @@ def lavanderia(Excel,Nocircuito, NomCircuito,voltaje):
         Aparatos_C.loc['Regulador Secadora', 'Notas'] = Notass
         Aparatos_C.loc['Regulador Secadora', 'Clave'] = 'RG,Regulador Secadora,MC'
         Aparatos_C.loc['Regulador Secadora', 'Zona'] = 'Cuarto de lavado'
-        Aparatos_C.loc['Regulador Secadora', 'Atacable'] = Atac_Mec(voltaje)
+        Aparatos_C.loc['Regulador Secadora', 'Max_Potencia'] = Aparatos_C.loc['Secadora', 'Nominal']
+        Aparatos_C.loc['Regulador Secadora', 'Atacable'] = Atac_Mec(voltaje,
+                                                                    Aparatos_C.loc['Regulador Secadora', 'Standby'],
+                                                                    Aparatos_C.loc[
+                                                                        'Regulador Secadora', 'Max_Potencia'])
+        Aparatos_C.loc['Regulador Secadora', 'Clave'] = 'RG,Regulador Secadora,MC'+','+str(Aparatos_C.loc['Regulador Secadora', 'Max_Potencia'])
 
     # if Equipos.filter(regex='mismo_regulador_c_i')[0] == 'si':
     #     Aparatos_C.loc['Regulador Lavado', 'CodigoS'] = CodStandby

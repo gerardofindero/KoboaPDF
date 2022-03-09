@@ -346,7 +346,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
 
     InfoDeco = Equipos.filter(regex='regulador1')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['Regulador', 'Clave']    = 'RG,Regulador Equipos electronicos,TO,EL'
+
         Aparatos_C.loc['Regulador', 'Zona']       = Zona
         Aparatos_C.loc['Regulador', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -358,12 +358,11 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
             Aparatos_C.loc['Regulador', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['Regulador', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['Regulador', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-        Aparatos_C.loc['Regulador', 'Atacable']     = Atac_Elec(voltaje)
         Aparatos_C.loc['Regulador', 'Max_Potencia'] = PotenciaMAx_Reg(Aparatos_C, Aparatos_C.loc['Regulador', 'Equipos'])
-
+        Aparatos_C.loc['Regulador', 'Atacable'] = Atac_Elec(voltaje, Aparatos_C.loc['Regulador', 'Standby'],Aparatos_C.loc['Regulador', 'Max_Potencia'])
+        Aparatos_C.loc['Regulador', 'Clave'] = 'RG,Regulador Equipos electronicos,TO,EL'+''+str(Aparatos_C.loc['Regulador', 'Max_Potencia'])
     InfoDeco = Equipos.filter(regex='regulador2')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['Regulador2', 'Clave'] = 'RG,Regulador2 Equipos electronicos,TO,EL'
         Aparatos_C.loc['Regulador2', 'Zona']       = Zona
         Aparatos_C.loc['Regulador2', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['Regulador2', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -375,11 +374,14 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
             Aparatos_C.loc['Regulador2', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['Regulador2', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['Regulador2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-        Aparatos_C.loc['Regulador2', 'Atacable']     = Atac_Elec(voltaje)
+        Aparatos_C.loc['Regulador2', 'Max_Potencia'] = PotenciaMAx_Reg(Aparatos_C,Aparatos_C.loc['Regulador2', 'Equipos'])
+        Aparatos_C.loc['Regulador2', 'Atacable'] = Atac_Elec(voltaje, Aparatos_C.loc['Regulador2', 'Standby'],
+                                                            Aparatos_C.loc['Regulador2', 'Max_Potencia'])
+        Aparatos_C.loc['Regulador2', 'Clave'] = 'RG,Regulador Equipos electronicos,TO,EL' + '' + str(
+            Aparatos_C.loc['Regulador2', 'Max_Potencia'])
 
         InfoDeco = Equipos.filter(regex='regulador3')
         if InfoDeco.filter(regex='existencia')[0]=='si':
-            Aparatos_C.loc['Regulador3', 'Clave']     = 'RG,Regulador3 Equipos electronicos,TO,EL'
             Aparatos_C.loc['Regulador3', 'Zona']       = Zona
             Aparatos_C.loc['Regulador3', 'Marca']      = InfoDeco.filter(regex='marca')[0]
             Aparatos_C.loc['Regulador3', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -391,7 +393,12 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Aparatos_C.loc['Regulador3', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
             Aparatos_C.loc['Regulador3', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
             Aparatos_C.loc['Regulador3', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-            Aparatos_C.loc['Regulador3', 'Atacable']     = Atac_Elec(voltaje)
+            Aparatos_C.loc['Regulador3', 'Max_Potencia'] = PotenciaMAx_Reg(Aparatos_C,
+                                                                           Aparatos_C.loc['Regulador3', 'Equipos'])
+            Aparatos_C.loc['Regulador3', 'Atacable'] = Atac_Elec(voltaje, Aparatos_C.loc['Regulador3', 'Standby'],
+                                                                 Aparatos_C.loc['Regulador3', 'Max_Potencia'])
+            Aparatos_C.loc['Regulador3', 'Clave'] = 'RG,Regulador Equipos electronicos,TO,EL' + '' + str(
+                Aparatos_C.loc['Regulador3', 'Max_Potencia'])
 
         InfoDeco = Equipos.filter(regex='nobreak1')
     if InfoDeco.filter(regex='existencia')[0]=='si':
