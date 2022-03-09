@@ -155,6 +155,7 @@ if __name__ == '__main__':
     if Opcion == '2':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
+
         #hipervinculos(NCliente)
 
 ### Se crea la pestaña de potencial de ahorro

@@ -27,7 +27,7 @@ def consumoEq(consumo):
         if "w" in consumo:
             watts = float(consumo.replace('w', ' '))
         if consumo=='nm':
-            watts = 0.00001
+            watts = 100000
 
     return watts
 

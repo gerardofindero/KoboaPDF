@@ -70,11 +70,12 @@ def armarTxt_NAtac(Claves):
     return txt
 
 
-def armarTxt_Atac(Claves,standby,wC):
+def armarTxt_Atac(Claves,standby):
     dbReg, lib, dbPro = leerLibReg()
     txt = ""
     clavesS = Claves.split(",")
     nombre = clavesS[1]
+    wC=clavesS[-1]
 
     if "EL" in Claves:
         txt += lib.loc["REG01", "Texto"]
@@ -86,7 +87,7 @@ def armarTxt_Atac(Claves,standby,wC):
 
 
     if "MC" in Claves:
-        [roi,rec] = reemplazo()
+        [roi,rec] = reemplazo("MC",standby,wC,dbReg)
         if roi:
             txt += lib.loc["REG06Fb","Texto"]
         else:
@@ -97,9 +98,9 @@ def armarTxt_Atac(Claves,standby,wC):
     linkSP = dbPro.loc["[linkSP]","link"]
     linkPV = dbPro.loc["[linkPV]","link"]
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
-    txt = txt.replace("[linkSP]",fc.ligarTextolink("Protector de voltaje",linkPV))
+    txt = txt.replace("[linkPV]",fc.ligarTextolink("Protector de voltaje",linkPV))
     txt = txt.replace("[nombre]",nombre)
-
+    txt+= "<br />"
     return txt
 
 
@@ -116,18 +117,32 @@ def armarTxtE(kwh):
     return txt
 
 def reemplazo(uso,standby,wC,dbReg):
-    wC = wC *1.20
-    standby = standby*0.80
-    if "EL" == uso:
-        filt = (dbReg.uso == "elec") & ( dbReg.w >= wC ) & ( dbReg.standby<standby )
+
+    wC = float(wC) *1.20
+    if wC==10000*1.20:
+        roi=False
+        rec=None
+    elif "EL" == uso:
+        filt = (dbReg.uso == "elec") & ( dbReg.w<=wC ) & ( dbReg.standby<standby )
+        if filt.sum() > 0:
+            rec = dbReg.loc[dbReg.index[filt][0], :].reset_index(drop=True).copy()
+            roi = True
+        else:
+            roi = False
+            rec = None
+
     elif "MC" == uso:
-        filt = (dbReg.uso == "meca") & (dbReg.w >= wC) & (dbReg.standby < standby)
-    if filt.sum()>0:
-        rec = dbReg.loc[dbReg.index[filt][0],:].reset_index(drop=True).copy()
-        roi = True
+        filt = (dbReg.uso == "meca") & (dbReg.w <= wC) & (dbReg.standby < standby)
+        if filt.sum()>0:
+            rec = dbReg.loc[dbReg.index[filt][0],:].reset_index(drop=True).copy()
+            roi = True
+        else:
+            roi = False
+            rec = None
     else:
         roi = False
         rec = None
+
     return [roi,rec]
 
 def Atac_Mec(voltaje,standby,wC):

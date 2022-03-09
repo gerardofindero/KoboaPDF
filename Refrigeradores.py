@@ -102,12 +102,14 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Refrigerador', 'CodigoS'] = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
                     Aparatos_C.loc['Regulador Refrigerador', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Refrigerador', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Refrigerador', 'Clave'] = 'RG,Regulador Refrigerador,MC'
-                    Aparatos_C.loc['Regulador Refrigerador', 'Zona'] = Aparatos_C.loc['Refrigerador', 'Zona']
-                    Aparatos_C.loc['Regulador Refrigerador', 'Atacable'] = Atac_Mec(voltaje)
 
-                Aparatos_C.loc['Problemas', 'Marca'] = Circuito.filter(regex='_problemas_otro_c_i')[0]
-                Aparatos_C.loc['Problemas', 'Existencia']=1
+                    Aparatos_C.loc['Regulador Refrigerador', 'Zona'] = Aparatos_C.loc['Refrigerador', 'Zona']
+                    Aparatos_C.loc['Regulador Refrigerador', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Refrigerador', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc['Regulador Refrigerador', 'Standby'],
+                                                                                Aparatos_C.loc['Regulador Refrigerador', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Refrigerador', 'Clave'] = 'RG,Regulador Refrigerador,MC'+','+str(consumoEq(Aparatos_C.loc['Regulador Refrigerador', 'Max_Potencia']))
+                    Aparatos_C.loc['Problemas', 'Marca'] = Circuito.filter(regex='_problemas_otro_c_i')[0]
+                    Aparatos_C.loc['Problemas', 'Existencia']=1
 
 
 #########################
@@ -182,9 +184,11 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Congelador', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Congelador', 'Notas'] = notass
                     Aparatos_C.loc['Regulador Congelador', 'Zona'] = Aparatos_C.loc['Congelador', 'Zona']
-                    Aparatos_C.loc['Regulador Congelador', 'Clave'] = 'RG,Regulador Congelador,MC'
-                    Aparatos_C.loc['Regulador Congelador', 'Atacable'] = Atac_Mec(voltaje)
-
+                    #Aparatos_C.loc['Regulador Congelador', 'Clave'] = 'RG,Regulador Congelador,MC'
+                    Aparatos_C.loc['Regulador Congelador', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Congelador', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[ 'Regulador Congelador', 'Standby'],
+                                                                                    Aparatos_C.loc['Regulador Congelador', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Congelador', 'Clave'] = 'RG,Regulador Congelador,MC' + ',' + str(consumoEq(Aparatos_C.loc['Regulador Congelador', 'Max_Potencia']))
             if indx == 3:
                 NomAparato = 'minibar1'
                 InfoDeco = Circuito.filter(regex=NomAparato)
@@ -254,9 +258,13 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Minibar', 'CodigoS'] = StandbyCod
                     Aparatos_C.loc['Regulador Minibar', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Minibar', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Minibar', 'Clave'] = 'RG,Regulador Minibar,MC'
+                    #Aparatos_C.loc['Regulador Minibar', 'Clave'] = 'RG,Regulador Minibar,MC'
                     Aparatos_C.loc['Regulador Minibar', 'Zona'] = Aparatos_C.loc['Minibar', 'Zona']
-                    Aparatos_C.loc['Regulador Minibar', 'Atacable'] = Atac_Mec(voltaje)
+                    Aparatos_C.loc['Regulador Minibar', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Minibar', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc['Regulador Minibar', 'Standby'],
+                                                                                    Aparatos_C.loc[ 'Regulador Minibar', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Minibar', 'Clave'] = 'RG,Regulador Minibar,MC' + ',' + \
+                                                                        str(consumoEq(Aparatos_C.loc['Regulador Minibar', 'Max_Potencia']))
 
 
             if indx == 4:
@@ -328,10 +336,15 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Cava', 'CodigoS'] = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
                     Aparatos_C.loc['Regulador Cava', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Cava', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Cava', 'Clave'] = 'RG,Regulador Cava,MC'
+                    #Aparatos_C.loc['Regulador Cava', 'Clave'] = 'RG,Regulador Cava,MC'
                     Aparatos_C.loc['Regulador Cava', 'Zona'] = Aparatos_C.loc['Cava', 'Zona']
-                    Aparatos_C.loc['Regulador Cava', 'Atacable'] = Atac_Mec(voltaje)
-
+                    Aparatos_C.loc['Regulador Cava', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Cava', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Cava', 'Standby'],
+                                                                               Aparatos_C.loc[
+                                                                                   'Regulador Cava', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Cava', 'Clave'] = 'RG,Regulador Cava,MC' + ',' + str(consumoEq(Aparatos_C.loc[
+                        'Regulador Cava', 'Max_Potencia']))
 
 
 
@@ -404,9 +417,16 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Maquina de Hielos', 'CodigoS'] = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
                     Aparatos_C.loc['Regulador Maquina de Hielos', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Maquina de Hielos', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Clave'] = 'RG,Regulador Hielos,MC'
-                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Zona'] = Aparatos_C.loc['Cava', 'Zona']
-                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Atacable'] = Atac_Mec(voltaje)
+                    #Aparatos_C.loc['Regulador Maquina de Hielos', 'Clave'] = 'RG,Regulador Hielos,MC'
+                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Zona'] = Aparatos_C.loc['Maquina de Hielos', 'Zona']
+                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Maquina de Hielos', 'Standby'],
+                                                                               Aparatos_C.loc[
+                                                                                   'Regulador Maquina de Hielos', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Maquina de Hielos', 'Clave'] = 'RG,Regulador Maquina de Hielos,MC' + ',' +str(consumoEq(Aparatos_C.loc[
+                        'Regulador Maquina de Hielos', 'Max_Potencia']))
+
 
             if indx == 6:
 
@@ -487,8 +507,12 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Refrigerador2', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Refrigerador2', 'Notas'] = notass
                     Aparatos_C.loc['Regulador Refrigerador2', 'Zona'] = Aparatos_C.loc['Refrigerador2', 'Zona']
-                    Aparatos_C.loc['Regulador Refrigerador2', 'Clave'] = 'RG,Regulador Refrigerador2,MC'
-                    Aparatos_C.loc['Regulador Refrigerador2', 'Atacable'] = Atac_Mec(voltaje)
+                    #Aparatos_C.loc['Regulador Refrigerador2', 'Clave'] = 'RG,Regulador Refrigerador2,MC'
+                    Aparatos_C.loc['Regulador Refrigerador2', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Refrigerador2', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Refrigerador2', 'Standby'],Aparatos_C.loc['Regulador Refrigerador2', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Refrigerador2', 'Clave'] = 'RG,Regulador Refrigerador2,MC' + ',' + str(consumoEq(Aparatos_C.loc[
+                        'Regulador Refrigerador2', 'Max_Potencia']))
 
                 Aparatos_C.loc['Problemas', 'Marca'] = Circuito.filter(regex='_problemas_otro_c_i')[0]
                 Aparatos_C.loc['Problemas', 'Existencia']=1
@@ -568,7 +592,14 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Congelador2', 'Notas'] = notass
                     Aparatos_C.loc['Regulador Congelador2', 'Clave'] = 'RG,Regulador Congelador2,MC'
                     Aparatos_C.loc['Regulador Congelador2', 'Zona'] = Aparatos_C.loc['Congelador2', 'Zona']
-                    Aparatos_C.loc['Regulador Congelador2', 'Atacable'] = Atac_Mec(voltaje)
+                    Aparatos_C.loc['Regulador Congelador2', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Congelador2', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Congelador2', 'Standby'],
+                                                                                    Aparatos_C.loc[
+                                                                                        'Regulador Congelador2', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Congelador2', 'Clave'] = 'RG,Regulador Congelador2,MC' + ',' + \
+                                                                         str(consumoEq(Aparatos_C.loc[ 'Regulador Congelador2', 'Max_Potencia']))
+
 
             if indx == 8:
                 NomAparato = 'minibar2'
@@ -613,9 +644,15 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
 
                     Aparatos_C.loc['Regulador Minibar2', 'CodigoS'] = StandbyCod
                     Aparatos_C.loc['Regulador Minibar2', 'Existencia'] = 1
-                    Aparatos_C.loc['Regulador Minibar2', 'Clave'] = 'RG,Regulador Minibar2,MC'
+                    #Aparatos_C.loc['Regulador Minibar2', 'Clave'] = 'RG,Regulador Minibar2,MC'
                     Aparatos_C.loc['Regulador Minibar2', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Minibar2', 'Atacable'] = Atac_Mec(voltaje)
+                    Aparatos_C.loc['Regulador Minibar2', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Minibar2', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Minibar2', 'Standby'], Aparatos_C.loc['Regulador Minibar2', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Minibar2', 'Clave'] = 'RG,Regulador Minibar2,MC' + ',' + \
+                                                                         str(consumoEq(Aparatos_C.loc['Regulador Minibar2', 'Max_Potencia']))
+
+
 
             if indx == 9:
                 NomAparato = 'cava2'
@@ -686,9 +723,14 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Cava2', 'CodigoS'] = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
                     Aparatos_C.loc['Regulador Cava2', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Cava2', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Cava2', 'Clave'] = 'RG,Regulador Cava2,MC'
+                    #Aparatos_C.loc['Regulador Cava2', 'Clave'] = 'RG,Regulador Cava2,MC'
                     Aparatos_C.loc['Regulador Cava2', 'Zona'] = Aparatos_C.loc['Cava', 'Zona']
-                    Aparatos_C.loc['Regulador Cava2', 'Atacable'] = Atac_Mec(voltaje)
+                    Aparatos_C.loc['Regulador Cava2', 'Max_Potencia'] = PotCompresor
+                    Aparatos_C.loc['Regulador Cava2', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Cava2', 'Standby'], Aparatos_C.loc['Regulador Cava2', 'Max_Potencia'])
+                    Aparatos_C.loc['Regulador Cava2', 'Clave'] = 'RG,Regulador Cava2,MC' + ',' + \
+                                                                         str(consumoEq(Aparatos_C.loc[
+                                                                             'Regulador Cava2', 'Max_Potencia']))
 
             if indx == 10:
                 NomAparato = 'adicional'
@@ -724,7 +766,10 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                     Aparatos_C.loc['Regulador Refrigeracion', 'Existencia'] = 1
                     Aparatos_C.loc['Regulador Refrigeracion', 'Clave'] = 'RG,Regulador equipo de refrigeracion,MC'
                     Aparatos_C.loc['Regulador Refrigeracion', 'Notas'] = notass
-                    Aparatos_C.loc['Regulador Refrigeracion', 'Atacable'] = Atac_Mec(voltaje)
+                    Aparatos_C.loc['Regulador Refrigeracion', 'Max_Potencia'] = Aparatos_C.loc['Refrigeracion', 'Nominal']
+                    Aparatos_C.loc['Regulador Refrigeracion', 'Atacable'] = Atac_Mec(voltaje, Aparatos_C.loc[
+                        'Regulador Refrigeracion', 'Standby'], Aparatos_C.loc['Regulador Refrigeracion', 'Max_Potencia'])
+
         indx+=1
     Aparatos_C.loc['Refrigerador', 'Notas'] = Circuito.filter(regex='refrigeracion_notas_c_i')[0]
     Info_R.loc['Refrigeracion', 'Notas'] = Circuito.filter(regex='refrigeracion_notas_c_i')[0]

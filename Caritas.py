@@ -272,6 +272,7 @@ def caritaCongeH(consumo,Claves):
     elif percentil < 0.3:
         Ca = 1
     return Ca
+
 def caritaPlancha(consumo,clave):
     if consumo>33:
         Ca = 3
@@ -396,12 +397,14 @@ def caritaNB(Claves,potencia):
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
+        print(aparato)
         if pd.notna(aparato[16]):
             clave = aparato[16]
             consumo = aparato[10]
             potencia = aparato[6]
             equipoid = aparato[16].split(',')[0]
             equipoi = aparato[16].split('/')[0]
+
             if equipoid == 'RF':
                 Carita = caritaRefri(consumo,clave)
             elif equipoid == 'CN':
