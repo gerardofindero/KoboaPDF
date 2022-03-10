@@ -78,7 +78,7 @@ def armarTxt_Atac(Claves,standby):
     wC=clavesS[-1]
 
     if "EL" in Claves:
-        txt += lib.loc["REG01", "Texto"]
+        txt += lib.loc["REG01F", "Texto"]
         [roi,rec] = reemplazo("EL",standby,wC,dbReg)
         if "TO" in Claves:
             txt += lib.loc["REG02F", "Texto"]
@@ -117,7 +117,7 @@ def armarTxtE(kwh):
     return txt
 
 def reemplazo(uso,standby,wC,dbReg):
-
+    print(wC)
     wC = float(wC) *1.20
     if wC==10000*1.20:
         roi=False

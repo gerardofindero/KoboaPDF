@@ -242,16 +242,34 @@ def cocina(Excel,Nocircuito, NomCircuito):
 
             if indx == 9:
                 InfoDeco = Equipos.filter(regex='estufa')
+                if CodigoN=='X':
+                    if InfoDeco.filter(regex='espendiente_c_i')[0]=='no':
+                        Aparatos_C.loc['Estufa', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
+                    else:
+                        Aparatos_C.loc['Estufa', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                        if InfoDeco.filter(regex='codigofindero2_c_i')[0]!='X':
+                            Aparatos_C.loc['Estufa', 'CodigoN']     =Aparatos_C.loc['Estufa', 'CodigoN'] +','+ InfoDeco.filter(regex='codigofindero2_c_i')[0]
+                else:
+                    Aparatos_C.loc['Estufa', 'CodigoN']     = CodigoN
                 Aparatos_C.loc['Estufa', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Estufa', 'Existencia'] = 1
                 Aparatos_C.loc['Estufa', 'Zona'] = zona
-                Aparatos_C.loc['Estufa', 'Atacable'] = 'NF'
-                Aparatos_C.loc['Estufa', 'CodigoN'] =InfoDeco.filter(regex='codigofindero_c_i')[0]
-                Aparatos_C.loc['Estufa', 'Clave'] = 'X'
+                Aparatos_C.loc['Estufa', 'Atacable'] = 'Si'
+                Aparatos_C.loc['Estufa', 'Clave'] = 'EF'
                 Aparatos_C.loc['Estufa', 'Notas'] = Equipos.filter(regex='cocina_notas_c_i')[0]
 
             if indx == 10:
                 InfoDeco = Equipos.filter(regex='tostador')
+                if CodigoN=='X':
+                    if InfoDeco.filter(regex='espendiente_c_i')[0]=='no':
+                        Aparatos_C.loc['Tostador', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
+                    else:
+                        Aparatos_C.loc['Tostador', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                        if InfoDeco.filter(regex='codigofindero2_c_i')[0]!='X':
+                            Aparatos_C.loc['Tostador', 'CodigoN']     =Aparatos_C.loc['Tostador', 'CodigoN'] +','+ InfoDeco.filter(regex='codigofindero2_c_i')[0]
+                else:
+                    Aparatos_C.loc['Tostador', 'CodigoN']     = CodigoN
+
                 Aparatos_C.loc['Tostador', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Tostador', 'Existencia'] = 1
                 Aparatos_C.loc['Tostador', 'Zona'] = zona

@@ -4,7 +4,7 @@ from Correciones import Lugar
 import numpy as np
 from LibreriaTV import ClavesClusterTV
 from libreriaReguladores_ import Atac_Elec
-
+from libreriaUPS_ import Atac_NB
 
 
 def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
@@ -73,6 +73,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['TV', 'Lugar'] = Zona
                 Aparatos_C.loc['TV', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['TV', 'Notas'] = Notas
+                Aparatos_C.loc['TV', 'NR'] = 'No'
                 if Aparatos_C.loc['TV', 'Standby'] != 0:
                     Aparatos_C.loc['TV', 'Atacable'] = 'Si'
                 else:
@@ -90,6 +91,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Decodificador1', 'CodigoS'] =  CodStandby
                 Aparatos_C.loc['Decodificador1', 'Lugar'] = Zona
                 Aparatos_C.loc['Decodificador1', 'Notas'] = Notas
+                Aparatos_C.loc['Decodificador1', 'NR'] = ''
 
 
             if indx == 3:
@@ -103,6 +105,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Modem', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Modem', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Modem', 'Notas'] = Notas
+                Aparatos_C.loc['Modem', 'NR'] = 'NR'
 
 
 
@@ -119,6 +122,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Repetidor', 'Lugar'] = Zona
                 Aparatos_C.loc['Repetidor', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Repetidor', 'Notas'] = Notas
+                Aparatos_C.loc['Repetidor', 'NR'] = 'NR'
 
 
 
@@ -132,6 +136,8 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Consola1', 'Lugar'] = Zona
                 Aparatos_C.loc['Consola1', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Consola1', 'Notas'] = Notas
+                Aparatos_C.loc['Consola1', 'NR'] = ''
+
 
 
             ##Antena
@@ -145,6 +151,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Antena', 'Lugar'] = Zona
                 Aparatos_C.loc['Antena', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Antena', 'Notas'] = Notas
+                Aparatos_C.loc['Antena', 'NR'] = ''
 
             # Sonido
             if indx == 7:
@@ -159,6 +166,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Sonido', 'Tolerancia']=False
                 Aparatos_C.loc['Sonido', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Sonido', 'Notas'] = Notas
+                Aparatos_C.loc['Sonido', 'NR'] = ''
 
 
             ##Bocinas
@@ -175,6 +183,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Bocinas', 'Lugar'] = Zona
                 Aparatos_C.loc['Bocinas', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Bocinas', 'Notas'] = Notas
+                Aparatos_C.loc['Bocinas', 'NR'] = ''
 
             # Blueray
             if indx == 9:
@@ -192,6 +201,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Bluray', 'Lugar'] = Zona
                 Aparatos_C.loc['Bluray', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Bluray', 'Notas'] = Notas
+                Aparatos_C.loc['Bluray', 'NR'] = ''
 
             ##Decodificador2
             if indx == 10:
@@ -208,6 +218,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Decodificador2', 'Lugar'] = Zona
                 Aparatos_C.loc['Decodificador2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Decodificador2', 'Notas'] = Notas
+                Aparatos_C.loc['Decodificador2', 'NR'] = ''
 
             if indx == 11:
                 NomAparato = 'decodificador3'
@@ -223,6 +234,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Decodificador3', 'Lugar'] = Zona
                 Aparatos_C.loc['Decodificador3', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Decodificador3', 'Notas'] = Notas
+                Aparatos_C.loc['Decodificador3', 'NR'] = ''
 
             ##Consola2
             if indx == 12:
@@ -237,6 +249,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Consola2', 'Lugar'] = Zona
                 Aparatos_C.loc['Consola2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Consola2', 'Notas'] = Notas
+                Aparatos_C.loc['Consola2', 'NR'] = ''
 
             if indx == 13:
             ##EquipoExtra
@@ -252,6 +265,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Equipoextra', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['EquipoExtra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['EquipoExtra', 'Notas'] = Notas
+                Aparatos_C.loc['EquipoExtra', 'NR'] = ''
 
             if indx == 14:
             ##EquipoExtra
@@ -266,6 +280,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Equipoextra2', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Equipoextra2', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['EquipoExtra2', 'Notas'] = Notas
+                Aparatos_C.loc['EquipoExtra2', 'NR'] = ''
 
             if indx == 15:
             ##EquipoExtra
@@ -280,6 +295,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Equipoextra3', 'CodigoS'] = CodStandby
                 Aparatos_C.loc['Equipoextra3', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['EquipoExtra3', 'Notas'] = Notas
+                Aparatos_C.loc['EquipoExtra3', 'NR'] = ''
 
         InfoDeco = Circuito.filter(regex='eqdeahorro')
         if not InfoDeco.empty:
@@ -351,23 +367,27 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
 
     if Circuito.filter(regex='clustertv_nobreak1_existencia_c_i')[0]=='si':
         InfoDeco = EquiposCTV.filter(regex='nobreak1')
-        Aparatos_C.loc['NoBreak', 'Clave']      = 'NB'
+
         Aparatos_C.loc['NoBreak', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak', 'Marca']      = InfoDeco.filter(regex='marca')[0] + ' del Cluster de TV'
         Aparatos_C.loc['NoBreak', 'Standby']    = InfoDeco.filter(regex='standby')[0]
         Aparatos_C.loc['NoBreak', 'CodigoS']    = CodStandby
         Aparatos_C.loc['NoBreak', 'Equipos']      = InfoDeco.filter(regex='equipos_c_i')[0]
+        NR=NR_NoBreak(Aparatos_C.loc['NoBreak', 'Equipos'] )
         if Aparatos_C.loc['NoBreak', 'Equipos'] == 'otro':
             Aparatos_C.loc['NoBreak', 'Equipos']  = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['NoBreak', 'Capacidad']    = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['NoBreak', 'Notas']        = 'Los equipos que se conectan son: '+\
                                                     Aparatos_C.loc['NoBreak', 'Equipos']+','+Notas
-        Aparatos_C.loc['NoBreak', 'Atacable']     = 'Si'
+        Aparatos_C.loc['NoBreak', 'Clave'] = 'NB,'+NR
+        Aparatos_C.loc['NoBreak', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak', 'Clave'],
+                                                         Aparatos_C.loc['NoBreak', 'Standby'],
+                                                         PotenciaMAx_Reg(Aparatos_C,
+                                                                         Aparatos_C.loc['NoBreak', 'Equipos']))
         Aparatos_C.loc['NoBreak', 'Existencia']   = 1
 
     if Circuito.filter(regex='clustertv_nobreak2_existencia_c_i')[0]=='si':
         InfoDeco = EquiposCTV.filter(regex='nobreak2')
-        Aparatos_C.loc['NoBreak2', 'Clave']      = 'NB'
         Aparatos_C.loc['NoBreak2', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak2', 'Marca']      = InfoDeco.filter(regex='marca')[0] + ' del Cluster de TV'
         Aparatos_C.loc['NoBreak2', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -378,13 +398,16 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
         Aparatos_C.loc['NoBreak2', 'Capacidad']    = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['NoBreak2', 'Notas']        = 'Los equipos que se conectan son: '+ \
                                                     Aparatos_C.loc['NoBreak', 'Equipos']+','+Notas
-        Aparatos_C.loc['NoBreak2', 'Atacable']     = 'Si'
+        Aparatos_C.loc['NoBreak2', 'Clave'] = 'NB,'+NR
+        Aparatos_C.loc['NoBreak2', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak2', 'Clave'],
+                                                         Aparatos_C.loc['NoBreak2', 'Standby'],
+                                                         PotenciaMAx_Reg(Aparatos_C,
+                                                                         Aparatos_C.loc['NoBreak2', 'Equipos']))
         Aparatos_C.loc['NoBreak2', 'Existencia']   = 1
 
 
     if Circuito.filter(regex='clustertv_nobreak3_existencia_c_i')[0]=='si':
         InfoDeco = EquiposCTV.filter(regex='nobreak3')
-        Aparatos_C.loc['NoBreak3', 'Clave']      = 'NB'
         Aparatos_C.loc['NoBreak3', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak3', 'Marca']      = InfoDeco.filter(regex='marca')[0] + ' del Cluster de TV'
         Aparatos_C.loc['NoBreak3', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -395,7 +418,11 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
         Aparatos_C.loc['NoBreak3', 'Capacidad']    = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['NoBreak3', 'Notas']        = 'Los equipos que se conectan son: '+ \
                                                     Aparatos_C.loc['NoBreak', 'Equipos']+','+Notas
-        Aparatos_C.loc['NoBreak3', 'Atacable']     = 'Si'
+        Aparatos_C.loc['NoBreak3', 'Clave'] = 'NB,' + NR
+        Aparatos_C.loc['NoBreak3', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak3', 'Clave'],
+                                                         Aparatos_C.loc['NoBreak3', 'Standby'],
+                                                         PotenciaMAx_Reg(Aparatos_C,
+                                                                         Aparatos_C.loc['NoBreak3', 'Equipos']))
         Aparatos_C.loc['NoBreak3', 'Existencia']   = 1
 
 
@@ -410,6 +437,7 @@ def PotenciaMAx_Reg(Aparatos_C,Equipos):
     Equipos_Conectados=(Equipos.split())
     PotenciaMax=0
     Aparatos_C=Aparatos_C.fillna('X')
+    NR=''
     for i in (Equipos_Conectados):
         if i=='tv':
             if not Aparatos_C.loc['TV', 'Nominal']=='X':
@@ -422,6 +450,7 @@ def PotenciaMAx_Reg(Aparatos_C,Equipos):
         if i=='modem':
             if not Aparatos_C.loc['Modem', 'Standby']=='X':
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Modem', 'Standby']
+                NR = 'NR'
         if i=='decodificador2':
             if not Aparatos_C.loc['Decodificador2', 'Standby']=='X':
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Decodificador2', 'Standby']
@@ -431,6 +460,7 @@ def PotenciaMAx_Reg(Aparatos_C,Equipos):
         if i=='repetidor':
             if not Aparatos_C.loc['Repetidor', 'Standby']=='X':
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Repetidor', 'Standby']
+                NR='NR'
         if i=='bluray':
             if not Aparatos_C.loc['Bluray', 'Nominal']=='X':
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Bluray', 'Nominal']
@@ -471,4 +501,16 @@ def PotenciaMAx_Reg(Aparatos_C,Equipos):
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['EquipoExtra3', 'Standby']
 
     PotenciaMax=PotenciaMax+PotenciaMax*0.1
+
     return PotenciaMax
+
+
+def NR_NoBreak(Equipos):
+    NR=''
+    if 'modem' in Equipos:
+        NR = 'NR'
+
+    if 'repetidor' in Equipos:
+        NR = 'NR'
+
+    return NR
