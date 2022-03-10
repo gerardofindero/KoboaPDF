@@ -3,7 +3,8 @@ from Consumo    import consumoEq
 from Consumo    import calc_consumo , consumoEq, temperatura
 from libreriaBombasPresurizadoras import crearClavesBP
 from libreriaBombasAlberca import crearClavesBA
-#from libreriaBombas import crearClavesBG
+from libreriaBombas import crearClavesBG
+
 def bombas (Excel,Nocircuito):
     Aparatos_C = pd.DataFrame(
         index=['Bomba de Presión', 'Bomba de Gravitación', 'Alberca','Bomba de Recirculación'],
@@ -125,11 +126,11 @@ def bombas (Excel,Nocircuito):
         # sobrecalentamiento
         Aparatos_C.loc['Bomba de Gravitación', 'Termografia'] = InfoDeco.filter(regex='termografia')[0]
         # Fugas
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaSup'] = InfoDeco.filter(regex='fugasSup')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaTer'] = InfoDeco.filter(regex='fugasTer')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaTXT'] = InfoDeco.filter(regex='fugasTXT')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugasSup'] = InfoDeco.filter(regex='fugasSup')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugasTer'] = InfoDeco.filter(regex='fugasTer')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTxt'] = InfoDeco.filter(regex='fugasTXT')[0]
         # Control
-        Aparatos_C.loc['Bomba de Gravitación', 'ControlTipo']       = InfoDeco.filter(regex="cotrol_c_i")
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlTipo']       = InfoDeco.filter(regex="control_c_i")[0]
         Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg']       = InfoDeco.filter(regex='control_pegados')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra']    = InfoDeco.filter(regex='control_cierra')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'ControlContra']    = InfoDeco.filter(regex='control_contrapeso')[0]
@@ -152,8 +153,9 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        #Aparatos_C.loc['Bomba de Gravitación', 'Clave']     = 'BG' + crearClavesBA(Aparatos_C.loc["Bomba de Gravitación"])
-        Aparatos_C.loc['Bomba de Gravitación', 'Clave'] = 'BG'
+        Aparatos_C.loc['Bomba de Gravitación'] = Aparatos_C.loc['Bomba de Gravitación'].str.replace("X","0")
+        Aparatos_C.loc['Bomba de Gravitación', 'Clave']     = 'BG' + crearClavesBG(Aparatos_C.loc["Bomba de Gravitación"])
+        #Aparatos_C.loc['Bomba de Gravitación', 'Clave'] = 'BG'
 
 
 
