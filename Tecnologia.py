@@ -22,6 +22,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
     stnbyCod      = Circuito.filter(regex='circuito_standby_codigofindero_c_i')[0]
     stnbyEq       = Equipos.filter(regex='equipos_standby')
     stnbyEqAppl   = Equipos.filter(regex='equipos_standby_apple_c_i')
+    equiposNominal = Circuito.filter(regex='tecnologia_equipos_c_i')
     indx=0
 
     for i in stnbyEq:
@@ -55,7 +56,8 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Aparatos_C.loc['Monitor', 'Standby']      = InfoDeco.filter(regex='standby_c_i')[0]
                 Aparatos_C.loc['Monitor', 'CodigoS']      = stnbyCod
                 Aparatos_C.loc['Monitor', 'Nominal']      = InfoDeco.filter(regex='consumo')[0]
-                Aparatos_C.loc['Monitor', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                Aparatos_C.loc['Monitor', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]+\
+                                                            InfoDeco.filter(regex='codigofindero2_c_i')[0]
                 Aparatos_C.loc['Monitor', 'Notas']        = Notas
                 Aparatos_C.loc['Monitor', 'Clave']        = 'TC'
                 Aparatos_C.loc['Monitor', 'Zona']         = Zona
@@ -463,10 +465,25 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
 
 
 
+
+    # for i in equiposNominal:
+    #     if i == 1:
+    #         if indx == 1:
+    #             InfoDeco = Equipos.filter(regex='monitor1')
+    #             Aparatos_C.loc['Monitor', 'Standby'] = InfoDeco.filter(regex='standby_c_i')[0]
+    #             Aparatos_C.loc['Monitor', 'CodigoS'] = stnbyCod
+    #             Aparatos_C.loc['Monitor', 'Nominal'] = InfoDeco.filter(regex='consumo')[0]
+    #             Aparatos_C.loc['Monitor', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
+    #             Aparatos_C.loc['Monitor', 'Notas'] = Notas
+    #             Aparatos_C.loc['Monitor', 'Clave'] = 'TC'
+    #             Aparatos_C.loc['Monitor', 'Zona'] = Zona
+    #             Aparatos_C.loc['Monitor', 'Atacable'] = 'Si'
+
+
     # InfoDeco = Equipos.filter(regex='HDD')
     # Aparatos_C.loc['HDD', 'Marca'] = InfoDeco.filter(regex='cantidad')[0]
     # Aparatos_C.loc['HDD', 'Standby'] = InfoDeco.filter(regex='standby')[0]
-
+    print(Aparatos_C)
     return Aparatos_C
 
 

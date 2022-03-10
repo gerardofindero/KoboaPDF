@@ -305,9 +305,9 @@ def caritaBombaP(consumo,clave):
     return Ca
 
 def caritaBombaG(consumo,clave):
-    if consumo <=22:
+    if consumo <=23:
         Ca=1
-    elif 22<consumo<= 60:
+    elif 23<consumo<= 60:
         Ca=2
     elif 60<consumo:
         Ca=3
