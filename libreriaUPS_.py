@@ -100,7 +100,6 @@ def armarTxtE(Claves,standby):
     txt = ""
     if not "NR" in Claves:
         txt += lib.at["NB01E","Texto"]
-
     elif "NR" in Claves:
         if standby <= 15:
             txt += lib.at["NB02E","Texto"]

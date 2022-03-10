@@ -142,7 +142,8 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Clave']     = 'BG' + crearClavesBA(Aparatos_C.loc["Bomba de Gravitación"])
+        #Aparatos_C.loc['Bomba de Gravitación', 'Clave']     = 'BG' + crearClavesBA(Aparatos_C.loc["Bomba de Gravitación"])
+        Aparatos_C.loc['Bomba de Gravitación', 'Clave'] = 'BG'
 
 
 

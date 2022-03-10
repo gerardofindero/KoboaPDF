@@ -786,6 +786,8 @@ def Recomendaciones(Claves,consumo,DAC,Uso,nota,nombre,potencia):
         Consejos = recoCP(consumo)
     if ClavesS[0] == "RG":
         Consejos = armarTxtE(consumo)
+    if ClavesS[0] == "NB":
+        Consejos = armarTxtE(Claves, consumo)
 
     #if ClavesS[0] == "BG":
     # if ClavesS[0] == 'X':

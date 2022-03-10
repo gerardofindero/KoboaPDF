@@ -119,8 +119,9 @@ def Nombre_Cliente():
     #NCliente = "Guillermo Casas"
     #NCliente = "Rebeca Tabachnik"
     #NCliente = 'Leon Cukiert'
-    NCliente = 'Julieta Porres'
+    #NCliente = 'Julieta Porres'
     #NCliente = 'Magali Duran'
+    NCliente = 'Antonio Lopez Irragori'
 
     return NCliente
 ####################################################################################
@@ -155,7 +156,6 @@ if __name__ == '__main__':
     if Opcion == '2':
         print("Deciframiento y Kobo")
         Crear_Kobo(NCliente)
-
         #hipervinculos(NCliente)
 
 ### Se crea la pestaña de potencial de ahorro

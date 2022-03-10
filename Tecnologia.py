@@ -1,6 +1,7 @@
 import pandas as pd
 from Consumo    import calc_consumo , consumoEq
 from libreriaReguladores_ import Atac_Elec
+from libreriaUPS_ import  Atac_NB
 
 def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
     Aparatos_C = pd.DataFrame()
@@ -402,7 +403,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
 
         InfoDeco = Equipos.filter(regex='nobreak1')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['NoBreak', 'Clave']      = 'NB'
+
         Aparatos_C.loc['NoBreak', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['NoBreak', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -414,11 +415,15 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
             Aparatos_C.loc['NoBreak', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['NoBreak', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['NoBreak', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-        Aparatos_C.loc['NoBreak', 'Atacable']     = 'Si'
+
+        Aparatos_C.loc['NoBreak', 'Clave'] = 'NB,NR'
+        Aparatos_C.loc['NoBreak', 'Atacable']     = Atac_NB(Aparatos_C.loc['NoBreak', 'Clave'],
+                                                            Aparatos_C.loc['NoBreak', 'Standby'],
+                                                            PotenciaMAx_Reg(Aparatos_C,Aparatos_C.loc['NoBreak', 'Equipos']))
+
 
     InfoDeco = Equipos.filter(regex='nobreak2')
     if InfoDeco.filter(regex='existencia')[0]=='si':
-        Aparatos_C.loc['NoBreak2', 'Clave']      = 'NB'
         Aparatos_C.loc['NoBreak2', 'Zona']       = Zona
         Aparatos_C.loc['NoBreak2', 'Marca']      = InfoDeco.filter(regex='marca')[0]
         Aparatos_C.loc['NoBreak2', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -430,11 +435,15 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
             Aparatos_C.loc['NoBreak2', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['NoBreak2', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
         Aparatos_C.loc['NoBreak2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-        Aparatos_C.loc['NoBreak2', 'Atacable']     = 'Si'
+        Aparatos_C.loc['NoBreak2', 'Clave'] = 'NB,NR'
+        Aparatos_C.loc['NoBreak2', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak2', 'Clave'],
+                                                        Aparatos_C.loc['NoBreak2', 'Standby'],
+                                                        PotenciaMAx_Reg(Aparatos_C,
+                                                                        Aparatos_C.loc['NoBreak2', 'Equipos']))
 
         InfoDeco = Equipos.filter(regex='nobreak3')
         if InfoDeco.filter(regex='existencia')[0]=='si':
-            Aparatos_C.loc['NoBreak3', 'Clave']      = 'NB'
+
             Aparatos_C.loc['NoBreak3', 'Zona']       = Zona
             Aparatos_C.loc['NoBreak3', 'Marca']      = InfoDeco.filter(regex='marca')[0]
             Aparatos_C.loc['NoBreak3', 'Standby']    = InfoDeco.filter(regex='standby')[0]
@@ -446,7 +455,11 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Aparatos_C.loc['NoBreak3', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
             Aparatos_C.loc['NoBreak3', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
             Aparatos_C.loc['NoBreak3', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
-            Aparatos_C.loc['NoBreak3', 'Atacable']     = 'Si'
+            Aparatos_C.loc['NoBreak3', 'Clave'] = 'NB,NR'
+            Aparatos_C.loc['NoBreak3', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak3', 'Clave'],
+                                                            Aparatos_C.loc['NoBreak3', 'Standby'],
+                                                            PotenciaMAx_Reg(Aparatos_C,
+                                                                            Aparatos_C.loc['NoBreak3', 'Equipos']))
 
 
 

@@ -75,8 +75,8 @@ def lavanderia(Excel,Nocircuito, NomCircuito,voltaje):
 
 
             if indx == 3:
-                InfoDeco = Circuito.filter(regex='lavaseca')
-                if InfoDeco.filter(regex='lavaseca_espendiente_c_i')[0] =='no':
+                InfoDeco = Circuito.filter(regex='lavasecadora')
+                if InfoDeco.filter(regex='lavasecadora_espendiente_c_i')[0] =='no':
                     Aparatos_C.loc['Lavasecadora', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
                 else:
                     Aparatos_C.loc['Lavasecadora', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
