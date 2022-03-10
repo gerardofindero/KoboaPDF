@@ -40,7 +40,7 @@ Created on Tue Aug 10 13:29:50 2021
 # K = Kaccesorios + Ktuberia
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import funcionesComunes as fc
 
 def crearClavesBG(infEq):
@@ -54,12 +54,19 @@ def crearClavesBG(infEq):
     print("Creando claves de BG")
     # Claves para reemplazo de bomba
     claves = ""
-    claves += "/"+str(60/infEq["FlujoSegundos"]); if infEq["FlujoSegundos"]== 0: print("Q: 0")
-    claves += "/"+str(infEq["Delta"])           ; if infEq["Delta"]        == 0: print("Delta: 0m")
-    claves += "/"+str(infEq["Longitud"])        ; if infEq["Longitud"]     == 0: print("Longitud: 0m")
-    claves += "/"+str(infEq["Codos"])           ; if infEq["Codos"]        == 0: print("Número de codos: 0")
-    claves += "/"+str(infEq["Diametro"]*0.0254) ; if infEq["Diametro"]     == 0: print("Diamtero: 0in")
-    claves += "/"+str(infEq["Temperatura"])     ; if infEq["Temperatura"]  == 0: print("Temperatura del agua: 0")
+    if float(infEq["FlujoSegundos"]) == 0: claves += ",0"
+    else                                 : claves += ","+str(60/float(infEq["FlujoSegundos"]))
+    if infEq["FlujoSegundos"]== 0: print("Q: 0")
+    claves += "/"+str(infEq["Delta"])
+    if infEq["Delta"]        == 0: print("Delta: 0m")
+    claves += "/"+str(infEq["Longitud"])
+    if infEq["Longitud"]     == 0: print("Longitud: 0m")
+    claves += "/"+str(infEq["Codos"])
+    if infEq["Codos"]        == 0: print("Número de codos: 0")
+    claves += "/"+str(float(infEq["Diametro"])*0.0254)
+    if infEq["Diametro"]     == 0: print("Diamtero: 0in")
+    claves += "/"+str(infEq["Temperatura"])
+    if infEq["Temperatura"]  == 0: print("Temperatura del agua: 0")
     if infEq["Material"] == "plastica":
         claves += "/PA"
     elif infEq["Material"] == "aluminio":
@@ -94,15 +101,15 @@ def crearClavesBG(infEq):
     if   "si"           in infEq["ControlPeg"]    : claves += ",PE"
     if   "no"           in infEq["ControlContra"] : claves += ",NP"
     ########## Acceso y Permisos ###################
-    if "" in infEq["Encender"]    : claves += ",EB"
-    if "" in infEq["Acceso"]      : claves += ",AT"
-    if "" in infEq["AccesoComba"] : claves += ",AB"
+    if "no" in infEq["Encender"]    : claves += ",NB"
+    if "no" in infEq["Acceso"]      : claves += ",ST"
+    if "no" in infEq["AccesoBomba"] : claves += ",SB"
     ## Textos
     # Texto fugas
     claves+=","
     if len(infEq["FugaTxt"])!=0: claves += "-"+ infEq["FugaTxt"]
     else                       : claves += "-*"
-    if len(infEq["ControlProblemas"]) : claves += "-" + infEq["ControlProblemas"]
+    if len(infEq["ControlProblemas"])!=0 : claves += "-" + infEq["ControlProblemas"]
     else              : claves += "-*"
     # def setData(self, hrsUso=None,w=None, kwh=None,
     #            Q1   = None, Q2 = None, Q3 = None,
