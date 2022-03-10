@@ -154,12 +154,13 @@ def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
     material = ClavesD[6]
 
     txt=""
-    if kwh <= 22:
+    if kwh <= 23:
         txt += lib.at['BOM01',"Texto"]
-    elif (kwh > 22) and (kwh <= 60):
+    elif (kwh > 23) and (kwh <= 60):
         txt += lib.at['BOM02',"Texto"]
     elif kwh > 60:
         txt += lib.at['BOM03',"Texto"]
+
     if  ac == 'Si':
         txt += lib.at['BOM04',"Texto"]
     if "flotador" in control:
@@ -194,6 +195,8 @@ def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
         txt += lib.at["BOM17","Texto"]
 
     return txt
+
+
 class libreriaBombasGravitacionales:
     def __init__(self):
         self.txt=''
