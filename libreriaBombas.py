@@ -45,20 +45,70 @@ import funcionesComunes as fc
 
 def crearClavesBG(infEq):
     """
+    w (potencia)
+    kwh (consumo)
+
     :param infEq: Q/Z/L/nC90/D/T
     :return:
     """
     print("Creando claves de BG")
+    # Claves para reemplazo de bomba
     claves = ""
-    claves += "/"+str(60/infEq["FlujoSegundos"][0]); if infEq["FlujoSegundos"][0] == 0: print("Q: 0")
-    claves += "/"+str(infEq["Delta"][0])           ; if infEq["Delta"][0] == 0: print("Delta: 0m")
-    claves += "/"+str(infEq["Longitud"][0])        ; if infEq["Longitud"][0] == 0: print("Longitud: 0m")
-    claves += "/"+str(infEq["Codos"][0])           ; if infEq["Codos"][0] == 0: print("Número de codos: 0")
-    claves += "/"+str(infEq["Diametro"][0]*0.0254) ; if infEq["Diametro"][0] == 0: print("Diamtero: 0in")
-    claves += "/"+str(infEq["Temperatura"][0])     ; if infEq["Temperatura"][0] == 0: print("Temperatura del agua: 0")
-
-
-
+    claves += "/"+str(60/infEq["FlujoSegundos"]); if infEq["FlujoSegundos"]== 0: print("Q: 0")
+    claves += "/"+str(infEq["Delta"])           ; if infEq["Delta"]        == 0: print("Delta: 0m")
+    claves += "/"+str(infEq["Longitud"])        ; if infEq["Longitud"]     == 0: print("Longitud: 0m")
+    claves += "/"+str(infEq["Codos"])           ; if infEq["Codos"]        == 0: print("Número de codos: 0")
+    claves += "/"+str(infEq["Diametro"]*0.0254) ; if infEq["Diametro"]     == 0: print("Diamtero: 0in")
+    claves += "/"+str(infEq["Temperatura"])     ; if infEq["Temperatura"]  == 0: print("Temperatura del agua: 0")
+    if infEq["Material"] == "plastica":
+        claves += "/PA"
+    elif infEq["Material"] == "aluminio":
+        claves += "/AL"
+    elif infEq["Material"] == "hierro":
+        claves += "/HI"
+    elif infEq["Material"] == "NA":
+        print("Material no estaba en kobo")
+        claves += "/NA"
+    else:
+        print("Material: ",infEq["Material"],"?")
+        claves += "/NA"
+    ##### Claves de condiciones
+    ## Sobrecalentamiento
+    if "bobina"     in infEq["Termografia"]: claves += ",BO"
+    if "rodamiento" in infEq["Termografia"]: claves += ",RO"
+    if "general"    in infEq["Termografia"]: claves += ",GE"
+    # Obstrucciones
+    if "alto"       in infEq["Dureza"]     : claves += ",DU"
+    if "si"         in infEq["Sarro"]      : claves += ",SA"
+    # valvulas
+    if "cerradas"   in infEq["Valvulas"]   : claves += ",VC"
+    # Fugas
+    if "si" in infEq["FugasSup"]: claves += ",FS"
+    if "si" in infEq["FugasTer"]: claves += ",FT"
+    # control
+    if   "flotador"     in infEq["ControlTipo"]   : claves += ",CF"
+    elif "electronivel" in infEq["ControlTipo"]   : claves += ",CE"
+    elif "anillo"       in infEq["ControlTipo"]   : claves += ",CA"
+    elif "ninguno"      in infEq["ControlTipo"]   : claves += ",CN"
+    if   "no"           in infEq["ControlCierra"] : claves += ",NC"
+    if   "si"           in infEq["ControlPeg"]    : claves += ",PE"
+    if   "no"           in infEq["ControlContra"] : claves += ",NP"
+    ########## Acceso y Permisos ###################
+    if "" in infEq["Encender"]    : claves += ",EB"
+    if "" in infEq["Acceso"]      : claves += ",AT"
+    if "" in infEq["AccesoComba"] : claves += ",AB"
+    ## Textos
+    # Texto fugas
+    claves+=","
+    if len(infEq["FugaTxt"])!=0: claves += "-"+ infEq["FugaTxt"]
+    else                       : claves += "-*"
+    if len(infEq["ControlProblemas"]) : claves += "-" + infEq["ControlProblemas"]
+    else              : claves += "-*"
+    # def setData(self, hrsUso=None,w=None, kwh=None,
+    #            Q1   = None, Q2 = None, Q3 = None,
+    #            wQ_r1=None, wQ_r2=None, wQ_r3=None,
+    #            ac=None, control=None, elecB=None, con=None, termo=None, durCis=None, durTin=None,
+    #            Z=None, Q=None, L=None, D=None, nC90=None, material=None, T=None):
     return claves
 
 def leerLibreriaBG():
@@ -84,6 +134,59 @@ def leerLibreriaBG():
 
     return [lib, dbB, cur]
 
+def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
+    lib, dbB, cur = leerLibreriaBG()
+    ClavesS = Claves.split(",")
+    ClavesD = ClavesS[1].split("/") #Q/Z/L/nC90/D/T
+    Q        = float(ClavesD[0])
+    Z        = float(ClavesD[1])
+    L        = float(ClavesD[2])
+    nC90     = float(ClavesD[3])
+    D        = float(ClavesD[4])
+    T        = float(ClavesD[5])
+    material = ClavesD[6]
+
+    txt=""
+    if kwh <= 22:
+        txt += lib.at['BOM01',"Texto"]
+    elif (kwh > 22) and (kwh <= 60):
+        txt += lib.at['BOM02',"Texto"]
+    elif kwh > 60:
+        txt += lib.at['BOM03',"Texto"]
+    if  ac == 'Si':
+        txt += lib.at['BOM04',"Texto"]
+    if "flotador" in control:
+        txt += lib.at["BOM06","Texto"]
+    if ("placas" in control) and (elecB == "No"):
+        txt += lib.at["BOM07","Texto"]
+    if "contrapeso" in control:
+        if (elecB == "") and (con == ""):
+            txt += lib.at["BOM08","Texto"]
+        elif (elecB == "") and (con == ""):
+            txt += lib.at["BOM09","Texto"]
+        elif (elecB == "") and (con == ""):
+            txt += lib.at["BOM10","Texto"]
+    if "bobina" in termo:
+        txt += lib.at["BOM12","Texto"]
+    if "rodamiento" in termo:
+        txt += lib.at["BOM13","Texto"]
+    if "general" in termo:
+        txt += lib.at["BOM14","Texto"]
+    if durCis == "dura":
+        txt += lib.at["BOM15","Texto"]
+    if durTin == "dura":
+        txt += lib.at["BOM16","Texto"]
+    if (wQ_r1 >= 8.53):
+        if (wQ_r3 is not None) and wQ_r3 >= 8.53:
+            txt += lib.at["BOM20","Texto"]
+        if (wQ_r3 is not None) and wQ_r3 < 8.53:
+            txt += lib.at["BOM19","Texto"]
+        if (wQ_r2 is not None) and wQ_r2 < 8.53:
+            txt +=lib.at["BOM18","Texto"]
+    if (wQ_r1 is not None) and wQ_r1 < 8.53:
+        txt += lib.at["BOM17","Texto"]
+
+    return txt
 class libreriaBombasGravitacionales:
     def __init__(self):
         self.txt=''
@@ -148,7 +251,7 @@ class libreriaBombasGravitacionales:
         self.D    = float(D)
         self.nc90 = float(nc90)
         self.T    = float(T)
-        """
+
         self.hrsUso  = hrsUso
         self.w       = potencia
         self.kwh     = consumo
@@ -170,7 +273,7 @@ class libreriaBombasGravitacionales:
 
 
         self.material = material
-"""
+
         self.txt = ''
 
         #self.Qm3s    = Q/100/60 # Qm3s (Q de la casa)=>litros/min (1m3/1000L)(1min/60s) -> m3/s

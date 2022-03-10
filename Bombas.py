@@ -88,7 +88,7 @@ def bombas (Excel,Nocircuito):
         #    Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
         #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
         #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
-
+        ################## Datos para recomendación de otra bomba############################
         # Q (segundos en llenar un litro-> se convierte a litros por minuto en claves)
         try   : Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = InfoDeco.filter(regex='flujo_segundos')[0]
         except: Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = 0
@@ -104,36 +104,46 @@ def bombas (Excel,Nocircuito):
         # D en pulgadas se convierte a metros en las claves
         try   : Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = InfoDeco.filter(regex='diametro')[0]
         except: Aparatos_C.loc['Bomba de Gravitación', 'Diametro'] = 0
-        # T
+        # T temperatura del agua en grado Celcius
         try   : Aparatos_C.loc['Bomba de Gravitación', 'Temperatura'] = InfoDeco.filter(regex='temperatura')[0]
         except: Aparatos_C.loc['Bomba de Gravitación', 'Temperatura'] = 20
+        # tipo de material de la tuebria
+        try   : Aparatos_C.loc['Bomba de Gravitación', 'Material'] = InfoDeco.filter(regex='material')[0]
+        except: Aparatos_C.loc['Bomba de Gravitación', 'Material'] = "NA"
+        #################################### Acceso y medicion ###################################
+        Aparatos_C.loc['Bomba de Gravitación', 'Encender'] = InfoDeco.filter(regex='encender_c_i')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Acceso'] = InfoDeco.filter(regex='acceso_c_i')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'AccesoBomba'] = InfoDeco.filter(regex='accesobomba')[0]
+        #################################### Condiciones       ###################################
+        #Aparatos_C.loc['Bomba de Gravitación', 'Valvulas'] = InfoDeco.filter(regex='valvulas')[0]
+        #Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abiertas'] = InfoDeco.filter(regex='valvulas_abiertas')[0]
+        # Valvulas
+        Aparatos_C.loc['Bomba de Gravitación', 'Valvulas'] = InfoDeco.filter(regex='valvulas_abiertas_c_i')[0]
+        # Obstrucciones
+        Aparatos_C.loc['Bomba de Gravitación', 'Sarro']    = InfoDeco.filter(regex='sarro')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'Dureza']   = InfoDeco.filter(regex="dureza_c_i")[0]
+        # sobrecalentamiento
+        Aparatos_C.loc['Bomba de Gravitación', 'Termografia'] = InfoDeco.filter(regex='termografia')[0]
+        # Fugas
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaSup'] = InfoDeco.filter(regex='fugasSup')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTer'] = InfoDeco.filter(regex='fugasTer')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'FugaTXT'] = InfoDeco.filter(regex='fugasTXT')[0]
+        # Control
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlTipo']       = InfoDeco.filter(regex="cotrol_c_i")
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg']       = InfoDeco.filter(regex='control_pegados')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra']    = InfoDeco.filter(regex='control_cierra')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlContra']    = InfoDeco.filter(regex='control_contrapeso')[0]
+        Aparatos_C.loc['Bomba de Gravitación', 'ControlProblemas'] = InfoDeco.filter(regex='control_problemas')[0]
+
 
         Aparatos_C.loc['Bomba de Gravitación', 'Nominal'] = InfoDeco.filter(regex='nominal')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Bomba de Gravitación', 'Marca'] = 'Bomba Gravitacional'
-
-        Aparatos_C.loc['Bomba de Gravitación', 'Acceso'] = InfoDeco.filter(regex='acceso')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Flujo'] = InfoDeco.filter(regex='flujo')[0]
-
-        Aparatos_C.loc['Bomba de Gravitación', 'ControlPeg'] = InfoDeco.filter(regex='control_pegados')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'ControlCierra'] = InfoDeco.filter(regex='control_cierra')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'ControlContra'] = InfoDeco.filter(regex='control_contrapeso')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'ControlProblemas'] = InfoDeco.filter(regex='control_problemas')[0]
         #Aparatos_C.loc['Bomba de Gravitación', 'Obstaculos'] = InfoDeco.filter(regex='obstaculos_c_i')[0]
-
         Aparatos_C.loc['Bomba de Gravitación', 'AccesoBomba'] = InfoDeco.filter(regex='accesobomba')[0]
-
-        Aparatos_C.loc['Bomba de Gravitación', 'Valvulas'] = InfoDeco.filter(regex='valvulas')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abiertas'] = InfoDeco.filter(regex='valvulas_abiertas')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Valvulas_Abrirlas'] = InfoDeco.filter(regex='valvulas_abrirlas')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Sarro'] = InfoDeco.filter(regex='sarro')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Termografia'] = InfoDeco.filter(regex='termografia')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'Material'] = InfoDeco.filter(regex='material')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Nombre'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Notas'] = InfoDeco.filter(regex='notas')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaSup'] = InfoDeco.filter(regex='fugasSup')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaTer'] = InfoDeco.filter(regex='fugasTer')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'FugaTXT'] = InfoDeco.filter(regex='fugasTXT')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Medidor'] = InfoDeco.filter(regex='medidor_c_i')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'MedidorURL'] = InfoDeco.filter(regex='medidor_c_i_URL')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'MedidorLEC'] = InfoDeco.filter(regex='medidor_lectura')[0]
