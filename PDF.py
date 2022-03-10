@@ -699,6 +699,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
                 largo = len(luces) - 24
             if i==34:
                 largo = len(luces) - 34
+            repetido = ''
             altura = 500
             canvas.showPage()
             largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO EN LUMINARIAS', 'Montserrat-B', 12)
@@ -716,6 +717,7 @@ def iluminacion(canvas, width, height, luces,Tarifa):
             texto('ILUMINACIÓN', 36, azul_1, 'Montserrat-B', 60, height - 170, canvas)
             texto('Continuación...', 12, gris, 'Montserrat-B', 60, height - 240, canvas)
             canvas.setLineWidth(.3)
+
     costado(canvas)
     canvas.showPage()
     return carita
@@ -1180,7 +1182,7 @@ def portada_fugas(canvas, width, height,Cfugas,Tarifa,ConsumoT,porF):
     canvas.showPage()
 
 
-def hojas_fugas(canvas, width, height, fugas_, tarifa,voltaje,cliente):
+def hojas_fugas(canvas, width, height, fugas_, tarifa,volts,cliente,voltaje):
     """ Crea la hoja que muestra donde esta la fuga, que aparatos hay y si es atacable o no """
     fugas_['D']=fugas_['D'].str.replace('Fuga', '', regex=True)
     fugas_['N'] = np.where(fugas_['Q']!='AMN', 'X',fugas_['N'])
@@ -1215,7 +1217,7 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
             atac=fugas.iloc[:4,:]
             fugas=fugas.iloc[4:,:]
             if Atacable:
-                Consejos=textodeconsejos(atac)
+                Consejos=textodeconsejos(atac,voltaje)
             if not Atacable:
                 Consejos=noatac(atac)
             disenohojaFuga(canvas, width, height,atac,lista,idx,Atacable,voltaje,parrafos)
@@ -1285,8 +1287,11 @@ def ponerRecom(Atacable,canvas,parrafos,Consejos):
             largoC=largoC-500
         if  largoC< 350:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos3))
-        else:
+        elif 450 >= largoC >= 350:
             parrafos.append(Paragraph(Consejos, Estilos.aparatos4))
+        else:
+            parrafos.append(Paragraph(Consejos, Estilos.aparatos5))
+
         frame = Frame(330, 40, 200, 350, showBoundary=0)
         frame.addFromList(parrafos, canvas)
 
@@ -1630,7 +1635,7 @@ def Clasificador(aparatos):
 
 
 
-def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,KoboS,Voltaje,Ahorro,Ndatos):
+def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,SolarS,KoboS,Voltaje,Ahorro,Ndatos,infoV):
     print("...")
 
     if SolarS.empty:
@@ -1665,7 +1670,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     caritaL = iluminacion(canvas, width, height, luces,Tarifa)
     print("Generando hojas de Fuga...")
     portada_fugas(canvas, width, height, Cfugas,Tarifa,consumo,porF)
-    hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje,Cliente)
+    hojas_fugas(canvas, width, height, fugas, Tarifa,color_voltaje,Cliente,infoV)
     print("Generando hoja de Resumen...")
     cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,costo)
     robo='no'
