@@ -56,7 +56,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Aparatos_C.loc['Monitor', 'Standby']      = InfoDeco.filter(regex='standby_c_i')[0]
                 Aparatos_C.loc['Monitor', 'CodigoS']      = stnbyCod
                 Aparatos_C.loc['Monitor', 'Nominal']      = InfoDeco.filter(regex='consumo')[0]
-                Aparatos_C.loc['Monitor', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]+\
+                Aparatos_C.loc['Monitor', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]+', '+\
                                                             InfoDeco.filter(regex='codigofindero2_c_i')[0]
                 Aparatos_C.loc['Monitor', 'Notas']        = Notas
                 Aparatos_C.loc['Monitor', 'Clave']        = 'TC'
