@@ -70,7 +70,26 @@ def armarTxt_NAtac(Claves):
     return txt
 
 
-def armarTxt_Atac(Claves,standby):
+def armarTxt_Atac(Claves,standby,voltaje):
+    EE = False
+    EM = False
+    print(voltaje)
+    rangoE = voltaje[0]
+    rangoM = voltaje[1]
+    nSub = voltaje[2]
+    nSob = voltaje[3]
+    tSub = voltaje[4]
+    tSob = voltaje[5]
+    if rangoE:
+        EE = True
+    elif (nSob < 7) and (tSob < 0.17):
+        EE = True
+
+    if rangoM:
+        EM = True
+    elif ((nSob + nSub) < 7) and ((tSub + tSob) < 0.17):
+        EM = True
+
     dbReg, lib, dbPro = leerLibReg()
     txt = ""
     clavesS = Claves.split(",")
@@ -78,20 +97,23 @@ def armarTxt_Atac(Claves,standby):
     wC=clavesS[-1]
 
     if "EL" in Claves:
-        txt += lib.loc["REG01F", "Texto"]
-        [roi,rec] = reemplazo("EL",standby,wC,dbReg)
-        if "TO" in Claves:
+        [roi, rec] = reemplazo("EL", standby, wC, dbReg)
+        if EE:
+            txt += lib.loc["REG01F", "Texto"]
+        elif "TO" in Claves:
             txt += lib.loc["REG02F", "Texto"]
-        elif roi:
-            txt += lib.loc["REG03Fb","Texto"]
+        else:
+            if roi:
+                txt += lib.loc["REG03Fb","Texto"]
 
 
     if "MC" in Claves:
-        [roi,rec] = reemplazo("MC",standby,wC,dbReg)
-        if roi:
-            txt += lib.loc["REG06Fb","Texto"]
+        [roi, rec] = reemplazo("MC", standby, wC, dbReg)
+        if EM:
+            txt += lib.at["REG04F","Texto"]
         else:
-            txt += lib.loc["REG04F","Texto"]
+            if roi:
+                txt += lib.loc["REG06Fb","Texto"]
 
     if roi:
         txt = txt.replace("[linkReco]",fc.ligarTextolink("Regulador recomendado",rec.at[0,"link"]))
@@ -117,7 +139,7 @@ def armarTxtE(kwh):
     return txt
 
 def reemplazo(uso,standby,wC,dbReg):
-    print(wC)
+
     wC = float(wC) *1.20
     if wC==10000*1.20:
         roi=False
@@ -149,12 +171,13 @@ def Atac_Mec(voltaje,standby,wC):
     # stand by del regulador
     # watts de lo que tenia conectado
     [dbReg, libReg, dbPro] = leerLibReg()
-    rango = voltaje[0]
-    nSub = voltaje[1]
-    nSob = voltaje[2]
-    tSub = voltaje[3]
-    tSob = voltaje[4]
-    if rango:
+    rangoE = voltaje[0]
+    rangoM = voltaje[1]
+    nSub = voltaje[2]
+    nSob = voltaje[3]
+    tSub = voltaje[4]
+    tSob = voltaje[5]
+    if rangoM:
         Atac = 'Si'
     elif (nSob < 7) and (tSob < 0.17):
         Atac = 'Si'
@@ -173,12 +196,13 @@ def Atac_Mec(voltaje,standby,wC):
 
 def Atac_Elec(voltaje,standby,wC):
     [dbReg, libReg, dbPro] = leerLibReg()
-    rango = voltaje[0]
-    nSub = voltaje[1]
-    nSob = voltaje[2]
-    tSub = voltaje[3]
-    tSob = voltaje[4]
-    if rango:
+    rangoE = voltaje[0]
+    rangoM = voltaje[1]
+    nSub = voltaje[2]
+    nSob = voltaje[3]
+    tSub = voltaje[4]
+    tSob = voltaje[5]
+    if rangoE:
         Atac = 'Si'
     elif ((nSob + nSub) < 7) and ((tSub + tSob) < 0.17):
         Atac = "Si"

@@ -143,7 +143,8 @@ if __name__ == '__main__':
 ## Se elige la opción del programa que se quiere correr
 
 
-    Opcion='6'
+    Opcion='4'
+
 
 
 #######################
@@ -171,11 +172,10 @@ if __name__ == '__main__':
         Ndatos=leer_resumen(NCliente)
         ahorro=leer_potencial(NCliente)
         aparatos, luces, fugas, consumo,costo, tarifa, Cfugas, solar,voltaje = leer_deciframiento(NCliente)
-
+        info_volts=leer_volts(NCliente)
         if solar:
             datosSolar,KoboS = leer_solar(NCliente)
-
-        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,KoboS,voltaje,ahorro,Ndatos)
+        CrearPDF(aparatos, luces, fugas, consumo, costo, tarifa, Cfugas, NCliente,datosSolar,KoboS,voltaje,ahorro,Ndatos,info_volts)
 
 
 ###########Para hacer pruebas################

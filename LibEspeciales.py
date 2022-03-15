@@ -25,7 +25,7 @@ def leerLibreria():
 
 
 
-def textodeconsejos(clave):
+def textodeconsejos(clave,voltaje):
     #fug,equi = leerLibreria()
     contador=0
     textoCompleto=''
@@ -99,7 +99,7 @@ def textodeconsejos(clave):
 
             elif 'regulador' in equipo:
                 if not 'RG/' in Conta:
-                    textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave,Standby)
+                    textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave,Standby,voltaje)
                     Conta = Conta + 'RG/ '
                     contador = contador + 1
 
@@ -214,7 +214,7 @@ def textodeconsejos(clave):
                 # doblecheck =all(item in excepciones for item in equipo)
                 if not check:
                     if sumaP<=4:
-                        texto = '-Al ser un gasto pequeño, te recomendamos desconectar tu equipo mientras no se encuentre en uso. <br /> <br />'
+                        texto = '-Para tu '+equipo  +', al ser un gasto pequeño, te recomendamos desconectar tu equipo mientras no se encuentre en uso. <br /> <br />'
                         textoCompleto = textoCompleto + texto
                     else:
                         if not 'NA' in Conta:
@@ -238,7 +238,7 @@ def textodeconsejos(clave):
                                                     'dispositivos.' + '<br /> '+ LinkS + \
                                                     '<br /> '+ timer+'  <br /> <br />'
 
-                            Conta=Conta+'NA / '
+                            Conta = Conta+'NA / '
 
                             textoCompleto = textoCompleto + texto
 
@@ -375,6 +375,15 @@ def textodeequiposA(equipo,nota):
         texto = texto+' ' + 'Tu equipo Thermomix es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
 
+    elif 'horno' in equipo.lower():
+        texto = texto+' ' + 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
+                            'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso. ' \
+                            'Puedes cambiar a un horno de gas para ahorrar en energía electrica, también puedes usar tu estufa para ' \
+                            'cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
+    elif 'cocina' in equipo.lower():
+        texto = texto+' ' + 'Tus equipos de cocina tienen un alto consumo por lo que para poder evitar un gasto elevado ' \
+                            'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso. ' \
+                            ' <br />'
 
     elif 'lavajilla' in equipo.lower():
         texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'

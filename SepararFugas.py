@@ -90,24 +90,28 @@ def separar_fugasLV(Equip):
 
 def separar_fugasTec(Equip):
     texto="H"
-    try:
-        texto=Equip.loc[['Notas', 'Marca']]
-        Equip.drop(index='Notas',inplace=True)
-    except:
-        print(" ")
+
+    # try:
+    #     texto=Equip.loc[['Notas', 'Marca']]
+    #     Equip.drop(index='Notas',inplace=True)
+    # except:
+    #     print(" ")
     Equipos = pd.DataFrame(columns=['Codigo','Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Notas'])
     Fugas   = pd.DataFrame(columns=['Codigo','Ubicacion', 'Equipo', 'Lugar', 'Potencia Kobo', 'Texto','Atacable','Notas'])
     Aparatos=Equip.copy()
     Fuga = Equip.copy()
     Aparatos.fillna({'Nominal': 0}, inplace=True)
     Fuga.fillna({'Standby': 0}, inplace=True)
+
     #Aparatos.fillna('x', inplace=True)
     #Fuga.fillna('x', inplace=True)
     #Aparatos.dropna(subset=['Nominal'], inplace=True)
-    Aparatos = Aparatos[Aparatos.Nominal != 'NA']
+    Aparatos = Aparatos[Aparatos.CodigoN != 'NA']
     Aparatos.reset_index(inplace=True)
-    Equipos['Codigo'] = Aparatos['CodigoN']
-    Equipos['Equipo'] = Aparatos['index']+' '+Aparatos['Marca']
+    Aparatos.fillna('X',inplace=True)
+    print(Aparatos)
+    Equipos['Codigo']    = Aparatos['CodigoN']
+    Equipos['Equipo']    = Aparatos['index']+' '+Aparatos['Marca']
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']  = Aparatos['Zona']
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
@@ -115,7 +119,8 @@ def separar_fugasTec(Equip):
     Equipos['Notas']  =  Aparatos['Notas']
     Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
     Equipos['Claves'] = Aparatos['Clave']
-    Equipos.dropna(subset=['Equipo'], inplace=True)
+    Equipos.dropna(subset=['Codigo'], inplace=True)
+
 
     Fuga.dropna(subset=['Standby'], inplace=True)
     Fuga = Fuga[Fuga.Standby != 0]
@@ -129,7 +134,7 @@ def separar_fugasTec(Equip):
     Fugas['Notas']     = Fuga['Notas']
     Fugas['Atacable']  = Fuga['Atacable']
     Fugas['Equipo']    = Fugas['Equipo'].str.replace('Otro', "", regex=True)
-    Fugas['Claves']         = Fuga['Clave']
+    Fugas['Claves']    = Fuga['Clave']
 
     return Equipos,Fugas
 

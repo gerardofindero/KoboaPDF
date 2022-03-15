@@ -30,4 +30,5 @@ def recoDispensadores(kwh):
         PotAhorro["kwhAhorrado"] = kwh*0.30
         PotAhorro["Accion"]      = fc.selecTxt(lib,"DISpa01").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link de compra",links.at[0,"Link"]))
     txt = txt.replace('[/n]','<br />')
+    txt = txt.replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link de compra",links.at[0,"Link"]))
     return [txt, PotAhorro]
