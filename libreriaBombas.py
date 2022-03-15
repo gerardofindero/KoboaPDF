@@ -40,7 +40,7 @@ Created on Tue Aug 10 13:29:50 2021
 # K = Kaccesorios + Ktuberia
 import numpy as np
 import pandas as pd
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import funcionesComunes as fc
 
 def crearClavesBG(infEq):
@@ -96,6 +96,7 @@ def crearClavesBG(infEq):
     if   "flotador"     in infEq["ControlTipo"]   : claves += ",CF"
     elif "electronivel" in infEq["ControlTipo"]   : claves += ",CE"
     elif "anillo"       in infEq["ControlTipo"]   : claves += ",CA"
+
     elif "ninguno"      in infEq["ControlTipo"]   : claves += ",CN"
     if   "no"           in infEq["ControlCierra"] : claves += ",NC"
     if   "si"           in infEq["ControlPeg"]    : claves += ",PE"
@@ -137,21 +138,29 @@ def leerLibreriaBG():
         lib = pd.read_excel(
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
             sheet_name='libreriaBombas')
-    lib = lib.set_index("lib")
+    lib = lib.set_index("Codigo")
 
     return [lib, dbB, cur]
 
 def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
     lib, dbB, cur = leerLibreriaBG()
+    #dbB = dbB.iloc[12,:]
     ClavesS = Claves.split(",")
     ClavesD = ClavesS[1].split("/") #Q/Z/L/nC90/D/T
+    ClavesG = Claves.split("-")
     Q        = float(ClavesD[0])
     Z        = float(ClavesD[1])
     L        = float(ClavesD[2])
     nC90     = float(ClavesD[3])
     D        = float(ClavesD[4])
     T        = float(ClavesD[5])
-    material = ClavesD[6]
+    if "PA" in Claves:
+        material = "plastica"
+    elif "AL" in Claves:
+        material = "aluminio"
+    elif "HI" in Claves:
+        material = "hierro"
+    #material = ClavesD[6]
 
     txt=""
     if kwh <= 23:
@@ -161,38 +170,96 @@ def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
     elif kwh > 60:
         txt += lib.at['BOM03',"Texto"]
 
-    if  ac == 'Si':
-        txt += lib.at['BOM04',"Texto"]
-    if "flotador" in control:
-        txt += lib.at["BOM06","Texto"]
-    if ("placas" in control) and (elecB == "No"):
-        txt += lib.at["BOM07","Texto"]
-    if "contrapeso" in control:
-        if (elecB == "") and (con == ""):
-            txt += lib.at["BOM08","Texto"]
-        elif (elecB == "") and (con == ""):
+    if kwh > 23:
+        if ("BO" in Claves) or ("RO" in Claves) or ("GE"in Claves):
+            txt += lib.at["BOM04","Texto"]
+            if "BO" in Claves:
+                txt += lib.at["BOM04S1","Texto"]
+            if "RO" in Claves:
+                txt += lib.at["BOM04S2", "Texto"]
+            if "GE" in Claves:
+                txt += lib.at["BOM04S3", "Texto"]
+
+        if "SA" in Claves:
+            txt += lib.at["BOM05S1", "Texto"]
+
+        if "DA" in Claves:
+            txt += lib.at["BOM05S2", "Texto"]
+
+        if ("SA" in Claves) or ("DA" in Claves):
+            txt += lib.at["BOM05", "Texto"]
+
+        if "VA" in Claves:
+            txt += lib.at["BOM06","Texto"]
+
+        if "FT" in Claves:
+            txt += lib.at["BOM07S1","Texto"]
+        if "FS" in Claves:
+            txt += lib.at["BOM07S2","Texto"]
+        if ClavesG[-2]!="" and ClavesG[-2]!="*":
+            txt += lib.at["BOM07","Texto"]
+
+        if "CN" in Claves:
+            txt += lib.at["BOM08S1","Texto"]
+        elif ("CF" in Claves) and ("NC" in Claves):
+            txt += lib.at["BOM08S2", "Texto"]
+        elif ("CE" in Claves) and ("PE" in Claves):
+            txt += lib.at["BOM08S3", "Texto"]
+        elif ("CA" in Claves) and ("NC" in Claves):
+            txt += lib.at["BOM08S4", "Texto"]
+        if ClavesG[-1]!="" and ClavesG[-1]!="*":
+            txt += lib.at["BOM08S5","Texto"]
+    if kwh > 60:
+        if (Q!=0 and Z!=0 and D!=0 and nC90!=0 and L!=0) or (not "NB" in Claves):
+            Qc = Q / 100 / 60  # Qc (Q de la casa)=>litros/min (1m3/1000L)(1min/60s)  -> m3/s
+            D = D / 100  # convertir Diametro interno de centimetros a metros
+            Qp = np.linspace(1, 200, 200) / 1000 / 60  # Qp (Q de prueba)=>litros/min (1m3/1000L)(1min/60s)  -> m3/s
+            df = pd.DataFrame({'Qp(m3/s)': Qp})
+            df['Hp'] = 0
+            for i in range(200):
+                df.loc[i, 'Hp'] = estH(Z,df.at[i, 'Qp(m3/s)'], L, D, nC90, material, T)
+            cur['Hp'] = df.loc[:, 'Hp']
+            dbB['Qp'] = 0
+            dbB['Hp'] = 0
+            # descomentar para revizar graficas y ver el punto de operacion con cada bomba
+            #print(cur.loc[10:40,:])
+            #demo=cur.set_index(['Q(L/min)'],drop=True,inplace=False)
+            #demo.plot()
+            #plt.show()
+            ms = cur.columns[1:13]
+            #ms = cur.columns[1:]
+            #print(ms)
+
+            for m in ms:
+
+                idx = (cur.loc[:, m] - cur.loc[:, 'Hp']).abs().idxmin()
+                dbB.loc[dbB.index[dbB.Modelo == m][0], 'Qp'] = cur.at[idx, 'Q(L/min)']
+                dbB.loc[dbB.index[dbB.Modelo == m][0], 'Hp'] = cur.at[idx, 'Hp']
+
+            tc = 1000 / Q
+            kwhc = w * tc / 60 / 1000
+            dbB['t'] = 1000 /dbB.Qp
+            dbB['kwh'] = dbB.loc[:, 'Potencia (HP)'] * dbB.loc[:, 't'] * 0.7457 / 60
+            dbB['%ahorro'] = 1 - (dbB.kwh / kwhc)
+            idxM = dbB["%ahorro"].idxmax()
+
+            dbB=dbB.loc[:11,:]
+            #print(dbB.Modelo[idxM])
+            #print(dbB.loc[:, ['Modelo', 'Hmin', 'Hmax', 'Qp', 'Hp', 't', 'kwh', '%ahorro']])
+            #print(tc, kwhc)
             txt += lib.at["BOM09","Texto"]
-        elif (elecB == "") and (con == ""):
+            txt = txt.replace("[recomendacion]","Bombas marca "+dbB.at[idxM,"Marca"]+" modelo " +dbB.at[idxM,"Modelo"])
+            txt = txt.replace("[ahorro]",str(int(round(dbB.at[idxM,"%ahorro"]*100))))
+    if kwh>23:
+        if "ST" in Claves and "SB" in Claves:
             txt += lib.at["BOM10","Texto"]
-    if "bobina" in termo:
-        txt += lib.at["BOM12","Texto"]
-    if "rodamiento" in termo:
-        txt += lib.at["BOM13","Texto"]
-    if "general" in termo:
-        txt += lib.at["BOM14","Texto"]
-    if durCis == "dura":
-        txt += lib.at["BOM15","Texto"]
-    if durTin == "dura":
-        txt += lib.at["BOM16","Texto"]
-    if (wQ_r1 >= 8.53):
-        if (wQ_r3 is not None) and wQ_r3 >= 8.53:
-            txt += lib.at["BOM20","Texto"]
-        if (wQ_r3 is not None) and wQ_r3 < 8.53:
-            txt += lib.at["BOM19","Texto"]
-        if (wQ_r2 is not None) and wQ_r2 < 8.53:
-            txt +=lib.at["BOM18","Texto"]
-    if (wQ_r1 is not None) and wQ_r1 < 8.53:
-        txt += lib.at["BOM17","Texto"]
+        elif "ST" in Claves:
+            txt += lib.at["BOM11","Texto"]
+        elif "SB" in Claves:
+            txt += lib.at["BOM12","Texto"]
+    txt = txt .replace("[w]",str(w)).replace("[hrsUso]",str(hrsUso))
+    txt = txt.replace("[fugas_txt]",ClavesG[-2])
+    txt = txt.replace("[probblemas_txt]",ClavesG[-1])
 
     return txt
 
