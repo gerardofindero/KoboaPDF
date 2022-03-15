@@ -143,7 +143,7 @@ if __name__ == '__main__':
 ## Se elige la opción del programa que se quiere correr
 
 
-    Opcion='2'
+    Opcion='6'
 
 
 #######################
@@ -186,11 +186,13 @@ if __name__ == '__main__':
 ###########################################
     if Opcion == '6':
 
-        import libreriaBombasAlberca as lba
-        Claves   = "BA,720/800/60,RE,SS"
+        import libreriaBombas as lb
+        Claves   = "BG,2/5/10/2/1/20/PA,BO,-*-*"
         potencia = 800
         hrsUso   = 15*7
-        kwh      = 50
-        trash = lba.recoBA(Claves,kwh,hrsUso,potencia)
+        kwh      = 600
+        DAC = 7.3
+        w  = 700
+        trash = lb.armarTxtBG(Claves,kwh,DAC,hrsUso,w)
         print(trash)
 
