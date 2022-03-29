@@ -80,7 +80,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC,PotenciaE):
         ClavesSep=Claves.split(",")
         Tolerancia = ClavesSep[1]
         Datos= ClavesSep[2].split("/")
-        Potencia=PotenciaE
+        Potencia= float(Datos[0])
         Standby = float(Datos[1])
         Pulgadas=float(Datos[2])
         #Precio = (0.0151*((Pulgadas)**4))-(2.6271*((Pulgadas)**3)) + (164.63*((Pulgadas)**2)) - (4134*(Pulgadas)) + 37921.0
@@ -163,6 +163,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC,PotenciaE):
     if uniones==2:
         Texto = Texto.replace('[INTRO]', ', además ')
 
+    print(Potencia,Ahorro,ROI)
     Texto = Texto.replace('[POT]',str(int(Potencia)))
     Texto = Texto.replace('[/n]','<br />')
     Texto = Texto.replace('[...]', ' ')

@@ -76,7 +76,7 @@ def leer_solar(Cliente):
     DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[12, ['L']][0]
 
     DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
-
+    print(DSolar)
     Kobo = leer_solarKOBO(Cliente)
 
     return DSolar, Kobo

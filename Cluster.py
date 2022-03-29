@@ -472,11 +472,11 @@ def PotenciaMAx_Reg(Aparatos_C,Equipos):
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Bocina', 'Nominal']
             if not Aparatos_C.loc['Bocina', 'Standby']=='X':
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Bocina', 'Standby']
-        if i=='consola':
-            if not Aparatos_C.loc['Consola', 'Nominal']=='X':
-                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Nominal']
-            if not Aparatos_C.loc['Consola', 'Standby']=='X':
-                PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Standby']
+        # if i=='consola':
+        #     if not Aparatos_C.loc['Consola', 'Nominal']=='X':
+        #         PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Nominal']
+        #     if not Aparatos_C.loc['Consola', 'Standby']=='X':
+        #         PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola', 'Standby']
         if i=='consola2':
             if not Aparatos_C.loc['Consola2', 'Nominal']=='X':
                 PotenciaMax=PotenciaMax+Aparatos_C.loc['Consola2', 'Nominal']

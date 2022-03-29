@@ -218,6 +218,7 @@ def Solar(canvas,tarifa,costo, consumo, SolarS,KoboS):
     Azul = (0 / 255, 76 / 255, 101 / 255)
     width, height = A4
     cobrada    =  float(consumo)
+
     consumo    = SolarS.loc['Medidor','Total']
     costoCob = consumo * tarifa
     costo   = float(costo)
@@ -226,6 +227,8 @@ def Solar(canvas,tarifa,costo, consumo, SolarS,KoboS):
 
     Modulos=    KoboS.loc['NoModulos', 'Paneles']
     PotModulos= KoboS.loc['Potencia', 'Paneles']
+
+    carita=1
 
     factor=0.5
     x=0
