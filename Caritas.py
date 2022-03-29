@@ -80,6 +80,17 @@ def caritaEquipos(consumo,clave):
 
     return Ca
 
+def caritaCocina(consumo,clave):
+    kWh=float(consumo)
+    if kWh>=50:
+        Ca = 3
+    elif 15<kWh<50:
+        Ca = 2
+    elif 15 >= kWh:
+        Ca = 1
+
+    return Ca
+
 
 def caritaTV(consumo,clave,potenciaE):
     kWh = float(consumo)
@@ -305,9 +316,9 @@ def caritaBombaP(consumo,clave):
     return Ca
 
 def caritaBombaG(consumo,clave):
-    if consumo <=23:
+    if consumo <=26:
         Ca=1
-    elif 23<consumo<= 60:
+    elif 26<consumo<= 60:
         Ca=2
     elif 60<consumo:
         Ca=3
@@ -397,7 +408,6 @@ def caritaNB(Claves,potencia):
 
 def definircarita(Equipo):
     for index,aparato in Equipo.iterrows():
-        print(aparato)
         if pd.notna(aparato[16]):
             clave = aparato[16]
             consumo = aparato[10]
@@ -441,6 +451,8 @@ def definircarita(Equipo):
                 Carita =caritaDispensador(consumo,clave)
             elif equipoid == "CP":
                 Carita = caritaCP(consumo,clave)
+            elif equipoid == "EC":
+                caritaCocina(consumo, clave)
             else:
                 Carita =caritaEquipos(consumo, clave)
 

@@ -113,15 +113,14 @@ def Nombre_Cliente():
 
 
     #NCliente = Cliente_Prueba()
-    #NCliente = "Guillermo Casas"
-    #NCliente = "Federico Rios"
-    #NCliente = "San Simon"
-    #NCliente = "Guillermo Casas"
-    #NCliente = "Rebeca Tabachnik"
-    #NCliente = 'Leon Cukiert'
     #NCliente = 'Julieta Porres'
-    #NCliente = 'Magali Duran'
-    NCliente = 'Antonio Lopez Irragori'
+    #NCliente = 'Federico Rios'
+    #NCliente = 'Antonio Lopez Irragori'
+    #NCliente = 'Nancy Ruth Espino'
+    #NCliente = 'Luciano Larobina'
+    NCliente = 'David Sanchez'
+    #NCliente  = 'Rancho Arreo'
+    #NCliente = 'Purificacion Carpinteyro'
 
     return NCliente
 ####################################################################################

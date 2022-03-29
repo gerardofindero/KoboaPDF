@@ -29,10 +29,10 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
         if i == 1:
             if indx == 1:
                 InfoDeco = Equipos.filter(regex='laptop')
-                Aparatos_C.loc['Laptop', 'Standby']      = InfoDeco.filter(regex='standby')[0]
+                Aparatos_C.loc['Laptop', 'Standby']      = consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Laptop', 'Marca']        = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Laptop', 'CodigoS']      = stnbyCod
-                Aparatos_C.loc['Laptop', 'Nominal']      = InfoDeco.filter(regex='consumo')[0]
+                Aparatos_C.loc['Laptop', 'Nominal']      = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Laptop', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]
                 Aparatos_C.loc['Laptop', 'Notas']        = Notas
                 Aparatos_C.loc['Laptop', 'Clave']        = 'TC'
@@ -44,7 +44,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Aparatos_C.loc['Computadora', 'Standby']      = InfoDeco.filter(regex='standby')[0]
                 Aparatos_C.loc['Computadora', 'Marca']        = InfoDeco.filter(regex='marca_c_i')[0]
                 Aparatos_C.loc['Computadora', 'CodigoS']      = stnbyCod
-                Aparatos_C.loc['Computadora', 'Nominal']      = InfoDeco.filter(regex='consumo')[0]
+                Aparatos_C.loc['Computadora', 'Nominal']      = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Computadora', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]
                 Aparatos_C.loc['Computadora', 'Notas']        = Notas
                 Aparatos_C.loc['Computadora', 'Clave']        = 'TC'
@@ -352,7 +352,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
 
         Aparatos_C.loc['Regulador', 'Zona']       = Zona
         Aparatos_C.loc['Regulador', 'Marca']      = InfoDeco.filter(regex='marca')[0]
-        Aparatos_C.loc['Regulador', 'Standby']    = InfoDeco.filter(regex='standby')[0]
+        Aparatos_C.loc['Regulador', 'Standby']    = consumoEq(InfoDeco.filter(regex='standby')[0])
         Aparatos_C.loc['Regulador', 'CodigoS']    = stnbyCod
         Aparatos_C.loc['Regulador', 'Nominal']    = 'NA'
         Aparatos_C.loc['Regulador', 'CodigoN']    = 'NA'
@@ -483,26 +483,27 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
     # InfoDeco = Equipos.filter(regex='HDD')
     # Aparatos_C.loc['HDD', 'Marca'] = InfoDeco.filter(regex='cantidad')[0]
     # Aparatos_C.loc['HDD', 'Standby'] = InfoDeco.filter(regex='standby')[0]
-    print(Aparatos_C)
+
     return Aparatos_C
 
 
 def PotenciaMAx_Reg(Aparatos_C,Equipos):
     Equipos_Conectados=(Equipos.split())
-    PotenciaMax=0
     Aparatos_C=Aparatos_C.fillna('X')
+    PotenciaMax=0
+
     for i in (Equipos_Conectados):
         if i=='laptop':
             if not Aparatos_C.loc['Laptop', 'Nominal']=='X':
-                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Nominal']
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Laptop', 'Nominal']
             if not Aparatos_C.loc['Laptop', 'Standby']=='X':
-                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Standby']
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Laptop', 'Standby']
 
         if i=='computadora':
             if not Aparatos_C.loc['Computadora', 'Nominal']=='X':
-                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Nominal']
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Computadora', 'Nominal']
             if not Aparatos_C.loc['Computadora', 'Standby']=='X':
-                PotenciaMax=PotenciaMax+Aparatos_C.loc['TV', 'Standby']
+                PotenciaMax=PotenciaMax+Aparatos_C.loc['Computadora', 'Standby']
 
         if i=='modem':
             if not Aparatos_C.loc['Modem', 'Standby']=='X':

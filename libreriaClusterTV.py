@@ -14,7 +14,6 @@ def analizarCTV(df,DAC):
     df = df.loc[~df.nombre1.str.contains('nobreak|no break|NoBreak|No Break|regulador|Regulador'),:]
     df.loc[:,'nombre1'] = (df.loc[:,'nombre1'] + ' '+df.loc[:,'nombre2']).str.replace('_',' ')
     tags = df.tag.unique()
-    print(df)
     for tag in tags:
         claves=df.at[(df.index[df.tag==tag])[0],'claves']
         w = df.loc[df.tag==tag,'J'].sum()

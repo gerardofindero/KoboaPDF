@@ -58,9 +58,10 @@ def armarTxt_NAtac(Claves):
     nombre =  clavesS[1]
 
     if "EL" in Claves:
-        txt += lib.at["REG03F","PropuestaFF"]
+        txt += lib.at["REG03F","Texto"]
+
     if "MC" in Claves:
-        txt += lib.at["REG06F","PropuestaFF"]
+        txt += lib.at["REG06F","Texto"]
 
     linkSP = dbPro.at["[linkSP]","link"]
     linkPV = dbPro.at["[linkPV]","link"]
@@ -73,7 +74,6 @@ def armarTxt_NAtac(Claves):
 def armarTxt_Atac(Claves,standby,voltaje):
     EE = False
     EM = False
-    print(voltaje)
     rangoE = voltaje[0]
     rangoM = voltaje[1]
     nSub = voltaje[2]
@@ -122,7 +122,7 @@ def armarTxt_Atac(Claves,standby,voltaje):
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP))
     txt = txt.replace("[linkPV]",fc.ligarTextolink("Protector de voltaje",linkPV))
     txt = txt.replace("[nombre]",nombre)
-    txt+= "<br />"
+    txt+= "<br /><br />"
     return txt
 
 
@@ -141,9 +141,11 @@ def armarTxtE(kwh):
 def reemplazo(uso,standby,wC,dbReg):
 
     wC = float(wC) *1.20
+
     if wC==10000*1.20:
         roi=False
         rec=None
+
     elif "EL" == uso:
         filt = (dbReg.uso == "elec") & ( dbReg.w<=wC ) & ( dbReg.standby<standby )
         if filt.sum() > 0:

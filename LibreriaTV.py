@@ -11,7 +11,6 @@ import numpy as np
 # 1.b. Lee otra librería (ver cuál es la Protolibreria)
 def libreria2():
     try:
-        print(f"../../..")
         Libreria =    pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Libreria')
         Precios =     pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",sheet_name='Precio')
         Reemplazos =  pd.read_excel(f"../../../Recomendaciones de eficiencia energetica/Librerias/TV/Librería_TVs.xlsx",
@@ -109,9 +108,7 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC,PotenciaE):
 
         XX         = np.log(Potencia) # Logaritmo de la potencia (será útil para calcular percentiles)
         Percentil = stats.norm.cdf((XX-(2.958131 + 0.039028 * Pulgadas))/0.2040771) # Percentil de potencia de la TV en cuestión
-        # print("_________________")
-        # print(Percentil)
-        # print(uso)
+
 #<<<<<<< HEAD
 #=======
         uniones=0
@@ -171,7 +168,6 @@ def LeeClavesTV(Claves,Uso,Consumo,DAC,PotenciaE):
     Texto = Texto.replace('[...]', ' ')
     Texto = Texto.replace('[Ahorro]', str(round(abs(Ahorro))))
     Texto = Texto.replace('[ROI]', str(round(abs(ROI))))
-    #print(Texto)
     return Texto
 
 
