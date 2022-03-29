@@ -1,5 +1,5 @@
 import pandas as pd
-from Correciones import Lugar
+from Correciones import LugarS,Mayuscula
 
 
 def separar_fugas(Equip):
@@ -21,7 +21,7 @@ def separar_fugas(Equip):
     Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
     Equipos['Codigo'] = Aparatos['CodigoN']
-    Equipos['Equipo'] = Aparatos['index']+' '+Aparatos['Marca']
+    Equipos['Equipo'] = Aparatos['index']+' '+Mayuscula(Aparatos['Marca'])
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
     Equipos['Lugar']  = Aparatos['Zona']
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
@@ -107,18 +107,20 @@ def separar_fugasTec(Equip):
     #Fuga.fillna('x', inplace=True)
     #Aparatos.dropna(subset=['Nominal'], inplace=True)
     Aparatos = Aparatos[Aparatos.CodigoN != 'NA']
+    Aparatos = Aparatos[Aparatos.Nominal != 'X']
+    Aparatos = Aparatos[Aparatos.Nominal != 0]
+
     Aparatos.reset_index(inplace=True)
     Aparatos.fillna('X',inplace=True)
-    print(Aparatos)
     Equipos['Codigo']    = Aparatos['CodigoN']
-    Equipos['Equipo']    = Aparatos['index']+' '+Aparatos['Marca']
+    Equipos['Equipo']    = Aparatos['index']+' '+ Mayuscula(Aparatos['Marca'])
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
-    Equipos['Lugar']  = Aparatos['Zona']
+    Equipos['Lugar']     = LugarS(Aparatos['Zona'])
     Equipos['Ubicacion'] = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
-    Equipos['Texto']  = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
-    Equipos['Notas']  =  Aparatos['Notas']
-    Equipos['Equipo'] = Equipos['Equipo'].str.replace('Otro', "", regex=True)
-    Equipos['Claves'] = Aparatos['Clave']
+    Equipos['Texto']     = Aparatos['index']+' '+Aparatos['Marca'].apply(str) +  ' '+Aparatos['Notas']
+    Equipos['Notas']     =  Aparatos['Notas']
+    Equipos['Equipo']    = Equipos['Equipo'].str.replace('Otro', "", regex=True)
+    Equipos['Claves']    = Aparatos['Clave']
     Equipos.dropna(subset=['Codigo'], inplace=True)
 
 
@@ -126,7 +128,7 @@ def separar_fugasTec(Equip):
     Fuga = Fuga[Fuga.Standby != 0]
     Fuga.reset_index(inplace=True)
     Fugas['Codigo'] = Fuga['CodigoS']
-    Fugas['Equipo']    = 'Fuga '+Fuga['index'] + ' ' + Fuga['Marca'].apply(str)
+    Fugas['Equipo']    = 'Fuga '+Fuga['index'] + ' ' + Mayuscula(Fuga['Marca'].apply(str))
     Fugas['Potencia Kobo']   = Fuga['Standby']
     Fugas['Lugar']     = Fuga['Zona']
     Fugas['Ubicacion'] = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
@@ -300,11 +302,11 @@ def separar_fugasTV(Equipo):
     Equipos['Codigo'] = Aparatos['CodigoN']
     Equipos['index'] = Aparatos['index'].str.replace('1', "", regex=True)
     try:
-        Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']+' '+Aparatos['Pulgadas'].apply(int).apply(str)+"''"
+        Equipos['Equipo']        = Aparatos['index']+' '+Mayuscula(Aparatos['Marca'])+' '+Aparatos['Pulgadas'].apply(int).apply(str)+"''"
     except:
-        Equipos['Equipo']        = Aparatos['index']+' '+Aparatos['Marca']
+        Equipos['Equipo']        = Aparatos['index']+' '+Mayuscula(Aparatos['Marca'])
     Equipos['Potencia Kobo'] = Aparatos['Nominal']
-    Equipos['Lugar']         = Aparatos['Zona']
+    Equipos['Lugar']         = LugarS(Aparatos['Zona'])
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)
     Equipos['Texto'] = Aparatos['index']+' '+Aparatos['Marca']+' '+ Aparatos['Pulgadas'].apply(str) +'´´ '+Aparatos['Notas']
     Equipos['Notas'] = Aparatos['Notas']
@@ -320,9 +322,9 @@ def separar_fugasTV(Equipo):
     Fuga.reset_index(inplace=True)
     Fugas['Codigo'] = Fuga['CodigoS']
     Fuga['index'] = Fuga['index'].str.replace('1', "",regex=True)
-    Fugas['Equipo']          = 'Fuga '+Fuga['index'] + ' ' + Fuga['Marca'].apply(str)
+    Fugas['Equipo']          = 'Fuga '+Fuga['index'] + ' ' + Mayuscula(Fuga['Marca'].apply(str))
     Fugas['Potencia Kobo']   = Fuga['Standby'].apply(str)
-    Fugas['Lugar']           = Fuga['Zona']
+    Fugas['Lugar']           = LugarS(Fuga['Zona'])
     Fugas['Ubicacion']       = 'C' + Fuga['Circuito'].apply(str) + ' ' + Fuga['Tablero'].apply(str)
     Fugas['Texto'] = Fuga['Notas']
     Fugas['Notas'] = Fuga['Notas']

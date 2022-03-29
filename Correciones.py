@@ -49,8 +49,21 @@ def Lugar(lugar):
         lugar = 'Sala de TV planta alta'
     if lugar == 'cuarto_servicio':
         lugar = 'Cuarto de servicio'
+    if lugar == 'oficina_estudio':
+        lugar = 'Oficina'
 
     lugar.replace('recamara','Recámara')
+
+
+    return lugar
+
+
+def LugarS(lugar):
+
+    lugar = lugar.replace('oficina_estudio', 'Oficina')
+    lugar = lugar.replace('estudio_oficina  ', 'Estudio')
+    lugar = lugar.replace('estudio_oficina', 'Estudio')
+    lugar = lugar.replace('salatv', 'Sala de TV')
 
 
     return lugar
@@ -77,3 +90,7 @@ def EquipoCorrec(equipo):
 
 
     return equipo
+
+def Mayuscula(series):
+   newSeries = series.str.capitalize()
+   return newSeries

@@ -64,10 +64,11 @@ def calentadores(Excel,Nocircuito, NomCircuito):
 
                 Aparatos_C.loc['Boiler Electrico', 'Tipo'] = InfoDeco.filter(regex='tipo')[0]
                 Aparatos_C.loc['Boiler Electrico', 'Zona'] = 'Casa'
-                Aparatos_C.loc['Boiler Electrico', 'Standby'] =  consumoEq(InfoDeco.filter(regex='consumo')[0])
+                Aparatos_C.loc['Boiler Electrico', 'Standby'] =  consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Boiler Electrico', 'Marca'] = InfoDeco.filter(regex='marca')[0]
-                Aparatos_C.loc['Boiler Electrico', 'Notas'] = InfoDeco.filter(regex='notas')[0]
+                #Aparatos_C.loc['Boiler Electrico', 'Notas'] = InfoDeco.filter(regex='notas')[0]
                 Aparatos_C.loc['Boiler Electrico', 'Atacable'] = 'Si'
+                Aparatos_C.loc['Boiler Electrico', 'Nominal'] = InfoDeco.filter(regex='consumo')[0]
 
                 if InfoDeco.filter(regex='espendiente_c_i')[0] == 'si':
                     Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
@@ -77,7 +78,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 else:
                     Aparatos_C.loc['Boiler Electrico', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
 
-                Aparatos_C.loc['Boiler Electrico', 'CodigoS'] = InfoDeco.filter(regex='standby_codigofindero_c_i')[0]
+                Aparatos_C.loc['Boiler Electrico', 'CodigoS'] = CodStnby
                 Aparatos_C.loc['Boiler Electrico', 'Existencia'] = 1
                 Aparatos_C.loc['Boiler Electrico', 'Clave'] = 'X'
 
@@ -87,7 +88,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                     Aparatos_C.loc['Boiler de Gas', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
                 else:
                     Aparatos_C.loc['Boiler de Gas', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ_c_i')[0]
-                #Aparatos_C.loc['Boiler de Gas', 'Zona'] = InfoDeco.filter(regex='zona')[0]
+                Aparatos_C.loc['Boiler de Gas', 'Zona'] = 'Casa'
                 Aparatos_C.loc['Boiler de Gas', 'Standby'] =  consumoEq(InfoDeco.filter(regex='standby')[0])
                 Aparatos_C.loc['Boiler de Gas', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Boiler de Gas', 'Existencia'] = 1
@@ -113,7 +114,7 @@ def calentadores(Excel,Nocircuito, NomCircuito):
                 Aparatos_C.loc['Calentador Otro', 'Zona'] = InfoDeco.filter(regex='otro_zona_c_i')[0]
                 Aparatos_C.loc['Calentador Otro', 'Nominal'] =  consumoEq(InfoDeco.filter(regex='otro_consumo_c_i')[0])
                 Aparatos_C.loc['Calentador Otro', 'Marca'] = InfoDeco.filter(regex='tipo_otro_c_i')[0]
-                Aparatos_C.loc['Calentador Otro', 'Notas'] = InfoDeco.filter(regex='otro_notas_c_i')[0]
+                Aparatos_C.loc['Calentador Otro', 'Notas'] = ''
                 Aparatos_C.loc['Calentador Otro', 'Existencia'] = 1
                 Aparatos_C.loc['Calentador Otro', 'Atacable'] = 'Si'
                 Aparatos_C.loc['Notas', 'Existencia'] = 1

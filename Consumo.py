@@ -4,7 +4,6 @@ def calc_consumo(Aparatos):
     consumo = Aparatos['Standby'].copy()
     consumo.dropna(inplace=True)
     consumo.reset_index()
-    print(consumo)
     Total = sum(consumo)
     return Total
 
@@ -27,7 +26,7 @@ def consumoEq(consumo):
         if "w" in consumo:
             watts = float(consumo.replace('w', ' '))
         if consumo=='nm':
-            watts = 100000
+            watts = 0.0001
 
     return watts
 

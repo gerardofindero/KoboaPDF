@@ -6,7 +6,7 @@ import xlwings
 from Tarifa          import leer_tarifa_Dac
 from Leer_Lista      import leer_lista
 from Carpeta_Clientes import carpeta_clientes
-from Correciones import FugasCorrec,EquipoCorrec
+from Correciones import FugasCorrec,EquipoCorrec,LugarS
 #### Excel
 def ExcelDes(Equipos, Luminarias, Fugas,archivo_resultados,Cliente,Solar)    :
 
@@ -498,13 +498,15 @@ def Archivo(Cliente,Luz,Clust,Coci,Esp,Lava,Refri,Bomba,PCs,Comu,Cal,Segu,Aire,T
     Fugas['Codigo']=Fugas['Codigo'].str.upper()
     Luminarias['Codigo']=Luminarias['Codigo'].str.upper()
     #Equipos = Equipos[~Equipos['Codigo'].str.contains('FF', regex=False, na=False)]
-
-    # j=0
-    # for i in Fugas.index:
-    #     j = j + 1
-    #     num = 'FG' + str(j)
-    #     Fugas.loc[i, 'Claves'] = num
-    #Fugas=Fugas.fillna('X')
+    Equipos['Lugar']    = LugarS(Equipos['Lugar'])
+    Luminarias['Lugar'] = LugarS(Luminarias['Lugar'])
+    Fugas['Lugar']      = LugarS(Fugas['Lugar'])
+    Equipos['Equipo']    = Equipos['Equipo'].replace('X','')
+    Luminarias['Equipo'] = Luminarias['Equipo'].replace('X','')
+    Fugas['Equipo']      = Fugas['Equipo'].replace('X','')
+    Equipos['Equipo']    = Equipos['Equipo'].replace('X','')
+    Luminarias['Equipo'] = Luminarias['Equipo'].replace('X','')
+    Fugas['Equipo']      = Fugas['Equipo'].replace('X','')
 
 
 
