@@ -48,12 +48,25 @@ def crearClavesBG(infEq):
     w (potencia)
     kwh (consumo)
 
-    :param infEq: Q/Z/L/nC90/D/T
-    :return:
+    :param infEq:
+    :return: Formato de claves-> Calve de Aparato, Segundo para llenar un litro / Altura de la bomba al tinaco/ Longitud de tuberia/...
+                                                     Número de codos/ Diametro de tubería en centimetros/ Temperatura del agua/ Material de la tuberia, otras claves
+    Material de tuberia                           : plastica(PA) aluminio(AL) hierro(HI) no estaba en lista (NA)
+    Sobrecalentamiento de alguna parte de la bomba: bobina (BO) rodamiento(RO) toda la bomba(GE)
+    Indicadores de obstrucciones en la tuberia    : Manchas de sarro (SA) Alta dureza del agua (DU)
+    Válvulas prcial/totalmente cerradas           : Válvulas cerradas (VC)
+    Fugas de agua en la casa                      : Fugas encontradas por termografia (FT) Fugas a simple vista (FS)
+    Tipo de control                               : Flotador trdicional(CF) electronivel de placas (CE) electronivel foltador y anillo (CA) sin control de paso (CN)
+    Cierre del flotador                           : No sella bien (NC)
+    Estado del electronivel de placas             : Electronivel haciendo corto (PE)
+    Contrapeso de electronivel flotante           : No hay (NP)
+    Al final se agregan dos textos de campo, uno relacionado a las fugas de agua y otra al estado del control
     """
     print("Creando claves de BG")
     # Claves para reemplazo de bomba
     claves = ""
+    # Q/Z/L/nC90/D/T
+    # Flujo (Q) kobo da segundos para llenar un litro -> Se convierte a litros por minuto
     if float(infEq["FlujoSegundos"]) == 0: claves += ",0"
     else                                 : claves += ","+str(60/float(infEq["FlujoSegundos"]))
     if infEq["FlujoSegundos"]== 0: print("Q: 0")
@@ -97,6 +110,7 @@ def crearClavesBG(infEq):
     elif "electronivel" in infEq["ControlTipo"]   : claves += ",CE"
     elif "anillo"       in infEq["ControlTipo"]   : claves += ",CA"
 
+    # Electronivel de placas haciendo corto: Placas pegadas
     elif "ninguno"      in infEq["ControlTipo"]   : claves += ",CN"
     if   "no"           in infEq["ControlCierra"] : claves += ",NC"
     if   "si"           in infEq["ControlPeg"]    : claves += ",PE"
@@ -120,6 +134,12 @@ def crearClavesBG(infEq):
     return claves
 
 def leerLibreriaBG():
+    """
+    :return:
+    cur -> curvas de operación de las bombas gravitacionales (Cabezal H (metros) vs Flujo (litros/minuto))
+    dbB -> Base de datos de las bombas gravitacionales
+    lib -> Libreria con los textos de recomendación
+    """
     try:
         cur = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/curBom.xlsx")
@@ -143,17 +163,38 @@ def leerLibreriaBG():
     return [lib, dbB, cur]
 
 def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
+    """
+    Función para crear recomendación de bombas gravitacionales a partir de las claves de desciframiento
+    :param Claves:
+    Calve de Aparato, Segundo para llenar un litro / Altura de la bomba al tinaco/ Longitud de tuberia/...
+                                                     Número de codos/ Diametro de tubería en centimetros/ Temperatura del agua/ Material de la tuberia, otras claves
+    Material de tuberia                           : plastica(PA) aluminio(AL) hierro(HI) no estaba en lista (NA)
+    Sobrecalentamiento de alguna parte de la bomba: bobina (BO) rodamiento(RO) toda la bomba(GE)
+    Indicadores de obstrucciones en la tuberia    : Manchas de sarro (SA) Alta dureza del agua (DU)
+    Válvulas prcial/totalmente cerradas           : Válvulas cerradas (VC)
+    Fugas de agua en la casa                      : Fugas encontradas por termografia (FT) Fugas a simple vista (FS)
+    Tipo de control                               : Flotador trdicional(CF) electronivel de placas (CE) electronivel foltador y anillo (CA) sin control de paso (CN)
+    Cierre del flotador                           : No sella bien (NC)
+    Estado del electronivel de placas             : Electronivel haciendo corto (PE)
+    Contrapeso de electronivel flotante           : No hay (NP)
+    Al final se agregan dos textos de campo, uno relacionado a las fugas de agua y otra al estado del control
+    :param kwh   : consumo bimestral en kwh
+    :param DAC   : Tarifa dac en pesos
+    :param hrsUso: horas a la semana que estuvo prendida la bomba
+    :param w     : Potencia de la bomba
+    :return:     Recomendación automática
+    """
     lib, dbB, cur = leerLibreriaBG()
     #dbB = dbB.iloc[12,:]
     ClavesS = Claves.split(",")
     ClavesD = ClavesS[1].split("/") #Q/Z/L/nC90/D/T
     ClavesG = Claves.split("-")
-    Q        = float(ClavesD[0])
-    Z        = float(ClavesD[1])
-    L        = float(ClavesD[2])
-    nC90     = float(ClavesD[3])
-    D        = float(ClavesD[4])
-    T        = float(ClavesD[5])
+    Q        = float(ClavesD[0]) # Flujo de agua en la casa del cliente (L/min)
+    Z        = float(ClavesD[1]) # Altura medida del tinaco a la bomba
+    L        = float(ClavesD[2]) # Longitud estimada de la tubería que va de la bomba al tinaco
+    nC90     = float(ClavesD[3]) # Número de codos de l tubería
+    D        = float(ClavesD[4]) # Diámetro de la tubería
+    T        = float(ClavesD[5]) # Temperatura del agua
     if "PA" in Claves:
         material = "plastica"
     elif "AL" in Claves:
@@ -210,6 +251,8 @@ def armarTxtBG(Claves,kwh,DAC,hrsUso,w):
         if ClavesG[-1]!="" and ClavesG[-1]!="*":
             txt += lib.at["BOM08S5","Texto"]
     if kwh > 60:
+        # esta sección se escoge una bomba mas eficiente a partir del cruce de las curvas de operación de las bombas vs
+        # El cabezal de la casa del cliente para un rango de flujos deseados en L/min
         if (Q!=0 and Z!=0 and D!=0 and nC90!=0 and L!=0) or (not "NB" in Claves):
             Qc = Q / 100 / 60  # Qc (Q de la casa)=>litros/min (1m3/1000L)(1min/60s)  -> m3/s
             D = D / 100  # convertir Diametro interno de centimetros a metros
@@ -466,6 +509,12 @@ def est_A(D):
     A = np.pi*(D**2)/4
     return A
 def est_Ka(nC90,D):
+    """
+    Retorna el factor de resistencia añadida por codos de 90° en función de su diametro
+    :param nC90 : Número de codos de 90°
+    :param D    : Diametro interno de la tuberia en metros
+    :return:    Resistencia añadida por los codos
+    """
     D = D*100
     try:
         dbka = pd.read_excel(
@@ -479,6 +528,11 @@ def est_Ka(nC90,D):
     kC90 = dbka.at[Ka_indx, 'K']
     return nC90*kC90
 def est_vis(T):
+    """
+    Retorna la visccocidad del agua a partir de la tempertura
+    :param T: Temperatura en grados celcius
+    :return: Viscocidad kinetica
+    """
     try:
         dbpa = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
@@ -503,19 +557,24 @@ def estH(Z,Q,L,D,nC90,material,T):
     :param material:   material de tuberia
     :return:
     """
-    g      = 9.8        # gravedad         - m/s
-    A      = est_A(D)   # Área interna     - m2
-    v      = est_v(Q,A) # velocidad        - m/s
+    g      = 9.8            # gravedad         - m/s
+    A      = est_A(D)       # Área interna     - m2
+    v      = est_v(Q,A)     # velocidad        - m/s
     Ka     = est_Ka(nC90,D) # adimencional número de codos por resistencia de codos
     vis    = est_vis(T)
     km     = est_km(material)
     f      = est_f(v,D,vis,km)
     Kt     =est_Kt(f,L,D)
-    K      = Ka + Kt    # adimencionales
-    Hd     = K * (v**2)/2/g
-    H      = Z + Hd
+    K      = Ka + Kt        # adimencionales
+    Hd     = K * (v**2)/2/g # Factor K añadido por la intalación hidraulica
+    H      = Z + Hd         # Cabezal (Cabezal estatico más cabezal dinamico)
     return H
 def est_km(material):
+    """
+    FActor resistivo añadido en función del material de la tuberia
+    :param material: Ve en Kmaterial(libreriaBombas.xlsx) materiales disponibles
+    :return:  km Regresa el factor k del material
+    """
     try:
         dbkm = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/libreriaBombas.xlsx",
@@ -540,6 +599,10 @@ def est_Kt(f,L,D):
     return f*L/D
 
 def graficas():
+    """
+    Esta función crea el excel con las curvas de operación de las bombas disponible en el archivo "Base de datos de bombas gravitacionales.xlsx"
+    :return:
+    """
     try:
         dbB = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Bombas agua/Base de datos de bombas gravitacionales.xlsx",

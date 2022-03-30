@@ -14,6 +14,12 @@ def leerLibreriaPlanchas():
     return Libreria
 
 def leerConsumoPlanchas(consumo, hrsUso=None):
+    """
+    Librería de planchas normales
+    :param consumo: Consumo de kwh  al bimestre
+    :param hrsUso:  Número de horas usao a la semana
+    :return:
+    """
     try:
         statistics = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Planchas/libreria_planchas.xlsx",
@@ -32,9 +38,9 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     links.columns =  ['A','B','C']
     col = 'D'
     # media y desviacion estandar almacenados en el excel de planchas
-    # en esta sección se esta trabajdno con la transformación consumo**0.3 (kWh)
-    media=statistics.loc[0,'B']
-    desStd=statistics.loc[3,'B']
+    # en esta sección se esta trabajando con la transformación consumo**0.3 (kWh)
+    media=statistics.loc[0,'B']   # media de la distribución normalizada
+    desStd=statistics.loc[3,'B']  # desviación estandar de la distribucón
     consumoTrans= consumo**0.3
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     percentil=round(percentil,2)
@@ -43,25 +49,10 @@ def leerConsumoPlanchas(consumo, hrsUso=None):
     Link   = links.loc[0, 'C']
 
     texto=''
-    """
-    if (not (hrsUso is None)) and (not hrsUso==0 )and percentil>= 0.45:
-        texto = texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso))
-    """
+
     if (not (hrsUso is None)) and (not hrsUso==0 )and consumo> 33:
         texto = fc.selecTxt(lib,"test04")
-    # 33 19
-    """
-    if percentil <0.33:
-        texto=lib.loc[4,col]
-    elif 0.33<=percentil<0.45:
-        texto = texto + ' '+lib.loc[5, col]
-    elif 0.45<=percentil<0.55:
-        texto = texto + ' '+lib.loc[6, col]
-    elif 0.55<=percentil<0.66:
-        texto = texto + ' '+lib.loc[7, col]
-    elif percentil>=0.66:
-        texto = texto + ' '+lib.loc[8, col]
-    """
+    # Persentil de consumo
     if consumo <= 19:
         texto = fc.selecTxt(lib,"test01")
     elif (consumo > 19) and (consumo<=33):

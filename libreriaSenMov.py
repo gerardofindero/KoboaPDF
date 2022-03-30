@@ -4,6 +4,15 @@ from scipy.stats import norm
 import funcionesComunes as fc
 import unicodedata
 def recoSensores (kwh,w, lugar ,dac,hrsUso):
+    """
+    Recomendación de sensores de movimiento
+    :param kwh:    Consumo en kwh al bimestre
+    :param w:      Potebcia de la luminaria
+    :param lugar:  Zona de la casa donde se encuentra la luminaria
+    :param dac:    Tarifa DAC
+    :param hrsUso:
+    :return:
+    """
     ls=libreriaSensores()
     ls.setData(kwh,w,lugar, dac,hrsUso)
     print(lugar)
@@ -11,7 +20,11 @@ def recoSensores (kwh,w, lugar ,dac,hrsUso):
     return txt.replace("<br />","")
 
 class libreriaSensores:
-
+    """
+    lib   -> libreria con textos
+    links -> links de sensores de movimiento
+    stats -> estadisticas de horas de uso al dia las luminarias en una zona determinada de la casa
+    """
     def __init__(self):
         self.txt = ''
         try:
@@ -40,6 +53,13 @@ class libreriaSensores:
 
 
     def val(self, kwh, w, lugar,dac):
+        """
+        Si el formato de las variables es el correcto cambia la bandera "v" a True
+        :param kwh: cosumo de kwh al bimestre
+        :param w:   potencia de la luminaria
+        :param lugar: lugar de la luminaria
+        :param dac:  Tarifa Dac
+        """
         val_kwh   = False
         val_w     = False
         val_lugar = False
@@ -80,11 +100,20 @@ class libreriaSensores:
             val_dac=True
 
         if val_w and val_dac and val_kwh and val_lugar:
+            # Si todas las variables tienen el formato correcto se la bandera "v" se vuelve verdadera
             self.v = True
         else:
             self.v = False
 
     def setData(self, kwh, w, lugar,dac,hrsUso):
+        """
+        :param kwh:    Consumo de kwh al bimestre
+        :param w:      Potencia de la luminaria en watts
+        :param lugar:  Lugar en la que se encuentra la luminaria
+        :param dac:    Tarifa Dac
+        :param hrsUso: Horas de uso a la semana de la luminaria
+        :return:
+        """
         self.val(kwh,w,lugar,dac)
         if self.v:
             self.kwh   = kwh
@@ -100,21 +129,25 @@ class libreriaSensores:
     def armarTxt(self):
         txt='X'
         if self.stats.tags.str.contains(self.lugar).any():
+            # se escoge la media, desviación estandar y lambda correspondiente a la zona de la casa
             idx=self.stats.index[self.stats.tags.str.contains(self.lugar)][0]
-            mean = self.stats.at[idx, "mean"]
-            std  = self.stats.at[idx, "std" ]
-            lam  = self.stats.at[idx, "lambdas"]
-            perU = self.stats.at[idx,"percentil umbral"]
+            mean = self.stats.at[idx, "mean"]            # media de horas de uso
+            std  = self.stats.at[idx, "std" ]            # desviación estandar de las horas de uso
+            lam  = self.stats.at[idx, "lambdas"]         # lambda con la que se normalizó la distribución de probabilidad
+            perU = self.stats.at[idx,"percentil umbral"] # Umbral de percentil de las horas de uso
             #hrsUso = self.kwh*1000/self.w/60
             #hrsUso = self.hrsUso/7
             hrsUso=5
             hrsUsoT = ((hrsUso**lam)-1)/lam
             percentil= norm.cdf(hrsUsoT,mean,std)
+            # Si las horas de uso a la semana superan el umbral de horas para la zona seleccionada se recomeinda un sensor de movimiento
             if percentil >= perU:
                 roi = 200/(self.kwh*0.35*self.dac)/6
                 if roi <= 3:
+                    # si hay retorno de inversion menor a 3 años
                     txt = txt+ fc.selecTxt(self.lib, "SEN01")
                 else:
+                    # si el ROI es menor a 3 años solo sugiere el sensor de movimiento
                     txt = txt+ fc.selecTxt(self.lib, "SEN02")
                 vtl="[aqui-link]"
                 vtb="[blog-link]"

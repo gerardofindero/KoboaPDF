@@ -17,7 +17,7 @@ def leerLibreriaCafeteras():
             f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/cafeteras/libreriaCafeteras.xlsx",
             sheet_name='statistics')
     libreria.columns = ['A','B','C','D']
-    estadisticas.columns = ['A','B']
+    estadisticas.columns = ['A','B'] # en esta pestaña de la libería se encuentran los parametros estadisticos de consumo de fateras
     return [libreria, estadisticas]
 
 
@@ -62,6 +62,14 @@ def dias(dscr):
 
 
 def armarTxtCaf(nombre,kwh, hrsUso,dscr=''):
+    """
+    Recomendación de cafeteras se hace a partit
+    :param nombre: Nombre de la cafetera
+    :param kwh:    Consumo de la cafetera al bimestre
+    :param hrsUso: Horas de uso a la semana. Proporcionado por analisis
+    :param dscr:   Descripción de analisis con los dias de la semana que se utilizó la cafetera
+    :return:       Recomendaciones acorde al tipo de carita
+    """
     diasUso = dias(dscr)
     KWH=kwh
     [lib, st] = leerLibreriaCafeteras()
@@ -101,23 +109,5 @@ def armarTxtCaf(nombre,kwh, hrsUso,dscr=''):
     else:
         txt = txt.replace('[equipo]','cafetera')
 
-    # elif 0.55<percentil<=0.66:
-    #     if len(diasUso)!=0:
-    #         txt = txt + lib.at[3, 'D'].replace('[diasUso]',diasUso)
-    #         if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
-    #             txt =txt.replace(' acumulando un total de [totalHoras] horas de uso durante la semana.','.')
-    #     else:
-    #         txt = txt + lib.at[4, 'D']
-    #         if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
-    #             txt =txt.replace('Este electrodomestico acumuló un total de [totalHoras] horas de uso durante la semana.','')
-    # elif 0.66<percentil:
-    #     if len(diasUso)!=0:
-    #         txt = txt + lib.at[5, 'D'].replace('[diasUso]',diasUso)
-    #         if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
-    #             txt = txt.replace(' y acumulo un total de [totalHoras] horas de uso durante la semana', '')
-    #     else:
-    #         txt = txt + lib.at[6, 'D']
-    #         if (hrsUso==0) or (hrsUso is None) or (not isinstance(hrsUso,(int,float))):
-    #             txt = txt.replace('Este dispositivo acumuló un total de [totalHoras] horas de uso durante la semana. ','')
     txt = txt.replace('[%]',str(int(percentil*100)))
     return txt.replace('[/n]','<br />')#.replace('<br /><br />','<br />')

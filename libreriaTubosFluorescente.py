@@ -145,6 +145,10 @@ class libreriaTubosFluorescentes:
         self.lmXwt5    = 92 * 0.93
         self.lmXwt8    = 89 * 0.90
         self.lmXwt12   = 80 * 0.78
+        # libTxt -> libreria de luminaria
+        # dbTubos -> Reemplazo de tubo fluorescente por tubo led
+        # dbTiras -> Reemplazo de tubo flourencente por tiras led
+        # dbPanel -> Reemplazo de tubo flourescente por placa led
         try:
             self.libTxt = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Iluminación/Libreria_Luminarias_.xlsx",

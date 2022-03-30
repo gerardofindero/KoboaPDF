@@ -20,12 +20,18 @@ def leerLibreria():
 
     return lib, links
 def recoDispensadores(kwh):
+    """
+    Recomendación para dispensadores de agua
+    :param kwh: consumo de kwh al bimestre del dispensador de agua
+    :return:    Recomendación y potencial de ahorro con el timer inteligente
+    """
     PotAhorro = pd.DataFrame(index=[0],columns=["%Ahorro","kwhAhorrado","Accion"])
     lib, links = leerLibreria()
     if kwh<=20:
         txt = fc.selecTxt(lib, "DIS01")
     else:
         txt = fc.selecTxt(lib,"DIS02").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link de compra",links.at[0,"Link"]))
+        # potencial de ahorro del 30% al implementar un timer
         PotAhorro["%Ahorro"]     = 0.30
         PotAhorro["kwhAhorrado"] = kwh*0.30
         PotAhorro["Accion"]      = fc.selecTxt(lib,"DISpa01").replace("[TIMER INTELIGENTE]",fc.ligarTextolink("Link de compra",links.at[0,"Link"]))

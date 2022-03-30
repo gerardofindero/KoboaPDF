@@ -4,11 +4,11 @@ import funcionesComunes as fc
 def recoSolares(focoFuncion, som, kwh,w,dac):
     """
 
-    :param seg: Funcióndel foco si es nocturna buscara una recomendación de luz solar
+    :param seg: Función del foco si es nocturna buscara una recomendación de luz solar
     :param som: Sombreados, valore "Si" y "No". Viene de kobo y hace referencia a si hay occlusiones de luz
-    :param kwh:
-    :param w:
-    :param dac:
+    :param kwh: Consumo de kwh al bimestre de la luminaria
+    :param w:   Potencia de la luminaria
+    :param dac: Tarifa DAC
     :return: texto con recomendacion
     """
 
@@ -24,6 +24,7 @@ class libreriaLucesSolares():
             self.lib = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Luces Solares/libreriaLucesSoalres.xlsx",
                 sheet_name='libreriaLucesSolares')
+            #  Base de datos con la información de la slamparas solares
             self.db = pd.read_excel(
                 f"../../../Recomendaciones de eficiencia energetica/Librerias/Luces Solares/libreriaLucesSoalres.xlsx",
                 sheet_name='dbSolares')
@@ -31,14 +32,24 @@ class libreriaLucesSolares():
             self.lib = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Luces Solares/libreriaLucesSoalres.xlsx",
                 sheet_name='libreriaLucesSolares')
+            #  Base de datos con la información de la slamparas solares
             self.db = pd.read_excel(
                 f"D:/Findero Dropbox/Recomendaciones de eficiencia energetica/Librerias/Luces Solares/libreriaLucesSoalres.xlsx",
                 sheet_name='dbSolares')
-        self.v=False
+        self.v=False # Validación, True si todas las variables tienen el formato correcto
         self.txt=""
 
     def val(self,kwh, w ,seg, som, dac):
-
+        """
+        Validación de variables para el reemplazo de iluminación solar.
+        :param kwh: consumo de kwh al bimestre de la luminaria
+        :param w:   potencia de la luminaria
+        :param seg: Función del foco si es nocturna buscara una recomendación de luz solar
+        :param som: Sombreados, valore "Si" y "No"
+        :param dac: Tarifa DAC
+        :return:
+        """
+        # Banderas de validación de cada variable
         val_kwh =False
         val_w   =False
         val_seg =False
@@ -90,6 +101,14 @@ class libreriaLucesSolares():
         else:
             self.v = False
     def setData(self,kwh =None,w =None,seg =None,som =None,dac =None):
+        """
+        Funcón para validar formato de variables
+        :param kwh:
+        :param w:
+        :param seg:
+        :param som:
+        :param dac:
+        """
         self.val(kwh,w,seg,som,dac)
         if self.v:
             self.kwh=kwh
@@ -97,20 +116,30 @@ class libreriaLucesSolares():
             self.seg=seg
             self.som=som
             self.dac=dac
+
     def armarTxt(self):
+        """
+        :return: Recomendación automatica, las variables para las desiciones estan guardadas en los atributos del objeto
+        """
+        # Solo regresa una recomendación si la funcion de la luminaria es nocturna (es decir de seguridad)
         txt=""
         if (self.seg == "nocturna"):
+            # Si hay obstaculos que interrumpan el paso d eluz solar a la lampara recomienda una luz solar con panel separable
             if self.som=="Si":
                 idx = self.db.index[
                     (self.db.nombre == "Jackyled - 1000 lúmenes")|(self.db.nombre == "Richarm - 1000 lúmenes" )]
             else:
+            # Si no hay obstaculos a la luz del sol se recomienda una lampara solar mas economica
                 idx = self.db.index[
                     (self.db.nombre == "Sebami -1200 lúmenes") | (self.db.nombre == "Ameritop - 800 lúmenes")]
-            roi = self.db.loc[idx, "costo"] / (self.kwh * self.dac)
+            roi = self.db.loc[idx, "costo"] / (self.kwh * self.dac) # con la lampara seleccionada se calcula el ROI
 
+            # Se selecci el mensaje acorde al ROI
             if (roi<3).any():
+                # Si almenos una lampara un ROI menor a 3 años
                 txt = txt+fc.selecTxt(self.lib,'LUS02')
             else:
+                # De lo contrario se da mensaje de ahorro en el largo plazo
                 txt = txt+fc.selecTxt(self.lib,'LUS03')
             op0 = fc.ligarTextolink(self.db.at[idx[0],"nombre"],self.db.at[idx[0],"links"])
             op1 = fc.ligarTextolink(self.db.at[idx[1], "nombre"], self.db.at[idx[1], "links"])

@@ -20,6 +20,11 @@ def leerLibreria():
 
 
 def recoMaqHie(kwh):
+    """
+    Recomendaciones para maquinas de hielo
+    :param kwh: Consumo de kwh al bimestre de la maáquina de hielo
+    :return:    Recomendación automatica y potencial de ahorro con el timer inteligente
+    """
     PotAhorro = pd.DataFrame(index=[0], columns=["%Ahorro", "kwhAhorrado", "Accion"])
     lib, links = leerLibreria()
 
