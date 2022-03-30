@@ -21,6 +21,11 @@ def leerLibreriaCP():
     links = links.set_index("Variable")
     return [lib, links]
 def recoCP(kWh):
+    """
+    Recomendación de calentadores portatitles
+    :param kWh: Consumo de kwh al bimestre del calentador
+    :return:    Recomendación con termostato mas de bajo consumo.
+    """
     lib, links= leerLibreriaCP()
     txt = ""
     if kWh<=27:
@@ -30,6 +35,6 @@ def recoCP(kWh):
     elif 68<kWh:
         txt = lib.at["CP03","Texto"]
     txt = txt.replace("\n","<br />")
-    linkTermostato = links.at["[linkTermostato]","Links"]
+    linkTermostato = links.at["[linkTermostato]","Links"] # Calentador mas eficiente a la fecha
     txt = txt.replace("[linkTermostato]",fc.ligarTextolink("Termostato",linkTermostato))
     return txt

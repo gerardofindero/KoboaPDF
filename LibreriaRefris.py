@@ -20,7 +20,23 @@ def linkss():
     return links
 
 def ClavesRefri(EquiposRefri):
-
+    """
+    Función para crear claves de equipos de refrigeración a partir de kobo
+    :param EquiposRefri: DataFrame con información de kobo Refrigerador.py
+    :return: Claves con el formato  Equipo,Temperatura Refrigeración/Temperatura Congelación/Potencia del compresor/Temperatura del compresor/ Volumen externo/Porcentaje de encendido, otras claves
+                    Horientación de congelador: Vertical (CVE) y Horizontal (CHO)
+                    Alarma de puertas         : Alarma inexistente (AI) y Alarma dañada (AD)
+                    Ventilas                  : Sin ventilas (SV)
+                    Tiempo de prendido        : Lapsos de encendio prolongados (PR)
+                    Ciclos de deshielo        : Con ciclos de deshielo (DH)
+                    Vebtilación               : Sin ventilación (SV)
+                    Liempieza del evaporador  : Evaporador sucio (SU)
+                    Potencia del compresor    : Potencia mayor a 120 watts (NC)
+                    Estado del empaque        : Empaque dañado (EM)
+                    Estado del difusor        : Difusor dañado (DM)
+                    Estado de las puertas     : Puertas dañadas (PM)
+                    Fugas de refrigerante     : Se encontraron fugas de refrigerante (FG)
+    """
     EquiposR = EquiposRefri
     for i in EquiposR.index:
         if np.isnan(EquiposR['Temp Refri'])    : TempR = 100
@@ -90,6 +106,29 @@ def Clasifica(Claves):
 
 
 def LeeClavesR(Claves,notas,nombre,consumo):
+    """
+    Función que da la recomendaciones para equipos de refrigeración.
+    El color y mensaje se dan acorde al percentil en el que se encuentra el kwh al bimestre
+    :param Claves: formato  Equipo,Temperatura Refrigeración/Temperatura Congelación/Potencia del compresor/Temperatura del compresor/ Volumen externo/Porcentaje de encendido, otras claves
+                    Horientación de congelador: Vertical (CVE) y Horizontal (CHO)
+                    Alarma de puertas         : Alarma inexistente (AI) y Alarma dañada (AD)
+                    Ventilas                  : Sin ventilas (SV)
+                    Tiempo de prendido        : Lapsos de encendio prolongados (PR)
+                    Ciclos de deshielo        : Con ciclos de deshielo (DH)
+                    Vebtilación               : Sin ventilación (SV)
+                    Liempieza del evaporador  : Evaporador sucio (SU)
+                    Potencia del compresor    : Potencia mayor a 120 watts (NC)
+                    Estado del empaque        : Empaque dañado (EM)
+                    Estado del difusor        : Difusor dañado (DM)
+                    Estado de las puertas     : Puertas dañadas (PM)
+                    Fugas de refrigerante     : Se encontraron fugas de refrigerante (FG)
+    :param notas:   Notas de campo
+    :param nombre:  Nombre del refrigerador
+    :param consumo: kwh al bimestre del refrigerador
+    :return:        Recomendación ->            percentil < 0.30    - carita verde
+                                        0.30 <= percentil < 0.90    - carita amrilla Si un equiipo puede reducir su consumo por debajo del percentil 0.90 de vulve amarillo
+                                        0.90 <= percentil           - carita roja
+    """
     kWh   = float(consumo)
     Texto = ''
     TextoF = notas
@@ -102,16 +141,16 @@ def LeeClavesR(Claves,notas,nombre,consumo):
     if pd.notna(Claves):
 
         ClavesSep=Claves.split(",")
-
+        # equipoR -> Temperatura Refrigeración/Temperatura Congelación/Potencia del compresor/Temperatura del compresor/ Volumen externo/Porcentaje de encendido
         equipoR=ClavesSep[0]
         Datos= ClavesSep[1].split("/")
-        TRef      = float(Datos[0])
-        TCong     = float(Datos[1])
-        NomCom    = float(Datos[2])
-        TempCom   = float(Datos[3])
-        Volumen   = float(Datos[4])
-        Encendido = float(Datos[5])/100
-        Ns = 0
+        TRef      = float(Datos[0]) # temperatura de refrigeración
+        TCong     = float(Datos[1]) # temperatura de congelación
+        NomCom    = float(Datos[2]) # Potencia del compresor
+        TempCom   = float(Datos[3]) # Temperatura del compresor
+        Volumen   = float(Datos[4]) # Volumen externo del congelador
+        Encendido = float(Datos[5])/100 # Proporción de encendido del refrigerador con respecto a su ciclo de trabajo
+        Ns = 0      # Número de causas suaves
         if equipoR == "CV":
             if (TRef < 12): Ns+=1
         else:
@@ -120,24 +159,32 @@ def LeeClavesR(Claves,notas,nombre,consumo):
         if "SU" in Claves: Ns += 1
         EncendidoNs = Encendido - (0.07 * Ns)
 
-        Nt = 0
+        Nt = 0     # número de causas tecnicas
         if "EM" in Claves: Nt += 1
         if "DM" in Claves: Nt += 1
         if "FG" in Claves: Nt += 1
         if "PD" in Claves: Nt += 1
 
+
+        # El modelo de percentil relaciona el kwh por el volumen
+        # Se escoge el modelo matematico acorde al tipo de equipo
         if (equipoR=='RF') or (equipoR=="MB"):
+            # Refrigeradores y minibares
             Volumen = float(Datos[4]) * 0.000022
             percentil = norm.cdf(((float(kWh)*6.0)**0.1 - (1.738365 + 0.0057272 * Volumen))/0.01962684,loc=0,scale=1)
             percentilNs = norm.cdf((((1 - 0.07 * Ns) * float(kWh) * 6.0) ** 0.1 - (1.738365 + 0.0057272 * Volumen)) / 0.01962684, loc=0,scale=1)
         if equipoR=="CV":
+            # Cavas
             formulaV = (Volumen / 1300.8) + 21.4
             formulaR = (Volumen / 1300.8) + 51.6
         if equipoR=="CN":
+            # Cogelador
             if "CHO" in Claves:
+                # Congelador horizontal
                 formulaV = (Volumen / 8000.35) - 7.58
                 formulaR = (Volumen / 3955.11) - 15.33
             if "CVE" in Claves:
+                # Congelador vertical
                 formulaV = (Volumen / 6863.63) - 8.83
                 formulaR = (Volumen / 3432.19) - 17.67
         if equipoR == "CV" or equipoR == "CN":
@@ -152,7 +199,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             #### Zona verde ####
             Texto += lib.loc['REF001','Texto'] + lib.loc["REF015","Texto"]
         elif percentil>=0.90:
-            #### NS a amarillo ####
+            #### Carita amarilla  al quitar el consumo de las causas suaves y tecnicas ####
             if percentilNs<0.90:
                 Texto += lib.loc['REF002', 'Texto']
                 # Temperaturas muy bajas
@@ -197,7 +244,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                 PotAhorro['%Ahorro'] = Ns * 0.07
                 PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
             else:
-                #### NS rojo ####
+                #### Carita roja  ####
                 Texto += lib.loc['REF016', 'Texto']
                 if (NomCom > 120) and not("NC" in ClavesSep):
                     Texto+= lib.loc["REF017","Texto"]
@@ -260,7 +307,7 @@ def LeeClavesR(Claves,notas,nombre,consumo):
                     Texto += lib.loc["REF031","Texto"] + lib.loc["REF032","Texto"]
 
         else:
-        ########## Escenario amarillo ##########
+        ########## Escenario amarillo sin considerar causas suaves o tecnicas ##########
             Texto += lib.loc['REF002','Texto']
             # Temperaturas muy bajas
             if Ns>0:
@@ -303,22 +350,26 @@ def LeeClavesR(Claves,notas,nombre,consumo):
             Texto += lib.loc["REF015","Texto"]
             PotAhorro['%Ahorro'] = Ns*0.07
             PotAhorro['kWhAhorrado'] = kWh * PotencialAhorro
-
+    # Reemplazo de variables depndiendo el tipo de equipo de refrigeración
     if equipoR == "RF":
+        # Refrigerador
         Texto = Texto.replace("[TEMPR]",str(int(TRef)))
         Texto = Texto.replace("[TEMPC]",str(int(TCong)))
 
     if equipoR == "MB":
+        # Minibar
         Texto = Texto.replace("[TEMPR]", str(int(TRef)))
         Texto = Texto.replace("[TEMPC]", str(int(TCong)))
         Texto = Texto.replace("[equipo]","minibar")
         Texto = Texto.replace("Refrigerador","Minibar").replace("refrigerador","minibar")
         PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador","Minibar").replace("refrigerador","minibar")
     if equipoR == "CN":
+        # Congelador
         Texto = Texto.replace("[TEMPC]",str(int(TCong)))
         Texto = Texto.replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
         PotAhorro.loc[0,"Accion"] = PotAhorro.at[0,"Accion"].replace("Refrigerador", "Congelador").replace("refrigerador", "congelador")
     if equipoR == "CV":
+        # Cavas
         Texto = Texto.replace("[TEMPR]", str(int(TRef)))
         Texto = Texto.replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")
         PotAhorro.loc[0, "Accion"] = PotAhorro.at[0, "Accion"].replace("Refrigerador", "Equipo").replace("refrigerador", "equipo")

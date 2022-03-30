@@ -13,6 +13,14 @@ def leerLibreriaMicroondas():
     return Libreria
 
 def leerConsumoMicroondas(consumo, hrsUso=None):
+    """
+    La recomendación de microondas se hace en función del percentil de consumo en que se encuentra
+
+    :param consumo: kwh al bimestre
+    :param hrsUso: horas a la semana que se utilizo el aparato.
+                   Es proporcionado por analisis en el excel de resumen (pestaña de desciframiento)
+    :return:       Recomendación automática
+    """
     try:
         statistics = pd.read_excel(
             f"../../../Recomendaciones de eficiencia energetica/Librerias/Microondas/libreria_microondas.xlsx",
@@ -30,12 +38,12 @@ def leerConsumoMicroondas(consumo, hrsUso=None):
     consumoTrans= consumo**0.4
     percentil= norm.cdf(consumoTrans,loc=float(media),scale=float(desStd))
     percentil=round(percentil,2)
-    lib=leerLibreriaMicroondas()
-    col='D'
+    lib=leerLibreriaMicroondas() # Lectura de excel con textos
+    col='D'                      # Columna con textos
     texto = ''
 
     if (not (hrsUso is None)) and(hrsUso!=0)and(percentil>=0.45):
-        print('entre')
+        #print('entre')
         texto= texto + lib.loc[3,col].replace('[horasUso]',str(hrsUso)) +' '
 
     if percentil <0.33:
