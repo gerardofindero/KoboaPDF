@@ -33,8 +33,6 @@ def textodeconsejos(clave,voltaje):
     claveSR=clave[~clave.D.str.contains("Regulador")]
     sumaP=claveSR['K'].sum()
     conteo=random.randrange(4)
-    #print('====================> HOJA Inicio')
-
     for index, claves in clave.iterrows():
         equipo     = claves[3]
         Standby =  claves[9]
@@ -50,8 +48,6 @@ def textodeconsejos(clave,voltaje):
 
         Address = 'Link de compra'
         LinkS = '<link href="' + str(linkA) + '"color="blue">' + Address + ' </link>'
-        #print(equipo,clave)
-
 
         if clave== 'AMN':
             if not 'AMN/' in Conta:
@@ -99,9 +95,16 @@ def textodeconsejos(clave,voltaje):
 
             elif 'regulador' in equipo:
                 if not 'RG/' in Conta:
-                    textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave,Standby,voltaje)
-                    Conta = Conta + 'RG/ '
-                    contador = contador + 1
+                    try:
+                        textoCompleto = textoCompleto + '-' + armarTxt_Atac(clave,Standby,voltaje)
+                        Conta = Conta + 'RG/ '
+                        contador = contador + 1
+                    except:
+                        textoCompleto = textoCompleto + '-' + 'Ya que el voltaje en tu vivienda es estable, puedes quitar ' \
+                                                              'tu regulador y sustituirlo por un protector de picos para' \
+                                                              ' mantener tus equipos portegidos contra picos de voltaje <br /> <br />'
+                        Conta = Conta + 'RG/ '
+                        contador = contador + 1
 
 
             elif 'bifasico' in equipo:
@@ -262,64 +265,96 @@ def textodeequiposR(equipo,nota):
 
     texto=''
     equipo=unidecode(equipo)
+
+    linkB = "https://www.amazon.com.mx/FEDBNET-Interruptor-interruptor-inteligente-recuperaci%C3%B3n/dp/B08CK4GMCQ/" \
+            "ref=pd_sbs_1/142-4121552-0782331?pd_rd_w=3flMS&pf_rd_p=dee331ab-905c-48f4-8a5e-81c36ada64cb&pf_rd_" \
+            "r=HCM55GJCJNZN4EH0REH9&pd_rd_r=63f711cc-ffc5-42b3-badf-5369610a49fa&pd_rd_wg=QSz35&pd_rd_i=B08CK4GMCQ&psc=1"
+    Address = 'Link de compra'
+    LinkTimer = '<link href="' + str(linkB) + '"color="blue">' + Address + ' </link>'
+
     if 'laptop' in equipo.lower():
-        texto = texto+' ' + 'Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
+        texto = 'Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
 
 
 
-    elif 'horno' in equipo.lower():
-        texto = texto+' ' + 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
+    elif 'horno' in equipo.lower() or 'hornito' in equipo.lower():
+        texto = 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso. ' \
                             'Puedes cambiar a un horno de gas para ahorrar en energía electrica, también puedes usar tu estufa para ' \
                             'cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
 
     elif 'parrila' in equipo.lower():
-        texto = texto+' ' + 'Una parrilla elétrica es un equipo de alta potencia por lo que para poder evitar un gasto elevado ' \
+        texto =  'Una parrilla elétrica es un equipo de alta potencia por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos, úsala con moderación. ' \
                             'Puedes usar tu estufa de gas para cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
 
 
     elif 'estufa' in equipo.lower():
-        texto = texto+' ' + 'Tu estufa es de alto consumo por lo que para poder evitar un gasto elevado ' \
+        texto =  'Tu estufa es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.' \
                             'Puedes considerar cambiar a una estufa de gas para disminuir tu consumo de energía electrica.  <br />'
 
     elif 'thermomix' in equipo.lower() or 'termomix' in equipo.lower():
-        texto = texto+' ' + 'Tu equipo Thermomix es de alto consumo por lo que para poder evitar un gasto elevado ' \
+        texto = 'Tu equipo Thermomix es de alto consumo por lo que para poder evitar un gasto elevado ' \
                         'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
 
     elif 'calentador' in equipo.lower():
-        texto = texto+' ' + 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
+        texto =  'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
                             'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
                             ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
                             'por más tiempo. <br /> '
+    elif 'boiler' in equipo.lower():
+        texto = 'Este equipo tiene un consumo elevado por su función de calentar el agua, ' \
+                            'te recomendamos apagarlo completamente mientras no se vaya a usar y prenderlo 20 minutos antes de bañarse. ' \
+                            'Te puedes ayudar de un sistema de pastillas inteligentes para apagar y prender el boiler de forma remota desde tu celular ' \
+                            ' <br /><br /> Te dejamos un link donde puedes comprarla. <br />'+LinkTimer
 
     elif 'calefaccion' in equipo.lower():
-        texto = texto+' ' + 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
+        texto = 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
                             'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
                             ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
                             'por más tiempo. En tiempos de calor este consumo disminuirá drasticamente. <br /> '
 
 
     elif 'gravitacion' in equipo.lower():
-        texto = texto+' ' + 'La bomba tiene un consumo completamente fuera de lo normal en comparacion con otros de nuestros clientes. ' \
+        texto = 'La bomba tiene un consumo completamente fuera de lo normal en comparacion con otros de nuestros clientes. ' \
                             'Esto se debe que se prende por periodos largos de tiempo durante el día. ' \
                             'No encontramos porblemas con los controles ni encontramos fugas <br /> '
 
     elif 'biodigestor' in equipo.lower():
-        texto = texto+' ' + 'Nuestra recomendación es que al ser un equipo que se mantiene funcionando todo el tiempo, se apague durante los momentos en los que no haya nadie en la casa.' \
+        texto = 'Nuestra recomendación es que al ser un equipo que se mantiene funcionando todo el tiempo, se apague durante los momentos en los que no haya nadie en la casa.' \
                             'Otra alternativa sería programarlo, con un timer en las pastillas o si es posible desde el mismo equipo, para que se mantenga apagado durante el tiempo que no se necesite o' \
                             'periodos en donde no sea tan necesario que se limpie tan seguido '
 
 
     elif 'lavajilla' in equipo.lower():
-        texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
+        texto =  'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
 
     elif 'jacuzzi' in equipo.lower():
-        texto = texto+' ' + 'El gasto elevado se debe a un uso prolongado de la bomba. Te recomendamos usar este equipo de forma moderada' \
+        texto =  'El gasto elevado se debe a un uso prolongado de la bomba. Te recomendamos usar este equipo de forma moderada' \
                             ' ya que la bomba que utiliza es de alto consumo. <br />'
 
+    elif 'computo' in equipo.lower():
+        texto =  'Tu equipo de computo tiene un alto consumo debido a que se usa de forma prolongada. ' \
+                            'Sabemos que a veces no es posible reducir su tiempo de uso por cuestiones de trabajo pero te dejamos unos consejos para ahorrar:' \
+                            '<br />De ser posible, asegurate de apagar los monitores y todos tus dispositivos completamente cuando no los estés usando. ' \
+                            'Tambien asegurate de apagar por completo la computadora cuando ya no la vayas a ocupar, ' \
+                            'ya que si solo la dejas suspendida seguirá consumiendo energía y generandote un gasto innecesario. <br />'
+
+    # elif 'computadora' in equipo.lower():
+    #     texto = texto+' ' + 'Tu equipo de computo tiene un alto consumo debido a que se usa de forma prolongada. ' \
+    #                         'Sabemos que a veces no es posible reducir su tiempo de uso por cuestiones de trabajo pero te dejamos unos consejos para ahorrar:' \
+    #                         '<br />De ser posible, asegurate de apagar por completo la computadora cuando ya no la vayas a ocupar, ' \
+    #                         'ya que si solo la dejas suspendida seguirá consumiendo energía y generandote un gasto innecesario. <br />'
+    #
+    #
+    # elif 'monitor' in equipo.lower() or 'monitores' in equipo.lower():
+    #     texto = texto+' ' + 'Tus monitores tiene un impacto fuerte en tu consumo de energía debido a que se mantienen encendidos por largos periodos de tiempo.' \
+    #                         'Sabemos que a veces no es posible reducir su tiempo de uso por cuestiones de trabajo pero te dejamos unos consejos para ahorrar:' \
+    #                         '<br />De ser posible, asegurate de apagar los monitores y todos tus dispositivos de oficina completamente cuando no los estés usando. ' \
+    #                         'Tambien asegurate de apagar por completo la computadora cuando ya no la vayas a ocupar, ' \
+    #                         'ya que si solo la dejas suspendida seguirá consumiendo energía y generandote un gasto innecesario. <br />'
 
     else:
         texto=nota
@@ -328,64 +363,65 @@ def textodeequiposR(equipo,nota):
 
 
 def textodeequiposA(equipo,nota):
-    texto=nota
-    equipo=unidecode(equipo)
-    if 'laptop' in equipo.lower():
+    texto=''
+    equipo=unidecode(equipo).lower()
+    if 'laptop' in equipo:
         texto = texto+' ' + 'Para las laptops te recomendamos desconectarlas del enchufe cuando se terminen de usar. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
-    elif 'computadora' in equipo.lower() or 'PC' in equipo.lower():
+    elif 'computadora' in equipo or 'PC' in equipo:
         texto = texto+' ' + 'Tu equipo de computo gasta ligeramente más que el promedio de nuestros clientes, para estos equipos' \
                             'recomendamos apagarlos completamente cuando no están en uso, asegurate de que tu computadora se apague completamente' \
                             ' y que no se encuentre en modo de suspención ya que seguirá gastando energía. Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro. <br /> '
 
-    elif 'bluray' in equipo.lower() :
+    elif 'equipos de cocina' in equipo:
+        texto = texto+' ' + 'La gran mayoría de los equipos de cocina, por su naturaleza, son de alto consumo por lo que para poder evitar un gasto elevado ' \
+                            'lo más eficiente es ser consciente de sus encendidos. Recuerda apagarlos completamente o de ser posible desconectarlos si no los estás usando ' \
+                            ' <br />'
+
+    elif 'bluray' in equipo:
         texto = texto+' ' + 'Los Blue Rays/Videocaseteras ya son una tecnología más antigua que no se usa, así que se ' \
                             'puede agregar un texto como "Seguido, los Blue Rays y videocaseteras ya están en desuso. ' \
                             'Sin embargo, pueden representar un consumo de energía en este momento o a futuro ' \
                             'por lo que puede ser prudente desconectarlos completamente'
 
-    elif 'aspirador' in equipo.lower():
+    elif 'aspirador' in equipo:
         texto = texto+' ' + 'La aspiradora se usó varios días a la seman. Su consumo es un poco más elevado que la mayoría de nuestros clientes., ' \
                             ' Recuerda desconectarla cuando no la estés usando. <br /> '
 
 
-    elif 'cabello' in equipo.lower():
+    elif 'cabello' in equipo:
         texto = texto+' ' + 'Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
-    elif 'pelo' in equipo.lower():
+    elif 'pelo' in equipo:
         texto = texto+' ' + 'Por su naturaleza este equipo es de alto consumo ya que su función es generar aire caliente. ' \
                             'Recuerda usar el equipo conscientemente para evitar que se convierta en un problema mayor. <br /> '
 
-    elif 'calentador' in equipo.lower():
+    elif 'calentador' in equipo:
         texto = texto+' ' + 'Este equipo tiene un consumo elevado por su función de calentar el área, ' \
                             'te recomendamos usarlo de forma consciente para lograr un consumo aún más bajo.' \
                             ' Cierra puertas y ventanas cuando lo uses para evitar que entre el frío y se tenga que usar ' \
                             'por más tiempo. <br /> '
 
-    elif 'horno' in equipo.lower():
+    elif 'horno' in equipo or 'hornito' in equipo:
         texto = texto+' ' + 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
 
-    elif 'estufa' in equipo.lower():
+    elif 'estufa' in equipo:
         texto = texto+' ' + 'Tu estufa es de alto consumo por lo que para poder evitar un gasto elevado ' \
                         'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
 
-    elif 'thermomix' in equipo.lower() or 'termomix' in equipo.lower():
+    elif 'thermomix' in equipo or 'termomix' in equipo:
         texto = texto+' ' + 'Tu equipo Thermomix es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso.  <br />'
 
-    elif 'horno' in equipo.lower():
+    elif 'horno' in equipo:
         texto = texto+' ' + 'Tu horno es de alto consumo por lo que para poder evitar un gasto elevado ' \
                             'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso. ' \
                             'Puedes cambiar a un horno de gas para ahorrar en energía electrica, también puedes usar tu estufa para ' \
                             'cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
-    elif 'cocina' in equipo.lower():
-        texto = texto+' ' + 'Tus equipos de cocina tienen un alto consumo por lo que para poder evitar un gasto elevado ' \
-                            'lo más eficiente es ser consciente de sus encendidos; apaga el equipo después de su uso. ' \
-                            ' <br />'
 
-    elif 'lavajilla' in equipo.lower():
+    elif 'lavajilla' in equipo:
         texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
 
     else:
@@ -409,7 +445,7 @@ def textodeequiposV(equipo,nota):
 
     elif 'bomba' \
        '' in equipo.lower():
-        texto = texto+' ' + 'Revisamos el funcionamiento de tu bomba, No encontramos problemas, tiene un buen funcionamiento y un ' \
+        texto = texto+' ' + 'Revisamos el funcionamiento de tu bomba, No encontramos problemas, tiene un buen desempeño y un ' \
                             'consumo de energía eficiente. Recuerda darle mantenimiento de manera regular <br /> '
 
     elif 'aspirador' in equipo.lower():

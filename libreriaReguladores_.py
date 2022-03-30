@@ -56,9 +56,10 @@ def armarTxt_NAtac(Claves):
     nombre =  clavesS[1]
 
     if "EL" in Claves:
-        txt += lib.at["REG03F","PropuestaFF"]
+        txt += lib.at["REG03F","Texto"]
+
     if "MC" in Claves:
-        txt += lib.at["REG06F","PropuestaFF"]
+        txt += lib.at["REG06F","Texto"]
 
     linkSP = dbPro.at["[linkSP]","link"]
     linkPV = dbPro.at["[linkPV]","link"]
@@ -89,7 +90,6 @@ def armarTxt_Atac(Claves,standby,voltaje):
     """
     EE = False
     EM = False
-    print(voltaje)
     rangoE = voltaje[0]
     rangoM = voltaje[1]
     nSub = voltaje[2]
@@ -140,7 +140,7 @@ def armarTxt_Atac(Claves,standby,voltaje):
     txt = txt.replace("[linkSP]",fc.ligarTextolink("Supresor de picos",linkSP)) # protector de voltaje para equipos electronicos
     txt = txt.replace("[linkPV]",fc.ligarTextolink("Protector de voltaje",linkPV)) # protector de voltaje para equipos mecanicos
     txt = txt.replace("[nombre]",nombre)
-    txt+= "<br />"
+    txt+= "<br /><br />"
     return txt
 
 
@@ -173,11 +173,13 @@ def reemplazo(uso,standby,wC,dbReg):
     """
     # se da un colchon de %20 para asegurar que el regulador seleccioando pueda soprotar los equipos del cliente
     wC = float(wC) *1.20
+
     # Si wC es igual a 10000 es un valor arbitrario que se usa cuando no se pudo medir el estandby del regulador
     if wC==10000*1.20:
         roi=False
         rec=None
     # Seccion de reguladores de uso electronico
+
     elif "EL" == uso:
         #filta la base de datos por tipo de uso, potencia maxima y estandby
         filt = (dbReg.uso == "elec") & ( dbReg.w<=wC ) & ( dbReg.standby<standby )

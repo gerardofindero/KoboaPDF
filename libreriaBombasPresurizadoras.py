@@ -104,7 +104,7 @@ def recoPresu(kwh,potencia,Claves,hrsUso):
                 txt+= lib.at["PRE004","Texto"]
             else:
                 if ("VJ" in Claves) or ("FG" in Claves) or("AC" in Claves) or ("NJ" in Claves):
-                    txt += lib.at["PRE005","Testo"]
+                    txt += lib.at["PRE005","Texto"]
                     if "AC" in Claves:
                         txt += lib.at["PRE005S01","Texto"]
                         PotAhorro.loc[0, "%Ahorro"] = 0.2

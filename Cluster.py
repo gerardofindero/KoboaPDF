@@ -380,6 +380,7 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
         Aparatos_C.loc['NoBreak', 'Notas']        = 'Los equipos que se conectan son: '+\
                                                     Aparatos_C.loc['NoBreak', 'Equipos']+','+Notas
         Aparatos_C.loc['NoBreak', 'Clave'] = 'NB,'+NR
+        print(Aparatos_C.loc['NoBreak', 'Standby'])
         Aparatos_C.loc['NoBreak', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak', 'Clave'],
                                                          Aparatos_C.loc['NoBreak', 'Standby'],
                                                          PotenciaMAx_Reg(Aparatos_C,

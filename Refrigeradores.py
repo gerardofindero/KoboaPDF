@@ -610,7 +610,8 @@ def refrigerador(Excel,Nocircuito,NomCircuito,voltaje):
                 profundo = InfoDeco.filter(regex='profundo')[0]
                 Aparatos_C.loc['Minibar2', 'Marca'] = InfoDeco.filter(regex='marca')[0]
                 Aparatos_C.loc['Minibar2', 'Volumen'] = float(alto) * float(ancho) * float(profundo)
-                Aparatos_C.loc['Minibar2', 'Temp Refri'] = InfoDeco.filter(regex='minibar1_temp_c_i')[0]
+                Aparatos_C.loc['Minibar2', 'Temp Refri'] = InfoDeco.filter(regex='trefri')[0]
+                Aparatos_C.loc['Minibar2', 'Temp Conge'] = InfoDeco.filter(regex='tconge')[0]
                 Aparatos_C.loc['Minibar2', 'Pot Compresor'] = InfoDeco.filter(regex='compresor_potencia')[0]
                 Aparatos_C.loc['Minibar2', 'CodigoN'] = InfoDeco.filter(regex='codigofindero')[0]
                 PotCompresor = InfoDeco.filter(regex='compresor_potencia')[0]

@@ -14,7 +14,8 @@ import Estilos
 import logging
 import pandas as pd
 import numpy as np
-from LibreriaLED import variablesLuces,UnirLuces
+from LibreriaLED import variablesLuces
+from Separa_Luces import UnirLuces
 from LibreriaRefris import LeeClavesR,Clasifica
 from LibreriaTV import LeeClavesTV,Clasifica
 from LibreriaLavaSeca import  LeeClavesLavaSeca
@@ -211,6 +212,7 @@ def portada(canvas, width, height):
     canvas.showPage()
 
 def Solar(canvas,tarifa,costo, consumo, SolarS,KoboS):
+    notas=""
     gris = [65 / 255, 65 / 255, 65 / 255]
     AMA_1 = [235 / 255, 200 / 255, 0 / 255]
     Azul = (0 / 255, 76 / 255, 101 / 255)
@@ -334,7 +336,7 @@ def Solar(canvas,tarifa,costo, consumo, SolarS,KoboS):
     texto('Producción solar #1', 12, Azul, 'Montserrat-B', 145, 290, canvas)
     texto('Producción solar #2', 12, Azul, 'Montserrat-B', 145, 150, canvas)
 
-    canvas.drawImage(f"Imagenes/cara_{carita}.png", 95, 475, width=32,
+    canvas.drawImage(f"Imagenes/cara_1.png", 95, 475, width=32,
                      height=32,   mask='auto')
 
     costado(canvas)
@@ -807,6 +809,8 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
     azul_2 = [2 / 255, 142 / 255, 200 / 255]
     gris = [65 / 255, 65 / 255, 65 / 255]
     blanco = [1, 1, 1]
+
+
     for index,aparato in aparatosG.iterrows():
         nombre = aparato[3]
         lugar = aparato[4]
@@ -818,7 +822,6 @@ def aparatos_grandes(canvas, width, height,aparatosG,tarifa):
         Uso = aparato[7]
         notas = aparato[13]
         Claves=aparato[16]
-        Potencia =aparato[6]
         nombre_=Dicc_Aparatos(aparato[3])
         parrafos = []
         largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
@@ -1114,7 +1117,7 @@ def aparatos_bajos(canvas, width, height,aparatosM,aparatosC,tarifa):
         # Automatizacion ######################
         if not pd.isna(Claves):
 
-            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,potencia)
+            nota,nott = Recomendaciones(Claves, consumo, tarifa, Uso,nota,nombre_,Potencia)
             nota = textodeequiposV(nombre,nota)
         # Automatizacion  ######################
         parrafos = []
@@ -1222,6 +1225,12 @@ def fugasenhoja(canvas, width, height,atac,lista,idx,Atacable,voltaje):
                 Consejos=noatac(atac)
             disenohojaFuga(canvas, width, height,atac,lista,idx,Atacable,voltaje,parrafos)
             ponerRecom(Atacable,canvas,parrafos,Consejos)
+            if i>=1:
+                notasA = 'Continuación...'
+                parrafos.append(Paragraph(notasA, Estilos.azul_2_chico2))
+                frame = Frame(50, 380, 250, 50)
+                frame.addFromList(parrafos, canvas)
+
             canvas.showPage()
 
 
@@ -1306,7 +1315,6 @@ def voltaje(width, height, canvas, graficas_voltaje, nivel_voltaje,Cliente):
     costado(canvas)
     imagenDir = carpeta_clientes_Imagenes(Cliente)
     graficas_voltaje = Image.open(imagenDir)
-    print(graficas_voltaje)
     gris = [65 / 255, 65 / 255, 65 / 255]
     azul_1 = [0 / 255, 76 / 255, 101 / 255]
     largo_encabezado = pdfmetrics.stringWidth('PÉRDIDAS DE ENERGÍA Y MEDICIÓN DE VOLTAJE', 'Montserrat-B', 12)
@@ -1501,6 +1509,7 @@ def medidor(canvas, width, height, robo, revisar, nivel, color_voltaje):
         print("Error en la celda de revisar medidor")
         medidor = 1
         logging.warning("Hay un error en la celda de revisar medidor")
+
     if color_voltaje == "rojo":
         rayo = 3
     elif color_voltaje == "verde":
@@ -1627,9 +1636,9 @@ def Clasificador(aparatos):
     deMaG=['Refrigerador','Congelador','Minibar','Cava']
 
     for i in deMaG:
-        AparatosMaG= AparatosM.loc[AparatosM['D'].str.contains(i)]
-        AparatosM=AparatosM[~AparatosM['D'].str.contains(i)]
-        AparatosG=AparatosG.append(AparatosMaG)
+        AparatosMaG  = AparatosM.loc[AparatosM['D'].str.contains(i)]
+        AparatosM   =AparatosM[~AparatosM['D'].str.contains(i)]
+        AparatosG   =pd.concat([AparatosG,AparatosMaG])
 
     return AparatosG, AparatosM,AparatosC,Aparatos
 
@@ -1677,7 +1686,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     revisar='no'
     nivel=1
     graficas_voltaje=[1,2,3]
-    #voltaje(width, height, canvas, graficas_voltaje, color_voltaje,Cliente)
+    voltaje(width, height, canvas, graficas_voltaje, color_voltaje,Cliente)
     medidor(canvas, width, height, robo, revisar, nivel, color_voltaje)
     estrategia_ahorro(canvas,width,height,0)
     notas(canvas)
@@ -1688,7 +1697,7 @@ def CrearPDF(aparatos, luces, fugas, consumo, costo, Tarifa,Cfugas,Cliente,Solar
     try:
         canvas.save()
         print(" ")
-        # print("SE HA CREADO CON EXITO EL PDF DEL CLIENTE")
+        print("SE HA CREADO CON ÉXITO EL PDF DEL CLIENTE")
 
 
     except Exception as e:

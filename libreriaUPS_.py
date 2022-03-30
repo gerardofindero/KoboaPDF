@@ -170,7 +170,10 @@ def Atac_NB(Claves,standby,wC):
     if not "NR" in Claves:
         Atac = "Si"
     elif ("NR" in Claves):
-        if standby <= 15:
+
+        if standby=='Nm':
+            Atac = "No"
+        elif standby <= 15:
             Atac = "No"
         elif standby > 15:
             [roi,rec] = reemplazo(dbUPS,standby,wC)
