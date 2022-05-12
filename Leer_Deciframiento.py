@@ -18,7 +18,8 @@ def leer_deciframiento(Cliente):
     Voltaje = Exx.loc[1, ['G']]
     Exx.dropna(subset=['C'],inplace=True)
     #Exx.fillna(0,inplace=True)
-    Luces = Exx[Exx['D'].str.contains('Luces', regex=False,na=False)]
+    Luce = Exx[Exx['D'].str.contains('Luces', regex=False,na=False)]
+    Luces = Luce[~Luce['D'].str.contains('Fuga', regex=False, na=False)]
     Fugas = Exx[Exx['D'].str.contains('Fuga', regex=False, na=False)]
     EXX   = Exx[~Exx['D'].str.contains('Luces', regex=False,na=False)]
     Aparatos = EXX[~EXX['D'].str.contains('Fuga', regex=False,na=False)]
@@ -75,8 +76,10 @@ def leer_solar(Cliente):
     DSolar.loc['Medidor', 'Total'] = Exx.loc[14, ['L']][0]
     DSolar.loc['ProduccionSem', 'Total'] = Exx.loc[12, ['L']][0]
 
-    DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
+    # DSolar.loc['ProduccionBim', 'Total'] = int( DSolar.loc['ProduccionSem', 'Total'])*int(Exx.loc[0, ['E']][0])
 
+    DSolar.loc['ProduccionBim', 'Total'] = int(DSolar.loc['ProduccionSem', 'Total']) * 5.24
+    print(DSolar)
     Kobo = leer_solarKOBO(Cliente)
 
     return DSolar, Kobo

@@ -250,7 +250,7 @@ def escenario(InfoEquipos, num):
         else:
             CodN      = InfoEsc.filter(regex='codigofindero_c_i')[0]
     else:
-        CodN= 'QQ'
+        CodN= InfoEsc.filter(regex='codigofinderoQQ_c_i')[0]
 
 
     return lugar, lugar_especifico, tec, fuga, fugadetalles, standby, sobreilum, notas, InfoEsc, pendiente,CodN,Consumo

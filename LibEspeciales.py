@@ -421,8 +421,9 @@ def textodeequiposA(equipo,nota):
                             'Puedes cambiar a un horno de gas para ahorrar en energía electrica, también puedes usar tu estufa para ' \
                             'cocinar algunos de los alimentos y de esa forma ahorrar en energía eléctrica  <br />'
 
-    elif 'lavajilla' in equipo:
-        texto = texto+' ' + 'Recuerda usar este tipo de equipos de forma moderada, ya que son equipos de alto consumo. <br />'
+    elif 'lavavajilla' in equipo:
+        texto = texto+' ' + 'El consumo de tu lavavajillas es un poco más alto que el promedio de nuestros clientes. recuerda usarlo' \
+                            ' de forma moderada, ya que es un equipo de alto consumo. <br />'
 
     else:
         texto=nota
@@ -442,11 +443,17 @@ def textodeequiposV(equipo,nota):
         texto = texto+' ' + 'Tienes un buen consumo usando tu equipo de computo. Recuerda apagar completamente tus equipos. ' \
                             'Es importante para evitar que sigan consumiendo energía y así poder generar un mayor ahorro de energía. <br /> '
 
+    elif 'monitor' in equipo.lower():
+        texto = texto + ' ' + 'Tienes un buen consumo usando tu equipo de computo. Recuerda apagar completamente tus equipos ' \
+                'para evitar que sigan consumiendo energía y así poder generar un mayor ahorro de energía. <br /> '
 
-    elif 'bomba' \
-       '' in equipo.lower():
+
+    elif 'bomba'in equipo.lower():
         texto = texto+' ' + 'Revisamos el funcionamiento de tu bomba, No encontramos problemas, tiene un buen desempeño y un ' \
                             'consumo de energía eficiente. Recuerda darle mantenimiento de manera regular <br /> '
+
+    elif 'tetera' in equipo.lower():
+        texto = texto + ' ' +    "El consumo de energía de tu tetera se encuentra por debajo del consumo promedio de otros de nuestros clientes. Sigue usandola con moderación."
 
     elif 'aspirador' in equipo.lower():
         texto = texto+' ' + 'La aspiradora se usó varios días a la semana, tienes buenos hábitos de uso, ' \

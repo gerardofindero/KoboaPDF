@@ -12,8 +12,8 @@ def carpeta_clientes(Cliente):
     try:
         #carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/11-noviembre/"
         #carpeta_resultados = f"../../../Datos de clientes/Clientes 2021/12-diciembre/"
-        carpeta_resultados = f"../../../Datos de clientes/Clientes 2022/03-marzo/"
-        #carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/02-febrero/"
+        carpeta_resultados = f"../../../Datos de clientes/Clientes 2022/04-abril/"
+        #carpeta_resultados = f"../../../Datos de clientes/Clientes {anho}/03-marzo/"
         clientes = os.listdir(carpeta_resultados)
         if 'Bot_' in Cliente:
             Cl=Cliente
@@ -24,8 +24,8 @@ def carpeta_clientes(Cliente):
 
     except:
         #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/11-noviembre/"
-        #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/02-febrero/"
-        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2022/03-marzo/"
+        #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes {anho}/03-marzo/"
+        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2022/04-abril/"
 
         clientes = os.listdir(carpeta_resultados)
         Cl=''
@@ -52,7 +52,8 @@ def carpeta_clientes_Imagenes(Cliente):
     Cl=''
     try:
         #carpeta_resultados = f"../../../Datos de clientes/Clientes 2021/12-diciembre/"
-        carpeta_resultados = f"../../../Datos de clientes/Clientes 2022/03-marzo/"
+        #carpeta_resultados = f"../../../Datos de clientes/Clientes 2022/03-marzo/"
+        carpeta_resultados = f"../../../Datos de clientes/Clientes 2022/04-abril/"
         clientes = os.listdir(carpeta_resultados)
         if 'Bot_' in Cliente:
             Cl=Cliente
@@ -62,7 +63,9 @@ def carpeta_clientes_Imagenes(Cliente):
 
 
     except:
-        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2022/03-marzo/"
+        #carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2022/03-marzo/"
+        carpeta_resultados = f"D:/Findero Dropbox/Datos de clientes/Clientes 2022/04-abril/"
+
 
         clientes = os.listdir(carpeta_resultados)
         Cl=''

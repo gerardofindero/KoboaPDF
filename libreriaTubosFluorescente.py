@@ -126,7 +126,8 @@ def recoTuboFluorescente(texto,ntub,DAC,wt,kwh,texto2,Completo):
         if '[NS]' in reco:
             reco=reco.replace('[NS]','')
             reco=reco+'[NS]'
-        reco=reco.replace('[horasUso]',str(int(uso)))
+        #reco=reco.replace('[horasUso]',str(int(uso)))
+        reco = reco.replace('[horasUso]','')
         print('Watt',wt)
         print('kWh',kwh)
     else:
