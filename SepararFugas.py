@@ -403,8 +403,8 @@ def separar_fugasR(Equipo):
     Aparatos = Aparatos[Aparatos.Nominal != 0]
     Aparatos.reset_index(inplace=True)
     Equipos['Codigo'] = Aparatos['CodigoN']
-
-    Equipos['Equipo']        = Aparatos['index'] + ' ' + Aparatos['Marca']
+    print(Aparatos)
+    Equipos['Equipo']        = Aparatos['index'] + ' ' + Aparatos['Marca'].apply(str)
     Equipos['Potencia Kobo'] = Aparatos['Pot Compresor']
     Equipos['Lugar']         = Aparatos['Zona']
     Equipos['Ubicacion']     = 'C' + Aparatos['Circuito'].apply(str) + ' ' + Aparatos['Tablero'].apply(str)

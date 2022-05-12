@@ -252,20 +252,19 @@ def clustertv(Excel,Nocircuito,NomCircuito,voltaje):
                 Aparatos_C.loc['Consola2', 'NR'] = ''
 
             if indx == 13:
-            ##EquipoExtra
+                ##EquipoExtra
                 NomAparato = 'eqextra'
                 InfoDeco = EquiposCTV.filter(regex=NomAparato)
-
-                Aparatos_C.loc['Equipoextra', 'Marca'] = InfoDeco.filter(regex='eqextra_c_i')[0]
-                Aparatos_C.loc['EquipoExtra', 'Nominal'] = InfoDeco.filter(regex='consumo')[0]
-                Aparatos_C.loc['Equipoextra', 'Existencia'] = 1
-                Aparatos_C.loc['Equipoextra', 'Atacable'] = 'No'
-                Aparatos_C.loc['Equipoextra', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
-                Aparatos_C.loc['Equipoextra', 'Lugar'] = Zona
-                Aparatos_C.loc['Equipoextra', 'CodigoS'] = CodStandby
-                Aparatos_C.loc['EquipoExtra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
-                Aparatos_C.loc['EquipoExtra', 'Notas'] = Notas
-                Aparatos_C.loc['EquipoExtra', 'NR'] = ''
+                ##Aparatos_C.loc['Extra', 'Marca'] = InfoDeco.filter(regex='marca')[0]
+                Aparatos_C.loc['Extra', 'Existencia'] = 1
+                Aparatos_C.loc['Extra', 'Atacable'] = 'No'
+                Aparatos_C.loc['Extra', 'Lugar'] = Zona
+                Aparatos_C.loc['Extra', 'CodigoN'] = InfoDeco.filter(regex='consumo_codigofindero')[0]
+                Aparatos_C.loc['Extra', 'CodigoS'] = CodStandby
+                Aparatos_C.loc['Extra', 'Standby'] = consumoEq(InfoDeco.filter(regex='standby')[0])
+                Aparatos_C.loc['Extra', 'Nominal'] = consumoEq(InfoDeco.filter(regex='consumo')[0])
+                Aparatos_C.loc['Extra', 'Notas'] = Notas
+                Aparatos_C.loc['Extra', 'NR'] = 'NR'
 
             if indx == 14:
             ##EquipoExtra

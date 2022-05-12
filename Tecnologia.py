@@ -46,6 +46,8 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Aparatos_C.loc['Computadora', 'CodigoS']      = stnbyCod
                 Aparatos_C.loc['Computadora', 'Nominal']      = consumoEq(InfoDeco.filter(regex='consumo')[0])
                 Aparatos_C.loc['Computadora', 'CodigoN']      = InfoDeco.filter(regex='codigofindero_c_i')[0]
+                if Aparatos_C.loc['Computadora', 'CodigoN'] =="X":
+                    Aparatos_C.loc['Computadora', 'CodigoN']      = InfoDeco.filter(regex='codigofinderoQQ')[0]
                 Aparatos_C.loc['Computadora', 'Notas']        = Notas
                 Aparatos_C.loc['Computadora', 'Clave']        = 'TC'
                 Aparatos_C.loc['Computadora', 'Zona']         = Zona
@@ -170,17 +172,13 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
                 Otro     = InfoDeco.filter(regex='existencia_c_i')[0]
                 if Otro == 'si':
                     Aparatos_C.loc['Router2', 'Marca']      = InfoDeco.filter(regex='marca_c_i')[0]
-                    if Aparatos_C.loc['Router2', 'Marca'] == 'otro':
-                        Aparatos_C.loc['Router2', 'Marca']      = InfoDeco.filter(regex='marca_otro')[0]
+                    # if Aparatos_C.loc['Router2', 'Marca'] == 'otro':
                     Aparatos_C.loc['Router2', 'Standby']    = InfoDeco.filter(regex='standby')[0]
                     Aparatos_C.loc['Router2', 'CodigoS']    = stnbyCod
-                    Aparatos_C.loc['Router2', 'Nominal']    = 'NA'
-                    Aparatos_C.loc['Router2', 'CodigoN']    = 'NA'
-                    Aparatos_C.loc['Router2', 'Atacable']   = 'Si'
+                    Aparatos_C.loc['Router2', 'Atacable']   = 'No'
                     Aparatos_C.loc['Router2', 'Zona']       = Zona
                     Aparatos_C.loc['Router2', 'Notas']       = Notas
                     Aparatos_C.loc['Router2', 'Clave']     = 'TC'
-                    Aparatos_C.loc['Router2', 'Atacable']     = 'No'
 
                 InfoDeco = Equipos.filter(regex='router3')
                 Otro     = InfoDeco.filter(regex='existencia_c_i')[0]
@@ -436,7 +434,7 @@ def tecnologia(Excel,Nocircuito, NomCircuito,voltaje):
         if Aparatos_C.loc['NoBreak2', 'Equipos'] == 'otro':
             Aparatos_C.loc['NoBreak2', 'Equipos']      = InfoDeco.filter(regex='equipos_otro_c_i')[0]
         Aparatos_C.loc['NoBreak2', 'Capacidad']      = InfoDeco.filter(regex='capacidad_c_i')[0]
-        Aparatos_C.loc['NoBreak2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
+##        Aparatos_C.loc['NoBreak2', 'Notas']       = 'Equipos conectados: '+Aparatos_C.loc['Regulador', 'Equipos']+','+Notas
         Aparatos_C.loc['NoBreak2', 'Clave'] = 'NB,NR'
         Aparatos_C.loc['NoBreak2', 'Atacable'] = Atac_NB(Aparatos_C.loc['NoBreak2', 'Clave'],
                                                         Aparatos_C.loc['NoBreak2', 'Standby'],

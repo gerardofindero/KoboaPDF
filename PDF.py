@@ -1384,8 +1384,8 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,Total):
     costado(canvas)
     Aparatos=aparatos.copy()
     ##############################################################################################################################################
-    Aparatos.loc[29] = [3, '','', 'Pérdidas', '','', '', '', '', '', fugas['K'].sum(), fugas['L'].sum(),fugas['M'].sum(), 'Pérdidas','','','']
-    Aparatos.loc[30] = [caritaL, '',' ', 'Luces', '','', '', '', '', '', luces['K'].sum(), luces['L'].sum(),luces['M'].sum(), 'Luces','','','']
+    #Aparatos.loc[29] = [3, '','', 'Pérdidas', '','', '', '', '', '', fugas['K'].sum(), fugas['L'].sum(),fugas['M'].sum(), 'Pérdidas','','','']
+    #Aparatos.loc[30] = [caritaL, '',' ', 'Luces', '','', '', '', '', '', luces['K'].sum(), luces['L'].sum(),luces['M'].sum(), 'Luces','','','']
     Aparatos = Aparatos.loc[Aparatos['L'].apply(lambda x: pd.to_numeric(x, errors='coerce')).dropna().index]
     Aparatos.sort_values(by=['L'], inplace=True, ascending=False)
     largo_encabezado = pdfmetrics.stringWidth('TABLA RESUMEN DE CONSUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B', 12)
@@ -1433,7 +1433,7 @@ def cuadro_resumen(canvas, width, height, aparatos,luces,fugas,caritaL,Total):
         frame.addFromList(parrafos, canvas)
         canvas.line(50, altura+25, 550, altura +25)
         altura = altura -30
-        if cont==18:
+        if cont==18 or cont==36 or cont==54 :
             canvas.showPage()
             largo_encabezado = pdfmetrics.stringWidth('DESCIFRAMIENTO DE COSNUMO Y PÉRDIDAS DE ENERGÍA', 'Montserrat-B',12)
             canvas.line(60, height - 50, largo_encabezado + 60, height - 50)

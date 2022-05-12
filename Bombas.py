@@ -85,11 +85,13 @@ def bombas (Excel,Nocircuito):
 
     if Bomba == 'gravitacional':
         InfoDeco = Equipos.filter(regex='gravitacional')
-        #f InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
-        #    Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofindero_c_i')[0]
-        #    if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
-        #        Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
-        ################## Datos para recomendación de otra bomba############################
+        if InfoDeco.filter(regex='espendiente_c_i')[0]=='si':
+           Aparatos_C.loc['Bomba de Presión', 'CodigoN']  = InfoDeco.filter(regex='codigofindero_c_i')[0]
+        if InfoDeco.filter(regex='espendiente_c_i')[0] == 'no':
+            Aparatos_C.loc['Bomba de Presión', 'CodigoN'] = InfoDeco.filter(regex='codigofinderoQQ')[0]
+           # if InfoBomba.filter(regex='codigofindero2_c_i')[0]!='X':
+           #     Aparatos_C.loc['Bomba de Presión', 'CodigoN']     =Aparatos_C.loc['Bomba de Presión', 'CodigoN'] +','+ InfoBomba.filter(regex='codigofindero2_c_i')[0]
+        ################# Datos para recomendación de otra bomba############################
         # Q (segundos en llenar un litro-> se convierte a litros por minuto en claves)
         try   : Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = InfoDeco.filter(regex='flujo_segundos')[0]
         except: Aparatos_C.loc['Bomba de Gravitación', 'FlujoSegundos'] = 0
@@ -148,7 +150,6 @@ def bombas (Excel,Nocircuito):
         Aparatos_C.loc['Bomba de Gravitación', 'Medidor'] = InfoDeco.filter(regex='medidor_c_i')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'MedidorURL'] = InfoDeco.filter(regex='medidor_c_i_URL')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'MedidorLEC'] = InfoDeco.filter(regex='medidor_lectura')[0]
-        Aparatos_C.loc['Bomba de Gravitación', 'CodigoN'] = InfoDeco.filter(regex='codigofindero')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'CodigoS'] = CodigoStandby
         Aparatos_C.loc['Bomba de Gravitación', 'Zona'] = InfoDeco.filter(regex='nombre')[0]
         Aparatos_C.loc['Bomba de Gravitación', 'Atacable'] = 'Si'
